@@ -1,5 +1,6 @@
-import 'package:e_commerce/constants/themes.dart';
 import 'package:flutter/material.dart';
+
+import '../constants/custom_colors.dart';
 
 class CustomButton extends StatelessWidget {
   final String buttonText;
@@ -19,7 +20,9 @@ class CustomButton extends StatelessWidget {
       child: Material(
           color: enable
               ? CustomColors.primary
-              : CustomColors.disabled.withOpacity(0.4),
+              : CustomColors.disabled.withOpacity(
+                  0.4,
+                ),
           borderRadius: BorderRadius.circular(16),
           child: InkWell(
             onTap: enable ? onPress : null,

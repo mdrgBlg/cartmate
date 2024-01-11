@@ -1,6 +1,9 @@
+import 'package:e_commerce/helpers/custom_navigator.dart';
+import 'package:e_commerce/screens/auth/signup/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/constants/custom_colors.dart';
 import '/constants/themes.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
@@ -41,7 +44,10 @@ class LoginScreen extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: InkWell(
                     onTap: () => {
-                      Navigator.of(context).pushNamed("/signup"),
+                      CustomNavigator.pushNavigation(
+                        context,
+                        const SignUpScreen(),
+                      )
                     },
                     child: const Text(
                       'Sign Up',
@@ -99,6 +105,9 @@ class LoginScreen extends StatelessWidget {
                             loginProvider.validateField();
                           },
                           controller: loginProvider.eMailController,
+                        ),
+                        const SizedBox(
+                          height: 8,
                         ),
                         InputField(
                           hintText: "Password:",
