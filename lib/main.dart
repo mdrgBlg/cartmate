@@ -1,8 +1,6 @@
+import 'package:e_commerce/constants/themes.dart';
 import 'package:e_commerce/screens/auth/login/login_providers/login_provider.dart';
 import 'package:e_commerce/screens/auth/login/login_screen.dart';
-import 'package:e_commerce/screens/auth/signup/sign_up_screen.dart';
-import 'package:e_commerce/screens/auth/splash_screen.dart';
-import 'package:e_commerce/screens/auth/welcome/welcome_screen.dart';
 //import 'package:e_commerce/screens/auth/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,19 +21,11 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       title: "Store app",
-      theme: ThemeData(
-        fontFamily: 'OpenSans',
-      ),
+      theme: Themes.lightTheme,
       home: ChangeNotifierProvider(
         create: (context) => LoginProvider(),
         child: const LoginScreen(),
       ),
-      routes: {
-        SplashScreen.routeName: (ctx) => const SplashScreen(),
-        LoginScreen.routeName: (ctx) => const LoginScreen(),
-        SignUpScreen.routeName: (ctx) => const SignUpScreen(),
-        WelcomeScreen.routeName: (ctx) => const WelcomeScreen(),
-      },
     );
   }
 }
