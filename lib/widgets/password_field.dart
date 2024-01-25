@@ -36,7 +36,7 @@ class PasswordField extends StatelessWidget {
         ),
         Container(
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 0),
-          height: 36,
+          height: 44,
           child: TextFormField(
             controller: controller,
             textAlign: TextAlign.left,

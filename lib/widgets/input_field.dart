@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
-  final TextEditingController? controller;
   final String hintText;
   final bool isValid;
+  final TextEditingController controller;
+  final FocusNode focusNode;
   final VoidCallback? onInputChanged;
   const InputField({
     super.key,
     required this.hintText,
     required this.isValid,
+    required this.controller,
+    required this.focusNode,
     this.onInputChanged,
-    this.controller,
   });
 
   @override
@@ -31,8 +33,8 @@ class InputField extends StatelessWidget {
           ),
         ),
         Container(
-          padding: const EdgeInsets.fromLTRB(20, 4, 20, 0),
-          height: 36,
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          height: 44,
           child: TextFormField(
             controller: controller,
             textAlign: TextAlign.left,
@@ -41,7 +43,7 @@ class InputField extends StatelessWidget {
                 onInputChanged!();
               }
             },
-            style: textTheme.headlineSmall!.copyWith(),
+            style: textTheme.headlineSmall!.copyWith(fontSize: 18),
           ),
         )
       ],

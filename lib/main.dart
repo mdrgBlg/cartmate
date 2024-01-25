@@ -1,7 +1,6 @@
 import 'package:e_commerce/constants/themes.dart';
 import 'package:e_commerce/screens/auth/login/login_providers/login_provider.dart';
 import 'package:e_commerce/screens/auth/login/login_screen.dart';
-//import 'package:e_commerce/screens/auth/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: Themes.lightTheme,
       home: ChangeNotifierProvider(
         create: (context) => LoginProvider(),
-        child: const LoginScreen(),
+        child: LoginScreen(),
       ),
     );
   }
