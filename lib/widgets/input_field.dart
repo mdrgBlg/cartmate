@@ -1,4 +1,3 @@
-import 'package:e_commerce/constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
@@ -22,7 +21,9 @@ class InputField extends StatelessWidget {
         Align(
           alignment: Alignment.bottomLeft,
           child: Container(
-            margin: const EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(
+              left: 20,
+            ),
             child: Text(
               hintText,
               textAlign: TextAlign.left,
@@ -30,22 +31,17 @@ class InputField extends StatelessWidget {
           ),
         ),
         Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          height: 48,
+          padding: const EdgeInsets.fromLTRB(20, 4, 20, 0),
+          height: 36,
           child: TextFormField(
             controller: controller,
-            textAlign: TextAlign.center,
-            obscureText: (hintText.toLowerCase() == 'password:' ? true : false) || (hintText.toLowerCase() == 'confirm password:' ? true : false),
+            textAlign: TextAlign.left,
             onChanged: (value) {
               if (onInputChanged != null) {
                 onInputChanged!();
               }
             },
-            style: textTheme.bodyMedium!.copyWith(),
-            decoration: const InputDecoration(
-              floatingLabelAlignment: FloatingLabelAlignment.center,
-              alignLabelWithHint: true,
-            ),
+            style: textTheme.headlineSmall!.copyWith(),
           ),
         )
       ],
