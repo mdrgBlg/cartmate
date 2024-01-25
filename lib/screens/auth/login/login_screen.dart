@@ -1,5 +1,6 @@
 import 'package:e_commerce/helpers/custom_navigator.dart';
 import 'package:e_commerce/screens/auth/signup/sign_up_screen.dart';
+import 'package:e_commerce/screens/auth/signup/signup_providers/signup_provider.dart';
 import 'package:e_commerce/widgets/password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,8 @@ import '/widgets/input_field.dart';
 import 'login_providers/login_provider.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  final FocusNode eMailNameFocusNode = FocusNode();
+  LoginScreen({super.key});
 
   static const routeName = '/login';
 
@@ -21,7 +23,6 @@ class LoginScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
-        extendBody: true,
         resizeToAvoidBottomInset: true,
         body: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -42,7 +43,7 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
                 Positioned(
-                  top: 16,
+                  top: 8,
                   right: 16,
                   child: Container(
                     alignment: Alignment.topRight,
@@ -50,7 +51,10 @@ class LoginScreen extends StatelessWidget {
                       onTap: () => {
                         CustomNavigator.pushNavigation(
                           context,
-                          const SignUpScreen(),
+                          ChangeNotifierProvider(
+                            create: (_) => SignUpProvider(),
+                            child: SignUpScreen(),
+                          ),
                         )
                       },
                       child: Text(
@@ -89,13 +93,12 @@ class LoginScreen extends StatelessWidget {
                 ),
                 Consumer<LoginProvider>(
                   builder: (context, loginProvider, child) => Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     elevation: 3,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
                       height: 300,
                       width: 300,
                       child: Column(
@@ -108,6 +111,7 @@ class LoginScreen extends StatelessWidget {
                               loginProvider.validateField();
                             },
                             controller: loginProvider.eMailController,
+                            focusNode: eMailNameFocusNode,
                           ),
                           const SizedBox(
                             height: 12,

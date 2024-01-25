@@ -11,12 +11,10 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final welcomeProvider =
-        Provider.of<WelcomeProvider>(context, listen: false);
+    final welcomeProvider = Provider.of<WelcomeProvider>(context, listen: false);
     return FutureBuilder(
       future: welcomeProvider.checkAccessToken(),
-      builder: (context, snapshot) =>
-          snapshot.data == true ? const LoginScreen() : const SplashScreen(),
+      builder: (context, snapshot) => snapshot.data == true ? LoginScreen() : const SplashScreen(),
     );
   }
 }

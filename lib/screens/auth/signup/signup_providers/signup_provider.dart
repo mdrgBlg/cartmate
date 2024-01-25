@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
 
-import 'signup_service.dart';
+import 'sign_up_service.dart';
 
 class SignUpProvider with ChangeNotifier {
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final usernameController = TextEditingController();
+  final eMailController = TextEditingController();
+  final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  final eMailController = TextEditingController();
 
-  var passwordEmpty = false;
-  var confirmPasswordEmpty = false;
-  var eMailEmpty = false;
+  bool passwordVisibility = true;
 
-  var signUpButtonEnable = false;
+  bool passwordEmpty = false;
+  bool eMailEmpty = false;
+
+  bool signUpButtonEnable = false;
 
   void validateField() {
-    if (passwordController.text.isNotEmpty &&
-        confirmPasswordController.text.isNotEmpty &&
-        eMailController.text.isNotEmpty) {
+    if (passwordController.text.isNotEmpty && confirmPasswordController.text.isNotEmpty && eMailController.text.isNotEmpty) {
       signUpButtonEnable = true;
     } else {
       signUpButtonEnable = false;
     }
 
     passwordEmpty = false;
-    confirmPasswordEmpty = false;
     eMailEmpty = false;
+  }
+
+  void changePasswordVisibility() {
+    passwordVisibility = !passwordVisibility;
+    notifyListeners();
   }
 
   Future<void> signUp() async {
