@@ -1,5 +1,6 @@
 import 'package:e_commerce/helpers/custom_navigator.dart';
 import 'package:e_commerce/screens/auth/signup/sign_up_screen.dart';
+import 'package:e_commerce/widgets/password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     final screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
@@ -51,13 +53,11 @@ class LoginScreen extends StatelessWidget {
                           const SignUpScreen(),
                         )
                       },
-                      child: const Text(
+                      child: Text(
                         'Sign Up',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                        style: textTheme.labelLarge!.copyWith(
                           decoration: TextDecoration.underline,
-                          decorationThickness: 1.0,
+                          decorationThickness: 1.5,
                           color: CustomColors.appName,
                         ),
                       ),
@@ -74,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                         CustomIcons.cartIcon,
                         width: 100,
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 12),
                       const Text(
                         "Log In To eShop",
                         style: TextStyle(
@@ -91,6 +91,7 @@ class LoginScreen extends StatelessWidget {
                   builder: (context, loginProvider, child) => Card(
                     elevation: 3,
                     child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
@@ -109,19 +110,21 @@ class LoginScreen extends StatelessWidget {
                             controller: loginProvider.eMailController,
                           ),
                           const SizedBox(
-                            height: 8,
+                            height: 12,
                           ),
-                          InputField(
+                          PasswordField(
                             hintText: "Password:",
                             isValid: loginProvider.passwordEmpty,
                             onInputChanged: () {
                               loginProvider.validateField();
                             },
                             controller: loginProvider.passwordController,
+                            passwordVisibility: loginProvider.passwordVisibility,
+                            changeVisibility: loginProvider.changeVisibility,
                           ),
                           const SizedBox(height: 20),
                           CustomButton(
-                            buttonText: "Log In",
+                            buttonText: "Log in",
                             enable: loginProvider.loginButtonEnable,
                             onPress: () {
                               loginProvider.login();
@@ -131,11 +134,11 @@ class LoginScreen extends StatelessWidget {
                             margin: const EdgeInsets.only(top: 15),
                             child: InkWell(
                               onTap: () => {},
-                              child: const Text(
+                              child: Text(
                                 'Forgot password?',
-                                style: TextStyle(
+                                style: textTheme.bodyMedium!.copyWith(
                                   decoration: TextDecoration.underline,
-                                  decorationThickness: 1.0,
+                                  decorationThickness: 1.5,
                                 ),
                               ),
                             ),

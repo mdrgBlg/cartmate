@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
               child: Center(
                 child: Text(
                   buttonText,
-                  style: textTheme.headlineSmall!.copyWith(
+                  style: textTheme.titleLarge!.copyWith(
                     color: enable ? Colors.white : Colors.white.withOpacity(0.5),
                   ),
                 ),

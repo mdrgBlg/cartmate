@@ -5,10 +5,10 @@ class LoginProvider with ChangeNotifier {
   final eMailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  var eMailEmpty = false;
-  var passwordEmpty = false;
-
-  var loginButtonEnable = false;
+  bool eMailEmpty = false;
+  bool passwordEmpty = false;
+  bool loginButtonEnable = false;
+  bool passwordVisibility = true;
 
   void validateField() {
     if (eMailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
@@ -20,6 +20,11 @@ class LoginProvider with ChangeNotifier {
     eMailEmpty = eMailController.text.isNotEmpty;
     passwordEmpty = passwordController.text.isNotEmpty;
 
+    notifyListeners();
+  }
+
+  void changeVisibility() {
+    passwordVisibility = !passwordVisibility;
     notifyListeners();
   }
 
