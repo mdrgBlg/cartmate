@@ -16,6 +16,7 @@ class InputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Column(
       children: [
         Align(
@@ -40,6 +41,7 @@ class InputField extends StatelessWidget {
                 onInputChanged!();
               }
             },
+            style: textTheme.bodyMedium!.copyWith(),
             decoration: const InputDecoration(
               floatingLabelAlignment: FloatingLabelAlignment.center,
               alignLabelWithHint: true,
