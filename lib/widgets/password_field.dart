@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 class PasswordField extends StatelessWidget {
   final TextEditingController? controller;
   final String hintText;
-  final bool isValid;
   final VoidCallback? onInputChanged;
   final bool passwordVisibility;
   final VoidCallback changeVisibility;
   const PasswordField({
     super.key,
     required this.hintText,
-    required this.isValid,
     this.onInputChanged,
     this.controller,
     required this.passwordVisibility,

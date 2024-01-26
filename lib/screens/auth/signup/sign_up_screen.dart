@@ -1,5 +1,5 @@
-import 'package:e_commerce/constants/themes.dart';
-import 'package:e_commerce/screens/auth/signup/signup_providers/signup_provider.dart';
+import 'package:e_commerce/constants/custom_colors.dart';
+import 'package:e_commerce/screens/auth/signup/sign_up_providers/signup_provider.dart';
 import 'package:e_commerce/widgets/custom_button.dart';
 import 'package:e_commerce/widgets/input_field.dart';
 import 'package:e_commerce/widgets/password_field.dart';
@@ -7,13 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatelessWidget {
-  final FocusNode firstNameFocusNode = FocusNode();
-  final FocusNode lastNameFocusNode = FocusNode();
-  final FocusNode usernameFocusNode = FocusNode();
-  final FocusNode eMailNameFocusNode = FocusNode();
-  final FocusNode phoneNumberFocusNode = FocusNode();
-  final FocusNode passwordFocusNode = FocusNode();
-  SignUpScreen({super.key});
+  const SignUpScreen({super.key});
 
   static const routeName = '/signup';
 
@@ -21,6 +15,12 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 52,
+          backgroundColor: CustomColors.primary,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
         resizeToAvoidBottomInset: true,
         body: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -31,31 +31,18 @@ class SignUpScreen extends StatelessWidget {
                 Column(
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height / 2,
+                      height: MediaQuery.of(context).size.height / 2 - 72,
                       color: Colors.lightBlue,
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height / 2,
+                      height: MediaQuery.of(context).size.height / 2 - 22,
                       color: Colors.white,
                     ),
                   ],
                 ),
-                Positioned(
-                  top: 56,
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          CustomIcons.cartIcon,
-                          width: 80,
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                ),
                 Consumer<SignUpProvider>(
                   builder: (context, signUpProvider, child) => Card(
+                    margin: const EdgeInsets.only(bottom: 52),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -76,23 +63,19 @@ class SignUpScreen extends StatelessWidget {
                                 Flexible(
                                   child: InputField(
                                     hintText: "First name",
-                                    isValid: signUpProvider.eMailEmpty,
                                     onInputChanged: () {
                                       signUpProvider.validateField();
                                     },
                                     controller: signUpProvider.firstNameController,
-                                    focusNode: firstNameFocusNode,
                                   ),
                                 ),
                                 Flexible(
                                   child: InputField(
                                     hintText: "Last name",
-                                    isValid: signUpProvider.eMailEmpty,
                                     onInputChanged: () {
                                       signUpProvider.validateField();
                                     },
                                     controller: signUpProvider.lastNameController,
-                                    focusNode: lastNameFocusNode,
                                   ),
                                 ),
                               ],
@@ -101,43 +84,36 @@ class SignUpScreen extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 12),
                               child: InputField(
                                 hintText: "Username",
-                                isValid: signUpProvider.eMailEmpty,
                                 onInputChanged: () {
                                   signUpProvider.validateField();
                                 },
                                 controller: signUpProvider.usernameController,
-                                focusNode: usernameFocusNode,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 12),
                               child: InputField(
                                 hintText: "E-mail",
-                                isValid: signUpProvider.eMailEmpty,
                                 onInputChanged: () {
                                   signUpProvider.validateField();
                                 },
                                 controller: signUpProvider.eMailController,
-                                focusNode: eMailNameFocusNode,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 12),
                               child: InputField(
                                 hintText: "Phone number",
-                                isValid: signUpProvider.eMailEmpty,
                                 onInputChanged: () {
                                   signUpProvider.validateField();
                                 },
                                 controller: signUpProvider.phoneNumberController,
-                                focusNode: phoneNumberFocusNode,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 12, bottom: 20),
                               child: PasswordField(
                                 hintText: "Password:",
-                                isValid: signUpProvider.passwordEmpty,
                                 onInputChanged: () {
                                   signUpProvider.validateField();
                                 },

@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
   final String hintText;
-  final bool isValid;
   final TextEditingController controller;
-  final FocusNode focusNode;
   final VoidCallback? onInputChanged;
   const InputField({
     super.key,
     required this.hintText,
-    required this.isValid,
     required this.controller,
-    required this.focusNode,
     this.onInputChanged,
   });
 
