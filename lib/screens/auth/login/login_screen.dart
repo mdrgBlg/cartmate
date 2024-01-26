@@ -1,6 +1,6 @@
-import 'package:e_commerce/helpers/custom_navigator.dart';
+import 'package:e_commerce/screens/auth/forget_password.dart';
 import 'package:e_commerce/screens/auth/signup/sign_up_screen.dart';
-import 'package:e_commerce/screens/auth/signup/signup_providers/signup_provider.dart';
+import 'package:e_commerce/screens/auth/signup/sign_up_providers/signup_provider.dart';
 import 'package:e_commerce/widgets/password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +12,7 @@ import '/widgets/input_field.dart';
 import 'login_providers/login_provider.dart';
 
 class LoginScreen extends StatelessWidget {
-  final FocusNode eMailNameFocusNode = FocusNode();
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   static const routeName = '/login';
 
@@ -33,11 +32,11 @@ class LoginScreen extends StatelessWidget {
                 Column(
                   children: [
                     Container(
-                      height: screenHeight / 2,
+                      height: screenHeight / 2 - 22,
                       color: Colors.lightBlue,
                     ),
                     Container(
-                      height: screenHeight / 2,
+                      height: screenHeight / 2 - 22,
                       color: Colors.white,
                     ),
                   ],
@@ -49,13 +48,15 @@ class LoginScreen extends StatelessWidget {
                     alignment: Alignment.topRight,
                     child: InkWell(
                       onTap: () => {
-                        CustomNavigator.pushNavigation(
+                        Navigator.push(
                           context,
-                          ChangeNotifierProvider(
-                            create: (_) => SignUpProvider(),
-                            child: SignUpScreen(),
+                          MaterialPageRoute(
+                            builder: (context) => ChangeNotifierProvider(
+                              create: (_) => SignUpProvider(),
+                              child: const SignUpScreen(),
+                            ),
                           ),
-                        )
+                        ),
                       },
                       child: Text(
                         'Sign Up',
@@ -106,19 +107,16 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           InputField(
                             hintText: "E - mail:",
-                            isValid: loginProvider.eMailEmpty,
                             onInputChanged: () {
                               loginProvider.validateField();
                             },
                             controller: loginProvider.eMailController,
-                            focusNode: eMailNameFocusNode,
                           ),
                           const SizedBox(
                             height: 12,
                           ),
                           PasswordField(
                             hintText: "Password:",
-                            isValid: loginProvider.passwordEmpty,
                             onInputChanged: () {
                               loginProvider.validateField();
                             },
@@ -137,9 +135,17 @@ class LoginScreen extends StatelessWidget {
                           Container(
                             margin: const EdgeInsets.only(top: 15),
                             child: InkWell(
-                              onTap: () => {},
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ChangeNotifierProvider(
+                                    create: (context) => LoginProvider(),
+                                    child: const ForgetPassword(),
+                                  ),
+                                ),
+                              ),
                               child: Text(
-                                'Forgot password?',
+                                'Forget password?',
                                 style: textTheme.bodyMedium!.copyWith(
                                   decoration: TextDecoration.underline,
                                   decorationThickness: 1.5,

@@ -4,22 +4,19 @@ import 'login_service.dart';
 class LoginProvider with ChangeNotifier {
   final eMailController = TextEditingController();
   final passwordController = TextEditingController();
+  final forgotPasswordController = TextEditingController();
 
-  bool eMailEmpty = false;
-  bool passwordEmpty = false;
   bool loginButtonEnable = false;
+  bool forgotPasswordEnable = false;
   bool passwordVisibility = true;
 
   void validateField() {
-    if (eMailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      loginButtonEnable = true;
-    } else {
-      loginButtonEnable = false;
-    }
+    loginButtonEnable = eMailController.text.isNotEmpty && passwordController.text.isNotEmpty;
+    notifyListeners();
+  }
 
-    eMailEmpty = eMailController.text.isNotEmpty;
-    passwordEmpty = passwordController.text.isNotEmpty;
-
+  void validateForgotPasswordField() {
+    forgotPasswordEnable = forgotPasswordController.text.isNotEmpty;
     notifyListeners();
   }
 

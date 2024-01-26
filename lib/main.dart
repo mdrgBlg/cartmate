@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: Themes.lightTheme,
       home: ChangeNotifierProvider(
         create: (context) => LoginProvider(),
-        child: LoginScreen(),
+        child: const LoginScreen(),
       ),
     );
   }
