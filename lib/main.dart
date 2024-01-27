@@ -1,9 +1,12 @@
 import 'package:e_commerce/constants/themes.dart';
 import 'package:e_commerce/screens/auth/login/login_providers/login_provider.dart';
 import 'package:e_commerce/screens/auth/login/login_screen.dart';
+import 'package:e_commerce/screens/auth/welcome/welcome_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'screens/auth/welcome/welcome_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +25,8 @@ class MyApp extends StatelessWidget {
       title: "Store app",
       theme: Themes.lightTheme,
       home: ChangeNotifierProvider(
-        create: (context) => LoginProvider(),
-        child: const LoginScreen(),
+        create: (context) => WelcomeProvider(),
+        child: const WelcomeScreen(),
       ),
     );
   }

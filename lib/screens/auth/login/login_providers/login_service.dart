@@ -6,7 +6,8 @@ import 'package:e_commerce/constants/global_url.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
-  static Future<void> login(String email, String password) async {
+  static Future<bool> login(String email, String password) async {
+    final preferences = await SharedPreferences.getInstance();
     final url = GlobalUrl.getUrl("signInWithPassword");
     try {
       final response = await http.post(
@@ -21,15 +22,15 @@ class LoginService {
       );
       final responseData = json.decode(response.body);
       if (response.statusCode == 200) {
-        accessToken(responseData["idToken"]);
-      } else if (responseData["error"] != null) {}
+        log(response.body);
+        preferences.setString("token", responseData["idToken"]);
+        return true;
+      } else if (responseData["error"] != null) {
+        return false;
+      }
     } catch (e) {
       log("Exception sign up: $e");
     }
-  }
-
-  static void accessToken(String response) async {
-    final preferences = await SharedPreferences.getInstance();
-    preferences.setString("token", response);
+    return false;
   }
 }
