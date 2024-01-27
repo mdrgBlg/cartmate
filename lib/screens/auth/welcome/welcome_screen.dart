@@ -1,7 +1,6 @@
 import 'package:e_commerce/screens/app/home/home_screen.dart';
 import 'package:e_commerce/screens/auth/login/login_providers/login_provider.dart';
 import 'package:e_commerce/screens/auth/login/login_screen.dart';
-import 'package:e_commerce/screens/auth/splash_screen.dart';
 import 'package:e_commerce/screens/auth/welcome/welcome_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
