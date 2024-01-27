@@ -25,7 +25,7 @@ class LoginProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> login() async {
+  Future<bool> login() async {
     return LoginService.login(eMailController.text, passwordController.text);
   }
 }

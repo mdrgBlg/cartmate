@@ -1,3 +1,5 @@
+import 'package:e_commerce/helpers/loading.dart';
+import 'package:e_commerce/helpers/snack_bar_popup.dart';
 import 'package:e_commerce/screens/auth/forget_password.dart';
 import 'package:e_commerce/screens/auth/signup/sign_up_screen.dart';
 import 'package:e_commerce/screens/auth/signup/sign_up_providers/signup_provider.dart';
@@ -129,7 +131,28 @@ class LoginScreen extends StatelessWidget {
                             buttonText: "Log in",
                             enable: loginProvider.loginButtonEnable,
                             onPress: () {
-                              loginProvider.login();
+                              bool success = false;
+                              Loading.callLoading(
+                                context: context,
+                                callback: () async {
+                                  success = await loginProvider.login();
+                                },
+                                onFinished: () {
+                                  if (success) {
+                                    SnackBarPopup.showMessage(
+                                      context,
+                                      message: "Success",
+                                      snackBarMessageType: SnackBarMessageType.success,
+                                    );
+                                  } else {
+                                    SnackBarPopup.showMessage(
+                                      context,
+                                      message: "Something went wrong",
+                                      snackBarMessageType: SnackBarMessageType.error,
+                                    );
+                                  }
+                                },
+                              );
                             },
                           ),
                           Container(
@@ -138,8 +161,8 @@ class LoginScreen extends StatelessWidget {
                               onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ChangeNotifierProvider(
-                                    create: (context) => LoginProvider(),
+                                  builder: (context) => ChangeNotifierProvider.value(
+                                    value: loginProvider,
                                     child: const ForgetPassword(),
                                   ),
                                 ),
