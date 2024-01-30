@@ -28,6 +28,6 @@ class SignUpProvider with ChangeNotifier {
   }
 
   Future<void> signUp() async {
-    SignUpService.signUp(eMailController.text, passwordController.text);
+    SignUpService.signUp(eMailController.text.trim(), passwordController.text.trim());
   }
 }

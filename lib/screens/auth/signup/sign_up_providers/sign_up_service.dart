@@ -5,7 +5,7 @@ import 'package:e_commerce/constants/global_url.dart';
 import 'package:http/http.dart' as http;
 
 class SignUpService {
-  static Future<bool> signUp(String email, String password) async {
+  static Future<(bool, String?)> signUp(String email, String password) async {
     final url = GlobalUrl.getUrl("signUp");
     try {
       final response = await http.post(
@@ -20,11 +20,12 @@ class SignUpService {
       );
 
       if (response.statusCode == 200) {
-        return true;
+        final user = jsonDecode(response.body);
+        return (true, user["id"].toString());
       }
     } catch (e) {
       log("Exception sign up: $e");
     }
-    return false;
+    return (false, null);
   }
 }
