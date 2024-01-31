@@ -1,4 +1,5 @@
 import 'package:e_commerce/constants/themes.dart';
+import 'package:e_commerce/firebase_options.dart';
 import 'package:e_commerce/screens/auth/welcome/welcome_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,9 @@ import 'screens/auth/welcome/welcome_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
