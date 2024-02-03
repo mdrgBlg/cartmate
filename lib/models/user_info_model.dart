@@ -1,32 +1,43 @@
 import 'dart:developer';
 
-class UserModel {
+class UserInfoModel {
   final String id;
   final String firstName;
   final String lastName;
+  final String email;
   final String username;
   final String phoneNumber;
-  final String password;
 
-  UserModel({
+  UserInfoModel({
     required this.id,
     required this.firstName,
     required this.lastName,
+    required this.email,
     required this.username,
     required this.phoneNumber,
-    required this.password,
   });
 
-  static UserModel? fromJson(Map<String, dynamic> json) {
-    UserModel? userModel;
+  static Map<String, dynamic> toJson(UserInfoModel userInfoModel) {
+    return {
+      'id': userInfoModel.id,
+      'firstName': userInfoModel.firstName,
+      'lastName': userInfoModel.lastName,
+      'email': userInfoModel.email,
+      'username': userInfoModel.username,
+      'phoneNumber': userInfoModel.phoneNumber,
+    };
+  }
+
+  static UserInfoModel? fromJson(Map<String, dynamic> json) {
+    UserInfoModel? userModel;
     try {
-      userModel = UserModel(
+      userModel = UserInfoModel(
         id: json["id"],
         firstName: json["firstName"],
         lastName: json["lastName"],
+        email: json["email"],
         username: json["username"],
         phoneNumber: json["phoneNumber"],
-        password: json["password"],
       );
     } catch (e) {
       log("EXCEPTION UserModel $e");

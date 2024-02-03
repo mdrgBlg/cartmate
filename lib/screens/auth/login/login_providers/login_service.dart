@@ -1,36 +1,25 @@
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:http/http.dart' as http;
-import 'package:e_commerce/constants/global_url.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '/constants/constants.dart';
 
 class LoginService {
-  static Future<bool> login(String email, String password) async {
-    final preferences = await SharedPreferences.getInstance();
-    final url = GlobalUrl.getUrl("signInWithPassword");
+  static Future<(String?, String?)> login(String email, String password) async {
     try {
-      final response = await http.post(
-        url,
-        body: json.encode(
-          {
-            'email': email,
-            'password': password,
-            'returnSecureToken': true,
-          },
-        ),
+      final userCredential = await Constants.firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-      final responseData = json.decode(response.body);
-      if (response.statusCode == 200) {
-        log(response.body);
-        preferences.setString("token", responseData["idToken"]);
-        return true;
-      } else if (responseData["error"] != null) {
-        return false;
+      if (userCredential.user != null) {
+        return (userCredential.user!.uid, null);
       }
+    } on FirebaseAuthException catch (e) {
+      log("FirebaseAuthException login: $e");
+      return (null, e.message);
     } catch (e) {
-      log("Exception sign up: $e");
+      log("Exception login: $e");
     }
-    return false;
+    return (null, "Something went wrong. Please try again");
   }
 }

@@ -1,31 +1,43 @@
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:e_commerce/constants/global_url.dart';
-import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '/constants/constants.dart';
+import '/models/user_info_model.dart';
+import '/models/response_model.dart';
 
 class SignUpService {
-  static Future<(bool, String?)> signUp(String email, String password) async {
-    final url = GlobalUrl.getUrl("signUp");
+  static Future<(String?, String?)> signUp(String email, String password) async {
     try {
-      final response = await http.post(
-        url,
-        body: json.encode(
-          {
-            'email': email,
-            'password': password,
-            'returnSecureToken': true,
-          },
-        ),
+      UserCredential userCredential = await Constants.firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
       );
 
-      if (response.statusCode == 200) {
-        final user = jsonDecode(response.body);
-        return (true, user["id"].toString());
+      if (userCredential.user != null) {
+        return (userCredential.user!.uid, null);
       }
+    } on FirebaseAuthException catch (e) {
+      log("FirebaseAuthException sign up: $e");
+      return (null, e.message);
     } catch (e) {
-      log("Exception sign up: $e");
+      log("Exception signUp: $e");
     }
-    return (false, null);
+    return (null, "Something went wrong. Please try again");
+  }
+
+  static Future<ResponseModel> saveUserData(UserInfoModel userInfoModel) async {
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+    try {
+      await db.collection("Users").doc(userInfoModel.id).set(UserInfoModel.toJson(userInfoModel));
+      return ResponseModel(success: true);
+    } on FirebaseException catch (e) {
+      log("FirebaseException saveUserData: $e");
+      return ResponseModel(success: false, error: e.message);
+    } catch (e) {
+      log("Exception saveUserData: $e");
+      return ResponseModel(success: false, error: "Something went wrong. Please try again");
+    }
   }
 }

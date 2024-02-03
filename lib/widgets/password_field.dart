@@ -44,7 +44,7 @@ class PasswordField extends StatelessWidget {
                 onInputChanged!();
               }
             },
-            style: textTheme.headlineSmall!.copyWith(),
+            style: textTheme.headlineSmall!.copyWith(fontSize: 18),
             decoration: InputDecoration(
               suffixIcon: IconButton(
                 color: Colors.black,

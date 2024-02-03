@@ -1,10 +1,16 @@
-import 'package:e_commerce/constants/custom_colors.dart';
-import 'package:e_commerce/screens/auth/signup/sign_up_providers/signup_provider.dart';
-import 'package:e_commerce/widgets/custom_button.dart';
-import 'package:e_commerce/widgets/input_field.dart';
-import 'package:e_commerce/widgets/password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../welcome/welcome_screen.dart';
+import '/constants/custom_colors.dart';
+import '/helpers/custom_navigator.dart';
+import '/helpers/loading.dart';
+import '/helpers/snack_bar_popup.dart';
+import '/models/response_model.dart';
+import '/widgets/custom_button.dart';
+import '/widgets/input_field.dart';
+import '/widgets/password_field.dart';
+import 'sign_up_providers/sign_up_provider.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -125,8 +131,33 @@ class SignUpScreen extends StatelessWidget {
                             CustomButton(
                               buttonText: "Sign Up",
                               enable: signUpProvider.signUpButtonEnable,
-                              onPress: () async {
-                                signUpProvider.signUp();
+                              onPress: () {
+                                ResponseModel responseModel = ResponseModel(success: false);
+                                Loading.callLoading(
+                                  context: context,
+                                  callback: () async {
+                                    responseModel = await signUpProvider.signUp();
+                                  },
+                                  onFinished: () {
+                                    if (responseModel.success) {
+                                      SnackBarPopup.showMessage(
+                                        context,
+                                        message: "You successfully signed up!",
+                                        snackBarMessageType: SnackBarMessageType.success,
+                                      );
+                                      CustomNavigator.pushReplacement(
+                                        context,
+                                        const WelcomeScreen(),
+                                      );
+                                    } else {
+                                      SnackBarPopup.showMessage(
+                                        context,
+                                        message: responseModel.error ?? "Something went wrong.",
+                                        snackBarMessageType: SnackBarMessageType.error,
+                                      );
+                                    }
+                                  },
+                                );
                               },
                             ),
                           ],
