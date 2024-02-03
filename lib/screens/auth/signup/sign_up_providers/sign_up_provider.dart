@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '/models/response_model.dart';
+import '/models/user_info_model.dart';
 import 'sign_up_service.dart';
 
 class SignUpProvider with ChangeNotifier {
@@ -27,7 +29,23 @@ class SignUpProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signUp() async {
-    SignUpService.signUp(eMailController.text.trim(), passwordController.text.trim());
+  Future<ResponseModel> signUp() async {
+    String? newUserId;
+    String? error;
+    (newUserId, error) = await SignUpService.signUp(eMailController.text.trim(), passwordController.text.trim());
+    if (newUserId != null) {
+      ResponseModel responseModel = await SignUpService.saveUserData(
+        UserInfoModel(
+          id: newUserId,
+          firstName: firstNameController.text.trim(),
+          lastName: lastNameController.text.trim(),
+          email: eMailController.text.trim(),
+          username: usernameController.text.trim(),
+          phoneNumber: phoneNumberController.text.trim(),
+        ),
+      );
+      return responseModel;
+    }
+    return ResponseModel(success: false, error: error);
   }
 }

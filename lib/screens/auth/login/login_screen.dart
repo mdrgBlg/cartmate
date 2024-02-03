@@ -1,16 +1,19 @@
-import 'package:e_commerce/helpers/loading.dart';
-import 'package:e_commerce/helpers/snack_bar_popup.dart';
-import 'package:e_commerce/screens/auth/forget_password.dart';
-import 'package:e_commerce/screens/auth/signup/sign_up_screen.dart';
-import 'package:e_commerce/screens/auth/signup/sign_up_providers/signup_provider.dart';
-import 'package:e_commerce/widgets/password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../app/home/home_screen.dart';
+import '../forget_password.dart';
+import '../signup/sign_up_providers/sign_up_provider.dart';
+import '../signup/sign_up_screen.dart';
 import '/constants/custom_colors.dart';
 import '/constants/themes.dart';
+import '/helpers/custom_navigator.dart';
+import '/helpers/loading.dart';
+import '/helpers/snack_bar_popup.dart';
+import '/models/response_model.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
+import '/widgets/password_field.dart';
 import 'login_providers/login_provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -131,23 +134,27 @@ class LoginScreen extends StatelessWidget {
                             buttonText: "Log in",
                             enable: loginProvider.loginButtonEnable,
                             onPress: () {
-                              bool success = false;
+                              ResponseModel responseModel = ResponseModel(success: false);
                               Loading.callLoading(
                                 context: context,
                                 callback: () async {
-                                  success = await loginProvider.login();
+                                  responseModel = await loginProvider.login(context);
                                 },
                                 onFinished: () {
-                                  if (success) {
+                                  if (responseModel.success) {
                                     SnackBarPopup.showMessage(
                                       context,
-                                      message: "Success",
+                                      message: "You successfully logged in!",
                                       snackBarMessageType: SnackBarMessageType.success,
+                                    );
+                                    CustomNavigator.pushReplacement(
+                                      context,
+                                      const HomeScreen(),
                                     );
                                   } else {
                                     SnackBarPopup.showMessage(
                                       context,
-                                      message: "Something went wrong",
+                                      message: responseModel.error ?? "Something went wrong.",
                                       snackBarMessageType: SnackBarMessageType.error,
                                     );
                                   }
