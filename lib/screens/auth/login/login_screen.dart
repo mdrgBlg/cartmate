@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/home/home_screen.dart';
-import '../forget_password.dart';
+import '../forgot_password.dart';
 import '../signup/sign_up_providers/sign_up_provider.dart';
 import '../signup/sign_up_screen.dart';
 import '/constants/custom_colors.dart';
@@ -77,12 +77,12 @@ class LoginScreen extends StatelessWidget {
                 Positioned(
                   left: 0,
                   right: 0,
-                  top: screenHeight / 12,
+                  top: 52,
                   child: Column(
                     children: [
                       Image.asset(
                         CustomIcons.cartIcon,
-                        width: 100,
+                        width: 80,
                       ),
                       const SizedBox(height: 12),
                       const Text(
@@ -99,15 +99,15 @@ class LoginScreen extends StatelessWidget {
                 ),
                 Consumer<LoginProvider>(
                   builder: (context, loginProvider, child) => Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 32),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
                     elevation: 3,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      height: 300,
-                      width: 300,
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 24),
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InputField(
@@ -115,7 +115,7 @@ class LoginScreen extends StatelessWidget {
                             onInputChanged: () {
                               loginProvider.validateField();
                             },
-                            controller: loginProvider.eMailController,
+                            controller: loginProvider.emailController,
                           ),
                           const SizedBox(
                             height: 12,
@@ -170,12 +170,12 @@ class LoginScreen extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) => ChangeNotifierProvider.value(
                                     value: loginProvider,
-                                    child: const ForgetPassword(),
+                                    child: const ForgotPassword(),
                                   ),
                                 ),
                               ),
                               child: Text(
-                                'Forget password?',
+                                'Forgot password?',
                                 style: textTheme.bodyMedium!.copyWith(
                                   decoration: TextDecoration.underline,
                                   decorationThickness: 1.5,

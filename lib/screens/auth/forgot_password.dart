@@ -1,13 +1,18 @@
 import 'package:e_commerce/screens/auth/login/login_providers/login_provider.dart';
+import 'package:e_commerce/screens/auth/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/custom_colors.dart';
+import '../../helpers/custom_navigator.dart';
+import '../../helpers/loading.dart';
+import '../../helpers/snack_bar_popup.dart';
+import '../../models/response_model.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/input_field.dart';
 
-class ForgetPassword extends StatelessWidget {
-  const ForgetPassword({super.key});
+class ForgotPassword extends StatelessWidget {
+  const ForgotPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +45,11 @@ class ForgetPassword extends StatelessWidget {
               ),
               Consumer<LoginProvider>(
                 builder: (context, loginProvider, child) => Card(
-                  margin: const EdgeInsets.only(bottom: 52),
+                  margin: const EdgeInsets.only(
+                    bottom: 52,
+                    left: 32,
+                    right: 32,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -49,16 +58,15 @@ class ForgetPassword extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
-                      vertical: 20,
+                      vertical: 24,
                     ),
-                    width: MediaQuery.of(context).size.width / 1.4,
-                    height: 300,
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(bottom: 12),
                           child: Text(
-                            "Forget password",
+                            "Forgot password",
                             style: textTheme.headlineMedium!.copyWith(
                               fontWeight: FontWeight.w700,
                             ),
@@ -86,7 +94,37 @@ class ForgetPassword extends StatelessWidget {
                         CustomButton(
                           buttonText: "Submit",
                           enable: loginProvider.forgotPasswordEnable,
-                          onPress: () {},
+                          onPress: () {
+                            ResponseModel responseModel = ResponseModel(success: false);
+                            Loading.callLoading(
+                              context: context,
+                              callback: () async {
+                                responseModel = await loginProvider.forgetPassword();
+                              },
+                              onFinished: () {
+                                if (responseModel.success) {
+                                  SnackBarPopup.showMessage(
+                                    context,
+                                    message: "Link to reset your password is sent to your email",
+                                    snackBarMessageType: SnackBarMessageType.success,
+                                  );
+                                  CustomNavigator.pushReplacement(
+                                    context,
+                                    ChangeNotifierProvider(
+                                      create: (context) => LoginProvider(),
+                                      child: const LoginScreen(),
+                                    ),
+                                  );
+                                } else {
+                                  SnackBarPopup.showMessage(
+                                    context,
+                                    message: responseModel.error ?? "Something went wrong.",
+                                    snackBarMessageType: SnackBarMessageType.error,
+                                  );
+                                }
+                              },
+                            );
+                          },
                         ),
                       ],
                     ),
