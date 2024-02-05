@@ -30,25 +30,31 @@ class SignUpScreen extends StatelessWidget {
         resizeToAvoidBottomInset: true,
         body: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-          child: SingleChildScrollView(
-            child: Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                Column(
+          child: Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              SingleChildScrollView(
+                child: Column(
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height / 2 - 72,
+                      height: MediaQuery.of(context).size.height / 2 - 52,
                       color: Colors.lightBlue,
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height / 2 - 22,
+                      height: MediaQuery.of(context).size.height / 2 - 12,
                       color: Colors.white,
                     ),
                   ],
                 ),
-                Consumer<SignUpProvider>(
-                  builder: (context, signUpProvider, child) => Card(
-                    margin: const EdgeInsets.only(bottom: 52),
+              ),
+              Consumer<SignUpProvider>(
+                builder: (context, signUpProvider, child) => Center(
+                  child: Card(
+                    margin: const EdgeInsets.only(
+                      bottom: 52,
+                      left: 32,
+                      right: 32,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -57,12 +63,11 @@ class SignUpScreen extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
-                        vertical: 20,
+                        vertical: 24,
                       ),
-                      width: MediaQuery.of(context).size.width / 1.2,
-                      height: MediaQuery.of(context).size.height / 1.75,
                       child: SingleChildScrollView(
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Row(
                               children: [
@@ -165,9 +170,9 @@ class SignUpScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),
