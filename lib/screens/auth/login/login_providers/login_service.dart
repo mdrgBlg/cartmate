@@ -1,35 +1,45 @@
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:http/http.dart' as http;
-import 'package:e_commerce/constants/global_url.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:e_commerce/models/response_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '/constants/constants.dart';
 
 class LoginService {
-  static Future<void> login(String email, String password) async {
-    final url = GlobalUrl.getUrl("signInWithPassword");
+  static Future<(String?, String?)> login(String email, String password) async {
     try {
-      final response = await http.post(
-        url,
-        body: json.encode(
-          {
-            'email': email,
-            'password': password,
-            'returnSecureToken': true,
-          },
-        ),
+      final userCredential = await Constants.firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-      final responseData = json.decode(response.body);
-      if (response.statusCode == 200) {
-        accessToken(responseData["idToken"]);
-      } else if (responseData["error"] != null) {}
+      if (userCredential.user != null) {
+        return (userCredential.user!.uid, null);
+      }
+    } on FirebaseAuthException catch (e) {
+      log("FirebaseAuthException login: $e");
+      return (null, e.message);
     } catch (e) {
-      log("Exception sign up: $e");
+      log("Exception login: $e");
     }
+    return (null, "Something went wrong. Please try again");
   }
 
-  static void accessToken(String response) async {
-    final preferences = await SharedPreferences.getInstance();
-    preferences.setString("token", response);
+  static Future<ResponseModel> forgetPassword(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: email,
+      );
+
+      return ResponseModel(success: true);
+    } on FirebaseAuthException catch (e) {
+      log("FirebaseAuthException forgetPassword: $e");
+      return ResponseModel(success: false, error: e.message);
+    } catch (e) {
+      log("Exception forgetPassword: $e");
+    }
+    return ResponseModel(
+      success: false,
+      error: "Something went wrong. Please try again",
+    );
   }
 }

@@ -1,9 +1,16 @@
-import 'package:e_commerce/constants/themes.dart';
-import 'package:e_commerce/screens/auth/signup/signup_providers/signup_provider.dart';
-import 'package:e_commerce/widgets/custom_button.dart';
-import 'package:e_commerce/widgets/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../welcome/welcome_screen.dart';
+import '/constants/custom_colors.dart';
+import '/helpers/custom_navigator.dart';
+import '/helpers/loading.dart';
+import '/helpers/snack_bar_popup.dart';
+import '/models/response_model.dart';
+import '/widgets/custom_button.dart';
+import '/widgets/input_field.dart';
+import '/widgets/password_field.dart';
+import 'sign_up_providers/sign_up_provider.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -12,95 +19,154 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => SignUpProvider(),
+    return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 52,
+          backgroundColor: CustomColors.primary,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
         resizeToAvoidBottomInset: true,
-        body: SingleChildScrollView(
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           child: Stack(
+            alignment: AlignmentDirectional.center,
             children: [
-              Column(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height / 2,
-                    color: Colors.lightBlue,
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height / 2,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-              Positioned.fill(
-                top: MediaQuery.of(context).size.height / 15,
-                child: Center(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        CustomIcons.cartIcon,
-                        width: 80,
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height / 2 - 52,
+                      color: Colors.lightBlue,
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height / 2 - 12,
+                      color: Colors.white,
+                    ),
+                  ],
                 ),
               ),
-              Positioned.fill(
-                child: Center(
+              Consumer<SignUpProvider>(
+                builder: (context, signUpProvider, child) => Center(
                   child: Card(
+                    margin: const EdgeInsets.only(
+                      bottom: 52,
+                      left: 32,
+                      right: 32,
+                    ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16)),
-                    elevation: 4,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 3,
                     color: Colors.white,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.3,
-                      height: MediaQuery.of(context).size.height / 2.1,
-                      child: Consumer<SignUpProvider>(
-                        builder: (context, signUpProvider, child) =>
-                            SingleChildScrollView(
-                          padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(height: 10),
-                              InputField(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 24,
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: InputField(
+                                    hintText: "First name",
+                                    onInputChanged: () {
+                                      signUpProvider.validateField();
+                                    },
+                                    controller: signUpProvider.firstNameController,
+                                  ),
+                                ),
+                                Flexible(
+                                  child: InputField(
+                                    hintText: "Last name",
+                                    onInputChanged: () {
+                                      signUpProvider.validateField();
+                                    },
+                                    controller: signUpProvider.lastNameController,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: InputField(
+                                hintText: "Username",
+                                onInputChanged: () {
+                                  signUpProvider.validateField();
+                                },
+                                controller: signUpProvider.usernameController,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: InputField(
                                 hintText: "E-mail",
-                                isValid: signUpProvider.eMailEmpty,
                                 onInputChanged: () {
                                   signUpProvider.validateField();
                                 },
                                 controller: signUpProvider.eMailController,
                               ),
-                              const SizedBox(height: 10),
-                              const SizedBox(height: 10),
-                              InputField(
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: InputField(
+                                hintText: "Phone number",
+                                onInputChanged: () {
+                                  signUpProvider.validateField();
+                                },
+                                controller: signUpProvider.phoneNumberController,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12, bottom: 20),
+                              child: PasswordField(
                                 hintText: "Password:",
-                                isValid: signUpProvider.passwordEmpty,
                                 onInputChanged: () {
                                   signUpProvider.validateField();
                                 },
                                 controller: signUpProvider.passwordController,
+                                passwordVisibility: signUpProvider.passwordVisibility,
+                                changeVisibility: signUpProvider.changePasswordVisibility,
                               ),
-                              const SizedBox(height: 10),
-                              InputField(
-                                hintText: "Confirm password:",
-                                isValid: signUpProvider.confirmPasswordEmpty,
-                                onInputChanged: () {
-                                  signUpProvider.validateField();
-                                },
-                                controller:
-                                    signUpProvider.confirmPasswordController,
-                              ),
-                              const SizedBox(height: 20),
-                              CustomButton(
-                                buttonText: "Sign Up",
-                                enable: signUpProvider.signUpButtonEnable,
-                                onPress: () async {
-                                  signUpProvider.signUp();
-                                },
-                              ),
-                            ],
-                          ),
+                            ),
+                            CustomButton(
+                              buttonText: "Sign Up",
+                              enable: signUpProvider.signUpButtonEnable,
+                              onPress: () {
+                                ResponseModel responseModel = ResponseModel(success: false);
+                                Loading.callLoading(
+                                  context: context,
+                                  callback: () async {
+                                    responseModel = await signUpProvider.signUp();
+                                  },
+                                  onFinished: () {
+                                    if (responseModel.success) {
+                                      SnackBarPopup.showMessage(
+                                        context,
+                                        message: "You successfully signed up!",
+                                        snackBarMessageType: SnackBarMessageType.success,
+                                      );
+                                      CustomNavigator.pushReplacement(
+                                        context: context,
+                                        routeName: WelcomeScreen.routeName,
+                                        screen: const WelcomeScreen(),
+                                      );
+                                    } else {
+                                      SnackBarPopup.showMessage(
+                                        context,
+                                        message: responseModel.error ?? "Something went wrong.",
+                                        snackBarMessageType: SnackBarMessageType.error,
+                                      );
+                                    }
+                                  },
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
