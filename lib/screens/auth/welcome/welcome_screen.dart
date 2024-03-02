@@ -1,8 +1,10 @@
-import 'package:e_commerce/screens/auth/login/login_screen.dart';
-import 'package:e_commerce/screens/auth/splash_screen.dart';
-import 'package:e_commerce/screens/auth/welcome/welcome_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../app/home/home_screen.dart';
+import '../login/login_providers/login_provider.dart';
+import '../login/login_screen.dart';
+import '/constants/constants.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -11,12 +13,11 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final welcomeProvider =
-        Provider.of<WelcomeProvider>(context, listen: false);
-    return FutureBuilder(
-      future: welcomeProvider.checkAccessToken(),
-      builder: (context, snapshot) =>
-          snapshot.data == true ? const LoginScreen() : const SplashScreen(),
-    );
+    return Constants.firebaseAuth.currentUser != null
+        ? const HomeScreen()
+        : ChangeNotifierProvider(
+            create: (_) => LoginProvider(),
+            child: const LoginScreen(),
+          );
   }
 }

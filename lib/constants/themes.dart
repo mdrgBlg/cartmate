@@ -70,5 +70,5 @@ class Themes {
 
 class CustomIcons {
   static const splashIcon = 'assets/ecommerce.png';
-  static const cartIcon = 'assets/cart.png';
+  static const cartIcon = 'assets/cart_image.png';
 }
