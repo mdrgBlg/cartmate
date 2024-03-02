@@ -148,8 +148,9 @@ class LoginScreen extends StatelessWidget {
                                       snackBarMessageType: SnackBarMessageType.success,
                                     );
                                     CustomNavigator.pushReplacement(
-                                      context,
-                                      const HomeScreen(),
+                                      context: context,
+                                      routeName: HomeScreen.routeName,
+                                      screen: const HomeScreen(),
                                     );
                                   } else {
                                     SnackBarPopup.showMessage(

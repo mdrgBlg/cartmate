@@ -151,8 +151,9 @@ class SignUpScreen extends StatelessWidget {
                                         snackBarMessageType: SnackBarMessageType.success,
                                       );
                                       CustomNavigator.pushReplacement(
-                                        context,
-                                        const WelcomeScreen(),
+                                        context: context,
+                                        routeName: WelcomeScreen.routeName,
+                                        screen: const WelcomeScreen(),
                                       );
                                     } else {
                                       SnackBarPopup.showMessage(
