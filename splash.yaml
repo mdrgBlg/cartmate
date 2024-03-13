@@ -1,9 +1,0 @@
-flutter_native_splash:
-  color: "#FFFFFF"
-  image: assets/cart.png
-
-  android_12:
-    color: "#FFFFFF"
-    image: assets/cart.png
-
-  web: false
