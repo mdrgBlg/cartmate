@@ -21,10 +21,9 @@ class SearchField extends StatelessWidget {
     return Container(
       height: 52,
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         border: Border.all(
-          color: CustomColors.text,
+          color: CustomColors.secondary,
           width: 2,
         ),
         color: Colors.white,
@@ -39,9 +38,8 @@ class SearchField extends StatelessWidget {
           color: CustomColors.text,
           height: 1,
         ),
-        cursorColor: CustomColors.text,
+        cursorColor: Colors.grey,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.zero,
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           errorBorder: InputBorder.none,
@@ -55,7 +53,7 @@ class SearchField extends StatelessWidget {
           prefixIcon: const Icon(
             Icons.search,
           ),
-          prefixIconColor: CustomColors.text,
+          prefixIconColor: Colors.grey,
           suffixIcon: searchController.text.isNotEmpty
               ? InkWell(
                   onTap: clearInput,

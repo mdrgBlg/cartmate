@@ -1,5 +1,7 @@
+import 'package:e_commerce/screens/app/home/home_providers/home_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/helpers/custom_navigator.dart';
@@ -43,7 +45,10 @@ class AppNavigation extends StatelessWidget {
                   onTap: () => CustomNavigator.pushNavigation(
                     context: context,
                     routeName: HomeScreen.routeName,
-                    screen: const HomeScreen(),
+                    screen: ChangeNotifierProvider(
+                      create: (_) => HomeProvider(),
+                      child: const HomeScreen(),
+                    ),
                   ),
                   active: isTabActive(
                     routeName: HomeScreen.routeName,

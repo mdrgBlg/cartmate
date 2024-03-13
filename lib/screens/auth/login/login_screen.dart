@@ -1,3 +1,4 @@
+import 'package:e_commerce/screens/app/home/home_providers/home_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -150,7 +151,10 @@ class LoginScreen extends StatelessWidget {
                                     CustomNavigator.pushReplacement(
                                       context: context,
                                       routeName: HomeScreen.routeName,
-                                      screen: const HomeScreen(),
+                                      screen: ChangeNotifierProvider(
+                                        create: (_) => HomeProvider(),
+                                        child: const HomeScreen(),
+                                      ),
                                     );
                                   } else {
                                     SnackBarPopup.showMessage(

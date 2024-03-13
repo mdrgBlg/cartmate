@@ -1,3 +1,4 @@
+import 'package:e_commerce/screens/app/home/home_providers/home_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,12 @@ class WelcomeScreen extends StatelessWidget {
     return Constants.firebaseAuth.currentUser != null
         ? FutureBuilder<ResponseModel>(
             future: mainProvider.fetchUserInfo(Constants.firebaseAuth.currentUser!.uid),
-            builder: (_, snapshot) => snapshot.connectionState == ConnectionState.waiting ? const SplashScreen() : const HomeScreen(),
+            builder: (_, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                ? const SplashScreen()
+                : ChangeNotifierProvider(
+                    create: (_) => HomeProvider(),
+                    child: const HomeScreen(),
+                  ),
           )
         : ChangeNotifierProvider(
             create: (_) => LoginProvider(),
