@@ -1,12 +1,38 @@
-import 'package:e_commerce/constants/themes.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants/custom_colors.dart';
+import '/constants/custom_colors.dart';
+import '/constants/themes.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   static const routeName = '/splash';
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+  late Animation animation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    animation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+    controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +52,15 @@ class SplashScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                CustomIcons.cartIcon,
-                width: 120,
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                "eShop",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: CustomColors.appName,
+              AnimatedBuilder(
+                animation: animation,
+                builder: (_, child) => Transform.rotate(
+                  angle: animation.value * 2 * 3.141592653589793,
+                  child: child,
+                ),
+                child: Image.asset(
+                  CustomIcons.cartIcon,
+                  width: 120,
                 ),
               ),
             ],
