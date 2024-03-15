@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       title: "Store app",
-      theme: Themes.lightTheme,
+      theme: Themes.themeData,
       home: const WelcomeScreen(),
     );
   }
