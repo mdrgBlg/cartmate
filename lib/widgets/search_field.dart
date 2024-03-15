@@ -34,7 +34,7 @@ class SearchField extends StatelessWidget {
         textAlign: TextAlign.left,
         textInputAction: TextInputAction.next,
         onChanged: onChanged,
-        style: textTheme.bodyMedium!.copyWith(
+        style: textTheme.bodyLarge!.copyWith(
           color: CustomColors.text,
           height: 1,
         ),
@@ -45,7 +45,7 @@ class SearchField extends StatelessWidget {
           errorBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           alignLabelWithHint: true,
-          hintStyle: textTheme.bodyMedium!.copyWith(
+          hintStyle: textTheme.bodyLarge!.copyWith(
             height: 1.4,
             color: Colors.grey,
           ),
