@@ -1,4 +1,8 @@
-import 'package:e_commerce/constants/themes.dart';
+import 'package:e_commerce/constants/custom_images.dart';
+import 'package:e_commerce/screens/app/home/home_models/categories_model.dart';
+import 'package:e_commerce/screens/app/home/home_widgets/categories_widget.dart';
+import 'package:e_commerce/screens/app/home/home_widgets/custom_product_card.dart';
+import 'package:e_commerce/screens/app/home/home_widgets/custom_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,141 +31,184 @@ class HomeScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: ScreenWrapper(
-        child: Column(
-          children: [
-            ClipPath(
-              clipper: CustomCurvedEdges(),
-              child: Container(
-                height: 360,
-                width: double.infinity,
-                color: CustomColors.primary,
-                padding: const EdgeInsets.only(top: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 20,
-                        right: 12,
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4),
-                            child: Text(
-                              "${mainProvider.userInfoModel?.firstName ?? ""} ${mainProvider.userInfoModel?.lastName ?? ""}",
-                              style: textTheme.titleLarge!.copyWith(
-                                color: CustomColors.secondary,
-                                fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ClipPath(
+                clipper: CustomCurvedEdges(),
+                child: Container(
+                  height: 320,
+                  width: double.infinity,
+                  color: CustomColors.primary,
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 12,
+                        ),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 4),
+                              child: Text(
+                                "${mainProvider.userInfoModel?.firstName ?? ""} ${mainProvider.userInfoModel?.lastName ?? ""}",
+                                style: textTheme.titleLarge!.copyWith(
+                                  color: CustomColors.secondary,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                          const Spacer(),
-                          SizedBox(
-                            height: 48,
-                            width: 44,
-                            child: Stack(
-                              alignment: Alignment.centerLeft,
-                              children: [
-                                const Icon(
-                                  Icons.shopping_cart,
-                                  color: Colors.white,
-                                  size: 28,
-                                ),
-                                Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  child: Container(
-                                    height: 18,
-                                    width: 18,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(99),
-                                      color: Colors.black,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "2",
-                                        style: textTheme.labelLarge!.copyWith(
-                                          color: Colors.white,
+                            const Spacer(),
+                            SizedBox(
+                              height: 48,
+                              width: 44,
+                              child: Stack(
+                                alignment: Alignment.centerLeft,
+                                children: [
+                                  const Icon(
+                                    Icons.shopping_cart,
+                                    color: Colors.white,
+                                    size: 28,
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    top: 0,
+                                    child: Container(
+                                      height: 18,
+                                      width: 18,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(99),
+                                        color: Colors.black,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "2",
+                                          style: textTheme.labelLarge!.copyWith(
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 48, 20, 0),
-                      child: SearchField(
-                        searchController: homeProvider.searchController,
-                        hintText: "Search...",
-                        onChanged: (p0) {},
-                        clearInput: homeProvider.searchController.clear,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
-                      child: Text(
-                        "Popular Categories",
-                        style: textTheme.bodyLarge!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 16),
-                      height: 72,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        controller: homeProvider.scrollController,
-                        itemCount: 7,
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.only(left: 16),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 48,
-                                width: 48,
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(99),
-                                  color: Colors.white,
-                                ),
-                                child: Image.asset(
-                                  CustomIcons.sports,
-                                ),
-                              ),
-                              Flexible(
-                                child: Container(
-                                  width: 44,
-                                  alignment: Alignment.center,
-                                  padding: const EdgeInsets.only(top: 4),
-                                  child: Text(
-                                    "Furniture",
-                                    style: textTheme.bodySmall!.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              )
-                            ],
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                        child: SearchField(
+                          searchController: homeProvider.searchController,
+                          hintText: "Search...",
+                          onChanged: (p0) {},
+                          clearInput: homeProvider.searchController.clear,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
+                        child: Text(
+                          "Popular Categories",
+                          style: textTheme.bodyLarge!.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 16),
+                        height: 72,
+                        child: FutureBuilder<List<CategoriesModel>>(
+                          future: homeProvider.fetchCategories(),
+                          builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                              ? const Center(child: CircularProgressIndicator())
+                              : ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  controller: homeProvider.scrollController,
+                                  itemCount: snapshot.data?.length,
+                                  itemBuilder: (context, index) => CategoriesWidget(
+                                    categoryName: snapshot.data![index].categoryName,
+                                    icon: snapshot.data![index].iconName,
+                                  ),
+                                ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 250,
+                child: PageView.builder(
+                  itemCount: CustomImages.homeImages.length,
+                  onPageChanged: (value) => homeProvider.changeScreenIndex(value),
+                  itemBuilder: (_, index) => Container(
+                    padding: const EdgeInsets.fromLTRB(24, 16, 24, 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(
+                        CustomImages.homeImages[index],
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Consumer<HomeProvider>(
+                builder: (_, __, child) => CustomProgressIndicator(
+                  screenIndex: homeProvider.screenIndex,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 32, 20, 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Popular Products",
+                      style: textTheme.titleLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      "View all",
+                      style: textTheme.bodyMedium,
                     )
                   ],
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 2,
+                  itemBuilder: (context, index) {
+                    // int customIndex = index * 2;
+                    return const Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: Row(
+                        children: [
+                          CustomProductCard(),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          CustomProductCard(),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

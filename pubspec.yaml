@@ -32,6 +32,8 @@ flutter:
 
   assets:
     - assets/
+    - assets/categories/
+    - assets/images/
 
   fonts:
     - family: Nunito
