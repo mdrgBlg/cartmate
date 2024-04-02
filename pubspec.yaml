@@ -21,6 +21,7 @@ dependencies:
   firebase_auth: ^4.17.3
   cloud_firestore: ^4.15.2
   google_fonts: 6.1.0
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:

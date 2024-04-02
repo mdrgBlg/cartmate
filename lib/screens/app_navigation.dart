@@ -47,7 +47,7 @@ class AppNavigation extends StatelessWidget {
                     routeName: HomeScreen.routeName,
                     screen: ChangeNotifierProvider(
                       create: (_) => HomeProvider(),
-                      child: const HomeScreen(),
+                      child: HomeScreen(),
                     ),
                   ),
                   active: isTabActive(
