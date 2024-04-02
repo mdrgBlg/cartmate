@@ -28,7 +28,7 @@ class WelcomeScreen extends StatelessWidget {
                 ? const SplashScreen()
                 : ChangeNotifierProvider(
                     create: (_) => HomeProvider(),
-                    child: const HomeScreen(),
+                    child: HomeScreen(),
                   ),
           )
         : ChangeNotifierProvider(
