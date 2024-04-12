@@ -1,4 +1,5 @@
 import 'package:e_commerce/constants/custom_icons.dart';
+import 'package:e_commerce/constants/custom_images.dart';
 
 class Helpers {
   static String fetchIcon(String? iconName) {
@@ -17,6 +18,16 @@ class Helpers {
         return CustomIcons.sports;
       default:
         return CustomIcons.sports;
+    }
+  }
+
+  static List<String> fetchImages(String? productName) {
+    switch (productName) {
+      case "supernova":
+        return CustomImages.supernova;
+
+      default:
+        return CustomImages.supernova;
     }
   }
 }

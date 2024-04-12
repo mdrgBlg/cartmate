@@ -22,6 +22,7 @@ dependencies:
   cloud_firestore: ^4.15.2
   google_fonts: 6.1.0
   get: ^4.6.6
+  sqflite: ^2.3.2
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +36,8 @@ flutter:
     - assets/
     - assets/categories/
     - assets/images/
+    - assets/images/shoes/
+    - assets/logos/
 
   fonts:
     - family: Nunito
