@@ -1,4 +1,7 @@
+import 'package:e_commerce/helpers/custom_navigator.dart';
+import 'package:e_commerce/providers/product_details_provider.dart';
 import 'package:e_commerce/screens/app/home/home_providers/home_provider.dart';
+import 'package:e_commerce/screens/app/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -122,7 +125,16 @@ class SearchField extends StatelessWidget {
                         controller: homeProvider.searchScrollController,
                         itemCount: homeProvider.searchedProductsList.length,
                         itemBuilder: (context, index) => InkWell(
-                          onTap: () {},
+                          onTap: () => CustomNavigator.pushNavigation(
+                            context: context,
+                            routeName: ProductDetailsScreen.routeName,
+                            screen: ChangeNotifierProvider(
+                              create: (_) => ProductDetailsProvider(),
+                              child: ProductDetailsScreen(
+                                product: homeProvider.getProduct(homeProvider.searchedProductsList[index].id),
+                              ),
+                            ),
+                          ),
                           child: Container(
                             padding: const EdgeInsets.only(
                               bottom: 12,

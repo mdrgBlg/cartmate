@@ -1,8 +1,8 @@
 import 'package:e_commerce/constants/custom_images.dart';
 import 'package:e_commerce/screens/app/home/home_models/categories_model.dart';
 import 'package:e_commerce/screens/app/home/home_widgets/categories_widget.dart';
-import 'package:e_commerce/screens/app/home/home_widgets/custom_product_card.dart';
 import 'package:e_commerce/screens/app/home/home_widgets/custom_progress_indicator.dart';
+import 'package:e_commerce/widgets/products_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
@@ -139,8 +139,7 @@ class HomeScreen extends StatelessWidget {
                                             controller: homeProvider.scrollController,
                                             itemCount: snapshot.data?.length,
                                             itemBuilder: (context, index) => CategoriesWidget(
-                                              categoryName: snapshot.data![index].categoryName,
-                                              icon: snapshot.data![index].iconName,
+                                              categoriesModel: snapshot.data![index],
                                             ),
                                           ),
                                   ),
@@ -152,7 +151,7 @@ class HomeScreen extends StatelessWidget {
                               child: Consumer<HomeProvider>(
                                 builder: (_, __, child) => SearchField(
                                   searchController: homeProvider.searchController,
-                                  hintText: "Search...",
+                                  hintText: "Search product...",
                                   onChanged: (value) {
                                     if (value.isEmpty) {
                                       debouncer.call(() {
@@ -180,7 +179,7 @@ class HomeScreen extends StatelessWidget {
                     itemCount: CustomImages.homeImages.length,
                     onPageChanged: (value) => homeProvider.changeScreenIndex(value),
                     itemBuilder: (_, index) => Container(
-                      padding: const EdgeInsets.fromLTRB(24, 16, 24, 20),
+                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -223,24 +222,8 @@ class HomeScreen extends StatelessWidget {
                       ? const Center(
                           child: CircularProgressIndicator(),
                         )
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-                          child: GridView.builder(
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 8,
-                              mainAxisSpacing: 8,
-                              mainAxisExtent: 263,
-                            ),
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: homeProvider.productsList.length,
-                            itemBuilder: (context, index) => homeProvider.productsList.isNotEmpty
-                                ? CustomProductCard(
-                                    productsModel: homeProvider.productsList[index],
-                                  )
-                                : null,
-                          ),
+                      : ProductsGridView(
+                          productsList: homeProvider.productsList,
                         ),
                 ),
               ],

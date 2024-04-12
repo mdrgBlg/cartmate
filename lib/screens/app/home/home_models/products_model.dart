@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce/helpers/helpers.dart';
 import 'package:e_commerce/models/brand_model.dart';
 
 class ProductsModel {
@@ -8,24 +9,26 @@ class ProductsModel {
   final BrandModel? brandModel;
   final String categoryId;
   final String currency;
-  final String productImage;
+  final List<String> productImageList;
   final String productName;
   final int discount;
   final int price;
-  final List<String>? productSize;
+  final List<String> productSize;
   final int stock;
+  final bool whishlist;
 
   ProductsModel({
     required this.id,
     required this.brandModel,
     required this.categoryId,
     required this.currency,
-    required this.productImage,
+    required this.productImageList,
     required this.productName,
     required this.discount,
     required this.price,
     required this.productSize,
     required this.stock,
+    this.whishlist = false,
   });
 
   static ProductsModel? fromDocument(DocumentSnapshot<Map<String, dynamic>> document) {
@@ -38,7 +41,7 @@ class ProductsModel {
           brandModel: BrandModel.fromJson(json["brand"]),
           categoryId: json["categoryId"],
           currency: json["currency"],
-          productImage: json["productImage"],
+          productImageList: Helpers.fetchImages(json["productImage"]),
           productName: json["productName"],
           discount: json["discount"],
           price: json["price"],
