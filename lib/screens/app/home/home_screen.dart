@@ -217,7 +217,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 FutureBuilder<void>(
-                  future: homeProvider.fetchProducts(),
+                  future: homeProvider.productsList.isEmpty ? homeProvider.fetchProducts(mainProvider.whishlistProductsList) : null,
                   builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
                       ? const Center(
                           child: CircularProgressIndicator(),

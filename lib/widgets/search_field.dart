@@ -131,7 +131,9 @@ class SearchField extends StatelessWidget {
                             screen: ChangeNotifierProvider(
                               create: (_) => ProductDetailsProvider(),
                               child: ProductDetailsScreen(
-                                product: homeProvider.getProduct(homeProvider.searchedProductsList[index].id),
+                                product: homeProvider.productsList.singleWhere(
+                                  (element) => element.id == homeProvider.searchedProductsList[index].id,
+                                ),
                               ),
                             ),
                           ),
