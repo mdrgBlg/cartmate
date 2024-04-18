@@ -6,18 +6,20 @@ class CustomButton extends StatelessWidget {
   final String buttonText;
   final bool enable;
   final VoidCallback? onPress;
+  final EdgeInsets margin;
   const CustomButton({
     super.key,
     required this.buttonText,
     required this.enable,
     this.onPress,
+    this.margin = const EdgeInsets.symmetric(horizontal: 20),
   });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: margin,
       child: Material(
         color: enable
             ? CustomColors.primary

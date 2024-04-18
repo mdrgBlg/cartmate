@@ -4,14 +4,19 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'constants/themes.dart';
 import 'firebase_options.dart';
+import 'db/db_helper.dart';
 import 'providers/main_provider.dart';
 import 'screens/auth/welcome/welcome_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await DbHelper.database;
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => MainProvider(),
@@ -29,7 +34,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       title: "Store app",
-      theme: Themes.lightTheme,
+      theme: Themes.themeData,
       home: const WelcomeScreen(),
     );
   }

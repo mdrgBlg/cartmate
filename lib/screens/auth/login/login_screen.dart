@@ -1,12 +1,13 @@
+import 'package:e_commerce/screens/app/home/home_providers/home_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants/custom_icons.dart';
 import '../../app/home/home_screen.dart';
 import '../forgot_password.dart';
 import '../signup/sign_up_providers/sign_up_provider.dart';
 import '../signup/sign_up_screen.dart';
 import '/constants/custom_colors.dart';
-import '/constants/themes.dart';
 import '/helpers/custom_navigator.dart';
 import '/helpers/loading.dart';
 import '/helpers/snack_bar_popup.dart';
@@ -150,7 +151,10 @@ class LoginScreen extends StatelessWidget {
                                     CustomNavigator.pushReplacement(
                                       context: context,
                                       routeName: HomeScreen.routeName,
-                                      screen: const HomeScreen(),
+                                      screen: ChangeNotifierProvider(
+                                        create: (_) => HomeProvider(),
+                                        child: HomeScreen(),
+                                      ),
                                     );
                                   } else {
                                     SnackBarPopup.showMessage(
