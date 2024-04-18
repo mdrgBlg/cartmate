@@ -1,26 +1,28 @@
 import 'package:e_commerce/helpers/custom_navigator.dart';
-import 'package:e_commerce/helpers/helpers.dart';
+import 'package:e_commerce/providers/main_provider.dart';
 import 'package:e_commerce/providers/product_details_provider.dart';
 import 'package:e_commerce/screens/app/home/home_models/products_model.dart';
 import 'package:e_commerce/screens/app/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../home_providers/home_provider.dart';
 import '/constants/custom_colors.dart';
 import '/constants/custom_images.dart';
 
 class CustomProductCard extends StatelessWidget {
   final ProductsModel productsModel;
+  final List<ProductsModel> productsList;
   const CustomProductCard({
     super.key,
     required this.productsModel,
+    required this.productsList,
   });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final homeProvider = Provider.of<HomeProvider>(
+
+    final mainProvider = Provider.of<MainProvider>(
       context,
       listen: false,
     );
@@ -31,7 +33,9 @@ class CustomProductCard extends StatelessWidget {
         screen: ChangeNotifierProvider(
           create: (_) => ProductDetailsProvider(),
           child: ProductDetailsScreen(
-            product: homeProvider.getProduct(productsModel.id),
+            product: productsList.singleWhere(
+              (element) => element.id == productsModel.id,
+            ),
           ),
         ),
       ),
@@ -166,16 +170,29 @@ class CustomProductCard extends StatelessWidget {
             Positioned(
               right: 4,
               top: 4,
-              child: Container(
-                height: 36,
-                width: 36,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(99),
-                  color: Colors.grey.withOpacity(0.2),
-                ),
-                child: const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
+              child: InkWell(
+                onTap: () async {
+                  mainProvider.wishlistFlagChange(productsModel);
+                  if (productsModel.whishlist) {
+                    await mainProvider.addProductToWhishlist(productsModel);
+                  } else {
+                    await mainProvider.removeProductFromWhishlist(productsModel);
+                  }
+                },
+                borderRadius: BorderRadius.circular(99),
+                child: Consumer<MainProvider>(
+                  builder: (context, value, child) => Container(
+                    height: 36,
+                    width: 36,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(99),
+                      color: Colors.grey.withOpacity(0.2),
+                    ),
+                    child: Icon(
+                      Icons.favorite,
+                      color: productsModel.whishlist ? Colors.red : Colors.grey,
+                    ),
+                  ),
                 ),
               ),
             )

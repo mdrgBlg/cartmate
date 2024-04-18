@@ -27,6 +27,7 @@ class ProductsGridView extends StatelessWidget {
         itemBuilder: (context, index) => productsList.isNotEmpty
             ? CustomProductCard(
                 productsModel: productsList[index],
+                productsList: productsList,
               )
             : null,
       ),

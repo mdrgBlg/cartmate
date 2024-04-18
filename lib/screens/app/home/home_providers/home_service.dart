@@ -1,8 +1,12 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce/db/db_helper.dart';
+import 'package:e_commerce/models/brand_model.dart';
 import 'package:e_commerce/screens/app/home/home_models/products_model.dart';
+import 'package:sqflite/sqflite.dart';
 
+import '../../../../db/db_constants.dart';
 import '../home_models/categories_model.dart';
 
 class HomeService {
@@ -40,5 +44,76 @@ class HomeService {
     }
 
     return productList;
+  }
+
+  static Future<bool> addProductToWhishlist(Map<String, dynamic> map) async {
+    log(map.toString());
+    try {
+      int? result = await DbHelper.db?.insert(
+        DbConstants.whishlistTable,
+        map,
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      if (result == null || result == -1) {
+        log('Insert operation failed for $map');
+        return false;
+      } else {
+        log('Insert successful with row id: $result');
+        return true;
+      }
+    } catch (e) {
+      log("EXCEPTION addProductToWhishlist $map");
+    }
+    return false;
+  }
+
+  static Future<bool> addBrand(Map<String, dynamic> map) async {
+    log(map.toString());
+    try {
+      int? result = await DbHelper.db?.insert(
+        DbConstants.brandTable,
+        map,
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      if (result == null || result == -1) {
+        log('Insert operation failed for $map');
+        return false;
+      } else {
+        log('Insert successful with row id: $result');
+        return true;
+      }
+    } catch (e) {
+      log("EXCEPTION addBrand $map");
+    }
+    return false;
+  }
+
+  static Future<List<ProductsModel>> fetchWhishlistProducts() async {
+    List<ProductsModel> productsList = [];
+    BrandModel? brandModel;
+    try {
+      final List<Map<String, dynamic>>? productsMap = await DbHelper.db?.query(DbConstants.whishlistTable);
+      if (productsMap != null && productsMap.isNotEmpty) {
+        log("Data successfully fetched from ${DbConstants.whishlistTable} table");
+        for (var e in productsMap) {
+          final brandId = e["brandId"];
+          final List<Map<String, dynamic>>? brandMap = await DbHelper.db?.query(DbConstants.brandTable, where: 'id = ?', whereArgs: [brandId]);
+
+          if (brandMap != null && brandMap.isNotEmpty) {
+            log("Data successfully fetched from ${DbConstants.brandTable} table");
+            brandModel = BrandModel.fromJson(brandMap.first);
+          }
+          ProductsModel? productsModel = ProductsModel.fromDb(e, brandModel);
+          if (productsModel != null) {
+            productsList.add(productsModel);
+          }
+        }
+      } else {
+        log("Error fetching data or table is empty (${DbConstants.whishlistTable} table)");
+      }
+    } catch (e) {
+      log("EXCEPTION fetchWhishlistProducts $e");
+    }
+    return productsList;
   }
 }

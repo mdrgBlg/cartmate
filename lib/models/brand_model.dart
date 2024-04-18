@@ -47,4 +47,13 @@ class BrandModel {
     }
     return brandModel;
   }
+
+  static Map<String, dynamic> brandToMap(BrandModel brand) {
+    return {
+      'id': brand.id,
+      'brandName': brand.brandName,
+      'iconName': brand.iconName,
+      'productCount': brand.productCount,
+    };
+  }
 }

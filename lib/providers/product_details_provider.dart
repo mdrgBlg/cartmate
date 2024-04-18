@@ -1,4 +1,3 @@
-import 'package:e_commerce/constants/custom_images.dart';
 import 'package:flutter/foundation.dart';
 
 class ProductDetailsProvider with ChangeNotifier {

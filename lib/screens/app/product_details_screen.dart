@@ -1,5 +1,6 @@
 import 'package:e_commerce/constants/custom_colors.dart';
 import 'package:e_commerce/constants/custom_images.dart';
+import 'package:e_commerce/providers/main_provider.dart';
 import 'package:e_commerce/providers/product_details_provider.dart';
 import 'package:e_commerce/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,10 @@ class ProductDetailsScreen extends StatelessWidget {
       context,
       listen: false,
     );
+    final mainProvider = Provider.of<MainProvider>(
+      context,
+      listen: false,
+    );
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
@@ -34,16 +39,29 @@ class ProductDetailsScreen extends StatelessWidget {
           title: Row(
             children: [
               const Spacer(),
-              Container(
-                height: 36,
-                width: 36,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(99),
-                  color: Colors.grey.withOpacity(0.2),
-                ),
-                child: const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
+              InkWell(
+                onTap: () async {
+                  mainProvider.wishlistFlagChange(product);
+                  if (product.whishlist) {
+                    await mainProvider.addProductToWhishlist(product);
+                  } else {
+                    await mainProvider.removeProductFromWhishlist(product);
+                  }
+                },
+                borderRadius: BorderRadius.circular(99),
+                child: Consumer<MainProvider>(
+                  builder: (_, __, child) => Container(
+                    height: 36,
+                    width: 36,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(99),
+                      color: Colors.grey.withOpacity(0.2),
+                    ),
+                    child: Icon(
+                      Icons.favorite,
+                      color: product.whishlist ? Colors.red : Colors.grey,
+                    ),
+                  ),
                 ),
               ),
             ],

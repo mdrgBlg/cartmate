@@ -9,6 +9,7 @@ class HomeProvider with ChangeNotifier {
   bool isFocused = false;
 
   List<ProductsModel> productsList = [];
+
   List<ProductsModel> searchedProductsList = [];
 
   final scrollController = ScrollController();
@@ -41,19 +42,24 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setWishlistFlag(List<ProductsModel> productsList, List<ProductsModel> whishlistProductsList) {
+    for (var e in productsList) {
+      if (whishlistProductsList.any((element) => element.id == e.id)) {
+        e.whishlist = true;
+      }
+    }
+  }
+
   Future<List<CategoriesModel>> fetchCategories() {
     return HomeService.fetchCategories();
   }
 
-  Future<void> fetchProducts() async {
+  Future<void> fetchProducts(List<ProductsModel> whishlistProductsList) async {
     productsList = await HomeService.fetchProducts();
+    setWishlistFlag(productsList, whishlistProductsList);
   }
 
   List<ProductsModel> getProductsForCategory(String id) {
     return productsList.where((element) => element.categoryId == id).toList();
-  }
-
-  ProductsModel getProduct(String id) {
-    return productsList.singleWhere((element) => element.id == id);
   }
 }
