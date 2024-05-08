@@ -15,6 +15,7 @@ import '/models/user_info_model.dart';
 
 class MainProvider with ChangeNotifier {
   List<ProductsModel> whishlistProductsList = [];
+  int cartProductNumber = 0;
   UserInfoModel? userInfoModel;
 
   Future<ResponseModel> fetchUserInfo(String userId) async {
