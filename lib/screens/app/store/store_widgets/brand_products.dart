@@ -8,9 +8,13 @@ import 'brand_container.dart';
 
 class BrandProducts extends StatelessWidget {
   final List<ProductsModel> productsList;
+  final String brandName;
+  final int productCount;
   const BrandProducts({
     super.key,
     required this.productsList,
+    required this.brandName,
+    required this.productCount,
   });
 
   static const routeName = '/brandProducts';
@@ -27,8 +31,8 @@ class BrandProducts extends StatelessWidget {
           foregroundColor: Colors.black,
           titleSpacing: 4,
           title: Text(
-            productsList.first.brandModel?.brandName ?? "",
-            style: textTheme.headlineSmall!.copyWith(
+            brandName,
+            style: textTheme.titleLarge!.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -38,8 +42,8 @@ class BrandProducts extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
               child: BrandContainer(
-                brandName: productsList.first.brandModel?.brandName ?? "",
-                productCount: productsList.first.brandModel?.productCount.toString() ?? "",
+                brandName: brandName,
+                productCount: productCount.toString(),
               ),
             ),
             const Gap(12),

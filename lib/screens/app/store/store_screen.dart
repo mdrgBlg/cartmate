@@ -1,3 +1,5 @@
+import 'package:e_commerce/helpers/custom_navigator.dart';
+import 'package:e_commerce/screens/app/store/store_widgets/view_all_brands.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -66,9 +68,22 @@ class StoreScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      "View all",
-                      style: textTheme.bodyMedium,
+                    InkWell(
+                      onTap: () => CustomNavigator.pushNavigation(
+                        context: context,
+                        routeName: ViewAllBrands.routeName,
+                        screen: ChangeNotifierProvider.value(
+                          value: StoreProvider(),
+                          child: ViewAllBrands(
+                            brandsList: storeProvider.brandsList,
+                            productsList: storeProvider.productsList,
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        "View all",
+                        style: textTheme.bodyMedium,
+                      ),
                     )
                   ],
                 ),
@@ -80,7 +95,10 @@ class StoreScreen extends StatelessWidget {
                         child: CircularProgressIndicator(),
                       )
                     : storeProvider.brandsList.isNotEmpty
-                        ? BrandGrid(brandList: storeProvider.brandsList)
+                        ? BrandGrid(
+                            brandList: storeProvider.brandsList,
+                            productsList: storeProvider.productsList,
+                          )
                         : Container(),
               ),
               const Gap(32),
