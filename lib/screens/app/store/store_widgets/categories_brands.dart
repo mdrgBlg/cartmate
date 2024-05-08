@@ -42,6 +42,8 @@ class _CategoriesBrandsState extends State<CategoriesBrands> {
         routeName: BrandProducts.routeName,
         screen: BrandProducts(
           productsList: productsList,
+          brandName: widget.categoryBrand.brandName,
+          productCount: widget.categoryBrand.productCount,
         ),
       ),
       borderRadius: BorderRadius.circular(16),
