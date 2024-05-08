@@ -1,9 +1,9 @@
-import 'package:e_commerce/providers/main_provider.dart';
-import 'package:e_commerce/widgets/products_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../screen_wrapper.dart';
+import '/providers/main_provider.dart';
+import '/widgets/products_grid_view.dart';
 
 class WhishlistScreen extends StatelessWidget {
   const WhishlistScreen({super.key});
@@ -19,9 +19,9 @@ class WhishlistScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: ScreenWrapper(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 28),
             child: Column(
               children: [
                 Row(

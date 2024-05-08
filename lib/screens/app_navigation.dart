@@ -1,12 +1,13 @@
-import 'package:e_commerce/screens/app/home/home_providers/home_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/helpers/custom_navigator.dart';
+import 'app/home/home_providers/home_provider.dart';
 import 'app/home/home_screen.dart';
 import 'app/profile/profile_screen.dart';
+import 'app/store/store_providers/store_provider.dart';
 import 'app/store/store_screen.dart';
 import 'app/whishlist/whishlist_screen.dart';
 import 'navbar_item.dart';
@@ -63,7 +64,10 @@ class AppNavigation extends StatelessWidget {
                   onTap: () => CustomNavigator.pushNavigation(
                     context: context,
                     routeName: StoreScreen.routeName,
-                    screen: const StoreScreen(),
+                    screen: ChangeNotifierProvider(
+                      create: (_) => StoreProvider(),
+                      child: const StoreScreen(),
+                    ),
                   ),
                   active: isTabActive(
                     routeName: StoreScreen.routeName,
