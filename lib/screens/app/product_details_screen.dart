@@ -1,11 +1,11 @@
-import 'package:e_commerce/constants/custom_colors.dart';
-import 'package:e_commerce/constants/custom_images.dart';
-import 'package:e_commerce/providers/main_provider.dart';
-import 'package:e_commerce/providers/product_details_provider.dart';
-import 'package:e_commerce/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/constants/custom_colors.dart';
+import '/constants/custom_images.dart';
+import '/providers/main_provider.dart';
+import '/providers/product_details_provider.dart';
+import '/widgets/custom_button.dart';
 import 'home/home_models/products_model.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
@@ -142,7 +142,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Container(
                           alignment: AlignmentDirectional.center,
                           width: 32,
