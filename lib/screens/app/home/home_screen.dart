@@ -1,18 +1,19 @@
-import 'package:e_commerce/constants/custom_images.dart';
-import 'package:e_commerce/screens/app/home/home_models/categories_model.dart';
-import 'package:e_commerce/screens/app/home/home_widgets/categories_widget.dart';
-import 'package:e_commerce/screens/app/home/home_widgets/custom_progress_indicator.dart';
-import 'package:e_commerce/widgets/products_grid_view.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
+import 'package:provider/provider.dart';
 
 import '../../screen_wrapper.dart';
 import '/constants/custom_colors.dart';
+import '/constants/custom_images.dart';
 import '/providers/main_provider.dart';
+import '/widgets/products_grid_view.dart';
 import '/widgets/search_field.dart';
+import '/widgets/shopping_cart.dart';
+import 'home_models/categories_model.dart';
 import 'home_providers/home_provider.dart';
+import 'home_widgets/categories_widget.dart';
 import 'home_widgets/custom_curved_edges.dart';
+import 'home_widgets/custom_progress_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -57,9 +58,9 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(
+                          padding: EdgeInsets.only(
                             left: 20,
-                            right: 12,
+                            right: mainProvider.cartProductNumber > 0 ? 20 : 12,
                           ),
                           child: Row(
                             children: [
@@ -74,39 +75,9 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               const Spacer(),
-                              SizedBox(
-                                height: 48,
-                                width: 44,
-                                child: Stack(
-                                  alignment: Alignment.centerLeft,
-                                  children: [
-                                    const Icon(
-                                      Icons.shopping_cart,
-                                      color: Colors.white,
-                                      size: 28,
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      top: 0,
-                                      child: Container(
-                                        height: 18,
-                                        width: 18,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(99),
-                                          color: Colors.black,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "2",
-                                            style: textTheme.labelLarge!.copyWith(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                              ShoppingCart(
+                                productNumber: mainProvider.cartProductNumber,
+                                homeScreen: true,
                               )
                             ],
                           ),
