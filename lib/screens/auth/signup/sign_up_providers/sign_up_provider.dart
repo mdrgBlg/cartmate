@@ -42,6 +42,8 @@ class SignUpProvider with ChangeNotifier {
           email: eMailController.text.trim(),
           username: usernameController.text.trim(),
           phoneNumber: phoneNumberController.text.trim(),
+          dateOfBirth: "",
+          gender: "",
         ),
       );
       return responseModel;

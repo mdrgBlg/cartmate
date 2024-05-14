@@ -1,17 +1,17 @@
-import 'package:e_commerce/helpers/custom_navigator.dart';
-import 'package:e_commerce/screens/app/store/store_widgets/view_all_brands.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '../../screen_wrapper.dart';
 import '/constants/custom_colors.dart';
+import '/helpers/custom_navigator.dart';
 import '/providers/main_provider.dart';
 import '/widgets/shopping_cart.dart';
 import 'store_providers/store_provider.dart';
 import 'store_widgets/brand_grid.dart';
 import 'store_widgets/categories_brands.dart';
 import 'store_widgets/categories_text_widget.dart';
+import 'store_widgets/view_all_brands.dart';
 
 class StoreScreen extends StatelessWidget {
   const StoreScreen({super.key});
