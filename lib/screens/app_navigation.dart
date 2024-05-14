@@ -1,3 +1,4 @@
+import 'package:e_commerce/screens/app/profile/profile_providers/profile_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -97,7 +98,10 @@ class AppNavigation extends StatelessWidget {
                   onTap: () => CustomNavigator.pushNavigation(
                     context: context,
                     routeName: ProfileScreen.routeName,
-                    screen: const ProfileScreen(),
+                    screen: ChangeNotifierProvider(
+                      create: (_) => ProfileProvider(),
+                      child: const ProfileScreen(),
+                    ),
                   ),
                   active: isTabActive(
                     routeName: ProfileScreen.routeName,

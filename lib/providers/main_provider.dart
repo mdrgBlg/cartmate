@@ -24,7 +24,7 @@ class MainProvider with ChangeNotifier {
       final response = await db.collection("Users").doc(userId).get();
       if (response.data() != null) {
         userInfoModel = UserInfoModel.fromJson(response.data()!);
-        await fetchWhishlistProducts();
+        // await fetchWhishlistProducts();
         return ResponseModel(success: true);
       }
       log("This user doesn't exist");
