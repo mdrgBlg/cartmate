@@ -10,7 +10,7 @@ class Loading {
     Function? onFinished,
     bool barrierDismissible = false,
   }) async {
-    //final localization = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
     showDialog(
       barrierDismissible: barrierDismissible,
       context: context,
@@ -19,19 +19,19 @@ class Loading {
         child: Center(
           child: Container(
             color: Colors.black.withOpacity(0.3),
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SpinKitThreeInOut(
+                const SpinKitThreeInOut(
                   color: CustomColors.primary,
                   size: 36.0,
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 Text(
                   "Loading...",
-                  style: TextStyle(
-                    fontSize: 20,
+                  style: textTheme.bodyLarge!.copyWith(
                     color: Colors.white,
+                    fontSize: 20,
                   ),
                 ),
               ],
