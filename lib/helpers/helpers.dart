@@ -33,7 +33,8 @@ class Helpers {
     }
   }
 
-  static List<ProductsModel> getBrandProducts(List<ProductsModel> productsList, BrandModel brand) {
+  static List<ProductsModel> getBrandProducts(
+      List<ProductsModel> productsList, BrandModel brand) {
     List<ProductsModel> filteredProductsList = [];
     for (var e in productsList) {
       if (e.brandModel != null && e.brandModel!.id == brand.id) {
@@ -42,4 +43,6 @@ class Helpers {
     }
     return filteredProductsList;
   }
+
+  static const List<String> genders = ['Male', 'Female'];
 }

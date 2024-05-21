@@ -29,7 +29,6 @@ class SnackBarPopup {
         elevation: 0,
         margin: const EdgeInsets.symmetric(
           horizontal: 8,
-          vertical: 16,
         ),
         behavior: SnackBarBehavior.floating,
         content: Container(
