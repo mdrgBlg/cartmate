@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '/helpers/date_time_service.dart';
 import '/models/response_model.dart';
 import '/models/user_info_model.dart';
 import 'sign_up_service.dart';
@@ -10,6 +12,12 @@ class SignUpProvider with ChangeNotifier {
   final eMailController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
+  final dateController = TextEditingController();
+  DateTime? pickedDate;
+
+  // List of genders to select from
+
+  String? selectedGender;
 
   bool passwordVisibility = true;
   bool signUpButtonEnable = false;
@@ -20,7 +28,9 @@ class SignUpProvider with ChangeNotifier {
         firstNameController.text.isNotEmpty &&
         lastNameController.text.isNotEmpty &&
         usernameController.text.isNotEmpty &&
-        phoneNumberController.text.isNotEmpty;
+        phoneNumberController.text.isNotEmpty &&
+        selectedGender != null &&
+        dateController.text.isNotEmpty;
     notifyListeners();
   }
 
@@ -29,10 +39,24 @@ class SignUpProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setPickedDate(DateTime date) {
+    pickedDate = date;
+    dateController.text = DateTimeService.formatDateTime(
+      date.toString(),
+    );
+    notifyListeners();
+  }
+
+  void setGender(String? value) {
+    selectedGender = value;
+    notifyListeners();
+  }
+
   Future<ResponseModel> signUp() async {
     String? newUserId;
     String? error;
-    (newUserId, error) = await SignUpService.signUp(eMailController.text.trim(), passwordController.text.trim());
+    (newUserId, error) = await SignUpService.signUp(
+        eMailController.text.trim(), passwordController.text.trim());
     if (newUserId != null) {
       ResponseModel responseModel = await SignUpService.saveUserData(
         UserInfoModel(
@@ -42,8 +66,8 @@ class SignUpProvider with ChangeNotifier {
           email: eMailController.text.trim(),
           username: usernameController.text.trim(),
           phoneNumber: phoneNumberController.text.trim(),
-          dateOfBirth: "",
-          gender: "",
+          dateOfBirth: pickedDate.toString(),
+          gender: selectedGender ?? "",
         ),
       );
       return responseModel;
