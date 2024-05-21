@@ -68,6 +68,7 @@ class LoginScreen extends StatelessWidget {
                         'Sign Up',
                         style: textTheme.labelLarge!.copyWith(
                           decoration: TextDecoration.underline,
+                          decorationColor: CustomColors.appName,
                           decorationThickness: 1.5,
                           color: CustomColors.appName,
                         ),
@@ -106,7 +107,8 @@ class LoginScreen extends StatelessWidget {
                     ),
                     elevation: 3,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 24),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 24),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -127,7 +129,8 @@ class LoginScreen extends StatelessWidget {
                               loginProvider.validateField();
                             },
                             controller: loginProvider.passwordController,
-                            passwordVisibility: loginProvider.passwordVisibility,
+                            passwordVisibility:
+                                loginProvider.passwordVisibility,
                             changeVisibility: loginProvider.changeVisibility,
                           ),
                           const SizedBox(height: 20),
@@ -135,18 +138,21 @@ class LoginScreen extends StatelessWidget {
                             buttonText: "Log in",
                             enable: loginProvider.loginButtonEnable,
                             onPress: () {
-                              ResponseModel responseModel = ResponseModel(success: false);
+                              ResponseModel responseModel =
+                                  ResponseModel(success: false);
                               Loading.callLoading(
                                 context: context,
                                 callback: () async {
-                                  responseModel = await loginProvider.login(context);
+                                  responseModel =
+                                      await loginProvider.login(context);
                                 },
                                 onFinished: () {
                                   if (responseModel.success) {
                                     SnackBarPopup.showMessage(
                                       context,
                                       message: "You successfully logged in!",
-                                      snackBarMessageType: SnackBarMessageType.success,
+                                      snackBarMessageType:
+                                          SnackBarMessageType.success,
                                     );
                                     CustomNavigator.pushReplacement(
                                       context: context,
@@ -159,8 +165,10 @@ class LoginScreen extends StatelessWidget {
                                   } else {
                                     SnackBarPopup.showMessage(
                                       context,
-                                      message: responseModel.error ?? "Something went wrong.",
-                                      snackBarMessageType: SnackBarMessageType.error,
+                                      message: responseModel.error ??
+                                          "Something went wrong.",
+                                      snackBarMessageType:
+                                          SnackBarMessageType.error,
                                     );
                                   }
                                 },
@@ -173,7 +181,8 @@ class LoginScreen extends StatelessWidget {
                               onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ChangeNotifierProvider.value(
+                                  builder: (context) =>
+                                      ChangeNotifierProvider.value(
                                     value: loginProvider,
                                     child: const ForgotPassword(),
                                   ),

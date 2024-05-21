@@ -2,11 +2,13 @@ import 'dart:developer';
 
 class UserInfoModel {
   final String id;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String username;
-  final String phoneNumber;
+  String firstName;
+  String lastName;
+  String email;
+  String username;
+  String phoneNumber;
+  String dateOfBirth;
+  String gender;
 
   UserInfoModel({
     required this.id,
@@ -15,6 +17,8 @@ class UserInfoModel {
     required this.email,
     required this.username,
     required this.phoneNumber,
+    required this.dateOfBirth,
+    required this.gender,
   });
 
   static Map<String, dynamic> toJson(UserInfoModel userInfoModel) {
@@ -25,6 +29,8 @@ class UserInfoModel {
       'email': userInfoModel.email,
       'username': userInfoModel.username,
       'phoneNumber': userInfoModel.phoneNumber,
+      'dateOfBirth': userInfoModel.dateOfBirth,
+      'gender': userInfoModel.gender == "Male" ? true : false,
     };
   }
 
@@ -38,6 +44,8 @@ class UserInfoModel {
         email: json["email"],
         username: json["username"],
         phoneNumber: json["phoneNumber"],
+        dateOfBirth: json["dateOfBirth"],
+        gender: json["gender"] == true ? "Male" : "Female",
       );
     } catch (e) {
       log("EXCEPTION UserModel $e");

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '../welcome/welcome_screen.dart';
 import '/constants/custom_colors.dart';
 import '/helpers/custom_navigator.dart';
+import '/helpers/helpers.dart';
 import '/helpers/loading.dart';
 import '/helpers/snack_bar_popup.dart';
 import '/models/response_model.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
 import '/widgets/password_field.dart';
+import 'date_picker.dart';
+import 'gender_selector.dart';
 import 'sign_up_providers/sign_up_provider.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -48,7 +52,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
               Consumer<SignUpProvider>(
-                builder: (context, signUpProvider, child) => Center(
+                builder: (_, signUpProvider, child) => Center(
                   child: Card(
                     margin: const EdgeInsets.only(
                       bottom: 52,
@@ -77,7 +81,8 @@ class SignUpScreen extends StatelessWidget {
                                     onInputChanged: () {
                                       signUpProvider.validateField();
                                     },
-                                    controller: signUpProvider.firstNameController,
+                                    controller:
+                                        signUpProvider.firstNameController,
                                   ),
                                 ),
                                 Flexible(
@@ -86,7 +91,8 @@ class SignUpScreen extends StatelessWidget {
                                     onInputChanged: () {
                                       signUpProvider.validateField();
                                     },
-                                    controller: signUpProvider.lastNameController,
+                                    controller:
+                                        signUpProvider.lastNameController,
                                   ),
                                 ),
                               ],
@@ -112,43 +118,92 @@ class SignUpScreen extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 12),
+                              padding:
+                                  const EdgeInsets.only(top: 12, bottom: 8),
                               child: InputField(
                                 hintText: "Phone number",
                                 onInputChanged: () {
                                   signUpProvider.validateField();
                                 },
-                                controller: signUpProvider.phoneNumberController,
+                                controller:
+                                    signUpProvider.phoneNumberController,
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 12, bottom: 20),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    child: Consumer<SignUpProvider>(
+                                      builder: (_, signUpProvider, child) =>
+                                          GenderSelector(
+                                        value: signUpProvider.selectedGender,
+                                        onChanged: (newValue) =>
+                                            signUpProvider.setGender(newValue),
+                                        genders: Helpers.genders,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Column(
+                                      children: [
+                                        DatePicker(
+                                          dateController:
+                                              signUpProvider.dateController,
+                                          pickedDate: signUpProvider.pickedDate,
+                                          onDatePicked: (DateTime? pickedDate) {
+                                            if (pickedDate != null) {
+                                              signUpProvider
+                                                  .setPickedDate(pickedDate);
+                                              signUpProvider.validateField();
+                                            } else {
+                                              signUpProvider.validateField();
+                                            }
+                                          },
+                                        ),
+                                        const Gap(16)
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
                               child: PasswordField(
                                 hintText: "Password:",
                                 onInputChanged: () {
                                   signUpProvider.validateField();
                                 },
                                 controller: signUpProvider.passwordController,
-                                passwordVisibility: signUpProvider.passwordVisibility,
-                                changeVisibility: signUpProvider.changePasswordVisibility,
+                                passwordVisibility:
+                                    signUpProvider.passwordVisibility,
+                                changeVisibility:
+                                    signUpProvider.changePasswordVisibility,
                               ),
                             ),
                             CustomButton(
                               buttonText: "Sign Up",
                               enable: signUpProvider.signUpButtonEnable,
                               onPress: () {
-                                ResponseModel responseModel = ResponseModel(success: false);
+                                ResponseModel responseModel =
+                                    ResponseModel(success: false);
                                 Loading.callLoading(
                                   context: context,
                                   callback: () async {
-                                    responseModel = await signUpProvider.signUp();
+                                    responseModel =
+                                        await signUpProvider.signUp();
                                   },
                                   onFinished: () {
                                     if (responseModel.success) {
                                       SnackBarPopup.showMessage(
                                         context,
                                         message: "You successfully signed up!",
-                                        snackBarMessageType: SnackBarMessageType.success,
+                                        snackBarMessageType:
+                                            SnackBarMessageType.success,
                                       );
                                       CustomNavigator.pushReplacement(
                                         context: context,
@@ -158,8 +213,10 @@ class SignUpScreen extends StatelessWidget {
                                     } else {
                                       SnackBarPopup.showMessage(
                                         context,
-                                        message: responseModel.error ?? "Something went wrong.",
-                                        snackBarMessageType: SnackBarMessageType.error,
+                                        message: responseModel.error ??
+                                            "Something went wrong.",
+                                        snackBarMessageType:
+                                            SnackBarMessageType.error,
                                       );
                                     }
                                   },

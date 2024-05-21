@@ -7,12 +7,14 @@ class CustomButton extends StatelessWidget {
   final bool enable;
   final VoidCallback? onPress;
   final EdgeInsets margin;
+  final TextStyle? style;
   const CustomButton({
     super.key,
     required this.buttonText,
     required this.enable,
     this.onPress,
     this.margin = const EdgeInsets.symmetric(horizontal: 20),
+    this.style,
   });
 
   @override
@@ -36,9 +38,11 @@ class CustomButton extends StatelessWidget {
               child: Center(
                 child: Text(
                   buttonText,
-                  style: textTheme.titleLarge!.copyWith(
-                    color: enable ? Colors.white : Colors.white.withOpacity(0.5),
-                  ),
+                  style: style ??
+                      textTheme.titleLarge!.copyWith(
+                        color: enable ? Colors.white : Colors.white.withOpacity(0.5),
+                        fontSize: 18,
+                      ),
                 ),
               ),
             ),
