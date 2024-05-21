@@ -2,13 +2,13 @@ import 'dart:developer';
 
 class UserInfoModel {
   final String id;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String username;
-  final String phoneNumber;
-  final String dateOfBirth;
-  final String gender;
+  String firstName;
+  String lastName;
+  String email;
+  String username;
+  String phoneNumber;
+  String dateOfBirth;
+  String gender;
 
   UserInfoModel({
     required this.id,

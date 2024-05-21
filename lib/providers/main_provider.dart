@@ -18,6 +18,48 @@ class MainProvider with ChangeNotifier {
   int cartProductNumber = 0;
   UserInfoModel? userInfoModel;
 
+  void wishlistFlagChange(ProductsModel productsModel) {
+    productsModel.whishlist = !productsModel.whishlist;
+    if (productsModel.whishlist) {
+      whishlistProductsList.add(productsModel);
+    } else {
+      whishlistProductsList
+          .removeWhere((element) => element.id == productsModel.id);
+    }
+    notifyListeners();
+  }
+
+  void changeUserName(String firstName, String lastName) {
+    userInfoModel?.firstName = firstName;
+    userInfoModel?.lastName = lastName;
+    notifyListeners();
+  }
+
+  void changeEmail(String value) {
+    userInfoModel?.email = value;
+    notifyListeners();
+  }
+
+  void changeUsername(String value) {
+    userInfoModel?.username = value;
+    notifyListeners();
+  }
+
+  void changeUserPhoneNumber(String value) {
+    userInfoModel?.phoneNumber = value;
+    notifyListeners();
+  }
+
+  void changeGender(String? value) {
+    userInfoModel?.gender = value ?? "";
+    notifyListeners();
+  }
+
+  void changeDateOfBirth(String? value) {
+    userInfoModel?.dateOfBirth = value ?? "";
+    notifyListeners();
+  }
+
   Future<ResponseModel> fetchUserInfo(String userId) async {
     final FirebaseFirestore db = FirebaseFirestore.instance;
     try {
@@ -41,16 +83,6 @@ class MainProvider with ChangeNotifier {
 
   Future<void> fetchWhishlistProducts() async {
     whishlistProductsList = await HomeService.fetchWhishlistProducts();
-  }
-
-  void wishlistFlagChange(ProductsModel productsModel) {
-    productsModel.whishlist = !productsModel.whishlist;
-    if (productsModel.whishlist) {
-      whishlistProductsList.add(productsModel);
-    } else {
-      whishlistProductsList.removeWhere((element) => element.id == productsModel.id);
-    }
-    notifyListeners();
   }
 
   Future<bool> addProductToWhishlist(ProductsModel productsModel) async {
@@ -79,6 +111,7 @@ class MainProvider with ChangeNotifier {
 
   Future<void> removeProductFromWhishlist(ProductsModel productsModel) async {
     Database db = await DbHelper.database;
-    await db.delete(DbConstants.whishlistTable, where: 'id = ?', whereArgs: [productsModel.id]);
+    await db.delete(DbConstants.whishlistTable,
+        where: 'id = ?', whereArgs: [productsModel.id]);
   }
 }
