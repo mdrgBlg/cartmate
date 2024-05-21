@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../../../auth/signup/date_picker.dart';
 import '../profile_providers/profile_provider.dart';
 import '/constants/custom_colors.dart';
+import '/helpers/loading.dart';
+import '/helpers/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
 
 class ChangeDateOfBirth extends StatelessWidget {
@@ -64,9 +66,24 @@ class ChangeDateOfBirth extends StatelessWidget {
               CustomButton(
                 buttonText: "Save",
                 enable: true,
-                onPress: () => changeInfo(
-                  profileProvider.pickedDate.toString(),
-                ),
+                onPress: () {
+                  bool success = false;
+                  Loading.callLoading(
+                    context: context,
+                    callback: () async {
+                      success = await changeInfo(
+                        profileProvider.pickedDate.toString(),
+                      );
+                    },
+                    onFinished: () {
+                      if (success) {
+                        SnackBarPopup.showMessage(context,
+                            message: "User successfully changed $sectionTitle");
+                      }
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
               )
             ],
           ),

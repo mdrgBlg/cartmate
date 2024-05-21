@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '/constants/custom_colors.dart';
+import '/helpers/loading.dart';
+import '/helpers/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
 
@@ -49,7 +51,22 @@ class ChangeUserInfo extends StatelessWidget {
               CustomButton(
                 buttonText: "Save",
                 enable: true,
-                onPress: () => changeInfo(controller.text),
+                onPress: () {
+                  bool success = false;
+                  Loading.callLoading(
+                    context: context,
+                    callback: () async {
+                      success = await changeInfo(controller.text);
+                    },
+                    onFinished: () {
+                      if (success) {
+                        SnackBarPopup.showMessage(context,
+                            message: "User successfully changed $sectionTitle");
+                      }
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
               )
             ],
           ),

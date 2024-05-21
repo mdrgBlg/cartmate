@@ -1,3 +1,5 @@
+import 'package:e_commerce/helpers/loading.dart';
+import 'package:e_commerce/helpers/snack_bar_popup.dart';
 import 'package:flutter/material.dart';
 
 import '/constants/custom_colors.dart';
@@ -59,10 +61,25 @@ class ChangeUserName extends StatelessWidget {
               CustomButton(
                 buttonText: "Save",
                 enable: true,
-                onPress: () => changeInfo(
-                  firstNameController.text,
-                  lastNameController.text,
-                ),
+                onPress: () {
+                  bool success = false;
+                  Loading.callLoading(
+                    context: context,
+                    callback: () async {
+                      success = await changeInfo(
+                        firstNameController.text,
+                        lastNameController.text,
+                      );
+                    },
+                    onFinished: () {
+                      if (success) {
+                        SnackBarPopup.showMessage(context,
+                            message: "User successfully changed $sectionTitle");
+                      }
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
               )
             ],
           ),

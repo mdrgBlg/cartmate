@@ -1,22 +1,24 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce/db/db_constants.dart';
-import 'package:e_commerce/db/db_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../db/db_service.dart';
-import '../models/brand_model.dart';
-import '../screens/app/home/home_models/products_model.dart';
-import '../screens/app/home/home_providers/home_service.dart';
+import '/db/db_constants.dart';
+import '/db/db_helper.dart';
+import '/db/db_service.dart';
+import '/models/brand_model.dart';
 import '/models/response_model.dart';
 import '/models/user_info_model.dart';
+import '/screens/app/home/home_models/products_model.dart';
+import '/screens/app/home/home_providers/home_service.dart';
 
 class MainProvider with ChangeNotifier {
   List<ProductsModel> whishlistProductsList = [];
   int cartProductNumber = 0;
   UserInfoModel? userInfoModel;
+
+  final collection = FirebaseFirestore.instance.collection('Users');
 
   void wishlistFlagChange(ProductsModel productsModel) {
     productsModel.whishlist = !productsModel.whishlist;
@@ -29,41 +31,97 @@ class MainProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeUserName(String firstName, String lastName) {
+  Future<bool> changeUserName(String firstName, String lastName) async {
+    bool success = false;
     userInfoModel?.firstName = firstName;
     userInfoModel?.lastName = lastName;
+    await collection.doc(userInfoModel?.id).update({
+      'firstName': firstName,
+      'lastName': lastName,
+    }).then((value) {
+      success = true;
+    }).catchError((onError) {
+      success = false;
+    });
+
     notifyListeners();
+    return success;
   }
 
-  void changeEmail(String value) {
+  Future<bool> changeEmail(String value) async {
+    bool success = false;
     userInfoModel?.email = value;
+    await collection.doc(userInfoModel?.id).update({
+      'email': value,
+    }).then((value) {
+      success = true;
+    }).catchError((onError) {
+      success = false;
+    });
     notifyListeners();
+    return success;
   }
 
-  void changeUsername(String value) {
+  Future<bool> changeUsername(String value) async {
+    bool success = false;
+
     userInfoModel?.username = value;
+    await collection.doc(userInfoModel?.id).update({
+      'username': value,
+    }).then((value) {
+      success = true;
+    }).catchError((onError) {
+      success = false;
+    });
     notifyListeners();
+    return success;
   }
 
-  void changeUserPhoneNumber(String value) {
+  Future<bool> changeUserPhoneNumber(String value) async {
+    bool success = false;
     userInfoModel?.phoneNumber = value;
+    await collection.doc(userInfoModel?.id).update({
+      'phoneNumber': value,
+    }).then((value) {
+      success = true;
+    }).catchError((onError) {
+      success = false;
+    });
     notifyListeners();
+    return success;
   }
 
-  void changeGender(String? value) {
+  Future<bool> changeGender(String? value) async {
+    bool success = false;
     userInfoModel?.gender = value ?? "";
+    await collection.doc(userInfoModel?.id).update({
+      'gender': value == "Male" ? true : false,
+    }).then((value) {
+      success = true;
+    }).catchError((onError) {
+      success = false;
+    });
     notifyListeners();
+    return success;
   }
 
-  void changeDateOfBirth(String? value) {
+  Future<bool> changeDateOfBirth(String? value) async {
+    bool success = false;
     userInfoModel?.dateOfBirth = value ?? "";
+    await collection.doc(userInfoModel?.id).update({
+      'dateOfBirth': value,
+    }).then((value) {
+      success = true;
+    }).catchError((onError) {
+      success = false;
+    });
     notifyListeners();
+    return success;
   }
 
   Future<ResponseModel> fetchUserInfo(String userId) async {
-    final FirebaseFirestore db = FirebaseFirestore.instance;
     try {
-      final response = await db.collection("Users").doc(userId).get();
+      final response = await collection.doc(userId).get();
       if (response.data() != null) {
         userInfoModel = UserInfoModel.fromJson(response.data()!);
         // await fetchWhishlistProducts();
