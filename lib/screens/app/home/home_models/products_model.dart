@@ -16,6 +16,7 @@ class ProductsModel {
   final List<String> productSize;
   final int stock;
   bool whishlist;
+  int count;
 
   ProductsModel({
     required this.id,
@@ -29,9 +30,11 @@ class ProductsModel {
     required this.productSize,
     required this.stock,
     this.whishlist = false,
+    this.count = 0,
   });
 
-  static ProductsModel? fromDocument(DocumentSnapshot<Map<String, dynamic>> document) {
+  static ProductsModel? fromDocument(
+      DocumentSnapshot<Map<String, dynamic>> document) {
     final json = document.data();
     ProductsModel? productsModel;
     try {
@@ -56,22 +59,25 @@ class ProductsModel {
     return productsModel;
   }
 
-  static ProductsModel? fromDb(Map<String, dynamic> json, BrandModel? brandModel) {
+  static ProductsModel? fromDb(
+      Map<String, dynamic> json, BrandModel? brandModel) {
     ProductsModel? productsModel;
     try {
       productsModel = ProductsModel(
-        id: json['id'] as String,
-        brandModel: brandModel,
-        categoryId: json['categoryId'] as String,
-        currency: json['currency'] as String,
-        productImageList: (json['productImage'] as String).split(','), // Split comma-separated string
-        productName: json['productName'] as String,
-        discount: json['discount'] as int,
-        price: json['price'] as int,
-        productSize: (json['productSize'] as String).split(','), // Split comma-separated string
-        stock: json['stock'] as int,
-        whishlist: json['wishlist'] as int == 1 ? true : false,
-      );
+          id: json['id'] as String,
+          brandModel: brandModel,
+          categoryId: json['categoryId'] as String,
+          currency: json['currency'] as String,
+          productImageList: (json['productImage'] as String)
+              .split(','), // Split comma-separated string
+          productName: json['productName'] as String,
+          discount: json['discount'] as int,
+          price: json['price'] as int,
+          productSize: (json['productSize'] as String)
+              .split(','), // Split comma-separated string
+          stock: json['stock'] as int,
+          whishlist: json['wishlist'] as int == 1 ? true : false,
+          count: json['count']);
     } catch (e) {
       log("EXCEPTION ProductsModel $e");
     }
@@ -92,6 +98,7 @@ class ProductsModel {
       'productSize': product.productSize.join(','),
       'stock': product.stock,
       'wishlist': product.whishlist ? 1 : 0,
+      'count': product.count,
     };
   }
 }

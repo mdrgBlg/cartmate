@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:provider/provider.dart';
 
+import '../../../helpers/custom_navigator.dart';
 import '../../screen_wrapper.dart';
+import '../cart/cart_providers/cart_provider.dart';
+import '../cart/cart_screen.dart';
 import '/constants/custom_colors.dart';
 import '/constants/custom_images.dart';
 import '/providers/main_provider.dart';
@@ -75,9 +78,22 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               const Spacer(),
-                              ShoppingCart(
-                                productNumber: mainProvider.cartProductNumber,
-                                homeScreen: true,
+                              InkWell(
+                                onTap: () => CustomNavigator.pushNavigation(
+                                  context: context,
+                                  routeName: CartScreen.routeName,
+                                  screen: ChangeNotifierProvider(
+                                    create: (_) => CartProvider(),
+                                    child: const CartScreen(),
+                                  ),
+                                ),
+                                child: Consumer<MainProvider>(
+                                  builder: (_, __, child) => ShoppingCart(
+                                    productNumber:
+                                        mainProvider.cartProductNumber,
+                                    homeScreen: true,
+                                  ),
+                                ),
                               )
                             ],
                           ),
@@ -88,7 +104,8 @@ class HomeScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(20, 108, 20, 0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 108, 20, 0),
                                   child: Text(
                                     "Popular Categories",
                                     style: textTheme.bodyLarge!.copyWith(
@@ -102,15 +119,21 @@ class HomeScreen extends StatelessWidget {
                                   height: 72,
                                   child: FutureBuilder<List<CategoriesModel>>(
                                     future: homeProvider.fetchCategories(),
-                                    builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                                        ? const Center(child: CircularProgressIndicator())
+                                    builder: (context, snapshot) => snapshot
+                                                .connectionState ==
+                                            ConnectionState.waiting
+                                        ? const Center(
+                                            child: CircularProgressIndicator())
                                         : ListView.builder(
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
-                                            controller: homeProvider.scrollController,
+                                            controller:
+                                                homeProvider.scrollController,
                                             itemCount: snapshot.data?.length,
-                                            itemBuilder: (context, index) => CategoriesWidget(
-                                              categoriesModel: snapshot.data![index],
+                                            itemBuilder: (context, index) =>
+                                                CategoriesWidget(
+                                              categoriesModel:
+                                                  snapshot.data![index],
                                             ),
                                           ),
                                   ),
@@ -121,7 +144,8 @@ class HomeScreen extends StatelessWidget {
                               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                               child: Consumer<HomeProvider>(
                                 builder: (_, __, child) => SearchField(
-                                  searchController: homeProvider.searchController,
+                                  searchController:
+                                      homeProvider.searchController,
                                   hintText: "Search product...",
                                   onChanged: (value) {
                                     if (value.isEmpty) {
@@ -148,7 +172,8 @@ class HomeScreen extends StatelessWidget {
                   height: 250,
                   child: PageView.builder(
                     itemCount: CustomImages.homeImages.length,
-                    onPageChanged: (value) => homeProvider.changeScreenIndex(value),
+                    onPageChanged: (value) =>
+                        homeProvider.changeScreenIndex(value),
                     itemBuilder: (_, index) => Container(
                       padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
                       decoration: BoxDecoration(
@@ -188,14 +213,20 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 FutureBuilder<void>(
-                  future: homeProvider.productsList.isEmpty ? homeProvider.fetchProducts(mainProvider.whishlistProductsList) : null,
-                  builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                      ? const Center(
-                          child: CircularProgressIndicator(),
+                  future: homeProvider.productsList.isEmpty
+                      ? homeProvider.fetchProducts(
+                          mainProvider.whishlistProductsList,
+                          mainProvider.cartProducts,
                         )
-                      : ProductsGridView(
-                          productsList: homeProvider.productsList,
-                        ),
+                      : null,
+                  builder: (context, snapshot) =>
+                      snapshot.connectionState == ConnectionState.waiting
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : ProductsGridView(
+                              productsList: homeProvider.productsList,
+                            ),
                 ),
               ],
             ),

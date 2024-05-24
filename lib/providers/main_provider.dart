@@ -18,6 +18,8 @@ class MainProvider with ChangeNotifier {
   int cartProductNumber = 0;
   UserInfoModel? userInfoModel;
 
+  List<ProductsModel> cartProducts = [];
+
   final collection = FirebaseFirestore.instance.collection('Users');
 
   void wishlistFlagChange(ProductsModel productsModel) {
@@ -28,6 +30,31 @@ class MainProvider with ChangeNotifier {
       whishlistProductsList
           .removeWhere((element) => element.id == productsModel.id);
     }
+    notifyListeners();
+  }
+
+  void addProductToCart(ProductsModel productsModel) {
+    bool elementExists = false;
+    for (var e in cartProducts) {
+      if (e.id == productsModel.id) {
+        ++e.count;
+        elementExists = true;
+        break;
+      }
+    }
+    if (!elementExists) {
+      cartProducts.add(productsModel);
+      ++cartProductNumber;
+    }
+
+    notifyListeners();
+  }
+
+  void removeProductFromCart(ProductsModel productsModel) {
+    cartProducts.removeWhere(
+      (item) => item.id == productsModel.id,
+    );
+    --cartProductNumber;
     notifyListeners();
   }
 
