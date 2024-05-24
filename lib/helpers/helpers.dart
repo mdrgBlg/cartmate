@@ -45,4 +45,8 @@ class Helpers {
   }
 
   static const List<String> genders = ['Male', 'Female'];
+
+  static double calculateDiscountPrice(int price, int discount) {
+    return price - price * (discount / 100);
+  }
 }

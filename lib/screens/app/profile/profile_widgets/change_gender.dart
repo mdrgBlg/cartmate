@@ -39,7 +39,7 @@ class ChangeGender extends StatelessWidget {
           elevation: 0,
           title: Text(
             "Change $sectionTitle",
-            style: textTheme.bodyLarge!.copyWith(
+            style: textTheme.titleLarge!.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),

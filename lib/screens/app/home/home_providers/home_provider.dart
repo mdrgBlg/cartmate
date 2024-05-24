@@ -42,10 +42,23 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setWishlistFlag(List<ProductsModel> productsList, List<ProductsModel> whishlistProductsList) {
+  void setWishlistFlag(List<ProductsModel> productsList,
+      List<ProductsModel> whishlistProductsList) {
     for (var e in productsList) {
       if (whishlistProductsList.any((element) => element.id == e.id)) {
         e.whishlist = true;
+      }
+    }
+  }
+
+  void setProductCount(
+      List<ProductsModel> productsList, List<ProductsModel> cartList) {
+    final cartMap = {
+      for (var item in cartList) item.id: item.count,
+    };
+    for (var product in productsList) {
+      if (cartMap.containsKey(product.id)) {
+        product.count = cartMap[product.id]!;
       }
     }
   }
@@ -54,9 +67,11 @@ class HomeProvider with ChangeNotifier {
     return HomeService.fetchCategories();
   }
 
-  Future<void> fetchProducts(List<ProductsModel> whishlistProductsList) async {
+  Future<void> fetchProducts(List<ProductsModel> whishlistProductsList,
+      List<ProductsModel> cartList) async {
     productsList = await HomeService.fetchProducts();
     setWishlistFlag(productsList, whishlistProductsList);
+    setProductCount(productsList, cartList);
   }
 
   List<ProductsModel> getProductsForCategory(String id) {
