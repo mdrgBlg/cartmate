@@ -40,7 +40,9 @@ class CustomButton extends StatelessWidget {
                   buttonText,
                   style: style ??
                       textTheme.titleLarge!.copyWith(
-                        color: enable ? Colors.white : Colors.white.withOpacity(0.5),
+                        color: enable
+                            ? Colors.white
+                            : Colors.white.withOpacity(0.5),
                         fontSize: 18,
                       ),
                 ),
