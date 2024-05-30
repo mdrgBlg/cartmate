@@ -17,6 +17,7 @@ class MainProvider with ChangeNotifier {
   List<ProductsModel> whishlistProductsList = [];
   int cartProductNumber = 0;
   UserInfoModel? userInfoModel;
+  double checkoutPrice = 0;
 
   List<ProductsModel> cartProducts = [];
 
@@ -38,12 +39,15 @@ class MainProvider with ChangeNotifier {
     for (var e in cartProducts) {
       if (e.id == productsModel.id) {
         ++e.count;
+        checkoutPrice += (e.price - e.price * (e.discount / 100));
         elementExists = true;
         break;
       }
     }
     if (!elementExists) {
       cartProducts.add(productsModel);
+      checkoutPrice += (productsModel.price -
+          productsModel.price * (productsModel.discount / 100));
       ++cartProductNumber;
     }
 
@@ -51,10 +55,24 @@ class MainProvider with ChangeNotifier {
   }
 
   void removeProductFromCart(ProductsModel productsModel) {
-    cartProducts.removeWhere(
-      (item) => item.id == productsModel.id,
-    );
-    --cartProductNumber;
+    int? indexToRemove;
+    for (int i = 0; i < cartProducts.length; i++) {
+      if (cartProducts[i].id == productsModel.id) {
+        --cartProducts[i].count;
+        checkoutPrice -= (productsModel.price -
+            productsModel.price * (productsModel.discount / 100));
+        if (cartProducts[i].count == 0) {
+          indexToRemove = i;
+        }
+
+        break;
+      }
+    }
+    if (indexToRemove != null) {
+      cartProducts.removeAt(indexToRemove);
+      --cartProductNumber;
+    }
+
     notifyListeners();
   }
 

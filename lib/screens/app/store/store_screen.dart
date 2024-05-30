@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '../../screen_wrapper.dart';
+import '../cart/cart_providers/cart_provider.dart';
+import '../cart/cart_screen.dart';
 import '/constants/custom_colors.dart';
 import '/helpers/custom_navigator.dart';
 import '/providers/main_provider.dart';
@@ -50,10 +52,22 @@ class StoreScreen extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    ShoppingCart(
-                      productNumber: mainProvider.cartProductNumber,
-                      homeScreen: false,
-                    )
+                    InkWell(
+                      onTap: () => CustomNavigator.pushNavigation(
+                        context: context,
+                        routeName: CartScreen.routeName,
+                        screen: ChangeNotifierProvider(
+                          create: (_) => CartProvider(),
+                          child: const CartScreen(),
+                        ),
+                      ),
+                      child: Consumer<MainProvider>(
+                        builder: (_, __, child) => ShoppingCart(
+                          productNumber: mainProvider.cartProductNumber,
+                          homeScreen: false,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

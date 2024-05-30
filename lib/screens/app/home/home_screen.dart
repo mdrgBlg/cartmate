@@ -123,7 +123,8 @@ class HomeScreen extends StatelessWidget {
                                                 .connectionState ==
                                             ConnectionState.waiting
                                         ? const Center(
-                                            child: CircularProgressIndicator())
+                                            child: CircularProgressIndicator(),
+                                          )
                                         : ListView.builder(
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
