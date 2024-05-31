@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/models/cart_model.dart';
 import '/providers/main_provider.dart';
-import '../../home/home_models/products_model.dart';
 import '/constants/custom_colors.dart';
 import '/constants/custom_images.dart';
 
 class CartItem extends StatelessWidget {
-  final ProductsModel product;
+  final CartModel cartModel;
   const CartItem({
     super.key,
-    required this.product,
+    required this.cartModel,
   });
 
   @override
@@ -65,7 +65,7 @@ class CartItem extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(right: 6),
                           child: Text(
-                            product.brandModel?.brandName ?? "",
+                            cartModel.productModel.brandModel?.brandName ?? "",
                             style: textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.bold,
                               color: CustomColors.grayDark,
@@ -82,12 +82,34 @@ class CartItem extends StatelessWidget {
                     Container(
                       alignment: AlignmentDirectional.centerStart,
                       child: Text(
-                        product.productName,
+                        cartModel.productModel.productName,
                         style: textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
                           overflow: TextOverflow.ellipsis,
                         ),
                         maxLines: 2,
+                      ),
+                    ),
+                    Container(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: RichText(
+                        text: TextSpan(
+                          style: textTheme.bodySmall!.copyWith(
+                            color: CustomColors.grayDark,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          children: [
+                            const TextSpan(
+                              text: "Size ",
+                            ),
+                            TextSpan(
+                              text: cartModel.size,
+                              style: textTheme.bodySmall!.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -98,7 +120,7 @@ class CartItem extends StatelessWidget {
               children: [
                 const Gap(72),
                 InkWell(
-                  onTap: () => mainProvider.removeProductFromCart(product),
+                  onTap: () => mainProvider.removeProductFromCart(cartModel),
                   child: Container(
                     height: 24,
                     width: 24,
@@ -119,14 +141,14 @@ class CartItem extends StatelessWidget {
                 ),
                 const Gap(12),
                 Consumer<MainProvider>(
-                  builder: (context, value, child) => Text(
-                    product.count.toString(),
+                  builder: (_, value, child) => Text(
+                    cartModel.productModel.count.toString(),
                     style: textTheme.bodyLarge,
                   ),
                 ),
                 const Gap(12),
                 InkWell(
-                  onTap: () => mainProvider.addProductToCart(product),
+                  onTap: () => mainProvider.increaseProductInCart(cartModel),
                   child: Container(
                     height: 24,
                     width: 24,
@@ -147,7 +169,7 @@ class CartItem extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  "${(product.price - product.price * (product.discount / 100)) * product.count} ${product.currency}",
+                  "${(cartModel.productModel.price - cartModel.productModel.price * (cartModel.productModel.discount / 100)) * cartModel.productModel.count} ${cartModel.productModel.currency}",
                   style: textTheme.bodyMedium!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

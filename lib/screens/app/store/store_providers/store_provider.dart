@@ -1,3 +1,4 @@
+import 'package:e_commerce/models/cart_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../home/home_models/categories_model.dart';
@@ -41,9 +42,9 @@ class StoreProvider with ChangeNotifier {
   }
 
   void setProductCount(
-      List<ProductsModel> productsList, List<ProductsModel> cartList) {
+      List<ProductsModel> productsList, List<CartModel> cartList) {
     final cartMap = {
-      for (var item in cartList) item.id: item.count,
+      for (var item in cartList) item.productModel.id: item.productModel.count,
     };
     for (var product in productsList) {
       if (cartMap.containsKey(product.id)) {
@@ -57,14 +58,14 @@ class StoreProvider with ChangeNotifier {
   }
 
   Future<void> fetchProducts(List<ProductsModel> whishlistProductsList,
-      List<ProductsModel> cartList) async {
+      List<CartModel> cartList) async {
     productsList = await HomeService.fetchProducts();
     setWishlistFlag(productsList, whishlistProductsList);
     setProductCount(productsList, cartList);
   }
 
   Future<void> fetchCategories(List<ProductsModel> whishlistProductsList,
-      List<ProductsModel> cartList) async {
+      List<CartModel> cartList) async {
     await fetchProducts(
       whishlistProductsList,
       cartList,

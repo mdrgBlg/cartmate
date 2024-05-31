@@ -1,8 +1,9 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce/helpers/helpers.dart';
-import 'package:e_commerce/models/brand_model.dart';
+
+import '/helpers/helpers.dart';
+import '/models/brand_model.dart';
 
 class ProductsModel {
   final String id;
@@ -101,4 +102,18 @@ class ProductsModel {
       'count': product.count,
     };
   }
+
+  ProductsModel.copy(ProductsModel other)
+      : id = other.id,
+        brandModel = other.brandModel,
+        categoryId = other.categoryId,
+        currency = other.currency,
+        productImageList = List<String>.from(other.productImageList),
+        productName = other.productName,
+        discount = other.discount,
+        price = other.price,
+        productSize = List<String>.from(other.productSize),
+        stock = other.stock,
+        whishlist = other.whishlist,
+        count = other.count;
 }
