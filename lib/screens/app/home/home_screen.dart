@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:provider/provider.dart';
 
-import '../../../helpers/custom_navigator.dart';
 import '../../screen_wrapper.dart';
 import '../cart/cart_providers/cart_provider.dart';
 import '../cart/cart_screen.dart';
 import '/constants/custom_colors.dart';
 import '/constants/custom_images.dart';
+import '/helpers/custom_navigator.dart';
 import '/providers/main_provider.dart';
 import '/widgets/products_grid_view.dart';
 import '/widgets/search_field.dart';
@@ -155,7 +155,8 @@ class HomeScreen extends StatelessWidget {
                                       });
                                     } else {
                                       debouncer.call(() {
-                                        homeProvider.searchProduct(value);
+                                        homeProvider.searchProduct(
+                                            value, mainProvider.productsList);
                                       });
                                     }
                                   },
@@ -214,11 +215,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 FutureBuilder<void>(
-                  future: homeProvider.productsList.isEmpty
-                      ? homeProvider.fetchProducts(
-                          mainProvider.whishlistProductsList,
-                          mainProvider.cartProducts,
-                        )
+                  future: mainProvider.productsList.isEmpty
+                      ? mainProvider.fetchProducts()
                       : null,
                   builder: (context, snapshot) =>
                       snapshot.connectionState == ConnectionState.waiting
@@ -226,7 +224,7 @@ class HomeScreen extends StatelessWidget {
                               child: CircularProgressIndicator(),
                             )
                           : ProductsGridView(
-                              productsList: homeProvider.productsList,
+                              productsList: mainProvider.productsList,
                             ),
                 ),
               ],

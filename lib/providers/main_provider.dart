@@ -8,18 +8,20 @@ import '/db/db_constants.dart';
 import '/db/db_helper.dart';
 import '/db/db_service.dart';
 import '/models/brand_model.dart';
+import '/models/cart_model.dart';
 import '/models/response_model.dart';
 import '/models/user_info_model.dart';
 import '/screens/app/home/home_models/products_model.dart';
 import '/screens/app/home/home_providers/home_service.dart';
 
 class MainProvider with ChangeNotifier {
-  List<ProductsModel> whishlistProductsList = [];
   int cartProductNumber = 0;
   UserInfoModel? userInfoModel;
   double checkoutPrice = 0;
 
-  List<ProductsModel> cartProducts = [];
+  List<ProductsModel> whishlistProductsList = [];
+  List<ProductsModel> productsList = [];
+  List<CartModel> cartProducts = [];
 
   final collection = FirebaseFirestore.instance.collection('Users');
 
@@ -34,34 +36,75 @@ class MainProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addProductToCart(ProductsModel productsModel) {
-    bool elementExists = false;
+  void setWishlistFlag() {
+    for (var e in productsList) {
+      if (whishlistProductsList.any((element) => element.id == e.id)) {
+        e.whishlist = true;
+      }
+    }
+  }
+
+  void setProductCount() {
+    final cartMap = {
+      for (var item in cartProducts)
+        item.productModel.id: item.productModel.count,
+    };
+    for (var product in productsList) {
+      if (cartMap.containsKey(product.id)) {
+        product.count = cartMap[product.id]!;
+      }
+    }
+  }
+
+  void increaseProductInCart(CartModel cartModel) {
     for (var e in cartProducts) {
-      if (e.id == productsModel.id) {
-        ++e.count;
-        checkoutPrice += (e.price - e.price * (e.discount / 100));
+      if (e.productModel.id == cartModel.productModel.id &&
+          e.size == cartModel.size) {
+        ++e.productModel.count;
+        checkoutPrice += (e.productModel.price -
+            e.productModel.price * (e.productModel.discount / 100));
+        break;
+      }
+    }
+
+    notifyListeners();
+  }
+
+  void addProductToCart(CartModel cartModel) {
+    bool elementExists = false;
+
+    for (var e in cartProducts) {
+      if (e.productModel.id == cartModel.productModel.id &&
+          e.size == cartModel.size) {
+        ++e.productModel.count;
+        checkoutPrice += (e.productModel.price -
+            e.productModel.price * (e.productModel.discount / 100));
         elementExists = true;
         break;
       }
     }
+
     if (!elementExists) {
-      cartProducts.add(productsModel);
-      checkoutPrice += (productsModel.price -
-          productsModel.price * (productsModel.discount / 100));
+      cartProducts.add(cartModel);
+      checkoutPrice += (cartModel.productModel.price -
+          cartModel.productModel.price *
+              (cartModel.productModel.discount / 100));
       ++cartProductNumber;
     }
 
     notifyListeners();
   }
 
-  void removeProductFromCart(ProductsModel productsModel) {
+  void removeProductFromCart(CartModel cartModel) {
     int? indexToRemove;
     for (int i = 0; i < cartProducts.length; i++) {
-      if (cartProducts[i].id == productsModel.id) {
-        --cartProducts[i].count;
-        checkoutPrice -= (productsModel.price -
-            productsModel.price * (productsModel.discount / 100));
-        if (cartProducts[i].count == 0) {
+      if (cartProducts[i].productModel.id == cartModel.productModel.id &&
+          cartProducts[i].size == cartModel.size) {
+        --cartProducts[i].productModel.count;
+        checkoutPrice -= (cartModel.productModel.price -
+            cartModel.productModel.price *
+                (cartModel.productModel.discount / 100));
+        if (cartProducts[i].productModel.count == 0) {
           indexToRemove = i;
         }
 
@@ -69,6 +112,9 @@ class MainProvider with ChangeNotifier {
       }
     }
     if (indexToRemove != null) {
+      int index = productsList.indexWhere((element) =>
+          cartProducts[indexToRemove!].productModel.id == element.id);
+      --productsList[index].count;
       cartProducts.removeAt(indexToRemove);
       --cartProductNumber;
     }
@@ -216,5 +262,11 @@ class MainProvider with ChangeNotifier {
     Database db = await DbHelper.database;
     await db.delete(DbConstants.whishlistTable,
         where: 'id = ?', whereArgs: [productsModel.id]);
+  }
+
+  Future<void> fetchProducts() async {
+    productsList = await HomeService.fetchProducts();
+    setWishlistFlag();
+    setProductCount();
   }
 }

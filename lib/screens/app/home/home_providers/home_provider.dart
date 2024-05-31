@@ -1,14 +1,12 @@
-import 'package:e_commerce/screens/app/home/home_models/categories_model.dart';
-import 'package:e_commerce/screens/app/home/home_providers/home_service.dart';
 import 'package:flutter/material.dart';
 
+import '../home_models/categories_model.dart';
 import '../home_models/products_model.dart';
+import 'home_service.dart';
 
 class HomeProvider with ChangeNotifier {
   int screenIndex = 0;
   bool isFocused = false;
-
-  List<ProductsModel> productsList = [];
 
   List<ProductsModel> searchedProductsList = [];
 
@@ -21,7 +19,7 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void searchProduct(String input) {
+  void searchProduct(String input, List<ProductsModel> productsList) {
     searchedProductsList = productsList.where((element) {
       return element.productName.toLowerCase().contains(
             input.toLowerCase(),
@@ -42,39 +40,12 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setWishlistFlag(List<ProductsModel> productsList,
-      List<ProductsModel> whishlistProductsList) {
-    for (var e in productsList) {
-      if (whishlistProductsList.any((element) => element.id == e.id)) {
-        e.whishlist = true;
-      }
-    }
-  }
-
-  void setProductCount(
-      List<ProductsModel> productsList, List<ProductsModel> cartList) {
-    final cartMap = {
-      for (var item in cartList) item.id: item.count,
-    };
-    for (var product in productsList) {
-      if (cartMap.containsKey(product.id)) {
-        product.count = cartMap[product.id]!;
-      }
-    }
-  }
-
   Future<List<CategoriesModel>> fetchCategories() {
     return HomeService.fetchCategories();
   }
 
-  Future<void> fetchProducts(List<ProductsModel> whishlistProductsList,
-      List<ProductsModel> cartList) async {
-    productsList = await HomeService.fetchProducts();
-    setWishlistFlag(productsList, whishlistProductsList);
-    setProductCount(productsList, cartList);
-  }
-
-  List<ProductsModel> getProductsForCategory(String id) {
+  List<ProductsModel> getProductsForCategory(
+      String id, List<ProductsModel> productsList) {
     return productsList.where((element) => element.categoryId == id).toList();
   }
 }

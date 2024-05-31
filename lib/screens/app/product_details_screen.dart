@@ -1,3 +1,4 @@
+import 'package:e_commerce/models/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -86,7 +87,8 @@ class ProductDetailsScreen extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
                           child: Image.asset(
-                            product.productImageList[productDetailsProvider.selectedImage],
+                            product.productImageList[
+                                productDetailsProvider.selectedImage],
                             height: 220,
                             fit: BoxFit.fill,
                           ),
@@ -101,18 +103,23 @@ class ProductDetailsScreen extends StatelessWidget {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: 3,
-                        itemBuilder: (context, index) => Consumer<ProductDetailsProvider>(
+                        itemBuilder: (context, index) =>
+                            Consumer<ProductDetailsProvider>(
                           builder: (_, __, child) => Container(
                             width: 92,
                             margin: EdgeInsets.only(left: index == 0 ? 0 : 12),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: productDetailsProvider.selectedImage == index ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
+                                color: productDetailsProvider.selectedImage ==
+                                        index
+                                    ? Colors.black.withOpacity(0.5)
+                                    : Colors.black.withOpacity(0.1),
                               ),
                             ),
                             child: InkWell(
-                              onTap: () => productDetailsProvider.changeSelectedImage(index),
+                              onTap: () => productDetailsProvider
+                                  .changeSelectedImage(index),
                               borderRadius: BorderRadius.circular(16),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
@@ -241,28 +248,43 @@ class ProductDetailsScreen extends StatelessWidget {
                       child: Wrap(
                         spacing: 10, // spacing between adjacent containers
                         runSpacing: 8, // spacing between rows
-                        children: List.generate(product.productSize.length, (index) {
+                        children:
+                            List.generate(product.productSize.length, (index) {
                           return Consumer<ProductDetailsProvider>(
                             builder: (_, __, child) => InkWell(
                               borderRadius: BorderRadius.circular(8),
-                              onTap: () => productDetailsProvider.changeSelectedSize(index),
+                              onTap: () =>
+                                  productDetailsProvider.changeSelectedSize(
+                                      product.productSize[index]),
                               child: Container(
                                 alignment: Alignment.center,
                                 width: 64,
-                                height: 40, // adjust the height as per your need
+                                height:
+                                    40, // adjust the height as per your need
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
-                                    color: productDetailsProvider.selectedSize == index ? Colors.black.withOpacity(0.2) : Colors.black,
+                                    color:
+                                        productDetailsProvider.selectedSize ==
+                                                product.productSize[index]
+                                            ? Colors.black.withOpacity(0.2)
+                                            : Colors.black,
                                     width: 1,
                                   ),
-                                  color: productDetailsProvider.selectedSize == index ? CustomColors.primary : CustomColors.secondary,
+                                  color: productDetailsProvider.selectedSize ==
+                                          product.productSize[index]
+                                      ? CustomColors.primary
+                                      : CustomColors.secondary,
                                 ),
                                 child: Text(
                                   product.productSize[index],
                                   style: textTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: productDetailsProvider.selectedSize == index ? CustomColors.secondary : Colors.black,
+                                    color:
+                                        productDetailsProvider.selectedSize ==
+                                                product.productSize[index]
+                                            ? CustomColors.secondary
+                                            : Colors.black,
                                   ),
                                 ),
                               ),
@@ -275,9 +297,33 @@ class ProductDetailsScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: Consumer<ProductDetailsProvider>(
                         builder: (_, __, child) => CustomButton(
-                          buttonText: "Checkout",
-                          enable: productDetailsProvider.selectedSize != null ? true : false,
+                          buttonText: "Add to cart",
+                          enable: productDetailsProvider.selectedSize != null
+                              ? true
+                              : false,
                           margin: EdgeInsets.zero,
+                          onPress: () {
+                            ProductsModel copiedProduct =
+                                ProductsModel.copy(product);
+                            copiedProduct.count = 1;
+                            bool increaseCount = true;
+                            for (var e in mainProvider.cartProducts) {
+                              if (e.productModel.id == product.id &&
+                                  e.size ==
+                                      productDetailsProvider.selectedSize) {
+                                increaseCount = false;
+                                break;
+                              }
+                            }
+                            if (increaseCount) {
+                              ++product.count;
+                            }
+                            CartModel cartModel = CartModel(
+                              productModel: copiedProduct,
+                              size: productDetailsProvider.selectedSize ?? "",
+                            );
+                            mainProvider.addProductToCart(cartModel);
+                          },
                         ),
                       ),
                     ),

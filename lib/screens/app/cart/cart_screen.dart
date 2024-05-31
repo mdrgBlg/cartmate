@@ -1,10 +1,13 @@
-import 'package:e_commerce/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../providers/main_provider.dart';
+import '../../../helpers/custom_navigator.dart';
 import '/constants/custom_colors.dart';
+import '/providers/main_provider.dart';
+import '/widgets/custom_button.dart';
+import 'cart_providers/cart_provider.dart';
 import 'cart_widgets/cart_item.dart';
+import 'checkout_screen.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -15,6 +18,10 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final mainProvider = Provider.of<MainProvider>(
+      context,
+      listen: false,
+    );
+    final cartProvider = Provider.of<CartProvider>(
       context,
       listen: false,
     );
@@ -40,11 +47,13 @@ class CartScreen extends StatelessWidget {
           children: [
             Consumer<MainProvider>(
               builder: (_, __, child) => ListView.builder(
+                key: UniqueKey(),
                 padding: const EdgeInsets.only(top: 8),
                 shrinkWrap: true,
                 itemCount: mainProvider.cartProducts.length,
-                itemBuilder: (context, index) => CartItem(
-                  product: mainProvider.cartProducts[index],
+                itemBuilder: (_, index) => CartItem(
+                  key: UniqueKey(),
+                  cartModel: mainProvider.cartProducts[index],
                 ),
               ),
             ),
@@ -63,7 +72,14 @@ class CartScreen extends StatelessWidget {
                                 buttonText:
                                     "Checkout ${mainProvider.checkoutPrice}",
                                 enable: mainProvider.cartProducts.isNotEmpty,
-                                onPress: () {},
+                                onPress: () => CustomNavigator.pushNavigation(
+                                  context: context,
+                                  routeName: CheckoutScreen.routeName,
+                                  screen: ChangeNotifierProvider.value(
+                                    value: cartProvider,
+                                    child: CheckoutScreen(),
+                                  ),
+                                ),
                               )
                             : const SizedBox(),
                   ),

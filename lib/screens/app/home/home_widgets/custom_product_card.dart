@@ -131,39 +131,29 @@ class CustomProductCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        InkWell(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16),
-                          ),
-                          onTap: () {
-                            ++productsModel.count;
-                            mainProvider.addProductToCart(productsModel);
-                          },
-                          child: Container(
-                            height: 32,
-                            width: 36,
-                            alignment: Alignment.center,
-                            decoration: const BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(16),
-                                bottomRight: Radius.circular(16),
-                              ),
+                        Container(
+                          height: 32,
+                          width: 36,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
                             ),
-                            child: Consumer<MainProvider>(
-                              builder: (_, __, child) => Text(
-                                productsModel.count == 0
-                                    ? "+"
-                                    : productsModel.count.toString(),
-                                style: productsModel.count == 0
-                                    ? textTheme.titleLarge!.copyWith(
-                                        color: Colors.white,
-                                      )
-                                    : textTheme.titleMedium!.copyWith(
-                                        color: Colors.white,
-                                      ),
-                              ),
+                          ),
+                          child: Consumer<MainProvider>(
+                            builder: (_, __, child) => Text(
+                              productsModel.count == 0
+                                  ? "+"
+                                  : productsModel.count.toString(),
+                              style: productsModel.count == 0
+                                  ? textTheme.titleLarge!.copyWith(
+                                      color: Colors.white,
+                                    )
+                                  : textTheme.titleMedium!.copyWith(
+                                      color: Colors.white,
+                                    ),
                             ),
                           ),
                         )

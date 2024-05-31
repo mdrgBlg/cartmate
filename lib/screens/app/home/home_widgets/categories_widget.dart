@@ -1,11 +1,12 @@
-import 'package:e_commerce/helpers/custom_navigator.dart';
-import 'package:e_commerce/screens/app/categories_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../categories_screen.dart';
 import '../home_models/categories_model.dart';
 import '../home_models/products_model.dart';
 import '../home_providers/home_provider.dart';
+import '/helpers/custom_navigator.dart';
+import '/providers/main_provider.dart';
 
 class CategoriesWidget extends StatelessWidget {
   final CategoriesModel categoriesModel;
@@ -21,13 +22,19 @@ class CategoriesWidget extends StatelessWidget {
       context,
       listen: false,
     );
+    final mainProvider = Provider.of<MainProvider>(
+      context,
+      listen: false,
+    );
     final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: InkWell(
         onTap: () {
-          List<ProductsModel> categoryProducts = homeProvider.getProductsForCategory(
+          List<ProductsModel> categoryProducts =
+              homeProvider.getProductsForCategory(
             categoriesModel.id,
+            mainProvider.productsList,
           );
           CustomNavigator.pushNavigation(
             context: context,
