@@ -5,7 +5,7 @@ import '../../../helpers/custom_navigator.dart';
 import '/constants/custom_colors.dart';
 import '/providers/main_provider.dart';
 import '/widgets/custom_button.dart';
-import 'cart_providers/cart_provider.dart';
+import 'cart_providers/checkout_provider.dart';
 import 'cart_widgets/cart_item.dart';
 import 'checkout_screen.dart';
 
@@ -18,10 +18,6 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
-    final cartProvider = Provider.of<CartProvider>(
       context,
       listen: false,
     );
@@ -70,14 +66,17 @@ class CartScreen extends StatelessWidget {
                         mainProvider.cartProducts.isNotEmpty
                             ? CustomButton(
                                 buttonText:
-                                    "Checkout ${mainProvider.checkoutPrice}",
+                                    "Checkout ${mainProvider.checkoutPrice} ${mainProvider.cartProducts.first.productModel.currency}",
                                 enable: mainProvider.cartProducts.isNotEmpty,
                                 onPress: () => CustomNavigator.pushNavigation(
                                   context: context,
                                   routeName: CheckoutScreen.routeName,
-                                  screen: ChangeNotifierProvider.value(
-                                    value: cartProvider,
-                                    child: CheckoutScreen(),
+                                  screen: ChangeNotifierProvider(
+                                    create: (_) => CheckoutProvider(),
+                                    child: CheckoutScreen(
+                                      cartProducts: mainProvider.cartProducts,
+                                      checkoutPrice: mainProvider.checkoutPrice,
+                                    ),
                                   ),
                                 ),
                               )
