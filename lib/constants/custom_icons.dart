@@ -7,4 +7,5 @@ class CustomIcons {
   static const clothes = 'assets/categories/clothes.png';
   static const animals = 'assets/categories/animals.png';
   static const shoes = 'assets/categories/shoes.png';
+  static const cash = 'assets/payment-method.png';
 }

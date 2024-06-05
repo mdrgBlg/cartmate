@@ -9,9 +9,13 @@ import '/constants/custom_images.dart';
 
 class CartItem extends StatelessWidget {
   final CartModel cartModel;
+  final bool isCartItem;
+  final double height;
   const CartItem({
     super.key,
     required this.cartModel,
+    this.isCartItem = true,
+    this.height = 112,
   });
 
   @override
@@ -25,7 +29,7 @@ class CartItem extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
       child: Container(
         width: double.infinity,
-        height: 112,
+        height: height,
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -90,93 +94,125 @@ class CartItem extends StatelessWidget {
                         maxLines: 2,
                       ),
                     ),
-                    Container(
-                      alignment: AlignmentDirectional.centerStart,
-                      child: RichText(
-                        text: TextSpan(
-                          style: textTheme.bodySmall!.copyWith(
-                            color: CustomColors.grayDark,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          children: [
-                            const TextSpan(
-                              text: "Size ",
-                            ),
-                            TextSpan(
-                              text: cartModel.size,
+                    Row(
+                      children: [
+                        Container(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: RichText(
+                            text: TextSpan(
                               style: textTheme.bodySmall!.copyWith(
+                                color: CustomColors.grayDark,
                                 fontWeight: FontWeight.bold,
                               ),
+                              children: [
+                                const TextSpan(
+                                  text: "Size: ",
+                                ),
+                                TextSpan(
+                                  text: cartModel.size,
+                                  style: textTheme.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        if (!isCartItem)
+                          Container(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: RichText(
+                              text: TextSpan(
+                                style: textTheme.bodySmall!.copyWith(
+                                  color: CustomColors.grayDark,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: [
+                                  const TextSpan(
+                                    text: "Quantity: ",
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        cartModel.productModel.count.toString(),
+                                    style: textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ],
                 ),
               ],
             ),
-            Row(
-              children: [
-                const Gap(72),
-                InkWell(
-                  onTap: () => mainProvider.removeProductFromCart(cartModel),
-                  child: Container(
-                    height: 24,
-                    width: 24,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(99),
-                      color: Colors.black.withOpacity(0.4),
-                    ),
-                    alignment: AlignmentDirectional.center,
-                    child: Text(
-                      "-",
-                      style: textTheme.bodyLarge!.copyWith(
-                        fontSize: 20,
-                        height: 1.1,
-                        color: Colors.white,
+            if (isCartItem)
+              Row(
+                children: [
+                  const Gap(72),
+                  InkWell(
+                    onTap: () => mainProvider.removeProductFromCart(cartModel),
+                    child: Container(
+                      height: 24,
+                      width: 24,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(99),
+                        color: Colors.black.withOpacity(0.4),
+                      ),
+                      alignment: AlignmentDirectional.center,
+                      child: Text(
+                        "-",
+                        style: textTheme.bodyLarge!.copyWith(
+                          fontSize: 20,
+                          height: 1.1,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const Gap(12),
-                Consumer<MainProvider>(
-                  builder: (_, value, child) => Text(
-                    cartModel.productModel.count.toString(),
-                    style: textTheme.bodyLarge,
-                  ),
-                ),
-                const Gap(12),
-                InkWell(
-                  onTap: () => mainProvider.increaseProductInCart(cartModel),
-                  child: Container(
-                    height: 24,
-                    width: 24,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(99),
-                      color: CustomColors.primary,
+                  const Gap(12),
+                  Consumer<MainProvider>(
+                    builder: (_, value, child) => Text(
+                      cartModel.productModel.count.toString(),
+                      style: textTheme.bodyLarge,
                     ),
-                    alignment: AlignmentDirectional.center,
-                    child: Text(
-                      "+",
-                      style: textTheme.bodyLarge!.copyWith(
-                        fontSize: 20,
-                        height: 1.1,
-                        color: Colors.white,
+                  ),
+                  const Gap(12),
+                  InkWell(
+                    onTap: () => mainProvider.increaseProductInCart(cartModel),
+                    child: Container(
+                      height: 24,
+                      width: 24,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(99),
+                        color: CustomColors.primary,
+                      ),
+                      alignment: AlignmentDirectional.center,
+                      child: Text(
+                        "+",
+                        style: textTheme.bodyLarge!.copyWith(
+                          fontSize: 20,
+                          height: 1.1,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const Spacer(),
-                Text(
-                  "${(cartModel.productModel.price - cartModel.productModel.price * (cartModel.productModel.discount / 100)) * cartModel.productModel.count} ${cartModel.productModel.currency}",
-                  style: textTheme.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
+                  const Spacer(),
+                  Text(
+                    "${(cartModel.productModel.price - cartModel.productModel.price * (cartModel.productModel.discount / 100)) * cartModel.productModel.count} ${cartModel.productModel.currency}",
+                    style: textTheme.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
+                ],
+              ),
           ],
         ),
       ),

@@ -3,7 +3,6 @@ import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:provider/provider.dart';
 
 import '../../screen_wrapper.dart';
-import '../cart/cart_providers/cart_provider.dart';
 import '../cart/cart_screen.dart';
 import '/constants/custom_colors.dart';
 import '/constants/custom_images.dart';
@@ -82,10 +81,7 @@ class HomeScreen extends StatelessWidget {
                                 onTap: () => CustomNavigator.pushNavigation(
                                   context: context,
                                   routeName: CartScreen.routeName,
-                                  screen: ChangeNotifierProvider(
-                                    create: (_) => CartProvider(),
-                                    child: const CartScreen(),
-                                  ),
+                                  screen: const CartScreen(),
                                 ),
                                 child: Consumer<MainProvider>(
                                   builder: (_, __, child) => ShoppingCart(
