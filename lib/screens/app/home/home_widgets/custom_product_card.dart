@@ -1,4 +1,5 @@
 import 'package:e_commerce/helpers/custom_navigator.dart';
+import 'package:e_commerce/helpers/helpers.dart';
 import 'package:e_commerce/providers/main_provider.dart';
 import 'package:e_commerce/providers/product_details_provider.dart';
 import 'package:e_commerce/screens/app/home/home_models/products_model.dart';
@@ -86,7 +87,8 @@ class CustomProductCard extends StatelessWidget {
                     children: [
                       Text(
                         productsModel.brandModel?.brandName ?? "",
-                        style: textTheme.bodySmall!.copyWith(color: Colors.grey),
+                        style:
+                            textTheme.bodySmall!.copyWith(color: Colors.grey),
                       ),
                       const SizedBox(
                         width: 4,
@@ -100,49 +102,63 @@ class CustomProductCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (productsModel.discount > 0)
+                  padding: const EdgeInsets.fromLTRB(8, 4, 0, 0),
+                  child: SizedBox(
+                    height: 42,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (productsModel.discount > 0)
+                              Text(
+                                productsModel.price.toDouble().toString(),
+                                style: textTheme.bodySmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: CustomColors.customGrey,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             Text(
-                              productsModel.price.toDouble().toString(),
-                              style: textTheme.bodySmall!.copyWith(
+                              "${Helpers.calculateDiscountPrice(productsModel.price, productsModel.discount)} ${productsModel.currency}",
+                              style: textTheme.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: CustomColors.customGrey,
-                                decoration: TextDecoration.lineThrough,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
-                          Text(
-                            "${(productsModel.price - productsModel.price * (productsModel.discount / 100))} ${productsModel.currency}",
-                            style: textTheme.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.bold,
+                          ],
+                        ),
+                        Container(
+                          height: 32,
+                          width: 36,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ],
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16),
+                          child: Consumer<MainProvider>(
+                            builder: (_, __, child) => Text(
+                              productsModel.count == 0
+                                  ? "+"
+                                  : productsModel.count.toString(),
+                              style: productsModel.count == 0
+                                  ? textTheme.titleLarge!.copyWith(
+                                      color: Colors.white,
+                                    )
+                                  : textTheme.titleMedium!.copyWith(
+                                      color: Colors.white,
+                                    ),
+                            ),
                           ),
-                        ),
-                        padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-                        child: Text(
-                          "+",
-                          style: textTheme.titleLarge!.copyWith(
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -176,7 +192,8 @@ class CustomProductCard extends StatelessWidget {
                   if (productsModel.whishlist) {
                     await mainProvider.addProductToWhishlist(productsModel);
                   } else {
-                    await mainProvider.removeProductFromWhishlist(productsModel);
+                    await mainProvider
+                        .removeProductFromWhishlist(productsModel);
                   }
                 },
                 borderRadius: BorderRadius.circular(99),
