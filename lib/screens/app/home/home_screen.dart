@@ -1,9 +1,9 @@
+import 'package:e_commerce/screens/app/checkout/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:provider/provider.dart';
 
 import '../../screen_wrapper.dart';
-import '../cart/cart_screen.dart';
 import '/constants/custom_colors.dart';
 import '/constants/custom_images.dart';
 import '/helpers/custom_navigator.dart';

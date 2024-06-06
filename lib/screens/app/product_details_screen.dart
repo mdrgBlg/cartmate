@@ -1,3 +1,4 @@
+import 'package:e_commerce/helpers/snack_bar_popup.dart';
 import 'package:e_commerce/models/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -308,7 +309,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             copiedProduct.count = 1;
                             bool increaseCount = true;
                             for (var e in mainProvider.cartProducts) {
-                              if (e.productModel.id == product.id &&
+                              if (e.productModel?.id == product.id &&
                                   e.size ==
                                       productDetailsProvider.selectedSize) {
                                 increaseCount = false;
@@ -323,6 +324,11 @@ class ProductDetailsScreen extends StatelessWidget {
                               size: productDetailsProvider.selectedSize ?? "",
                             );
                             mainProvider.addProductToCart(cartModel);
+                            SnackBarPopup.showMessage(
+                              context,
+                              message: "Product is added to cart",
+                              snackBarMessageType: SnackBarMessageType.success,
+                            );
                           },
                         ),
                       ),

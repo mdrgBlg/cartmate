@@ -6,6 +6,7 @@ class InputField extends StatelessWidget {
   final VoidCallback? onInputChanged;
   final double height;
   final EdgeInsets padding;
+  final VoidCallback? onTap;
   const InputField({
     super.key,
     required this.hintText,
@@ -13,6 +14,7 @@ class InputField extends StatelessWidget {
     this.onInputChanged,
     this.height = 44,
     this.padding = const EdgeInsets.fromLTRB(20, 0, 20, 0),
+    this.onTap,
   });
 
   @override
@@ -36,6 +38,8 @@ class InputField extends StatelessWidget {
           padding: padding,
           height: height,
           child: TextFormField(
+            onTap: onTap,
+            canRequestFocus: onTap != null ? false : true,
             controller: controller,
             textAlign: TextAlign.left,
             onChanged: (value) {

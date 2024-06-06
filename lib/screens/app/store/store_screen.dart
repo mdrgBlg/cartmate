@@ -1,9 +1,9 @@
+import 'package:e_commerce/screens/app/checkout/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '../../screen_wrapper.dart';
-import '../cart/cart_screen.dart';
 import '/constants/custom_colors.dart';
 import '/helpers/custom_navigator.dart';
 import '/providers/main_provider.dart';

@@ -69,7 +69,7 @@ class CartItem extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(right: 6),
                           child: Text(
-                            cartModel.productModel.brandModel?.brandName ?? "",
+                            cartModel.productModel?.brandModel?.brandName ?? "",
                             style: textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.bold,
                               color: CustomColors.grayDark,
@@ -86,7 +86,7 @@ class CartItem extends StatelessWidget {
                     Container(
                       alignment: AlignmentDirectional.centerStart,
                       child: Text(
-                        cartModel.productModel.productName,
+                        cartModel.productModel?.productName ?? "",
                         style: textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
                           overflow: TextOverflow.ellipsis,
@@ -135,8 +135,8 @@ class CartItem extends StatelessWidget {
                                     text: "Quantity: ",
                                   ),
                                   TextSpan(
-                                    text:
-                                        cartModel.productModel.count.toString(),
+                                    text: cartModel.productModel?.count
+                                        .toString(),
                                     style: textTheme.bodySmall!.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -178,7 +178,7 @@ class CartItem extends StatelessWidget {
                   const Gap(12),
                   Consumer<MainProvider>(
                     builder: (_, value, child) => Text(
-                      cartModel.productModel.count.toString(),
+                      cartModel.productModel?.count.toString() ?? "",
                       style: textTheme.bodyLarge,
                     ),
                   ),
@@ -205,7 +205,9 @@ class CartItem extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    "${(cartModel.productModel.price - cartModel.productModel.price * (cartModel.productModel.discount / 100)) * cartModel.productModel.count} ${cartModel.productModel.currency}",
+                    cartModel.productModel != null
+                        ? "${(cartModel.productModel!.price - cartModel.productModel!.price * (cartModel.productModel!.discount / 100)) * cartModel.productModel!.count} ${cartModel.productModel!.currency}"
+                        : "",
                     style: textTheme.bodyMedium!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

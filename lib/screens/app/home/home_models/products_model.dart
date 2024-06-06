@@ -60,6 +60,28 @@ class ProductsModel {
     return productsModel;
   }
 
+  static ProductsModel? fromJson(Map<String, dynamic> json) {
+    ProductsModel? productsModel;
+    try {
+      productsModel = ProductsModel(
+        id: json["id"],
+        brandModel: BrandModel.fromJson(json["brand"]),
+        categoryId: json["categoryId"],
+        currency: json["currency"],
+        productImageList: Helpers.fetchImages(json["productImage"]),
+        productName: json["productName"],
+        discount: json["discount"],
+        price: json["price"],
+        productSize: List<String>.from(json["productSize"]),
+        stock: json["stock"],
+      );
+    } catch (e) {
+      log("EXCEPTION ProductsModel $e");
+    }
+
+    return productsModel;
+  }
+
   static ProductsModel? fromDb(
       Map<String, dynamic> json, BrandModel? brandModel) {
     ProductsModel? productsModel;
@@ -100,6 +122,22 @@ class ProductsModel {
       'stock': product.stock,
       'wishlist': product.whishlist ? 1 : 0,
       'count': product.count,
+    };
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'brandId': brandModel?.id,
+      'categoryId': categoryId,
+      'currency': currency,
+      'productImage': productImageList.join(','),
+      'productName': productName,
+      'discount': discount,
+      'price': price,
+      'stock': stock,
+      'wishlist': whishlist ? 1 : 0,
+      'count': count,
     };
   }
 
