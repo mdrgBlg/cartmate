@@ -31,6 +31,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      supportedLocales: const [
+        Locale('en'),
+      ],
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       title: "Store app",

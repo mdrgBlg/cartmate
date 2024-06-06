@@ -1,4 +1,5 @@
 import 'package:e_commerce/helpers/custom_navigator.dart';
+import 'package:e_commerce/providers/main_provider.dart';
 import 'package:e_commerce/providers/product_details_provider.dart';
 import 'package:e_commerce/screens/app/home/home_providers/home_provider.dart';
 import 'package:e_commerce/screens/app/product_details_screen.dart';
@@ -27,6 +28,10 @@ class SearchField extends StatelessWidget {
       context,
       listen: true,
     );
+    final mainProvider = Provider.of<MainProvider>(
+      context,
+      listen: false,
+    );
     return Column(
       children: [
         Container(
@@ -41,8 +46,14 @@ class SearchField extends StatelessWidget {
             borderRadius: BorderRadius.only(
               topLeft: const Radius.circular(16),
               topRight: const Radius.circular(16),
-              bottomLeft: Radius.circular(!homeProvider.isFocused || homeProvider.searchController.text.isEmpty ? 16 : 0),
-              bottomRight: Radius.circular(!homeProvider.isFocused || homeProvider.searchController.text.isEmpty ? 16 : 0),
+              bottomLeft: Radius.circular(!homeProvider.isFocused ||
+                      homeProvider.searchController.text.isEmpty
+                  ? 16
+                  : 0),
+              bottomRight: Radius.circular(!homeProvider.isFocused ||
+                      homeProvider.searchController.text.isEmpty
+                  ? 16
+                  : 0),
             ),
           ),
           child: FocusScope(
@@ -94,7 +105,8 @@ class SearchField extends StatelessWidget {
             ),
           ),
         ),
-        if (homeProvider.isFocused && homeProvider.searchedProductsList.isNotEmpty)
+        if (homeProvider.isFocused &&
+            homeProvider.searchedProductsList.isNotEmpty)
           Container(
             width: double.infinity,
             decoration: const BoxDecoration(
@@ -109,7 +121,9 @@ class SearchField extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  padding: homeProvider.searchController.text.isNotEmpty ? const EdgeInsets.fromLTRB(16, 16, 16, 4) : null,
+                  padding: homeProvider.searchController.text.isNotEmpty
+                      ? const EdgeInsets.fromLTRB(16, 16, 16, 4)
+                      : null,
                   child: MediaQuery.removePadding(
                     context: context,
                     removeTop: true,
@@ -131,8 +145,11 @@ class SearchField extends StatelessWidget {
                             screen: ChangeNotifierProvider(
                               create: (_) => ProductDetailsProvider(),
                               child: ProductDetailsScreen(
-                                product: homeProvider.productsList.singleWhere(
-                                  (element) => element.id == homeProvider.searchedProductsList[index].id,
+                                product: mainProvider.productsList.singleWhere(
+                                  (element) =>
+                                      element.id ==
+                                      homeProvider
+                                          .searchedProductsList[index].id,
                                 ),
                               ),
                             ),
@@ -143,7 +160,8 @@ class SearchField extends StatelessWidget {
                             ),
                             alignment: AlignmentDirectional.centerStart,
                             child: Text(
-                              homeProvider.searchedProductsList[index].productName,
+                              homeProvider
+                                  .searchedProductsList[index].productName,
                               style: const TextStyle(
                                 fontSize: 16,
                               ),

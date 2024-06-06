@@ -1,8 +1,9 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce/helpers/helpers.dart';
-import 'package:e_commerce/models/brand_model.dart';
+
+import '/helpers/helpers.dart';
+import '/models/brand_model.dart';
 
 class ProductsModel {
   final String id;
@@ -16,6 +17,7 @@ class ProductsModel {
   final List<String> productSize;
   final int stock;
   bool whishlist;
+  int count;
 
   ProductsModel({
     required this.id,
@@ -29,9 +31,11 @@ class ProductsModel {
     required this.productSize,
     required this.stock,
     this.whishlist = false,
+    this.count = 0,
   });
 
-  static ProductsModel? fromDocument(DocumentSnapshot<Map<String, dynamic>> document) {
+  static ProductsModel? fromDocument(
+      DocumentSnapshot<Map<String, dynamic>> document) {
     final json = document.data();
     ProductsModel? productsModel;
     try {
@@ -56,22 +60,47 @@ class ProductsModel {
     return productsModel;
   }
 
-  static ProductsModel? fromDb(Map<String, dynamic> json, BrandModel? brandModel) {
+  static ProductsModel? fromJson(Map<String, dynamic> json) {
     ProductsModel? productsModel;
     try {
       productsModel = ProductsModel(
-        id: json['id'] as String,
-        brandModel: brandModel,
-        categoryId: json['categoryId'] as String,
-        currency: json['currency'] as String,
-        productImageList: (json['productImage'] as String).split(','), // Split comma-separated string
-        productName: json['productName'] as String,
-        discount: json['discount'] as int,
-        price: json['price'] as int,
-        productSize: (json['productSize'] as String).split(','), // Split comma-separated string
-        stock: json['stock'] as int,
-        whishlist: json['wishlist'] as int == 1 ? true : false,
+        id: json["id"],
+        brandModel: BrandModel.fromJson(json["brand"]),
+        categoryId: json["categoryId"],
+        currency: json["currency"],
+        productImageList: Helpers.fetchImages(json["productImage"]),
+        productName: json["productName"],
+        discount: json["discount"],
+        price: json["price"],
+        productSize: List<String>.from(json["productSize"]),
+        stock: json["stock"],
       );
+    } catch (e) {
+      log("EXCEPTION ProductsModel $e");
+    }
+
+    return productsModel;
+  }
+
+  static ProductsModel? fromDb(
+      Map<String, dynamic> json, BrandModel? brandModel) {
+    ProductsModel? productsModel;
+    try {
+      productsModel = ProductsModel(
+          id: json['id'] as String,
+          brandModel: brandModel,
+          categoryId: json['categoryId'] as String,
+          currency: json['currency'] as String,
+          productImageList: (json['productImage'] as String)
+              .split(','), // Split comma-separated string
+          productName: json['productName'] as String,
+          discount: json['discount'] as int,
+          price: json['price'] as int,
+          productSize: (json['productSize'] as String)
+              .split(','), // Split comma-separated string
+          stock: json['stock'] as int,
+          whishlist: json['wishlist'] as int == 1 ? true : false,
+          count: json['count']);
     } catch (e) {
       log("EXCEPTION ProductsModel $e");
     }
@@ -92,6 +121,37 @@ class ProductsModel {
       'productSize': product.productSize.join(','),
       'stock': product.stock,
       'wishlist': product.whishlist ? 1 : 0,
+      'count': product.count,
     };
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'brandId': brandModel?.id,
+      'categoryId': categoryId,
+      'currency': currency,
+      'productImage': productImageList.join(','),
+      'productName': productName,
+      'discount': discount,
+      'price': price,
+      'stock': stock,
+      'wishlist': whishlist ? 1 : 0,
+      'count': count,
+    };
+  }
+
+  ProductsModel.copy(ProductsModel other)
+      : id = other.id,
+        brandModel = other.brandModel,
+        categoryId = other.categoryId,
+        currency = other.currency,
+        productImageList = List<String>.from(other.productImageList),
+        productName = other.productName,
+        discount = other.discount,
+        price = other.price,
+        productSize = List<String>.from(other.productSize),
+        stock = other.stock,
+        whishlist = other.whishlist,
+        count = other.count;
 }
