@@ -44,7 +44,8 @@ class StoreProvider with ChangeNotifier {
   void setProductCount(
       List<ProductsModel> productsList, List<CartModel> cartList) {
     final cartMap = {
-      for (var item in cartList) item.productModel.id: item.productModel.count,
+      for (var item in cartList)
+        item.productModel?.id: item.productModel?.count,
     };
     for (var product in productsList) {
       if (cartMap.containsKey(product.id)) {

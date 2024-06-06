@@ -5,8 +5,8 @@ import '../../../helpers/custom_navigator.dart';
 import '/constants/custom_colors.dart';
 import '/providers/main_provider.dart';
 import '/widgets/custom_button.dart';
-import 'cart_providers/checkout_provider.dart';
-import 'cart_widgets/cart_item.dart';
+import 'checkout_providers/checkout_provider.dart';
+import 'checkout_widgets/cart_item.dart';
 import 'checkout_screen.dart';
 
 class CartScreen extends StatelessWidget {
@@ -62,25 +62,37 @@ class CartScreen extends StatelessWidget {
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 10.0),
                   child: Consumer<MainProvider>(
-                    builder: (_, __, child) =>
-                        mainProvider.cartProducts.isNotEmpty
-                            ? CustomButton(
-                                buttonText:
-                                    "Checkout ${mainProvider.checkoutPrice} ${mainProvider.cartProducts.first.productModel.currency}",
-                                enable: mainProvider.cartProducts.isNotEmpty,
-                                onPress: () => CustomNavigator.pushNavigation(
-                                  context: context,
-                                  routeName: CheckoutScreen.routeName,
-                                  screen: ChangeNotifierProvider(
-                                    create: (_) => CheckoutProvider(),
-                                    child: CheckoutScreen(
-                                      cartProducts: mainProvider.cartProducts,
-                                      checkoutPrice: mainProvider.checkoutPrice,
-                                    ),
-                                  ),
+                    builder: (_, __, child) => mainProvider
+                            .cartProducts.isNotEmpty
+                        ? CustomButton(
+                            buttonText:
+                                "Checkout ${mainProvider.checkoutPrice} ${mainProvider.cartProducts.first.productModel?.currency}",
+                            enable: mainProvider.cartProducts.isNotEmpty,
+                            onPress: () => CustomNavigator.pushNavigation(
+                              context: context,
+                              routeName: CheckoutScreen.routeName,
+                              screen: ChangeNotifierProvider(
+                                create: (_) => CheckoutProvider(
+                                  firstName:
+                                      mainProvider.userInfoModel?.firstName ??
+                                          "",
+                                  lastName:
+                                      mainProvider.userInfoModel?.lastName ??
+                                          "",
+                                  email:
+                                      mainProvider.userInfoModel?.email ?? "",
+                                  phoneNumber:
+                                      mainProvider.userInfoModel?.phoneNumber ??
+                                          "",
+                                  cartProducts: mainProvider.cartProducts,
+                                  checkoutPrice: mainProvider.checkoutPrice,
+                                  userId: mainProvider.userInfoModel?.id ?? "",
                                 ),
-                              )
-                            : const SizedBox(),
+                                child: const CheckoutScreen(),
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
                   ),
                 ),
               ),

@@ -1,21 +1,21 @@
+import 'package:country_picker/country_picker.dart';
+import 'package:e_commerce/providers/main_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../widgets/custom_button.dart';
 import '/constants/custom_colors.dart';
 import '/constants/custom_icons.dart';
-import '/models/cart_model.dart';
+import '/helpers/loading.dart';
+import '/helpers/snack_bar_popup.dart';
+import '/models/response_model.dart';
+import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
-import 'cart_providers/checkout_provider.dart';
-import 'cart_widgets/cart_item.dart';
+import 'checkout_providers/checkout_provider.dart';
+import 'checkout_widgets/cart_item.dart';
 
 class CheckoutScreen extends StatelessWidget {
-  final List<CartModel> cartProducts;
-  final double checkoutPrice;
   const CheckoutScreen({
     super.key,
-    required this.cartProducts,
-    required this.checkoutPrice,
   });
 
   static const routeName = '/checkout';
@@ -23,6 +23,10 @@ class CheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final checkoutProvider = Provider.of<CheckoutProvider>(
+      context,
+      listen: false,
+    );
+    final mainProvider = Provider.of<MainProvider>(
       context,
       listen: false,
     );
@@ -50,10 +54,10 @@ class CheckoutScreen extends StatelessWidget {
                 key: UniqueKey(),
                 padding: const EdgeInsets.only(top: 8),
                 shrinkWrap: true,
-                itemCount: cartProducts.length,
+                itemCount: checkoutProvider.cartProductsList.length,
                 itemBuilder: (_, index) => CartItem(
                   key: UniqueKey(),
-                  cartModel: cartProducts[index],
+                  cartModel: checkoutProvider.cartProductsList[index],
                   isCartItem: false,
                   height: 90,
                 ),
@@ -82,7 +86,7 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${checkoutPrice.toString()} ${cartProducts.first.productModel.currency}",
+                            "${checkoutProvider.checkoutPrice.toString()} ${checkoutProvider.cartProductsList.first.productModel?.currency}",
                             style: textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -102,7 +106,7 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "8.0 ${cartProducts.first.productModel.currency}",
+                            "8.0 ${checkoutProvider.cartProductsList.first.productModel?.currency}",
                             style: textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -122,7 +126,7 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${(checkoutPrice + 8).toString()} ${cartProducts.first.productModel.currency}",
+                            "${checkoutProvider.getTotalPrice().toString()} ${checkoutProvider.cartProductsList.first.productModel?.currency}",
                             style: textTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -193,12 +197,16 @@ class CheckoutScreen extends StatelessWidget {
                             child: InputField(
                               hintText: "First name:",
                               controller: checkoutProvider.firstNameController,
+                              onInputChanged: () =>
+                                  checkoutProvider.buttonChecker(),
                             ),
                           ),
                           Flexible(
                             child: InputField(
                               hintText: "Last name:",
                               controller: checkoutProvider.lastNameController,
+                              onInputChanged: () =>
+                                  checkoutProvider.buttonChecker(),
                             ),
                           ),
                         ],
@@ -209,6 +217,7 @@ class CheckoutScreen extends StatelessWidget {
                       InputField(
                         hintText: "E-mail:",
                         controller: checkoutProvider.eMailController,
+                        onInputChanged: () => checkoutProvider.buttonChecker(),
                       ),
                       const SizedBox(
                         height: 12,
@@ -219,12 +228,47 @@ class CheckoutScreen extends StatelessWidget {
                             child: InputField(
                               hintText: "Country:",
                               controller: checkoutProvider.countryController,
+                              onInputChanged: () =>
+                                  checkoutProvider.buttonChecker(),
+                              onTap: () => showCountryPicker(
+                                context: context,
+                                useSafeArea: true,
+                                showPhoneCode: false,
+                                countryListTheme: const CountryListThemeData(
+                                  flagSize: 25,
+                                  backgroundColor: Colors.white,
+                                  textStyle: TextStyle(fontSize: 16),
+                                  bottomSheetHeight: 500,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20.0),
+                                    topRight: Radius.circular(20.0),
+                                  ),
+                                  //Optional. Styles the search field.
+                                  inputDecoration: InputDecoration(
+                                    labelText: 'Search',
+                                    hintText: 'Start typing to search',
+                                    prefixIcon: Icon(Icons.search),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: CustomColors.primary,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                onSelect: (value) {
+                                  checkoutProvider.countryController.text =
+                                      value.name;
+                                  checkoutProvider.buttonChecker();
+                                },
+                              ),
                             ),
                           ),
                           Flexible(
                             child: InputField(
                               hintText: "City:",
                               controller: checkoutProvider.cityController,
+                              onInputChanged: () =>
+                                  checkoutProvider.buttonChecker(),
                             ),
                           ),
                         ],
@@ -238,6 +282,8 @@ class CheckoutScreen extends StatelessWidget {
                             child: InputField(
                               hintText: "Zip code:",
                               controller: checkoutProvider.zipCodeController,
+                              onInputChanged: () =>
+                                  checkoutProvider.buttonChecker(),
                             ),
                           ),
                           Flexible(
@@ -245,6 +291,8 @@ class CheckoutScreen extends StatelessWidget {
                               hintText: "Phone number:",
                               controller:
                                   checkoutProvider.phoneNumberController,
+                              onInputChanged: () =>
+                                  checkoutProvider.buttonChecker(),
                             ),
                           ),
                         ],
@@ -254,7 +302,8 @@ class CheckoutScreen extends StatelessWidget {
                       ),
                       InputField(
                         hintText: "Address:",
-                        controller: checkoutProvider.eMailController,
+                        controller: checkoutProvider.addressController,
+                        onInputChanged: () => checkoutProvider.buttonChecker(),
                       ),
                       const SizedBox(
                         height: 24,
@@ -269,9 +318,50 @@ class CheckoutScreen extends StatelessWidget {
                               right: 20,
                             ),
                             buttonText:
-                                "Checkout ${(8 + checkoutPrice)} ${cartProducts.first.productModel.currency}",
+                                "Checkout ${checkoutProvider.getTotalPrice()} ${checkoutProvider.cartProductsList.first.productModel?.currency}",
                             enable: checkoutProvider.isButtonEnabled,
-                            onPress: () => {},
+                            onPress: () {
+                              ResponseModel? responseModel;
+                              Loading.callLoading(
+                                context: context,
+                                callback: () async {
+                                  responseModel =
+                                      await checkoutProvider.orderProduct();
+                                },
+                                onFinished: () {
+                                  Navigator.of(context)
+                                      .popUntil((route) => route.isFirst);
+                                  if (responseModel != null) {
+                                    if (responseModel!.success) {
+                                      mainProvider.cartProducts.clear();
+                                      SnackBarPopup.showMessage(
+                                        context,
+                                        message:
+                                            "Your order has been received!",
+                                        snackBarMessageType:
+                                            SnackBarMessageType.success,
+                                      );
+                                    } else {
+                                      SnackBarPopup.showMessage(
+                                        context,
+                                        message: responseModel?.error ??
+                                            "Something went wrong.",
+                                        snackBarMessageType:
+                                            SnackBarMessageType.error,
+                                      );
+                                    }
+                                  } else {
+                                    SnackBarPopup.showMessage(
+                                      context,
+                                      message: responseModel?.error ??
+                                          "Something went wrong.",
+                                      snackBarMessageType:
+                                          SnackBarMessageType.error,
+                                    );
+                                  }
+                                },
+                              );
+                            },
                           ),
                         ),
                       )
