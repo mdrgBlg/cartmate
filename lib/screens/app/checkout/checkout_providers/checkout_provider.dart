@@ -58,7 +58,7 @@ class CheckoutProvider with ChangeNotifier {
     return CheckoutService.orderProduct(
       CheckoutModel(
         orderId:
-            "#${firstNameController.text[0].toLowerCase()}${lastNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(5, 10)}",
+            "#${firstNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(5, 7)}${lastNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(7, 9)}",
         userId: userId,
         address: addressController.text,
         city: cityController.text,

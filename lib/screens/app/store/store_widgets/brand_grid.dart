@@ -1,8 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../home/home_models/products_model.dart';
 import '/constants/custom_colors.dart';
-import '/constants/custom_images.dart';
 import '/helpers/custom_navigator.dart';
 import '/helpers/helpers.dart';
 import '/models/brand_model.dart';
@@ -38,9 +38,9 @@ class BrandGrid extends StatelessWidget {
                   context: context,
                   routeName: BrandProducts.routeName,
                   screen: BrandProducts(
-                    productsList: Helpers.getBrandProducts(productsList, brandList[index]),
-                    brandName: brandList[index].brandName,
-                    productCount: brandList[index].productCount,
+                    productsList: Helpers.getBrandProducts(
+                        productsList, brandList[index]),
+                    brandModel: brandList[index],
                   ),
                 ),
                 child: Container(
@@ -60,7 +60,9 @@ class BrandGrid extends StatelessWidget {
                       SizedBox(
                         height: 36,
                         width: 36,
-                        child: Image.asset(CustomImages.nikeLogo),
+                        child: CachedNetworkImage(
+                          imageUrl: brandList[index].iconName,
+                        ),
                       ),
                       const SizedBox(
                         width: 12,

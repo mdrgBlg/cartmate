@@ -8,4 +8,7 @@ class CustomIcons {
   static const animals = 'assets/categories/animals.png';
   static const shoes = 'assets/categories/shoes.png';
   static const cash = 'assets/payment-method.png';
+  static const myOrders = 'assets/my_orders.png';
+  static const priceTag = 'assets/tag.png';
+  static const timing = 'assets/timing.png';
 }

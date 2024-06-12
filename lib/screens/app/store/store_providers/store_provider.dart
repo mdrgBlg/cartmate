@@ -1,10 +1,10 @@
-import 'package:e_commerce/models/cart_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../home/home_models/categories_model.dart';
 import '../../home/home_models/products_model.dart';
 import '../../home/home_providers/home_service.dart';
 import '/models/brand_model.dart';
+import '/models/cart_model.dart';
 import 'store_service.dart';
 
 class StoreProvider with ChangeNotifier {
@@ -38,6 +38,7 @@ class StoreProvider with ChangeNotifier {
         }
       }
     }
+
     notifyListeners();
   }
 
@@ -52,6 +53,18 @@ class StoreProvider with ChangeNotifier {
         product.count = cartMap[product.id]!;
       }
     }
+  }
+
+  List<ProductsModel> getProducts(
+    BrandModel categoryBrand,
+  ) {
+    List<ProductsModel> products = [];
+    for (var e in brandProducts) {
+      if (categoryBrand.id == e.brandModel?.id) {
+        products.add(e);
+      }
+    }
+    return products;
   }
 
   Future<void> fetchBrands() async {

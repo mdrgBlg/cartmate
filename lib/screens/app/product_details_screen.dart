@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/helpers/snack_bar_popup.dart';
 import 'package:e_commerce/models/cart_model.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +34,8 @@ class ProductDetailsScreen extends StatelessWidget {
       listen: false,
     );
     final textTheme = Theme.of(context).textTheme;
+    log(product.productImageList[productDetailsProvider.selectedImage]);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -87,8 +92,8 @@ class ProductDetailsScreen extends StatelessWidget {
                         width: double.infinity,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(
-                            product.productImageList[
+                          child: CachedNetworkImage(
+                            imageUrl: product.productImageList[
                                 productDetailsProvider.selectedImage],
                             height: 220,
                             fit: BoxFit.fill,
@@ -124,8 +129,8 @@ class ProductDetailsScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(16),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
-                                child: Image.asset(
-                                  product.productImageList[index],
+                                child: CachedNetworkImage(
+                                  imageUrl: product.productImageList[index],
                                   fit: BoxFit.fill,
                                 ),
                               ),
@@ -249,49 +254,53 @@ class ProductDetailsScreen extends StatelessWidget {
                       child: Wrap(
                         spacing: 10, // spacing between adjacent containers
                         runSpacing: 8, // spacing between rows
-                        children:
-                            List.generate(product.productSize.length, (index) {
-                          return Consumer<ProductDetailsProvider>(
-                            builder: (_, __, child) => InkWell(
-                              borderRadius: BorderRadius.circular(8),
-                              onTap: () =>
-                                  productDetailsProvider.changeSelectedSize(
-                                      product.productSize[index]),
-                              child: Container(
-                                alignment: Alignment.center,
-                                width: 64,
-                                height:
-                                    40, // adjust the height as per your need
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                    color:
-                                        productDetailsProvider.selectedSize ==
-                                                product.productSize[index]
-                                            ? Colors.black.withOpacity(0.2)
-                                            : Colors.black,
-                                    width: 1,
-                                  ),
-                                  color: productDetailsProvider.selectedSize ==
-                                          product.productSize[index]
-                                      ? CustomColors.primary
-                                      : CustomColors.secondary,
+                        children: List.generate(
+                          product.productSize?.length ?? 0,
+                          (index) {
+                            return Consumer<ProductDetailsProvider>(
+                              builder: (_, __, child) => InkWell(
+                                borderRadius: BorderRadius.circular(8),
+                                onTap: () =>
+                                    productDetailsProvider.changeSelectedSize(
+                                  product.productSize?[index] ?? "",
                                 ),
-                                child: Text(
-                                  product.productSize[index],
-                                  style: textTheme.bodyMedium!.copyWith(
-                                    fontWeight: FontWeight.bold,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 64,
+                                  height:
+                                      40, // adjust the height as per your need
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color:
+                                          productDetailsProvider.selectedSize ==
+                                                  product.productSize?[index]
+                                              ? Colors.black.withOpacity(0.2)
+                                              : Colors.black,
+                                      width: 1,
+                                    ),
                                     color:
                                         productDetailsProvider.selectedSize ==
-                                                product.productSize[index]
-                                            ? CustomColors.secondary
-                                            : Colors.black,
+                                                product.productSize?[index]
+                                            ? CustomColors.primary
+                                            : CustomColors.secondary,
+                                  ),
+                                  child: Text(
+                                    product.productSize?[index] ?? "",
+                                    style: textTheme.bodyMedium!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          productDetailsProvider.selectedSize ==
+                                                  product.productSize?[index]
+                                              ? CustomColors.secondary
+                                              : Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          },
+                        ),
                       ),
                     ),
                     Padding(

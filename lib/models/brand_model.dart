@@ -1,11 +1,12 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class BrandModel {
   final String id;
   final String brandName;
-  final String iconName;
+  String iconName;
   final int productCount;
 
   BrandModel({
@@ -15,7 +16,8 @@ class BrandModel {
     required this.productCount,
   });
 
-  static BrandModel? fromDocument(DocumentSnapshot<Map<String, dynamic>> document) {
+  static Future<BrandModel?> fromDocument(
+      DocumentSnapshot<Map<String, dynamic>> document) async {
     final json = document.data();
     BrandModel? brandModel;
     try {
@@ -23,7 +25,10 @@ class BrandModel {
         brandModel = BrandModel(
           id: document.id,
           brandName: json["brandName"],
-          iconName: json["iconName"],
+          iconName: await FirebaseStorage.instance
+              .ref()
+              .child('icons/${json["iconName"]}')
+              .getDownloadURL(),
           productCount: json["productCount"],
         );
       }
@@ -33,7 +38,25 @@ class BrandModel {
     return brandModel;
   }
 
-  static BrandModel? fromJson(Map<String, dynamic> json) {
+  static Future<BrandModel?> fromJson(Map<String, dynamic> json) async {
+    BrandModel? brandModel;
+    try {
+      brandModel = BrandModel(
+        id: json["id"],
+        brandName: json["brandName"],
+        iconName: await FirebaseStorage.instance
+            .ref()
+            .child('icons/${json["iconName"]}')
+            .getDownloadURL(),
+        productCount: json["productCount"],
+      );
+    } catch (e) {
+      log("EXCEPTION BrandModel $e");
+    }
+    return brandModel;
+  }
+
+  static BrandModel? fromJsonDb(Map<String, dynamic> json) {
     BrandModel? brandModel;
     try {
       brandModel = BrandModel(
