@@ -39,7 +39,7 @@ class ViewAllBrands extends StatelessWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Gap(16),
+            const Gap(16),
             Padding(
               padding: const EdgeInsets.only(left: 20, bottom: 8),
               child: Text(

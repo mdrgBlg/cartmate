@@ -1,9 +1,9 @@
-import 'package:e_commerce/screens/app/checkout/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '../../screen_wrapper.dart';
+import '../checkout/cart_screen.dart';
 import '/constants/custom_colors.dart';
 import '/helpers/custom_navigator.dart';
 import '/providers/main_provider.dart';
@@ -157,25 +157,27 @@ class StoreScreen extends StatelessWidget {
               ),
               const Gap(24),
               Consumer<StoreProvider>(
-                builder: (_, __, child) => storeProvider
-                        .categoriesList.isNotEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: storeProvider.categoryBrandsList.length,
-                          itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            child: CategoriesBrands(
-                              categoryBrand:
-                                  storeProvider.categoryBrandsList[index],
-                              brandProducts: storeProvider.brandProducts,
-                            ),
+                builder: (_, __, child) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: storeProvider.categoryBrandsList.length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: CategoriesBrands(
+                          categoryBrand:
+                              storeProvider.categoryBrandsList[index],
+                          brandProducts: storeProvider.brandProducts,
+                          productsList: storeProvider.getProducts(
+                            storeProvider.categoryBrandsList[index],
                           ),
                         ),
-                      )
-                    : Container(),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
