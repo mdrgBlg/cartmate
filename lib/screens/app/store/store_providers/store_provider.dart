@@ -12,7 +12,6 @@ class StoreProvider with ChangeNotifier {
   final scrollController = ScrollController();
   List<CategoriesModel> categoriesList = [];
   List<BrandModel> brandsList = [];
-  List<ProductsModel> productsList = [];
   List<BrandModel> categoryBrandsList = [];
   List<ProductsModel> brandProducts = [];
 
@@ -25,15 +24,19 @@ class StoreProvider with ChangeNotifier {
     }
   }
 
-  void changeSelectedCategory(CategoriesModel value) {
+  void changeSelectedCategory(
+      CategoriesModel value, List<ProductsModel> productsList) {
     selectedCategory = value;
     categoryBrandsList = [];
+
     brandProducts = [];
     for (var e in productsList) {
       if (selectedCategory?.id == e.categoryId) {
-        if (e.brandModel != null &&
-            !categoryBrandsList.contains(e.brandModel!)) {
-          categoryBrandsList.add(e.brandModel!);
+        if (e.brandModel != null) {
+          if (!categoryBrandsList
+              .any((brand) => brand.id == e.brandModel!.id)) {
+            categoryBrandsList.add(e.brandModel!);
+          }
           brandProducts.add(e);
         }
       }
@@ -67,23 +70,25 @@ class StoreProvider with ChangeNotifier {
     return products;
   }
 
-  Future<void> fetchBrands() async {
+  Future<void> fetchBrands(List<ProductsModel> whishlistProductsList,
+      List<CartModel> cartList, List<ProductsModel> productsList) async {
     brandsList = await StoreService.fetchBrands();
+    await fetchCategories(whishlistProductsList, cartList, productsList);
+    changeSelectedCategory(selectedCategory!, productsList);
   }
 
-  Future<void> fetchProducts(List<ProductsModel> whishlistProductsList,
-      List<CartModel> cartList) async {
-    productsList = await HomeService.fetchProducts();
+  void fetchProducts(List<ProductsModel> whishlistProductsList,
+      List<CartModel> cartList, List<ProductsModel> productsList) {
     setWishlistFlag(productsList, whishlistProductsList);
     setProductCount(productsList, cartList);
   }
 
-  Future<void> fetchCategories(List<ProductsModel> whishlistProductsList,
-      List<CartModel> cartList) async {
-    await fetchProducts(
-      whishlistProductsList,
-      cartList,
-    );
+  Future<void> fetchCategories(
+    List<ProductsModel> whishlistProductsList,
+    List<CartModel> cartList,
+    List<ProductsModel> productsList,
+  ) async {
+    fetchProducts(whishlistProductsList, cartList, productsList);
     categoriesList = await HomeService.fetchCategories();
     selectedCategory = categoriesList.first;
     if (categoriesList.isNotEmpty) {

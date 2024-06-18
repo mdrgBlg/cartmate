@@ -47,7 +47,6 @@ class HomeService {
             );
           }
           productsModel.productImageList = urlList;
-
           productList.add(productsModel);
         }
       }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/helpers/snack_bar_popup.dart';
 import 'package:e_commerce/models/cart_model.dart';
@@ -7,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/constants/custom_images.dart';
 import '/providers/main_provider.dart';
 import '/providers/product_details_provider.dart';
 import '/widgets/custom_button.dart';
@@ -34,7 +31,6 @@ class ProductDetailsScreen extends StatelessWidget {
       listen: false,
     );
     final textTheme = Theme.of(context).textTheme;
-    log(product.productImageList[productDetailsProvider.selectedImage]);
 
     return SafeArea(
       child: Scaffold(
@@ -108,7 +104,7 @@ class ProductDetailsScreen extends StatelessWidget {
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: 3,
+                        itemCount: product.productImageList.length,
                         itemBuilder: (context, index) =>
                             Consumer<ProductDetailsProvider>(
                           builder: (_, __, child) => Container(
@@ -142,20 +138,22 @@ class ProductDetailsScreen extends StatelessWidget {
                     const SizedBox(
                       height: 28,
                     ),
-
                     Row(
                       children: [
-                        Container(
-                          alignment: AlignmentDirectional.centerStart,
-                          child: Text(
-                            product.productName,
-                            style: textTheme.bodyLarge!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                        Expanded(
+                          child: Container(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: Text(
+                              product.productName,
+                              style: textTheme.bodyLarge!.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                             ),
                           ),
                         ),
-                        const Spacer(),
                         Container(
                           alignment: AlignmentDirectional.center,
                           width: 32,
@@ -187,8 +185,6 @@ class ProductDetailsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-
-                    ///TODO CHANGE OF THIS ICON
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Row(
@@ -196,7 +192,9 @@ class ProductDetailsScreen extends StatelessWidget {
                           SizedBox(
                             height: 20,
                             width: 20,
-                            child: Image.asset(CustomImages.nikeLogo),
+                            child: CachedNetworkImage(
+                              imageUrl: product.brandModel?.iconName ?? "",
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -238,17 +236,17 @@ class ProductDetailsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        "Size",
-                        style: textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
+                    if (product.productSize?.isNotEmpty ?? false)
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          "Size",
+                          style: textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Wrap(
@@ -308,7 +306,8 @@ class ProductDetailsScreen extends StatelessWidget {
                       child: Consumer<ProductDetailsProvider>(
                         builder: (_, __, child) => CustomButton(
                           buttonText: "Add to cart",
-                          enable: productDetailsProvider.selectedSize != null
+                          enable: productDetailsProvider.selectedSize != null ||
+                                  product.productSize == null
                               ? true
                               : false,
                           margin: EdgeInsets.zero,
