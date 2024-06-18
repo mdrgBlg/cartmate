@@ -82,26 +82,6 @@ class CategoriesBrands extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            categoryBrand.productCount.toString(),
-                            style: textTheme.bodySmall!.copyWith(
-                              color: CustomColors.text.withOpacity(0.4),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 2,
-                          ),
-                          Text(
-                            "products",
-                            style: textTheme.bodySmall!.copyWith(
-                              color: CustomColors.text.withOpacity(0.4),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      )
                     ],
                   ),
                 )

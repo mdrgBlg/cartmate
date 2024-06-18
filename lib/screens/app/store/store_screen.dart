@@ -87,7 +87,6 @@ class StoreScreen extends StatelessWidget {
                           value: StoreProvider(),
                           child: ViewAllBrands(
                             brandsList: storeProvider.brandsList,
-                            productsList: storeProvider.productsList,
                           ),
                         ),
                       ),
@@ -100,51 +99,46 @@ class StoreScreen extends StatelessWidget {
                 ),
               ),
               FutureBuilder<void>(
-                future: storeProvider.fetchBrands(),
+                future: storeProvider.fetchBrands(
+                  mainProvider.whishlistProductsList,
+                  mainProvider.cartProducts,
+                  mainProvider.productsList,
+                ),
                 builder: (context, snapshot) =>
                     snapshot.connectionState == ConnectionState.waiting
                         ? const Center(
+                            heightFactor: 3,
                             child: CircularProgressIndicator(),
                           )
                         : storeProvider.brandsList.isNotEmpty
                             ? BrandGrid(
                                 brandList: storeProvider.brandsList,
-                                productsList: storeProvider.productsList,
+                                showLimited: true,
                               )
                             : Container(),
               ),
               const Gap(32),
               SizedBox(
                 height: 40,
-                child: FutureBuilder<void>(
-                  future: storeProvider.fetchCategories(
-                    mainProvider.whishlistProductsList,
-                    mainProvider.cartProducts,
-                  ),
-                  builder: (context, snapshot) => snapshot.connectionState ==
-                          ConnectionState.waiting
-                      ? const Center(child: CircularProgressIndicator())
-                      : Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            controller: storeProvider.scrollController,
-                            itemCount: storeProvider.categoriesList.length,
-                            itemBuilder: (context, index) =>
-                                Consumer<StoreProvider>(
-                              builder: (_, __, child) => CategoriesTextWidget(
-                                categoriesModel:
-                                    storeProvider.categoriesList[index],
-                                onTap: () =>
-                                    storeProvider.changeSelectedCategory(
-                                        storeProvider.categoriesList[index]),
-                                isActive: storeProvider.selectedCategory ==
-                                    storeProvider.categoriesList[index],
-                              ),
-                            ),
-                          ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Consumer<StoreProvider>(
+                    builder: (_, __, child) => ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      controller: storeProvider.scrollController,
+                      itemCount: storeProvider.categoriesList.length,
+                      itemBuilder: (context, index) => CategoriesTextWidget(
+                        categoriesModel: storeProvider.categoriesList[index],
+                        onTap: () => storeProvider.changeSelectedCategory(
+                          storeProvider.categoriesList[index],
+                          mainProvider.productsList,
                         ),
+                        isActive: storeProvider.selectedCategory ==
+                            storeProvider.categoriesList[index],
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Padding(

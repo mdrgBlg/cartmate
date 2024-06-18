@@ -48,7 +48,9 @@ class ProductsModel {
           productName: json["productName"],
           discount: json["discount"],
           price: json["price"],
-          productSize: List<String>.from(json["productSize"]),
+          productSize: json["productSize"] != null
+              ? List<String>.from(json["productSize"])
+              : null,
           stock: json["stock"],
         );
       }

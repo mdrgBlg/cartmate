@@ -10,6 +10,7 @@ class StoreService {
     List<BrandModel> brandsList = [];
     try {
       final res = await db.collection("Brands").get();
+
       for (var e in res.docs) {
         BrandModel? brandModel = await BrandModel.fromDocument(e);
         if (brandModel != null) {
