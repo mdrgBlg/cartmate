@@ -11,4 +11,6 @@ class CustomIcons {
   static const myOrders = 'assets/my_orders.png';
   static const priceTag = 'assets/tag.png';
   static const timing = 'assets/timing.png';
+  static const manAvatar = 'assets/man.png';
+  static const femaleAvatar = 'assets/woman.png';
 }
