@@ -1,10 +1,10 @@
-import 'package:e_commerce/models/cart_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../home/home_models/categories_model.dart';
 import '../../home/home_models/products_model.dart';
 import '../../home/home_providers/home_service.dart';
 import '/models/brand_model.dart';
+import '/models/cart_model.dart';
 import 'store_service.dart';
 
 class StoreProvider with ChangeNotifier {
@@ -12,7 +12,6 @@ class StoreProvider with ChangeNotifier {
   final scrollController = ScrollController();
   List<CategoriesModel> categoriesList = [];
   List<BrandModel> brandsList = [];
-  List<ProductsModel> productsList = [];
   List<BrandModel> categoryBrandsList = [];
   List<ProductsModel> brandProducts = [];
 
@@ -25,19 +24,24 @@ class StoreProvider with ChangeNotifier {
     }
   }
 
-  void changeSelectedCategory(CategoriesModel value) {
+  void changeSelectedCategory(
+      CategoriesModel value, List<ProductsModel> productsList) {
     selectedCategory = value;
     categoryBrandsList = [];
+
     brandProducts = [];
     for (var e in productsList) {
       if (selectedCategory?.id == e.categoryId) {
-        if (e.brandModel != null &&
-            !categoryBrandsList.contains(e.brandModel!)) {
-          categoryBrandsList.add(e.brandModel!);
+        if (e.brandModel != null) {
+          if (!categoryBrandsList
+              .any((brand) => brand.id == e.brandModel!.id)) {
+            categoryBrandsList.add(e.brandModel!);
+          }
           brandProducts.add(e);
         }
       }
     }
+
     notifyListeners();
   }
 
@@ -54,23 +58,37 @@ class StoreProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchBrands() async {
-    brandsList = await StoreService.fetchBrands();
+  List<ProductsModel> getProducts(
+    BrandModel categoryBrand,
+  ) {
+    List<ProductsModel> products = [];
+    for (var e in brandProducts) {
+      if (categoryBrand.id == e.brandModel?.id) {
+        products.add(e);
+      }
+    }
+    return products;
   }
 
-  Future<void> fetchProducts(List<ProductsModel> whishlistProductsList,
-      List<CartModel> cartList) async {
-    productsList = await HomeService.fetchProducts();
+  Future<void> fetchBrands(List<ProductsModel> whishlistProductsList,
+      List<CartModel> cartList, List<ProductsModel> productsList) async {
+    brandsList = await StoreService.fetchBrands();
+    await fetchCategories(whishlistProductsList, cartList, productsList);
+    changeSelectedCategory(selectedCategory!, productsList);
+  }
+
+  void fetchProducts(List<ProductsModel> whishlistProductsList,
+      List<CartModel> cartList, List<ProductsModel> productsList) {
     setWishlistFlag(productsList, whishlistProductsList);
     setProductCount(productsList, cartList);
   }
 
-  Future<void> fetchCategories(List<ProductsModel> whishlistProductsList,
-      List<CartModel> cartList) async {
-    await fetchProducts(
-      whishlistProductsList,
-      cartList,
-    );
+  Future<void> fetchCategories(
+    List<ProductsModel> whishlistProductsList,
+    List<CartModel> cartList,
+    List<ProductsModel> productsList,
+  ) async {
+    fetchProducts(whishlistProductsList, cartList, productsList);
     categoriesList = await HomeService.fetchCategories();
     selectedCategory = categoriesList.first;
     if (categoriesList.isNotEmpty) {

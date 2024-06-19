@@ -1,37 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../home/home_models/products_model.dart';
 import '/constants/custom_colors.dart';
-import '/constants/custom_images.dart';
 import '/helpers/custom_navigator.dart';
 import '/models/brand_model.dart';
 import 'brand_products.dart';
 
-class CategoriesBrands extends StatefulWidget {
+class CategoriesBrands extends StatelessWidget {
   final BrandModel categoryBrand;
   final List<ProductsModel> brandProducts;
+  final List<ProductsModel> productsList;
   const CategoriesBrands({
     super.key,
     required this.categoryBrand,
     required this.brandProducts,
+    required this.productsList,
   });
-
-  @override
-  State<CategoriesBrands> createState() => _CategoriesBrandsState();
-}
-
-class _CategoriesBrandsState extends State<CategoriesBrands> {
-  List<ProductsModel> productsList = [];
-  @override
-  void initState() {
-    for (var e in widget.brandProducts) {
-      if (widget.categoryBrand.id == e.brandModel?.id) {
-        productsList.add(e);
-      }
-    }
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +28,7 @@ class _CategoriesBrandsState extends State<CategoriesBrands> {
         routeName: BrandProducts.routeName,
         screen: BrandProducts(
           productsList: productsList,
-          brandName: widget.categoryBrand.brandName,
-          productCount: widget.categoryBrand.productCount,
+          brandModel: categoryBrand,
         ),
       ),
       borderRadius: BorderRadius.circular(16),
@@ -67,7 +52,9 @@ class _CategoriesBrandsState extends State<CategoriesBrands> {
                 SizedBox(
                   height: 36,
                   width: 36,
-                  child: Image.asset(CustomImages.nikeLogo),
+                  child: CachedNetworkImage(
+                    imageUrl: categoryBrand.iconName,
+                  ),
                 ),
                 const SizedBox(
                   width: 12,
@@ -80,7 +67,7 @@ class _CategoriesBrandsState extends State<CategoriesBrands> {
                       Row(
                         children: [
                           Text(
-                            widget.categoryBrand.brandName,
+                            categoryBrand.brandName,
                             style: textTheme.bodyMedium!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -95,26 +82,6 @@ class _CategoriesBrandsState extends State<CategoriesBrands> {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            widget.categoryBrand.productCount.toString(),
-                            style: textTheme.bodySmall!.copyWith(
-                              color: CustomColors.text.withOpacity(0.4),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 2,
-                          ),
-                          Text(
-                            "products",
-                            style: textTheme.bodySmall!.copyWith(
-                              color: CustomColors.text.withOpacity(0.4),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      )
                     ],
                   ),
                 )
@@ -137,8 +104,8 @@ class _CategoriesBrandsState extends State<CategoriesBrands> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        productsList[0].productImageList.first,
+                      child: CachedNetworkImage(
+                        imageUrl: productsList[index].productImageList.first,
                         fit: BoxFit.fill,
                       ),
                     ),

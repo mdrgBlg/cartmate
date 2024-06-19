@@ -1,3 +1,4 @@
+import 'package:e_commerce/models/brand_model.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -8,13 +9,11 @@ import 'brand_container.dart';
 
 class BrandProducts extends StatelessWidget {
   final List<ProductsModel> productsList;
-  final String brandName;
-  final int productCount;
+  final BrandModel brandModel;
   const BrandProducts({
     super.key,
     required this.productsList,
-    required this.brandName,
-    required this.productCount,
+    required this.brandModel,
   });
 
   static const routeName = '/brandProducts';
@@ -31,7 +30,7 @@ class BrandProducts extends StatelessWidget {
           foregroundColor: Colors.black,
           titleSpacing: 4,
           title: Text(
-            brandName,
+            brandModel.brandName,
             style: textTheme.titleLarge!.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -42,8 +41,7 @@ class BrandProducts extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
               child: BrandContainer(
-                brandName: brandName,
-                productCount: productCount.toString(),
+                brand: brandModel,
               ),
             ),
             const Gap(12),

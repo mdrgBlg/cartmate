@@ -1,11 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/constants/custom_colors.dart';
 import '/models/cart_model.dart';
 import '/providers/main_provider.dart';
-import '/constants/custom_colors.dart';
-import '/constants/custom_images.dart';
 
 class CartItem extends StatelessWidget {
   final CartModel cartModel;
@@ -53,8 +53,9 @@ class CartItem extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      CustomImages.shoesGrid,
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          cartModel.productModel?.productImageList.first ?? "",
                       height: 64,
                     ),
                   ),

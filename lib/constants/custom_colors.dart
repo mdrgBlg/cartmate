@@ -10,4 +10,5 @@ class CustomColors {
   static const disabled = Color(0xFF03A9F4);
   static const customGrey = Color(0xffDCDCDC);
   static const grayDark = Color(0xffA0A0A0);
+  static const greyShade200 = Color(0xffDDDFE4);
 }

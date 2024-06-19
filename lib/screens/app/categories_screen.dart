@@ -34,30 +34,32 @@ class CategoriesScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         body: SizedBox(
           width: double.infinity,
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.asset(
-                    CustomImages.nike,
-                    fit: BoxFit.fill,
-                    height: 200,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.asset(
+                      CustomImages.nike,
+                      fit: BoxFit.fill,
+                      height: 200,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: ProductsGridView(
-                  productsList: productsList,
-                ),
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: ProductsGridView(
+                    productsList: productsList,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

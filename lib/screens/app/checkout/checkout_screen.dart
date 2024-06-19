@@ -333,7 +333,7 @@ class CheckoutScreen extends StatelessWidget {
                                       .popUntil((route) => route.isFirst);
                                   if (responseModel != null) {
                                     if (responseModel!.success) {
-                                      mainProvider.cartProducts.clear();
+                                      mainProvider.checkoutSuccessful();
                                       SnackBarPopup.showMessage(
                                         context,
                                         message:

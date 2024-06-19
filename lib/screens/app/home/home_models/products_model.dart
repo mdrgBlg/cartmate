@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '/helpers/helpers.dart';
 import '/models/brand_model.dart';
 
 class ProductsModel {
@@ -10,11 +9,11 @@ class ProductsModel {
   final BrandModel? brandModel;
   final String categoryId;
   final String currency;
-  final List<String> productImageList;
+  List<String> productImageList;
   final String productName;
   final int discount;
   final int price;
-  final List<String> productSize;
+  final List<String>? productSize;
   final int stock;
   bool whishlist;
   int count;
@@ -34,22 +33,24 @@ class ProductsModel {
     this.count = 0,
   });
 
-  static ProductsModel? fromDocument(
-      DocumentSnapshot<Map<String, dynamic>> document) {
+  static Future<ProductsModel?> fromDocument(
+      DocumentSnapshot<Map<String, dynamic>> document) async {
     final json = document.data();
     ProductsModel? productsModel;
     try {
       if (json != null) {
         productsModel = ProductsModel(
           id: document.id,
-          brandModel: BrandModel.fromJson(json["brand"]),
+          brandModel: await BrandModel.fromJson(json["brand"]),
           categoryId: json["categoryId"],
           currency: json["currency"],
-          productImageList: Helpers.fetchImages(json["productImage"]),
+          productImageList: List<String>.from(json["productImage"]),
           productName: json["productName"],
           discount: json["discount"],
           price: json["price"],
-          productSize: List<String>.from(json["productSize"]),
+          productSize: json["productSize"] != null
+              ? List<String>.from(json["productSize"])
+              : null,
           stock: json["stock"],
         );
       }
@@ -65,15 +66,16 @@ class ProductsModel {
     try {
       productsModel = ProductsModel(
         id: json["id"],
-        brandModel: BrandModel.fromJson(json["brand"]),
+        brandModel: BrandModel.fromJsonDb(json["brand"]),
         categoryId: json["categoryId"],
         currency: json["currency"],
-        productImageList: Helpers.fetchImages(json["productImage"]),
+        productImageList: List<String>.from(json["productImage"]),
         productName: json["productName"],
         discount: json["discount"],
         price: json["price"],
-        productSize: List<String>.from(json["productSize"]),
+        productSize: json["productSize"],
         stock: json["stock"],
+        count: json["count"],
       );
     } catch (e) {
       log("EXCEPTION ProductsModel $e");
@@ -118,7 +120,8 @@ class ProductsModel {
       'productName': product.productName,
       'discount': product.discount,
       'price': product.price,
-      'productSize': product.productSize.join(','),
+      'productSize':
+          product.productSize != null ? product.productSize!.join(',') : "",
       'stock': product.stock,
       'wishlist': product.whishlist ? 1 : 0,
       'count': product.count,
@@ -128,15 +131,14 @@ class ProductsModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'brandId': brandModel?.id,
+      'brand': brandModel != null ? BrandModel.brandToMap(brandModel!) : null,
       'categoryId': categoryId,
       'currency': currency,
-      'productImage': productImageList.join(','),
+      'productImage': productImageList,
       'productName': productName,
       'discount': discount,
       'price': price,
       'stock': stock,
-      'wishlist': whishlist ? 1 : 0,
       'count': count,
     };
   }
@@ -150,7 +152,8 @@ class ProductsModel {
         productName = other.productName,
         discount = other.discount,
         price = other.price,
-        productSize = List<String>.from(other.productSize),
+        productSize = List<String>.from(
+            other.productSize != null ? other.productSize! : []),
         stock = other.stock,
         whishlist = other.whishlist,
         count = other.count;
