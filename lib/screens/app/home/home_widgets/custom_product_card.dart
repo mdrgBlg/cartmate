@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/helpers/custom_navigator.dart';
 import 'package:e_commerce/helpers/helpers.dart';
 import 'package:e_commerce/providers/main_provider.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/constants/custom_images.dart';
 
 class CustomProductCard extends StatelessWidget {
   final ProductsModel productsModel;
@@ -65,8 +65,8 @@ class CustomProductCard extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      CustomImages.shoesGrid,
+                    child: CachedNetworkImage(
+                      imageUrl: productsModel.productImageList.first,
                       height: 140,
                     ),
                   ),

@@ -29,6 +29,9 @@ dependencies:
   country_picker: ^2.0.26
   csc_picker: ^0.2.7
   country_state_city_pro: ^0.0.6
+  firebase_storage: ^11.6.9
+  cached_network_image: ^3.3.1
+  firebase_app_check: ^0.2.1+17
 
 dev_dependencies:
   flutter_test:

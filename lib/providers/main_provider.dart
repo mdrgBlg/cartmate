@@ -130,6 +130,19 @@ class MainProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void checkoutSuccessful() {
+    final cartIds =
+        cartProducts.map((product) => product.productModel?.id).toSet();
+    for (var e in productsList) {
+      if (cartIds.contains(e.id)) {
+        e.count = 0;
+      }
+    }
+    cartProducts.clear();
+    cartProductNumber = 0;
+    notifyListeners();
+  }
+
   Future<bool> changeUserName(String firstName, String lastName) async {
     bool success = false;
     userInfoModel?.firstName = firstName;

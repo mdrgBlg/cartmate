@@ -1,15 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce/models/brand_model.dart';
 import 'package:flutter/material.dart';
 
 import '/constants/custom_colors.dart';
-import '/constants/custom_images.dart';
 
 class BrandContainer extends StatelessWidget {
-  final String brandName;
-  final String productCount;
+  final BrandModel brand;
   const BrandContainer({
     super.key,
-    required this.brandName,
-    required this.productCount,
+    required this.brand,
   });
 
   @override
@@ -34,7 +33,10 @@ class BrandContainer extends StatelessWidget {
           SizedBox(
             height: 36,
             width: 36,
-            child: Image.asset(CustomImages.nikeLogo),
+            child: CachedNetworkImage(
+              imageUrl: brand.iconName,
+              fit: BoxFit.cover,
+            ),
           ),
           const SizedBox(
             width: 12,
@@ -47,7 +49,7 @@ class BrandContainer extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      brandName,
+                      brand.brandName,
                       style: textTheme.bodyMedium!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -65,7 +67,7 @@ class BrandContainer extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      productCount,
+                      brand.productCount.toString(),
                       style: textTheme.bodySmall!.copyWith(
                         color: CustomColors.text.withOpacity(0.4),
                       ),

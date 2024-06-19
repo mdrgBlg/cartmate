@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce/db/db_helper.dart';
-import 'package:e_commerce/models/brand_model.dart';
-import 'package:e_commerce/screens/app/home/home_models/products_model.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../../../db/db_constants.dart';
 import '../home_models/categories_model.dart';
+import '../home_models/products_model.dart';
+import '/db/db_constants.dart';
+import '/db/db_helper.dart';
+import '/models/brand_model.dart';
 
 class HomeService {
   static Future<List<CategoriesModel>> fetchCategories() async {
@@ -34,7 +34,7 @@ class HomeService {
     try {
       final res = await db.collection("Products").get();
       for (var e in res.docs) {
-        ProductsModel? productsModel = ProductsModel.fromDocument(e);
+        ProductsModel? productsModel = await ProductsModel.fromDocument(e);
         if (productsModel != null) {
           productList.add(productsModel);
         }
@@ -92,16 +92,20 @@ class HomeService {
     List<ProductsModel> productsList = [];
     BrandModel? brandModel;
     try {
-      final List<Map<String, dynamic>>? productsMap = await DbHelper.db?.query(DbConstants.whishlistTable);
+      final List<Map<String, dynamic>>? productsMap =
+          await DbHelper.db?.query(DbConstants.whishlistTable);
       if (productsMap != null && productsMap.isNotEmpty) {
         log("Data successfully fetched from ${DbConstants.whishlistTable} table");
         for (var e in productsMap) {
           final brandId = e["brandId"];
-          final List<Map<String, dynamic>>? brandMap = await DbHelper.db?.query(DbConstants.brandTable, where: 'id = ?', whereArgs: [brandId]);
+          final List<Map<String, dynamic>>? brandMap = await DbHelper.db?.query(
+              DbConstants.brandTable,
+              where: 'id = ?',
+              whereArgs: [brandId]);
 
           if (brandMap != null && brandMap.isNotEmpty) {
             log("Data successfully fetched from ${DbConstants.brandTable} table");
-            brandModel = BrandModel.fromJson(brandMap.first);
+            brandModel = BrandModel.fromJsonDb(brandMap.first);
           }
           ProductsModel? productsModel = ProductsModel.fromDb(e, brandModel);
           if (productsModel != null) {

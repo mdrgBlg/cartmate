@@ -1,5 +1,4 @@
 import '/constants/custom_icons.dart';
-import '/constants/custom_images.dart';
 import '/models/brand_model.dart';
 import '/screens/app/home/home_models/products_model.dart';
 
@@ -23,16 +22,6 @@ class Helpers {
     }
   }
 
-  static List<String> fetchImages(String? productName) {
-    switch (productName) {
-      case "supernova":
-        return CustomImages.supernova;
-
-      default:
-        return CustomImages.supernova;
-    }
-  }
-
   static List<ProductsModel> getBrandProducts(
       List<ProductsModel> productsList, BrandModel brand) {
     List<ProductsModel> filteredProductsList = [];
@@ -48,5 +37,21 @@ class Helpers {
 
   static double calculateDiscountPrice(int price, int discount) {
     return price - price * (discount / 100);
+  }
+
+  static String fetchOrderStatus(int value) {
+    switch (value) {
+      case 0:
+        return "Pending";
+      case 1:
+        return "Processing";
+      case 2:
+        return "In Transit";
+      case 3:
+        return "Delivered";
+
+      default:
+        return "";
+    }
   }
 }

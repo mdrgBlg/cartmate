@@ -1,9 +1,9 @@
-import 'package:e_commerce/screens/app/checkout/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '../../screen_wrapper.dart';
+import '../checkout/cart_screen.dart';
 import '/constants/custom_colors.dart';
 import '/helpers/custom_navigator.dart';
 import '/providers/main_provider.dart';
@@ -87,7 +87,6 @@ class StoreScreen extends StatelessWidget {
                           value: StoreProvider(),
                           child: ViewAllBrands(
                             brandsList: storeProvider.brandsList,
-                            productsList: storeProvider.productsList,
                           ),
                         ),
                       ),
@@ -100,51 +99,46 @@ class StoreScreen extends StatelessWidget {
                 ),
               ),
               FutureBuilder<void>(
-                future: storeProvider.fetchBrands(),
+                future: storeProvider.fetchBrands(
+                  mainProvider.whishlistProductsList,
+                  mainProvider.cartProducts,
+                  mainProvider.productsList,
+                ),
                 builder: (context, snapshot) =>
                     snapshot.connectionState == ConnectionState.waiting
                         ? const Center(
+                            heightFactor: 3,
                             child: CircularProgressIndicator(),
                           )
                         : storeProvider.brandsList.isNotEmpty
                             ? BrandGrid(
                                 brandList: storeProvider.brandsList,
-                                productsList: storeProvider.productsList,
+                                showLimited: true,
                               )
                             : Container(),
               ),
               const Gap(32),
               SizedBox(
                 height: 40,
-                child: FutureBuilder<void>(
-                  future: storeProvider.fetchCategories(
-                    mainProvider.whishlistProductsList,
-                    mainProvider.cartProducts,
-                  ),
-                  builder: (context, snapshot) => snapshot.connectionState ==
-                          ConnectionState.waiting
-                      ? const Center(child: CircularProgressIndicator())
-                      : Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            controller: storeProvider.scrollController,
-                            itemCount: storeProvider.categoriesList.length,
-                            itemBuilder: (context, index) =>
-                                Consumer<StoreProvider>(
-                              builder: (_, __, child) => CategoriesTextWidget(
-                                categoriesModel:
-                                    storeProvider.categoriesList[index],
-                                onTap: () =>
-                                    storeProvider.changeSelectedCategory(
-                                        storeProvider.categoriesList[index]),
-                                isActive: storeProvider.selectedCategory ==
-                                    storeProvider.categoriesList[index],
-                              ),
-                            ),
-                          ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Consumer<StoreProvider>(
+                    builder: (_, __, child) => ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      controller: storeProvider.scrollController,
+                      itemCount: storeProvider.categoriesList.length,
+                      itemBuilder: (context, index) => CategoriesTextWidget(
+                        categoriesModel: storeProvider.categoriesList[index],
+                        onTap: () => storeProvider.changeSelectedCategory(
+                          storeProvider.categoriesList[index],
+                          mainProvider.productsList,
                         ),
+                        isActive: storeProvider.selectedCategory ==
+                            storeProvider.categoriesList[index],
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Padding(
@@ -157,25 +151,27 @@ class StoreScreen extends StatelessWidget {
               ),
               const Gap(24),
               Consumer<StoreProvider>(
-                builder: (_, __, child) => storeProvider
-                        .categoriesList.isNotEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: storeProvider.categoryBrandsList.length,
-                          itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            child: CategoriesBrands(
-                              categoryBrand:
-                                  storeProvider.categoryBrandsList[index],
-                              brandProducts: storeProvider.brandProducts,
-                            ),
+                builder: (_, __, child) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: storeProvider.categoryBrandsList.length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: CategoriesBrands(
+                          categoryBrand:
+                              storeProvider.categoryBrandsList[index],
+                          brandProducts: storeProvider.brandProducts,
+                          productsList: storeProvider.getProducts(
+                            storeProvider.categoryBrandsList[index],
                           ),
                         ),
-                      )
-                    : Container(),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),

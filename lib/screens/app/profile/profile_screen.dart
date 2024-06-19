@@ -1,3 +1,5 @@
+import 'package:e_commerce/constants/custom_icons.dart';
+import 'package:e_commerce/screens/app/profile/my_orders_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -87,6 +89,22 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 ),
                               ],
+                            ),
+                            const Spacer(),
+                            InkWell(
+                              onTap: () => CustomNavigator.pushNavigation(
+                                context: context,
+                                routeName: MyOrdersScreen.routeName,
+                                screen: ChangeNotifierProvider.value(
+                                  value: profileProvider,
+                                  child: const MyOrdersScreen(),
+                                ),
+                              ),
+                              child: Image.asset(
+                                CustomIcons.myOrders,
+                                color: Colors.white,
+                                height: 32,
+                              ),
                             ),
                           ],
                         )

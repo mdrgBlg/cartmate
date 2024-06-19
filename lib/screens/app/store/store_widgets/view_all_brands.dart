@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../home/home_models/products_model.dart';
 import '/constants/custom_colors.dart';
 import '/models/brand_model.dart';
 import 'brand_grid.dart';
 
 class ViewAllBrands extends StatelessWidget {
-  final List<ProductsModel> productsList;
   final List<BrandModel> brandsList;
   const ViewAllBrands({
     super.key,
-    required this.productsList,
     required this.brandsList,
   });
 
@@ -39,7 +36,7 @@ class ViewAllBrands extends StatelessWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Gap(16),
+            const Gap(16),
             Padding(
               padding: const EdgeInsets.only(left: 20, bottom: 8),
               child: Text(
@@ -52,7 +49,7 @@ class ViewAllBrands extends StatelessWidget {
             brandsList.isNotEmpty
                 ? BrandGrid(
                     brandList: brandsList,
-                    productsList: productsList,
+                    showLimited: false,
                   )
                 : Container(),
           ],
