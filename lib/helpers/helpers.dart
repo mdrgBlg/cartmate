@@ -1,3 +1,4 @@
+import '/constants/custom_images.dart';
 import '/constants/custom_icons.dart';
 import '/models/brand_model.dart';
 import '/screens/app/home/home_models/products_model.dart';
@@ -9,14 +10,30 @@ class Helpers {
         return CustomIcons.clothes;
       case "furniture":
         return CustomIcons.furniture;
-      case "animals":
-        return CustomIcons.animals;
+
       case "electronics":
         return CustomIcons.electronics;
       case "shoes":
         return CustomIcons.shoes;
       case "sports":
         return CustomIcons.sports;
+      default:
+        return CustomIcons.sports;
+    }
+  }
+
+  static String fetchImage(String? categoryName) {
+    switch (categoryName?.toLowerCase()) {
+      case "clothes":
+        return CustomImages.clothesImage;
+      case "furniture":
+        return CustomImages.furnitureImage;
+      case "electronics":
+        return CustomImages.hpImage;
+      case "shoes":
+        return CustomImages.nike;
+      case "sports":
+        return CustomImages.sportsImage;
       default:
         return CustomIcons.sports;
     }

@@ -44,6 +44,7 @@ class BrandGrid extends StatelessWidget {
             : brandList.length,
         itemBuilder: (context, index) => brandList.isNotEmpty
             ? InkWell(
+                borderRadius: BorderRadius.circular(16),
                 onTap: () => CustomNavigator.pushNavigation(
                   context: context,
                   routeName: BrandProducts.routeName,
