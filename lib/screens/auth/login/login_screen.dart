@@ -88,7 +88,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 12),
                       const Text(
-                        "Log In To eShop",
+                        "Log In To CartMate",
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w300,
