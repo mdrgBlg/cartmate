@@ -173,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                     onPageChanged: (value) =>
                         homeProvider.changeScreenIndex(value),
                     itemBuilder: (_, index) => Container(
-                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -203,10 +203,6 @@ class HomeScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        "View all",
-                        style: textTheme.bodyMedium,
-                      )
                     ],
                   ),
                 ),

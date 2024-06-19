@@ -1,12 +1,12 @@
-import 'package:e_commerce/constants/custom_icons.dart';
-import 'package:e_commerce/helpers/date_time_service.dart';
-import 'package:e_commerce/helpers/helpers.dart';
-import 'package:e_commerce/providers/main_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
+import '/constants/custom_icons.dart';
+import '/helpers/date_time_service.dart';
+import '/helpers/helpers.dart';
+import '/providers/main_provider.dart';
 import 'profile_providers/profile_provider.dart';
 
 class MyOrdersScreen extends StatelessWidget {
@@ -57,6 +57,7 @@ class MyOrdersScreen extends StatelessWidget {
                       height: 120,
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
+                      margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
                         color: CustomColors.greyShade200.withOpacity(0.4),
                         borderRadius: BorderRadius.circular(16),
