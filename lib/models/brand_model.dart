@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class BrandModel {
   final String id;
@@ -25,10 +24,7 @@ class BrandModel {
         brandModel = BrandModel(
           id: document.id,
           brandName: json["brandName"],
-          iconName: await FirebaseStorage.instance
-              .ref()
-              .child('icons/${json["iconName"]}')
-              .getDownloadURL(),
+          iconName: json["iconName"],
           productCount: json["productCount"],
         );
       }
@@ -44,10 +40,7 @@ class BrandModel {
       brandModel = BrandModel(
         id: json["id"],
         brandName: json["brandName"],
-        iconName: await FirebaseStorage.instance
-            .ref()
-            .child('icons/${json["iconName"]}')
-            .getDownloadURL(),
+        iconName: json["iconName"],
         productCount: json["productCount"],
       );
     } catch (e) {

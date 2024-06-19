@@ -1,14 +1,13 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce/db/db_helper.dart';
-import 'package:e_commerce/models/brand_model.dart';
-import 'package:e_commerce/screens/app/home/home_models/products_model.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../../../db/db_constants.dart';
 import '../home_models/categories_model.dart';
+import '../home_models/products_model.dart';
+import '/db/db_constants.dart';
+import '/db/db_helper.dart';
+import '/models/brand_model.dart';
 
 class HomeService {
   static Future<List<CategoriesModel>> fetchCategories() async {
@@ -37,16 +36,6 @@ class HomeService {
       for (var e in res.docs) {
         ProductsModel? productsModel = await ProductsModel.fromDocument(e);
         if (productsModel != null) {
-          List<String> urlList = [];
-          for (var e in productsModel.productImageList) {
-            urlList.add(
-              await FirebaseStorage.instance
-                  .ref()
-                  .child('images/$e')
-                  .getDownloadURL(),
-            );
-          }
-          productsModel.productImageList = urlList;
           productList.add(productsModel);
         }
       }
