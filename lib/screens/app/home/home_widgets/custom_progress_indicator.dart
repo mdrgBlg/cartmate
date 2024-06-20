@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/custom_colors.dart';
+import '/constants/custom_colors.dart';
 
 class CustomProgressIndicator extends StatelessWidget {
   final int screenIndex;
@@ -9,7 +9,7 @@ class CustomProgressIndicator extends StatelessWidget {
     required this.screenIndex,
   });
 
-  final int screenCount = 3;
+  final int screenCount = 6;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,9 @@ class CustomProgressIndicator extends StatelessWidget {
           width: 24,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(99),
-            color: index == screenIndex ? CustomColors.primary : CustomColors.customGrey,
+            color: index == screenIndex
+                ? CustomColors.primary
+                : CustomColors.customGrey,
           ),
         ),
       ),

@@ -1,7 +1,7 @@
-import 'package:e_commerce/widgets/products_grid_view.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants/custom_images.dart';
+import '/helpers/helpers.dart';
+import '/widgets/products_grid_view.dart';
 import 'home/home_models/products_model.dart';
 
 class CategoriesScreen extends StatelessWidget {
@@ -39,14 +39,14 @@ class CategoriesScreen extends StatelessWidget {
               children: [
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: Image.asset(
-                      CustomImages.nike,
+                      Helpers.fetchImage(categoryName),
                       fit: BoxFit.fill,
                       height: 200,
                     ),

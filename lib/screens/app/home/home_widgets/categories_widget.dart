@@ -28,7 +28,7 @@ class CategoriesWidget extends StatelessWidget {
     );
     final textTheme = Theme.of(context).textTheme;
     return Padding(
-      padding: const EdgeInsets.only(left: 16),
+      padding: const EdgeInsets.only(left: 14),
       child: InkWell(
         onTap: () {
           List<ProductsModel> categoryProducts =

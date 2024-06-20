@@ -66,9 +66,16 @@ class ProfileScreen extends StatelessWidget {
                             Container(
                               height: 48,
                               width: 50,
+                              padding: const EdgeInsets.all(7),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(99),
+                              ),
+                              child: Image.asset(
+                                mainProvider.userInfoModel?.gender == 'Male'
+                                    ? CustomIcons.manAvatar
+                                    : CustomIcons.manAvatar,
+                                fit: BoxFit.scaleDown,
                               ),
                             ),
                             const Gap(12),

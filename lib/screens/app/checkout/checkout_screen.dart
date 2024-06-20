@@ -329,8 +329,8 @@ class CheckoutScreen extends StatelessWidget {
                                       await checkoutProvider.orderProduct();
                                 },
                                 onFinished: () {
-                                  Navigator.of(context)
-                                      .popUntil((route) => route.isFirst);
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
                                   if (responseModel != null) {
                                     if (responseModel!.success) {
                                       mainProvider.checkoutSuccessful();
