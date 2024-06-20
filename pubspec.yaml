@@ -32,11 +32,20 @@ dependencies:
   firebase_storage: ^11.6.9
   cached_network_image: ^3.3.1
   firebase_app_check: ^0.2.1+17
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/cart.png"
+  adaptive_icon_background: "#00baff"
+  adaptive_icon_foreground: "assets/cart.png"
+  remove_alpha_ios: true
 
 flutter:
   uses-material-design: true
