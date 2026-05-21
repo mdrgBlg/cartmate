@@ -56,6 +56,9 @@ app.*.map.json
 **/Flutter/ephemeral/
 **/macos/Flutter/ephemeral
 **/xcuserdata/
+### https://raw.github.com/github/gitignore//Global/macOS.gitignore
+
+**/macos/Flutter/GeneratedPluginRegistrant.swift
 
 # Windows
 **/windows/flutter/generated_plugin_registrant.cc

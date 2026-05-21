@@ -15,9 +15,8 @@ Future main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug,
-  );
+  await FirebaseAppCheck.instance
+      .activate(providerAndroid: AndroidDebugProvider());
 
   await DbHelper.database;
 
