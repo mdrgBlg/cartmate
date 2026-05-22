@@ -1,0 +1,98 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Commands
+
+This project uses FVM (Flutter Version Manager) locked to Flutter 3.35.1 (see `.fvmrc`).
+
+```sh
+fvm flutter pub get       # Install dependencies
+fvm flutter run           # Run the app
+fvm flutter test          # Run all tests
+fvm flutter test test/widget_test.dart  # Run a single test file
+fvm flutter analyze       # Static analysis
+fvm flutter build apk     # Android release build
+fvm flutter build ios     # iOS release build
+```
+
+If FVM is not installed, replace `fvm flutter` with `flutter` (ensure version 3.35.1 is active).
+
+## Architecture
+
+### State Management
+
+The app uses the **Provider** package with a `ChangeNotifier` pattern split into two layers:
+
+- **`lib/providers/main_provider.dart`** — global singleton managing cross-screen state: authenticated user info (`UserInfoModel`), cart contents with price calculations, and wishlist
+- **Screen-level providers** (`HomeProvider`, `StoreProvider`, `CheckoutProvider`, `ProfileProvider`) — local state scoped to individual screens, accessed via `MultiProvider` in the widget tree
+
+### Service Layer
+
+`*Service` classes in each screen folder handle all data access. They are pure data-fetching classes (no ChangeNotifier) called by providers:
+- Firebase Firestore queries (products, categories, orders)
+- Firebase Authentication (login, signup, password reset via `http` to Google Identity Toolkit API)
+- SQLite via `lib/db/` (wishlist and brand data for offline persistence)
+
+### Navigation
+
+- `CustomNavigator` (`lib/helpers/custom_navigator.dart`) wraps `Navigator.push/pushReplacement` — use it for all navigation
+- Each screen declares a `static const routeName` string used as the route identifier
+- `ScreenWrapper` + `AppNavigation` manage the bottom nav bar (4 tabs: Home, Store, Wishlist, Profile); active tab is detected by matching `ModalRoute.of(context).settings.name`
+
+### Data Flow
+
+```
+UI widget → calls Provider method → Provider calls Service → Service hits Firebase/SQLite
+                                  ← Provider calls notifyListeners() ← data returned
+```
+
+### Storage
+
+- **Firestore** — product catalog (`Products` collection), categories (`Categories`), user orders
+- **Firebase Auth** — email/password authentication; Firebase App Check for security
+- **Cloud Storage** — product images (loaded via `cached_network_image`)
+- **SQLite** (`lib/db/`) — local persistence for wishlist and brand cache, enabling offline access
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `lib/main.dart` | App entry point, Provider setup, Firebase init |
+| `lib/providers/main_provider.dart` | Global cart/wishlist/user state |
+| `lib/constants/` | Theme colors, icon paths, asset URLs, global constants |
+| `lib/helpers/auth_enum.dart` | `AuthStatus` and `OrderStatus` enums used app-wide |
+| `lib/firebase_options.dart` | Auto-generated FlutterFire config (do not edit manually) |
+| `lib/db/db_helper.dart` | SQLite schema and CRUD for local data |
+
+### Firebase Project
+
+Project ID: `e-commerce-14198` (EU region). Re-generate `firebase_options.dart` with `flutterfire configure` if Firebase config changes.
+
+## Naming Conventions
+
+### Files
+- `snake_case.dart` for all Dart files (e.g., `home_provider.dart`, `user_info_model.dart`, `custom_colors.dart`)
+
+### Classes & Types
+- `UpperCamelCase` for classes, enums, typedefs, and widgets (e.g., `UserInfoModel`, `HomeProvider`, `AuthStatus`, `CustomCurvedEdges`)
+
+### Enums
+- Enum type: `UpperCamelCase`
+- Enum values: `camelCase` (e.g., `AuthStatus.successful`, `AuthStatus.wrongPassword`)
+
+### Variables & Fields
+- Public instance fields: `camelCase` (e.g., `firstName`, `phoneNumber`, `productModel`)
+- Private fields: `_camelCase` with underscore prefix (e.g., `_cartItems`, `_isLoading`)
+- Local variables: `camelCase` (e.g., `mainProvider`, `elementExists`, `cartIds`)
+
+### Methods & Functions
+- `camelCase` for all methods and functions (e.g., `fetchUserInfo()`, `addProductToCart()`, `focusChange()`)
+- Method parameters: `camelCase` (e.g., `String firstName`, `String categoryId`)
+
+### Constants
+- Static class constants: `camelCase` without prefix (e.g., `CustomColors.text`, `CustomColors.primary`)
+- Route names: `static const routeName` on each screen class
+
+### Notes
+- The codebase uses `whishlist` (double-h) consistently as a typo — match this spelling when touching existing wishlist identifiers to avoid renames
