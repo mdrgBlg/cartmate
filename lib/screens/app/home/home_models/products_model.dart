@@ -16,7 +16,6 @@ class ProductsModel {
   final List<String>? productSize;
   final int stock;
   bool whishlist;
-  int count;
 
   ProductsModel({
     required this.id,
@@ -30,7 +29,6 @@ class ProductsModel {
     required this.productSize,
     required this.stock,
     this.whishlist = false,
-    this.count = 0,
   });
 
   static Future<ProductsModel?> fromDocument(
@@ -75,7 +73,6 @@ class ProductsModel {
         price: json["price"],
         productSize: json["productSize"],
         stock: json["stock"],
-        count: json["count"],
       );
     } catch (e) {
       log("EXCEPTION ProductsModel $e");
@@ -101,8 +98,7 @@ class ProductsModel {
           productSize: (json['productSize'] as String)
               .split(','), // Split comma-separated string
           stock: json['stock'] as int,
-          whishlist: json['wishlist'] as int == 1 ? true : false,
-          count: json['count']);
+          whishlist: json['wishlist'] as int == 1 ? true : false);
     } catch (e) {
       log("EXCEPTION ProductsModel $e");
     }
@@ -124,7 +120,6 @@ class ProductsModel {
           product.productSize != null ? product.productSize!.join(',') : "",
       'stock': product.stock,
       'wishlist': product.whishlist ? 1 : 0,
-      'count': product.count,
     };
   }
 
@@ -139,7 +134,6 @@ class ProductsModel {
       'discount': discount,
       'price': price,
       'stock': stock,
-      'count': count,
     };
   }
 
@@ -155,6 +149,5 @@ class ProductsModel {
         productSize = List<String>.from(
             other.productSize != null ? other.productSize! : []),
         stock = other.stock,
-        whishlist = other.whishlist,
-        count = other.count;
+        whishlist = other.whishlist;
 }

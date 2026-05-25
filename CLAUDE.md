@@ -96,3 +96,18 @@ Project ID: `e-commerce-14198` (EU region). Re-generate `firebase_options.dart` 
 
 ### Notes
 - The codebase uses `whishlist` (double-h) consistently as a typo — match this spelling when touching existing wishlist identifiers to avoid renames
+
+## Git Workflow
+
+Every piece of work — bug fix, feature, refactor — must follow this flow without exception:
+
+1. **Sync master first:** `git checkout master && git pull origin master`
+2. **Create a branch** named for the work before touching any files:
+   - Features: `feat/<short-description>` (e.g. `feat/cart-quantity-field`)
+   - Fixes: `fix/<short-description>` (e.g. `fix/null-product-model`)
+   - Refactors: `refactor/<short-description>`
+3. **Commit** after every meaningful change with a descriptive message. Never batch unrelated changes into one commit.
+4. **Push the branch** to GitHub: `git push origin <branch-name>`
+5. **Never push directly to master** — all changes go through branches.
+
+Do not wait to be reminded. Apply this workflow automatically at the start of every task.
