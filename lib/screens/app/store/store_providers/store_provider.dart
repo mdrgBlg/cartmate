@@ -4,7 +4,6 @@ import '../../home/home_models/categories_model.dart';
 import '../../home/home_models/products_model.dart';
 import '../../home/home_providers/home_service.dart';
 import '/models/brand_model.dart';
-import '/models/cart_model.dart';
 import 'store_service.dart';
 
 class StoreProvider with ChangeNotifier {
@@ -45,19 +44,6 @@ class StoreProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setProductCount(
-      List<ProductsModel> productsList, List<CartModel> cartList) {
-    final cartMap = {
-      for (var item in cartList)
-        item.productModel?.id: item.productModel?.count,
-    };
-    for (var product in productsList) {
-      if (cartMap.containsKey(product.id)) {
-        product.count = cartMap[product.id]!;
-      }
-    }
-  }
-
   List<ProductsModel> getProducts(
     BrandModel categoryBrand,
   ) {
@@ -71,24 +57,22 @@ class StoreProvider with ChangeNotifier {
   }
 
   Future<void> fetchBrands(List<ProductsModel> whishlistProductsList,
-      List<CartModel> cartList, List<ProductsModel> productsList) async {
+      List<ProductsModel> productsList) async {
     brandsList = await StoreService.fetchBrands();
-    await fetchCategories(whishlistProductsList, cartList, productsList);
+    await fetchCategories(whishlistProductsList, productsList);
     changeSelectedCategory(selectedCategory!, productsList);
   }
 
-  void fetchProducts(List<ProductsModel> whishlistProductsList,
-      List<CartModel> cartList, List<ProductsModel> productsList) {
+  void fetchProducts(
+      List<ProductsModel> whishlistProductsList, List<ProductsModel> productsList) {
     setWishlistFlag(productsList, whishlistProductsList);
-    setProductCount(productsList, cartList);
   }
 
   Future<void> fetchCategories(
     List<ProductsModel> whishlistProductsList,
-    List<CartModel> cartList,
     List<ProductsModel> productsList,
   ) async {
-    fetchProducts(whishlistProductsList, cartList, productsList);
+    fetchProducts(whishlistProductsList, productsList);
     categoriesList = await HomeService.fetchCategories();
     selectedCategory = categoriesList.first;
     if (categoriesList.isNotEmpty) {
