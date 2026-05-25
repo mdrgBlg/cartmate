@@ -109,5 +109,6 @@ Every piece of work — bug fix, feature, refactor — must follow this flow wit
 3. **Commit locally** after every meaningful change with a descriptive message. Never batch unrelated changes into one commit. Do not push yet.
 4. **Push only when the entire feature is complete.** All commits for a feature travel together as one branch: `git push origin <branch-name>`
 5. **Never push directly to master** — all changes go through branches and PRs.
+6. **If the user says "work on this branch" or "don't make a new branch/PR"** — skip steps 1–2 and continue committing on the current branch.
 
 Do not wait to be reminded. Apply this workflow automatically at the start of every task.
