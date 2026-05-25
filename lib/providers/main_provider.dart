@@ -17,7 +17,16 @@ import '/screens/app/home/home_providers/home_service.dart';
 class MainProvider with ChangeNotifier {
   int cartProductNumber = 0;
   UserInfoModel? userInfoModel;
-  double checkoutPrice = 0;
+
+  double get checkoutPrice => cartProducts.fold(
+        0,
+        (sum, item) =>
+            sum +
+            item.quantity *
+                (item.productModel.price -
+                    item.productModel.price *
+                        (item.productModel.discount / 100)),
+      );
 
   List<ProductsModel> whishlistProductsList = [];
   List<ProductsModel> productsList = [];
@@ -49,8 +58,6 @@ class MainProvider with ChangeNotifier {
       if (e.productModel.id == cartModel.productModel.id &&
           e.size == cartModel.size) {
         ++e.quantity;
-        checkoutPrice += e.productModel.price -
-            e.productModel.price * (e.productModel.discount / 100);
         break;
       }
     }
@@ -64,8 +71,6 @@ class MainProvider with ChangeNotifier {
       if (e.productModel.id == cartModel.productModel.id &&
           e.size == cartModel.size) {
         ++e.quantity;
-        checkoutPrice += e.productModel.price -
-            e.productModel.price * (e.productModel.discount / 100);
         elementExists = true;
         break;
       }
@@ -73,8 +78,6 @@ class MainProvider with ChangeNotifier {
 
     if (!elementExists) {
       cartProducts.add(cartModel);
-      checkoutPrice += cartModel.productModel.price -
-          cartModel.productModel.price * (cartModel.productModel.discount / 100);
       ++cartProductNumber;
     }
 
@@ -87,8 +90,6 @@ class MainProvider with ChangeNotifier {
       if (cartProducts[i].productModel.id == cartModel.productModel.id &&
           cartProducts[i].size == cartModel.size) {
         --cartProducts[i].quantity;
-        checkoutPrice -= cartModel.productModel.price -
-            cartModel.productModel.price * (cartModel.productModel.discount / 100);
         if (cartProducts[i].quantity == 0) {
           indexToRemove = i;
         }
