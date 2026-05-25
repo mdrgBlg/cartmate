@@ -184,7 +184,7 @@ class CartItem extends StatelessWidget {
                   ),
                   const Gap(12),
                   InkWell(
-                    onTap: () => mainProvider.increaseProductInCart(cartModel),
+                    onTap: () => mainProvider.addProductToCart(cartModel),
                     child: Container(
                       height: 24,
                       width: 24,

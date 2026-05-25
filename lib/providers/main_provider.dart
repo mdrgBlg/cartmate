@@ -15,7 +15,7 @@ import '/screens/app/home/home_models/products_model.dart';
 import '/screens/app/home/home_providers/home_service.dart';
 
 class MainProvider with ChangeNotifier {
-  int cartProductNumber = 0;
+  int get cartProductNumber => cartProducts.length;
   UserInfoModel? userInfoModel;
 
   double get checkoutPrice => cartProducts.fold(
@@ -53,17 +53,6 @@ class MainProvider with ChangeNotifier {
     }
   }
 
-  void increaseProductInCart(CartModel cartModel) {
-    for (var e in cartProducts) {
-      if (e.productModel.id == cartModel.productModel.id &&
-          e.size == cartModel.size) {
-        ++e.quantity;
-        break;
-      }
-    }
-    notifyListeners();
-  }
-
   void addProductToCart(CartModel cartModel) {
     bool elementExists = false;
 
@@ -78,7 +67,6 @@ class MainProvider with ChangeNotifier {
 
     if (!elementExists) {
       cartProducts.add(cartModel);
-      ++cartProductNumber;
     }
 
     notifyListeners();
@@ -98,14 +86,12 @@ class MainProvider with ChangeNotifier {
     }
     if (indexToRemove != null) {
       cartProducts.removeAt(indexToRemove);
-      --cartProductNumber;
     }
     notifyListeners();
   }
 
   void checkoutSuccessful() {
     cartProducts.clear();
-    cartProductNumber = 0;
     notifyListeners();
   }
 
