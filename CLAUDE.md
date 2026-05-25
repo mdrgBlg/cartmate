@@ -106,8 +106,8 @@ Every piece of work — bug fix, feature, refactor — must follow this flow wit
    - Features: `feat/<short-description>` (e.g. `feat/cart-quantity-field`)
    - Fixes: `fix/<short-description>` (e.g. `fix/null-product-model`)
    - Refactors: `refactor/<short-description>`
-3. **Commit** after every meaningful change with a descriptive message. Never batch unrelated changes into one commit.
-4. **Push the branch** to GitHub: `git push origin <branch-name>`
-5. **Never push directly to master** — all changes go through branches.
+3. **Commit locally** after every meaningful change with a descriptive message. Never batch unrelated changes into one commit. Do not push yet.
+4. **Push only when the entire feature is complete.** All commits for a feature travel together as one branch: `git push origin <branch-name>`
+5. **Never push directly to master** — all changes go through branches and PRs.
 
 Do not wait to be reminded. Apply this workflow automatically at the start of every task.
