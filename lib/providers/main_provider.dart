@@ -15,9 +15,18 @@ import '/screens/app/home/home_models/products_model.dart';
 import '/screens/app/home/home_providers/home_service.dart';
 
 class MainProvider with ChangeNotifier {
-  int cartProductNumber = 0;
+  int get cartProductNumber => cartProducts.length;
   UserInfoModel? userInfoModel;
-  double checkoutPrice = 0;
+
+  double get checkoutPrice => cartProducts.fold(
+        0,
+        (sum, item) =>
+            sum +
+            item.quantity *
+                (item.productModel.price -
+                    item.productModel.price *
+                        (item.productModel.discount / 100)),
+      );
 
   List<ProductsModel> whishlistProductsList = [];
   List<ProductsModel> productsList = [];
@@ -44,45 +53,13 @@ class MainProvider with ChangeNotifier {
     }
   }
 
-  void setProductCount() {
-    final cartMap = {
-      for (var item in cartProducts)
-        item.productModel?.id: item.productModel?.count,
-    };
-    for (var product in productsList) {
-      if (cartMap.containsKey(product.id)) {
-        product.count = cartMap[product.id]!;
-      }
-    }
-  }
-
-  void increaseProductInCart(CartModel cartModel) {
-    for (var e in cartProducts) {
-      if (e.productModel?.id == cartModel.productModel?.id &&
-          e.size == cartModel.size) {
-        ++e.productModel?.count;
-        checkoutPrice += e.productModel != null
-            ? (e.productModel!.price -
-                e.productModel!.price * (e.productModel!.discount / 100))
-            : 0;
-        break;
-      }
-    }
-
-    notifyListeners();
-  }
-
   void addProductToCart(CartModel cartModel) {
     bool elementExists = false;
 
     for (var e in cartProducts) {
-      if (e.productModel?.id == cartModel.productModel?.id &&
+      if (e.productModel.id == cartModel.productModel.id &&
           e.size == cartModel.size) {
-        ++e.productModel?.count;
-        checkoutPrice += e.productModel != null
-            ? (e.productModel!.price -
-                e.productModel!.price * (e.productModel!.discount / 100))
-            : 0;
+        ++e.quantity;
         elementExists = true;
         break;
       }
@@ -90,12 +67,6 @@ class MainProvider with ChangeNotifier {
 
     if (!elementExists) {
       cartProducts.add(cartModel);
-      checkoutPrice += cartModel.productModel != null
-          ? (cartModel.productModel!.price -
-              cartModel.productModel!.price *
-                  (cartModel.productModel!.discount / 100))
-          : 0;
-      ++cartProductNumber;
     }
 
     notifyListeners();
@@ -104,42 +75,23 @@ class MainProvider with ChangeNotifier {
   void removeProductFromCart(CartModel cartModel) {
     int? indexToRemove;
     for (int i = 0; i < cartProducts.length; i++) {
-      if (cartProducts[i].productModel?.id == cartModel.productModel?.id &&
+      if (cartProducts[i].productModel.id == cartModel.productModel.id &&
           cartProducts[i].size == cartModel.size) {
-        --cartProducts[i].productModel?.count;
-        checkoutPrice -= cartModel.productModel != null
-            ? (cartModel.productModel!.price -
-                cartModel.productModel!.price *
-                    (cartModel.productModel!.discount / 100))
-            : 0;
-        if (cartProducts[i].productModel?.count == 0) {
+        --cartProducts[i].quantity;
+        if (cartProducts[i].quantity == 0) {
           indexToRemove = i;
         }
-
         break;
       }
     }
     if (indexToRemove != null) {
-      int index = productsList.indexWhere((element) =>
-          cartProducts[indexToRemove!].productModel?.id == element.id);
-      --productsList[index].count;
       cartProducts.removeAt(indexToRemove);
-      --cartProductNumber;
     }
-
     notifyListeners();
   }
 
   void checkoutSuccessful() {
-    final cartIds =
-        cartProducts.map((product) => product.productModel?.id).toSet();
-    for (var e in productsList) {
-      if (cartIds.contains(e.id)) {
-        e.count = 0;
-      }
-    }
     cartProducts.clear();
-    cartProductNumber = 0;
     notifyListeners();
   }
 
@@ -288,6 +240,5 @@ class MainProvider with ChangeNotifier {
   Future<void> fetchProducts() async {
     productsList = await HomeService.fetchProducts();
     setWishlistFlag();
-    setProductCount();
   }
 }
