@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/models/brand_model.dart';
 import 'package:flutter/material.dart';
 
 import '/constants/custom_colors.dart';
+import '/widgets/app_network_image.dart';
 
 class BrandContainer extends StatelessWidget {
   final BrandModel brand;
@@ -33,9 +33,11 @@ class BrandContainer extends StatelessWidget {
           SizedBox(
             height: 36,
             width: 36,
-            child: CachedNetworkImage(
+            child: AppNetworkImage(
               imageUrl: brand.iconName,
               fit: BoxFit.cover,
+              errorIcon: Icons.store,
+              errorIconSize: 20,
             ),
           ),
           const SizedBox(

@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../home/home_models/products_model.dart';
 import '/constants/custom_colors.dart';
+import '/widgets/app_network_image.dart';
 import '/helpers/custom_navigator.dart';
 import '/models/brand_model.dart';
 import 'brand_products.dart';
@@ -52,8 +52,10 @@ class CategoriesBrands extends StatelessWidget {
                 SizedBox(
                   height: 36,
                   width: 36,
-                  child: CachedNetworkImage(
+                  child: AppNetworkImage(
                     imageUrl: categoryBrand.iconName,
+                    errorIcon: Icons.store,
+                    errorIconSize: 20,
                   ),
                 ),
                 const SizedBox(
@@ -104,9 +106,10 @@ class CategoriesBrands extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: CachedNetworkImage(
+                      child: AppNetworkImage(
                         imageUrl: productsList[index].productImageList.first,
                         fit: BoxFit.fill,
+                        errorIconSize: 32,
                       ),
                     ),
                   ),

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/helpers/snack_bar_popup.dart';
 import 'package:e_commerce/models/cart_model.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +6,7 @@ import 'package:provider/provider.dart';
 import '/constants/custom_colors.dart';
 import '/providers/main_provider.dart';
 import '/providers/product_details_provider.dart';
+import '/widgets/app_network_image.dart';
 import '/widgets/custom_button.dart';
 import 'home/home_models/products_model.dart';
 
@@ -88,11 +88,12 @@ class ProductDetailsScreen extends StatelessWidget {
                         width: double.infinity,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: CachedNetworkImage(
+                          child: AppNetworkImage(
                             imageUrl: product.productImageList[
                                 productDetailsProvider.selectedImage],
                             height: 220,
                             fit: BoxFit.fill,
+                            errorIconSize: 80,
                           ),
                         ),
                       ),
@@ -125,9 +126,10 @@ class ProductDetailsScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(16),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
-                                child: CachedNetworkImage(
+                                child: AppNetworkImage(
                                   imageUrl: product.productImageList[index],
                                   fit: BoxFit.fill,
+                                  errorIconSize: 36,
                                 ),
                               ),
                             ),
@@ -192,8 +194,10 @@ class ProductDetailsScreen extends StatelessWidget {
                           SizedBox(
                             height: 20,
                             width: 20,
-                            child: CachedNetworkImage(
+                            child: AppNetworkImage(
                               imageUrl: product.brandModel?.iconName ?? "",
+                              errorIcon: Icons.store,
+                              errorIconSize: 14,
                             ),
                           ),
                           Padding(
