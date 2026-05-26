@@ -101,7 +101,6 @@ class StoreScreen extends StatelessWidget {
               FutureBuilder<void>(
                 future: storeProvider.fetchBrands(
                   mainProvider.whishlistProductsList,
-                  mainProvider.cartProducts,
                   mainProvider.productsList,
                 ),
                 builder: (context, snapshot) =>

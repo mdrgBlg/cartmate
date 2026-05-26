@@ -143,18 +143,22 @@ class CustomProductCard extends StatelessWidget {
                             ),
                           ),
                           child: Consumer<MainProvider>(
-                            builder: (_, __, child) => Text(
-                              productsModel.count == 0
-                                  ? "+"
-                                  : productsModel.count.toString(),
-                              style: productsModel.count == 0
-                                  ? textTheme.titleLarge!.copyWith(
-                                      color: Colors.white,
-                                    )
-                                  : textTheme.titleMedium!.copyWith(
-                                      color: Colors.white,
-                                    ),
-                            ),
+                            builder: (_, mainProvider, child) {
+                              final cartQty = mainProvider.cartProducts
+                                  .where((c) =>
+                                      c.productModel.id == productsModel.id)
+                                  .fold(0, (sum, c) => sum + c.quantity);
+                              return Text(
+                                cartQty == 0 ? "+" : cartQty.toString(),
+                                style: cartQty == 0
+                                    ? textTheme.titleLarge!.copyWith(
+                                        color: Colors.white,
+                                      )
+                                    : textTheme.titleMedium!.copyWith(
+                                        color: Colors.white,
+                                      ),
+                              );
+                            },
                           ),
                         )
                       ],

@@ -314,19 +314,6 @@ class ProductDetailsScreen extends StatelessWidget {
                           onPress: () {
                             ProductsModel copiedProduct =
                                 ProductsModel.copy(product);
-                            copiedProduct.count = 1;
-                            bool increaseCount = true;
-                            for (var e in mainProvider.cartProducts) {
-                              if (e.productModel?.id == product.id &&
-                                  e.size ==
-                                      productDetailsProvider.selectedSize) {
-                                increaseCount = false;
-                                break;
-                              }
-                            }
-                            if (increaseCount) {
-                              ++product.count;
-                            }
                             CartModel cartModel = CartModel(
                               productModel: copiedProduct,
                               size: productDetailsProvider.selectedSize ?? "",
