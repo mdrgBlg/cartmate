@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../providers/main_provider.dart';
 import '/constants/custom_colors.dart';
+import '/widgets/app_network_image.dart';
 import '/helpers/custom_navigator.dart';
 import '/helpers/helpers.dart';
 import '/models/brand_model.dart';
@@ -71,8 +71,10 @@ class BrandGrid extends StatelessWidget {
                       SizedBox(
                         height: 36,
                         width: 36,
-                        child: CachedNetworkImage(
+                        child: AppNetworkImage(
                           imageUrl: brandList[index].iconName,
+                          errorIcon: Icons.store,
+                          errorIconSize: 20,
                         ),
                       ),
                       const SizedBox(

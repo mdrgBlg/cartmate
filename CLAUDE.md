@@ -106,9 +106,10 @@ Every piece of work — bug fix, feature, refactor — must follow this flow wit
    - Features: `feat/<short-description>` (e.g. `feat/cart-quantity-field`)
    - Fixes: `fix/<short-description>` (e.g. `fix/null-product-model`)
    - Refactors: `refactor/<short-description>`
-3. **Commit locally** after every meaningful change with a descriptive message. Never batch unrelated changes into one commit. Do not push yet.
-4. **Push only when the entire feature is complete.** All commits for a feature travel together as one branch: `git push origin <branch-name>`
-5. **Never push directly to master** — all changes go through branches and PRs.
-6. **If the user says "work on this branch" or "don't make a new branch/PR"** — skip steps 1–2 and continue committing on the current branch.
+3. **Before every commit, show the diff first:** Run `git diff --staged` (or `git diff HEAD` if nothing is staged yet) and present the output to the user so they can review what will be committed. Do not proceed with the commit until the user has seen the diff.
+4. **Commit locally** after every meaningful change with a descriptive message. Never batch unrelated changes into one commit. Do not push yet.
+5. **Push only when the entire feature is complete.** All commits for a feature travel together as one branch: `git push origin <branch-name>`
+6. **Never push directly to master** — all changes go through branches and PRs.
+7. **If the user says "work on this branch" or "don't make a new branch/PR"** — skip steps 1–2 and continue committing on the current branch.
 
 Do not wait to be reminded. Apply this workflow automatically at the start of every task.
