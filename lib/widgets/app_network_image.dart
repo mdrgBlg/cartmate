@@ -27,19 +27,15 @@ class AppNetworkImage extends StatelessWidget {
       width: width,
       fit: fit,
       placeholder: (context, url) => Container(
-        height: height,
-        width: width,
+        height: height ?? double.infinity,
+        width: width ?? double.infinity,
         color: Colors.grey[200],
       ),
       errorWidget: (context, url, error) => Container(
-        height: height,
-        width: width,
+        height: height ?? double.infinity,
+        width: width ?? double.infinity,
         color: Colors.grey[200],
-        child: Icon(
-          errorIcon,
-          color: Colors.grey,
-          size: errorIconSize,
-        ),
+        child: Icon(errorIcon, color: Colors.grey, size: errorIconSize),
       ),
     );
   }

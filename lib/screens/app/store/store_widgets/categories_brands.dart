@@ -58,9 +58,7 @@ class CategoriesBrands extends StatelessWidget {
                     errorIconSize: 20,
                   ),
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -74,9 +72,7 @@ class CategoriesBrands extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(
-                            width: 4,
-                          ),
+                          const SizedBox(width: 4),
                           const Icon(
                             Icons.check_circle,
                             color: Colors.blueAccent,
@@ -86,7 +82,7 @@ class CategoriesBrands extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
             const Gap(16),
@@ -97,12 +93,11 @@ class CategoriesBrands extends StatelessWidget {
                   productsList.length > 3 ? 3 : productsList.length,
                   (index) => Container(
                     height: 80,
+                    width: 80,
                     margin: EdgeInsets.only(left: index == 0 ? 0 : 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: Colors.black.withOpacity(0.1),
-                      ),
+                      border: Border.all(color: Colors.black.withOpacity(0.1)),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
