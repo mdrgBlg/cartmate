@@ -7,17 +7,18 @@ import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
 
 class ChangeUserName extends StatelessWidget {
-  final String sectionTitle;
-  final Function(String, String) changeInfo;
-  final TextEditingController firstNameController;
-  final TextEditingController lastNameController;
   const ChangeUserName({
-    super.key,
     required this.sectionTitle,
     required this.changeInfo,
     required this.firstNameController,
     required this.lastNameController,
+    super.key,
   });
+
+  final String sectionTitle;
+  final Future<bool> Function(String, String) changeInfo;
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
 
   static const routeName = '/change_user_name';
 
@@ -73,14 +74,16 @@ class ChangeUserName extends StatelessWidget {
                     },
                     onFinished: () {
                       if (success) {
-                        SnackBarPopup.showMessage(context,
-                            message: "User successfully changed $sectionTitle");
+                        SnackBarPopup.showMessage(
+                          context,
+                          message: "User successfully changed $sectionTitle",
+                        );
                       }
                       Navigator.of(context).pop();
                     },
                   );
                 },
-              )
+              ),
             ],
           ),
         ),

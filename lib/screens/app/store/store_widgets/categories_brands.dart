@@ -1,30 +1,29 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../home/home_models/products_model.dart';
 import '/constants/custom_colors.dart';
 import '/helpers/custom_navigator.dart';
 import '/models/brand_model.dart';
+import '/widgets/app_network_image.dart';
+import '../../home/home_models/products_model.dart';
 import 'brand_products.dart';
 
 class CategoriesBrands extends StatelessWidget {
-  final BrandModel categoryBrand;
-  final List<ProductsModel> brandProducts;
-  final List<ProductsModel> productsList;
   const CategoriesBrands({
-    super.key,
     required this.categoryBrand,
     required this.brandProducts,
     required this.productsList,
+    super.key,
   });
+  final BrandModel categoryBrand;
+  final List<ProductsModel> brandProducts;
+  final List<ProductsModel> productsList;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return InkWell(
-      onTap: () => CustomNavigator.pushNavigation(
-        context: context,
+      onTap: () => CustomNavigator(context).pushNavigation(
         routeName: BrandProducts.routeName,
         screen: BrandProducts(
           productsList: productsList,
@@ -36,7 +35,7 @@ class CategoriesBrands extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: CustomColors.text.withOpacity(0.5),
+            color: CustomColors.text.withValues(alpha: 0.5),
             width: 1.5,
           ),
         ),
@@ -46,19 +45,18 @@ class CategoriesBrands extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Gap(8),
                 SizedBox(
                   height: 36,
                   width: 36,
-                  child: CachedNetworkImage(
+                  child: AppNetworkImage(
                     imageUrl: categoryBrand.iconName,
+                    errorIcon: Icons.store,
+                    errorIconSize: 20,
                   ),
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -72,9 +70,7 @@ class CategoriesBrands extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(
-                            width: 4,
-                          ),
+                          const SizedBox(width: 4),
                           const Icon(
                             Icons.check_circle,
                             color: Colors.blueAccent,
@@ -84,7 +80,7 @@ class CategoriesBrands extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
             const Gap(16),
@@ -95,18 +91,20 @@ class CategoriesBrands extends StatelessWidget {
                   productsList.length > 3 ? 3 : productsList.length,
                   (index) => Container(
                     height: 80,
+                    width: 80,
                     margin: EdgeInsets.only(left: index == 0 ? 0 : 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                       ),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: CachedNetworkImage(
+                      child: AppNetworkImage(
                         imageUrl: productsList[index].productImageList.first,
                         fit: BoxFit.fill,
+                        errorIconSize: 32,
                       ),
                     ),
                   ),

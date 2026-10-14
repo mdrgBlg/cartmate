@@ -14,8 +14,7 @@ class DbService {
     try {
       var tables = await findTable(db, DbConstants.whishlistTable);
       if (tables.isEmpty) {
-        await db.execute(
-          '''CREATE TABLE ${DbConstants.whishlistTable} (
+        await db.execute('''CREATE TABLE ${DbConstants.whishlistTable} (
       id TEXT PRIMARY KEY,
       brandId TEXT,
       categoryId TEXT,
@@ -27,8 +26,7 @@ class DbService {
       price INTEGER,
       stock INTEGER,
       wishlist INTEGER
-      )''',
-        );
+      )''');
         log("Table ${DbConstants.whishlistTable} is created");
       }
     } catch (e) {
@@ -41,14 +39,12 @@ class DbService {
     try {
       var tables = await findTable(db, DbConstants.brandTable);
       if (tables.isEmpty) {
-        await db.execute(
-          '''CREATE TABLE ${DbConstants.brandTable} (
+        await db.execute('''CREATE TABLE ${DbConstants.brandTable} (
       id TEXT PRIMARY KEY,
       brandName TEXT,
       iconName TEXT,
       productCount INTEGER
-      )''',
-        );
+      )''');
         log("Table ${DbConstants.brandTable} is created");
       }
     } catch (e) {
@@ -71,8 +67,7 @@ class DbService {
     try {
       var tables = await findTable(db, DbConstants.cartTable);
       if (tables.isEmpty) {
-        await db.execute(
-          '''CREATE TABLE ${DbConstants.cartTable} (
+        await db.execute('''CREATE TABLE ${DbConstants.cartTable} (
       id TEXT,
       size TEXT,
       quantity INTEGER,
@@ -86,8 +81,7 @@ class DbService {
       price INTEGER,
       stock INTEGER,
       PRIMARY KEY (id, size)
-      )''',
-        );
+      )''');
         log("Table ${DbConstants.cartTable} is created");
       }
     } catch (e) {
@@ -98,24 +92,20 @@ class DbService {
   static Future<void> saveCartItem(CartModel cartModel) async {
     Database db = await DbHelper.database;
     try {
-      await db.insert(
-        DbConstants.cartTable,
-        {
-          'id': cartModel.productModel.id,
-          'size': cartModel.size,
-          'quantity': cartModel.quantity,
-          'brandId': cartModel.productModel.brandModel?.id,
-          'categoryId': cartModel.productModel.categoryId,
-          'currency': cartModel.productModel.currency,
-          'productSize': cartModel.productModel.productSize?.join(',') ?? '',
-          'productImage': cartModel.productModel.productImageList.join(','),
-          'productName': cartModel.productModel.productName,
-          'discount': cartModel.productModel.discount,
-          'price': cartModel.productModel.price,
-          'stock': cartModel.productModel.stock,
-        },
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
+      await db.insert(DbConstants.cartTable, {
+        'id': cartModel.productModel.id,
+        'size': cartModel.size,
+        'quantity': cartModel.quantity,
+        'brandId': cartModel.productModel.brandModel?.id,
+        'categoryId': cartModel.productModel.categoryId,
+        'currency': cartModel.productModel.currency,
+        'productSize': cartModel.productModel.productSize?.join(',') ?? '',
+        'productImage': cartModel.productModel.productImageList.join(','),
+        'productName': cartModel.productModel.productName,
+        'discount': cartModel.productModel.discount,
+        'price': cartModel.productModel.price,
+        'stock': cartModel.productModel.stock,
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (e) {
       log("Error saveCartItem: $e");
     }
@@ -125,8 +115,9 @@ class DbService {
     List<CartModel> cartItems = [];
     try {
       Database db = await DbHelper.database;
-      final List<Map<String, dynamic>> rows =
-          await db.query(DbConstants.cartTable);
+      final List<Map<String, dynamic>> rows = await db.query(
+        DbConstants.cartTable,
+      );
       for (var row in rows) {
         final brandId = row['brandId'] as String?;
         BrandModel? brandModel;
@@ -140,14 +131,18 @@ class DbService {
             brandModel = BrandModel.fromJsonDb(brandRows.first);
           }
         }
-        final ProductsModel? productsModel =
-            ProductsModel.fromDb(row, brandModel);
+        final ProductsModel? productsModel = ProductsModel.fromDb(
+          row,
+          brandModel,
+        );
         if (productsModel != null) {
-          cartItems.add(CartModel(
-            productModel: productsModel,
-            size: row['size'] as String,
-            quantity: row['quantity'] as int,
-          ));
+          cartItems.add(
+            CartModel(
+              productModel: productsModel,
+              size: row['size'] as String,
+              quantity: row['quantity'] as int,
+            ),
+          );
         }
       }
     } catch (e) {
@@ -178,7 +173,10 @@ class DbService {
     }
   }
 
-  static Future<List<Map<String, Object?>>> findTable(Database db, String tableName) async {
+  static Future<List<Map<String, Object?>>> findTable(
+    Database db,
+    String tableName,
+  ) async {
     return db.rawQuery('SELECT * FROM sqlite_master WHERE name="$tableName";');
   }
 }

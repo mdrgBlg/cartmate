@@ -17,10 +17,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
 
     return SafeArea(
       child: Scaffold(
@@ -62,35 +59,43 @@ class CartScreen extends StatelessWidget {
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 10.0),
                   child: Consumer<MainProvider>(
-                    builder: (_, __, child) => mainProvider
-                            .cartProducts.isNotEmpty
+                    builder: (_, __, child) =>
+                        mainProvider.cartProducts.isNotEmpty
                         ? CustomButton(
                             buttonText:
                                 "Checkout ${mainProvider.checkoutPrice.toStringAsFixed(2)} ${mainProvider.cartProducts.first.productModel.currency}",
                             enable: mainProvider.cartProducts.isNotEmpty,
-                            onPress: () => CustomNavigator.pushNavigation(
-                              context: context,
-                              routeName: CheckoutScreen.routeName,
-                              screen: ChangeNotifierProvider(
-                                create: (_) => CheckoutProvider(
-                                  firstName:
-                                      mainProvider.userInfoModel?.firstName ??
+                            onPress: () =>
+                                CustomNavigator(context).pushNavigation(
+                                  routeName: CheckoutScreen.routeName,
+                                  screen: ChangeNotifierProvider(
+                                    create: (_) => CheckoutProvider(
+                                      firstName:
+                                          mainProvider
+                                              .userInfoModel
+                                              ?.firstName ??
                                           "",
-                                  lastName:
-                                      mainProvider.userInfoModel?.lastName ??
+                                      lastName:
+                                          mainProvider
+                                              .userInfoModel
+                                              ?.lastName ??
                                           "",
-                                  email:
-                                      mainProvider.userInfoModel?.email ?? "",
-                                  phoneNumber:
-                                      mainProvider.userInfoModel?.phoneNumber ??
+                                      email:
+                                          mainProvider.userInfoModel?.email ??
                                           "",
-                                  cartProducts: mainProvider.cartProducts,
-                                  checkoutPrice: mainProvider.checkoutPrice,
-                                  userId: mainProvider.userInfoModel?.id ?? "",
+                                      phoneNumber:
+                                          mainProvider
+                                              .userInfoModel
+                                              ?.phoneNumber ??
+                                          "",
+                                      cartProducts: mainProvider.cartProducts,
+                                      checkoutPrice: mainProvider.checkoutPrice,
+                                      userId:
+                                          mainProvider.userInfoModel?.id ?? "",
+                                    ),
+                                    child: const CheckoutScreen(),
+                                  ),
                                 ),
-                                child: const CheckoutScreen(),
-                              ),
-                            ),
                           )
                         : const SizedBox(),
                   ),

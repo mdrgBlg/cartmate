@@ -16,10 +16,7 @@ import 'navbar_item.dart';
 class AppNavigation extends StatelessWidget {
   const AppNavigation({super.key});
 
-  bool isTabActive({
-    required String routeName,
-    required String? currentRoute,
-  }) {
+  bool isTabActive({required String routeName, required String? currentRoute}) {
     return routeName == currentRoute;
   }
 
@@ -29,10 +26,7 @@ class AppNavigation extends StatelessWidget {
     return Wrap(
       children: [
         Container(
-          padding: const EdgeInsets.only(
-            top: 4,
-            bottom: 2,
-          ),
+          padding: const EdgeInsets.only(top: 4, bottom: 2),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             color: CustomColors.primary,
@@ -44,8 +38,7 @@ class AppNavigation extends StatelessWidget {
                 child: NavBarItem(
                   itemIcon: Icons.home,
                   itemText: "Home",
-                  onTap: () => CustomNavigator.pushNavigation(
-                    context: context,
+                  onTap: () => CustomNavigator(context).pushNavigation(
                     routeName: HomeScreen.routeName,
                     screen: ChangeNotifierProvider(
                       create: (_) => HomeProvider(),
@@ -62,8 +55,7 @@ class AppNavigation extends StatelessWidget {
                 child: NavBarItem(
                   itemIcon: Icons.store,
                   itemText: "Store",
-                  onTap: () => CustomNavigator.pushNavigation(
-                    context: context,
+                  onTap: () => CustomNavigator(context).pushNavigation(
                     routeName: StoreScreen.routeName,
                     screen: ChangeNotifierProvider(
                       create: (_) => StoreProvider(),
@@ -80,8 +72,7 @@ class AppNavigation extends StatelessWidget {
                 child: NavBarItem(
                   itemIcon: CupertinoIcons.heart,
                   itemText: "Wishlist",
-                  onTap: () => CustomNavigator.pushNavigation(
-                    context: context,
+                  onTap: () => CustomNavigator(context).pushNavigation(
                     routeName: WhishlistScreen.routeName,
                     screen: const WhishlistScreen(),
                   ),
@@ -95,8 +86,7 @@ class AppNavigation extends StatelessWidget {
                 child: NavBarItem(
                   itemIcon: CupertinoIcons.profile_circled,
                   itemText: "Profile",
-                  onTap: () => CustomNavigator.pushNavigation(
-                    context: context,
+                  onTap: () => CustomNavigator(context).pushNavigation(
                     routeName: ProfileScreen.routeName,
                     screen: ChangeNotifierProvider(
                       create: (_) => ProfileProvider(),

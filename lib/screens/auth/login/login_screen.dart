@@ -1,12 +1,6 @@
-import 'package:e_commerce/screens/app/home/home_providers/home_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants/custom_icons.dart';
-import '../../app/home/home_screen.dart';
-import '../forgot_password.dart';
-import '../signup/sign_up_providers/sign_up_provider.dart';
-import '../signup/sign_up_screen.dart';
 import '/constants/custom_colors.dart';
 import '/helpers/custom_navigator.dart';
 import '/helpers/loading.dart';
@@ -15,6 +9,12 @@ import '/models/response_model.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
 import '/widgets/password_field.dart';
+import '../../../constants/custom_icons.dart';
+import '../../app/home/home_providers/home_provider.dart';
+import '../../app/home/home_screen.dart';
+import '../forgot_password.dart';
+import '../signup/sign_up_providers/sign_up_provider.dart';
+import '../signup/sign_up_screen.dart';
 import 'login_providers/login_provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -53,17 +53,13 @@ class LoginScreen extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.topRight,
                     child: InkWell(
-                      onTap: () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChangeNotifierProvider(
-                              create: (_) => SignUpProvider(),
-                              child: const SignUpScreen(),
-                            ),
-                          ),
+                      onTap: () => CustomNavigator(context).pushNavigation(
+                        routeName: SignUpScreen.routeName,
+                        screen: ChangeNotifierProvider(
+                          create: (_) => SignUpProvider(),
+                          child: const SignUpScreen(),
                         ),
-                      },
+                      ),
                       child: Text(
                         'Sign Up',
                         style: textTheme.labelLarge!.copyWith(
@@ -82,10 +78,7 @@ class LoginScreen extends StatelessWidget {
                   top: 52,
                   child: Column(
                     children: [
-                      Image.asset(
-                        CustomIcons.cartIcon,
-                        width: 80,
-                      ),
+                      Image.asset(CustomIcons.cartIcon, width: 80),
                       const SizedBox(height: 12),
                       const Text(
                         "Log In To CartMate",
@@ -108,7 +101,9 @@ class LoginScreen extends StatelessWidget {
                     elevation: 3,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 24),
+                        horizontal: 8,
+                        vertical: 24,
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -120,9 +115,7 @@ class LoginScreen extends StatelessWidget {
                             },
                             controller: loginProvider.emailController,
                           ),
-                          const SizedBox(
-                            height: 12,
-                          ),
+                          const SizedBox(height: 12),
                           PasswordField(
                             hintText: "Password:",
                             onInputChanged: () {
@@ -138,13 +131,15 @@ class LoginScreen extends StatelessWidget {
                             buttonText: "Log in",
                             enable: loginProvider.loginButtonEnable,
                             onPress: () {
-                              ResponseModel responseModel =
-                                  ResponseModel(success: false);
+                              ResponseModel responseModel = ResponseModel(
+                                success: false,
+                              );
                               Loading.callLoading(
                                 context: context,
                                 callback: () async {
-                                  responseModel =
-                                      await loginProvider.login(context);
+                                  responseModel = await loginProvider.login(
+                                    context,
+                                  );
                                 },
                                 onFinished: () {
                                   if (responseModel.success) {
@@ -154,8 +149,7 @@ class LoginScreen extends StatelessWidget {
                                       snackBarMessageType:
                                           SnackBarMessageType.success,
                                     );
-                                    CustomNavigator.pushReplacement(
-                                      context: context,
+                                    CustomNavigator(context).pushReplacement(
                                       routeName: HomeScreen.routeName,
                                       screen: ChangeNotifierProvider(
                                         create: (_) => HomeProvider(),
@@ -165,7 +159,8 @@ class LoginScreen extends StatelessWidget {
                                   } else {
                                     SnackBarPopup.showMessage(
                                       context,
-                                      message: responseModel.error ??
+                                      message:
+                                          responseModel.error ??
                                           "Something went wrong.",
                                       snackBarMessageType:
                                           SnackBarMessageType.error,
@@ -178,16 +173,14 @@ class LoginScreen extends StatelessWidget {
                           Container(
                             margin: const EdgeInsets.only(top: 15),
                             child: InkWell(
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      ChangeNotifierProvider.value(
-                                    value: loginProvider,
-                                    child: const ForgotPassword(),
+                              onTap: () =>
+                                  CustomNavigator(context).pushNavigation(
+                                    routeName: ForgotPassword.routeName,
+                                    screen: ChangeNotifierProvider.value(
+                                      value: loginProvider,
+                                      child: const ForgotPassword(),
+                                    ),
                                   ),
-                                ),
-                              ),
                               child: Text(
                                 'Forgot password?',
                                 style: textTheme.bodyMedium!.copyWith(

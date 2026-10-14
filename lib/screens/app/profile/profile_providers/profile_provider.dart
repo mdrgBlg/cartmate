@@ -27,4 +27,22 @@ class ProfileProvider with ChangeNotifier {
   Future<void> fetchMyOrder(String userId) async {
     myOrders = await ProfileService.fetchMyOrder(userId);
   }
+
+  Future<bool> changeUserName(String userId, String firstName, String lastName) =>
+      ProfileService.updateUserName(userId, firstName, lastName);
+
+  Future<bool> changeEmail(String userId, String value) =>
+      ProfileService.updateEmail(userId, value);
+
+  Future<bool> changeUsername(String userId, String value) =>
+      ProfileService.updateUsername(userId, value);
+
+  Future<bool> changePhoneNumber(String userId, String value) =>
+      ProfileService.updatePhoneNumber(userId, value);
+
+  Future<bool> changeGender(String userId, String? value) =>
+      ProfileService.updateGender(userId, value);
+
+  Future<bool> changeDateOfBirth(String userId, String? value) =>
+      ProfileService.updateDateOfBirth(userId, value);
 }

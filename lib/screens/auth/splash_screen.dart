@@ -12,9 +12,10 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
-  late Animation animation;
+  late Animation<double> animation;
 
   @override
   void initState() {
@@ -24,7 +25,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-    animation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.fastOutSlowIn,
+    );
     controller.repeat(reverse: true);
   }
 
@@ -42,10 +46,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              CustomColors.primary,
-              CustomColors.secondary,
-            ],
+            colors: [CustomColors.primary, CustomColors.secondary],
           ),
         ),
         child: Center(
@@ -58,10 +59,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   angle: animation.value * 2 * 3.141592653589793,
                   child: child,
                 ),
-                child: Image.asset(
-                  CustomIcons.cartIcon,
-                  width: 120,
-                ),
+                child: Image.asset(CustomIcons.cartIcon, width: 120),
               ),
             ],
           ),

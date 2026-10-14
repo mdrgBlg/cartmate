@@ -118,8 +118,10 @@ class SignUpScreen extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 12, bottom: 8),
+                              padding: const EdgeInsets.only(
+                                top: 12,
+                                bottom: 8,
+                              ),
                               child: InputField(
                                 hintText: "Phone number",
                                 onInputChanged: () {
@@ -130,8 +132,9 @@ class SignUpScreen extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -140,11 +143,14 @@ class SignUpScreen extends StatelessWidget {
                                     child: Consumer<SignUpProvider>(
                                       builder: (_, signUpProvider, child) =>
                                           GenderSelector(
-                                        value: signUpProvider.selectedGender,
-                                        onChanged: (newValue) =>
-                                            signUpProvider.setGender(newValue),
-                                        genders: Helpers.genders,
-                                      ),
+                                            value:
+                                                signUpProvider.selectedGender,
+                                            onChanged: (newValue) =>
+                                                signUpProvider.setGender(
+                                                  newValue,
+                                                ),
+                                            genders: Helpers.genders,
+                                          ),
                                     ),
                                   ),
                                   Flexible(
@@ -156,15 +162,16 @@ class SignUpScreen extends StatelessWidget {
                                           pickedDate: signUpProvider.pickedDate,
                                           onDatePicked: (DateTime? pickedDate) {
                                             if (pickedDate != null) {
-                                              signUpProvider
-                                                  .setPickedDate(pickedDate);
+                                              signUpProvider.setPickedDate(
+                                                pickedDate,
+                                              );
                                               signUpProvider.validateField();
                                             } else {
                                               signUpProvider.validateField();
                                             }
                                           },
                                         ),
-                                        const Gap(16)
+                                        const Gap(16),
                                       ],
                                     ),
                                   ),
@@ -189,13 +196,14 @@ class SignUpScreen extends StatelessWidget {
                               buttonText: "Sign Up",
                               enable: signUpProvider.signUpButtonEnable,
                               onPress: () {
-                                ResponseModel responseModel =
-                                    ResponseModel(success: false);
+                                ResponseModel responseModel = ResponseModel(
+                                  success: false,
+                                );
                                 Loading.callLoading(
                                   context: context,
                                   callback: () async {
-                                    responseModel =
-                                        await signUpProvider.signUp();
+                                    responseModel = await signUpProvider
+                                        .signUp();
                                   },
                                   onFinished: () {
                                     if (responseModel.success) {
@@ -205,15 +213,15 @@ class SignUpScreen extends StatelessWidget {
                                         snackBarMessageType:
                                             SnackBarMessageType.success,
                                       );
-                                      CustomNavigator.pushReplacement(
-                                        context: context,
+                                      CustomNavigator(context).pushReplacement(
                                         routeName: WelcomeScreen.routeName,
                                         screen: const WelcomeScreen(),
                                       );
                                     } else {
                                       SnackBarPopup.showMessage(
                                         context,
-                                        message: responseModel.error ??
+                                        message:
+                                            responseModel.error ??
                                             "Something went wrong.",
                                         snackBarMessageType:
                                             SnackBarMessageType.error,
@@ -229,7 +237,7 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

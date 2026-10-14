@@ -1,22 +1,6 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '/models/brand_model.dart';
 
 class ProductsModel {
-  final String id;
-  final BrandModel? brandModel;
-  final String categoryId;
-  final String currency;
-  List<String> productImageList;
-  final String productName;
-  final int discount;
-  final int price;
-  final List<String>? productSize;
-  final int stock;
-  bool whishlist;
-
   ProductsModel({
     required this.id,
     required this.brandModel,
@@ -31,102 +15,111 @@ class ProductsModel {
     this.whishlist = false,
   });
 
-  static Future<ProductsModel?> fromDocument(
-      DocumentSnapshot<Map<String, dynamic>> document) async {
-    final json = document.data();
-    ProductsModel? productsModel;
-    try {
-      if (json != null) {
-        productsModel = ProductsModel(
-          id: document.id,
-          brandModel: await BrandModel.fromJson(json["brand"]),
-          categoryId: json["categoryId"],
-          currency: json["currency"],
-          productImageList: List<String>.from(json["productImage"]),
-          productName: json["productName"],
-          discount: json["discount"],
-          price: json["price"],
-          productSize: json["productSize"] != null
-              ? List<String>.from(json["productSize"])
-              : null,
-          stock: json["stock"],
-        );
-      }
-    } catch (e) {
-      log("EXCEPTION ProductsModel $e");
-    }
+  factory ProductsModel.fromDocument({
+    required String id,
+    required Map<String, dynamic> json,
+  }) => ProductsModel(
+    id: id,
+    brandModel: BrandModel.fromJsonDb(json["brand"] as Map<String, dynamic>),
+    categoryId: json["categoryId"] as String,
+    currency: json["currency"] as String,
+    productImageList: (json["productImage"] as List<dynamic>)
+        .map((e) => e as String)
+        .toList(),
+    productName: json["productName"] as String,
+    discount: (json["discount"] as num).toInt(),
+    price: (json["price"] as num).toInt(),
+    productSize: (json["productSize"] as List<dynamic>?)
+        ?.map((e) => e as String)
+        .toList(),
+    stock: (json["stock"] as num).toInt(),
+  );
 
-    return productsModel;
-  }
+  factory ProductsModel.fromJson(Map<String, dynamic> json) => ProductsModel(
+    id: json["id"] as String,
+    brandModel: BrandModel.fromJsonDb(json["brand"] as Map<String, dynamic>),
+    categoryId: json["categoryId"] as String,
+    currency: json["currency"] as String,
+    productImageList: (json["productImage"] as List<dynamic>)
+        .map((e) => e as String)
+        .toList(),
+    productName: json["productName"] as String,
+    discount: (json["discount"] as num).toInt(),
+    price: (json["price"] as num).toInt(),
+    productSize: (json["productSize"] as List<dynamic>?)
+        ?.map((e) => e as String)
+        .toList(),
+    stock: (json["stock"] as num).toInt(),
+  );
 
-  static ProductsModel? fromJson(Map<String, dynamic> json) {
-    ProductsModel? productsModel;
-    try {
-      productsModel = ProductsModel(
-        id: json["id"],
-        brandModel: BrandModel.fromJsonDb(json["brand"]),
-        categoryId: json["categoryId"],
-        currency: json["currency"],
-        productImageList: List<String>.from(json["productImage"]),
-        productName: json["productName"],
-        discount: json["discount"],
-        price: json["price"],
-        productSize: json["productSize"],
-        stock: json["stock"],
-      );
-    } catch (e) {
-      log("EXCEPTION ProductsModel $e");
-    }
+  factory ProductsModel.fromDb(
+    Map<String, dynamic> json,
+    BrandModel? brandModel,
+  ) => ProductsModel(
+    id: json['id'] as String,
+    brandModel: brandModel,
+    categoryId: json['categoryId'] as String,
+    currency: json['currency'] as String,
+    productImageList: (json['productImage'] as String).split(
+      ',',
+    ), // Split comma-separated string
+    productName: json['productName'] as String,
+    discount: json['discount'] as int,
+    price: json['price'] as int,
+    productSize: (json['productSize'] as String).split(
+      ',',
+    ), // Split comma-separated string
+    stock: json['stock'] as int,
+    whishlist: json['wishlist'] as int == 1,
+  );
 
-    return productsModel;
-  }
+  ProductsModel.copy(ProductsModel other)
+    : id = other.id,
+      brandModel = other.brandModel,
+      categoryId = other.categoryId,
+      currency = other.currency,
+      productImageList = List<String>.from(other.productImageList),
+      productName = other.productName,
+      discount = other.discount,
+      price = other.price,
+      productSize = List<String>.from(
+        other.productSize != null ? other.productSize! : [],
+      ),
+      stock = other.stock,
+      whishlist = other.whishlist;
 
-  static ProductsModel? fromDb(
-      Map<String, dynamic> json, BrandModel? brandModel) {
-    ProductsModel? productsModel;
-    try {
-      productsModel = ProductsModel(
-          id: json['id'] as String,
-          brandModel: brandModel,
-          categoryId: json['categoryId'] as String,
-          currency: json['currency'] as String,
-          productImageList: (json['productImage'] as String)
-              .split(','), // Split comma-separated string
-          productName: json['productName'] as String,
-          discount: json['discount'] as int,
-          price: json['price'] as int,
-          productSize: (json['productSize'] as String)
-              .split(','), // Split comma-separated string
-          stock: json['stock'] as int,
-          whishlist: json['wishlist'] as int == 1 ? true : false);
-    } catch (e) {
-      log("EXCEPTION ProductsModel $e");
-    }
+  final String id;
+  final BrandModel? brandModel;
+  final String categoryId;
+  final String currency;
+  List<String> productImageList;
+  final String productName;
+  final int discount;
+  final int price;
+  final List<String>? productSize;
+  final int stock;
+  bool whishlist;
 
-    return productsModel;
-  }
-
-  static Map<String, dynamic> productToMap(ProductsModel product) {
+  Map<String, dynamic> productToMap() {
     return {
-      'id': product.id,
-      'brandId': product.brandModel?.id,
-      'categoryId': product.categoryId,
-      'currency': product.currency,
-      'productImage': product.productImageList.join(','),
-      'productName': product.productName,
-      'discount': product.discount,
-      'price': product.price,
-      'productSize':
-          product.productSize != null ? product.productSize!.join(',') : "",
-      'stock': product.stock,
-      'wishlist': product.whishlist ? 1 : 0,
+      'id': id,
+      'brandId': brandModel?.id,
+      'categoryId': categoryId,
+      'currency': currency,
+      'productImage': productImageList.join(','),
+      'productName': productName,
+      'discount': discount,
+      'price': price,
+      'productSize': productSize != null ? productSize!.join(',') : "",
+      'stock': stock,
+      'wishlist': whishlist ? 1 : 0,
     };
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'brand': brandModel != null ? BrandModel.brandToMap(brandModel!) : null,
+      'brand': brandModel != null ? brandModel!.brandToMap() : null,
       'categoryId': categoryId,
       'currency': currency,
       'productImage': productImageList,
@@ -136,18 +129,4 @@ class ProductsModel {
       'stock': stock,
     };
   }
-
-  ProductsModel.copy(ProductsModel other)
-      : id = other.id,
-        brandModel = other.brandModel,
-        categoryId = other.categoryId,
-        currency = other.currency,
-        productImageList = List<String>.from(other.productImageList),
-        productName = other.productName,
-        discount = other.discount,
-        price = other.price,
-        productSize = List<String>.from(
-            other.productSize != null ? other.productSize! : []),
-        stock = other.stock,
-        whishlist = other.whishlist;
 }

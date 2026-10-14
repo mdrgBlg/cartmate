@@ -7,20 +7,17 @@ class DbHelper {
 
   static Database? db;
 
-  static Future get database async {
-    if (db != null) return db;
+  /// TODO
+  static Future<Database> get database async {
+    if (db != null) {
+      return db!;
+    }
     db = await initDB();
-    return db;
+    return db!;
   }
 
   static Future<Database> initDB() async {
-    String path = join(
-      await getDatabasesPath(),
-      dbName,
-    );
-    return await openDatabase(
-      path,
-      version: dbVersion,
-    );
+    String path = join(await getDatabasesPath(), dbName);
+    return await openDatabase(path, version: dbVersion);
   }
 }

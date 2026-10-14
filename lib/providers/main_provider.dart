@@ -7,7 +7,6 @@ import 'package:sqflite/sqflite.dart';
 import '/db/db_constants.dart';
 import '/db/db_helper.dart';
 import '/db/db_service.dart';
-import '/models/brand_model.dart';
 import '/models/cart_model.dart';
 import '/models/response_model.dart';
 import '/models/user_info_model.dart';
@@ -19,14 +18,13 @@ class MainProvider with ChangeNotifier {
   UserInfoModel? userInfoModel;
 
   double get checkoutPrice => cartProducts.fold(
-        0,
-        (sum, item) =>
-            sum +
-            item.quantity *
-                (item.productModel.price -
-                    item.productModel.price *
-                        (item.productModel.discount / 100)),
-      );
+    0,
+    (sum, item) =>
+        sum +
+        item.quantity *
+            (item.productModel.price -
+                item.productModel.price * (item.productModel.discount / 100)),
+  );
 
   List<ProductsModel> whishlistProductsList = [];
   List<ProductsModel> productsList = [];
@@ -39,8 +37,9 @@ class MainProvider with ChangeNotifier {
     if (productsModel.whishlist) {
       whishlistProductsList.add(productsModel);
     } else {
-      whishlistProductsList
-          .removeWhere((element) => element.id == productsModel.id);
+      whishlistProductsList.removeWhere(
+        (element) => element.id == productsModel.id,
+      );
     }
     notifyListeners();
   }
@@ -95,92 +94,35 @@ class MainProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> changeUserName(String firstName, String lastName) async {
-    bool success = false;
+  void setUserName(String firstName, String lastName) {
     userInfoModel?.firstName = firstName;
     userInfoModel?.lastName = lastName;
-    await collection.doc(userInfoModel?.id).update({
-      'firstName': firstName,
-      'lastName': lastName,
-    }).then((value) {
-      success = true;
-    }).catchError((onError) {
-      success = false;
-    });
-
     notifyListeners();
-    return success;
   }
 
-  Future<bool> changeEmail(String value) async {
-    bool success = false;
+  void setEmail(String value) {
     userInfoModel?.email = value;
-    await collection.doc(userInfoModel?.id).update({
-      'email': value,
-    }).then((value) {
-      success = true;
-    }).catchError((onError) {
-      success = false;
-    });
     notifyListeners();
-    return success;
   }
 
-  Future<bool> changeUsername(String value) async {
-    bool success = false;
-
+  void setUsername(String value) {
     userInfoModel?.username = value;
-    await collection.doc(userInfoModel?.id).update({
-      'username': value,
-    }).then((value) {
-      success = true;
-    }).catchError((onError) {
-      success = false;
-    });
     notifyListeners();
-    return success;
   }
 
-  Future<bool> changeUserPhoneNumber(String value) async {
-    bool success = false;
+  void setPhoneNumber(String value) {
     userInfoModel?.phoneNumber = value;
-    await collection.doc(userInfoModel?.id).update({
-      'phoneNumber': value,
-    }).then((value) {
-      success = true;
-    }).catchError((onError) {
-      success = false;
-    });
     notifyListeners();
-    return success;
   }
 
-  Future<bool> changeGender(String? value) async {
-    bool success = false;
-    userInfoModel?.gender = value ?? "";
-    await collection.doc(userInfoModel?.id).update({
-      'gender': value == "Male" ? true : false,
-    }).then((value) {
-      success = true;
-    }).catchError((onError) {
-      success = false;
-    });
+  void setGender(String? value) {
+    userInfoModel?.gender = value ?? '';
     notifyListeners();
-    return success;
   }
 
-  Future<bool> changeDateOfBirth(String? value) async {
-    bool success = false;
-    userInfoModel?.dateOfBirth = value ?? "";
-    await collection.doc(userInfoModel?.id).update({
-      'dateOfBirth': value,
-    }).then((value) {
-      success = true;
-    }).catchError((onError) {
-      success = false;
-    });
+  void setDateOfBirth(String? value) {
+    userInfoModel?.dateOfBirth = value ?? '';
     notifyListeners();
-    return success;
   }
 
   Future<ResponseModel> fetchUserInfo(String userId) async {
@@ -216,7 +158,7 @@ class MainProvider with ChangeNotifier {
       if (!await DbService.doesBrandExist(productsModel.brandModel!.id)) {
         // Insert brand if it doesn't exist
         brandInserted = await HomeService.addBrand(
-          BrandModel.brandToMap(productsModel.brandModel!),
+          productsModel.brandModel!.brandToMap(),
         );
       } else {
         brandInserted = true;
@@ -224,7 +166,7 @@ class MainProvider with ChangeNotifier {
     }
     if (brandInserted) {
       return await HomeService.addProductToWhishlist(
-        ProductsModel.productToMap(productsModel),
+        productsModel.productToMap(),
       );
     } else {
       return false;
@@ -233,8 +175,11 @@ class MainProvider with ChangeNotifier {
 
   Future<void> removeProductFromWhishlist(ProductsModel productsModel) async {
     Database db = await DbHelper.database;
-    await db.delete(DbConstants.whishlistTable,
-        where: 'id = ?', whereArgs: [productsModel.id]);
+    await db.delete(
+      DbConstants.whishlistTable,
+      where: 'id = ?',
+      whereArgs: [productsModel.id],
+    );
   }
 
   Future<void> fetchProducts() async {

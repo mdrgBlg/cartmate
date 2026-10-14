@@ -9,14 +9,13 @@ import 'db/db_helper.dart';
 import 'providers/main_provider.dart';
 import 'screens/auth/welcome/welcome_screen.dart';
 
-Future main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseAppCheck.instance.activate(
+    providerAndroid: const AndroidDebugProvider(),
   );
-  await FirebaseAppCheck.instance
-      .activate(providerAndroid: AndroidDebugProvider());
 
   await DbHelper.database;
 
@@ -34,10 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      supportedLocales: const [
-        Locale('en'),
-      ],
-      themeMode: ThemeMode.system,
+      supportedLocales: const [Locale('en')],
       debugShowCheckedModeBanner: false,
       title: "Store app",
       theme: Themes.themeData,

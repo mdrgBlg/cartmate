@@ -1,10 +1,42 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '/models/cart_model.dart';
 
 class CheckoutModel {
+  CheckoutModel({
+    required this.orderId,
+    required this.userId,
+    required this.address,
+    required this.city,
+    required this.country,
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    required this.checkoutPrice,
+    required this.postalCode,
+    required this.items,
+    required this.orderDate,
+    required this.orderStatus,
+    this.deliveryDate,
+  });
+
+  factory CheckoutModel.fromJson(Map<String, dynamic> json) => CheckoutModel(
+    orderId: json["orderId"] as String,
+    userId: json["userId"] as String,
+    address: json["address"] as String,
+    city: json["city"] as String,
+    country: json["country"] as String,
+    email: json["email"] as String,
+    firstName: json["firstName"] as String,
+    lastName: json["lastName"] as String,
+    checkoutPrice: (json["checkoutPrice"] as num).toDouble(),
+    postalCode: (json["postalCode"] as num).toInt(),
+    items: (json["items"] as List<Map<String, dynamic>>)
+        .map((e) => CartModel.fromJson(e))
+        .toList(),
+    orderDate: json["orderDate"] as String,
+    deliveryDate: json["deliveryDate"] as String?,
+    orderStatus: (json["orderStatus"] as num).toInt(),
+  );
+
   final String orderId;
   final String userId;
   final String address;
@@ -19,54 +51,6 @@ class CheckoutModel {
   final String? deliveryDate;
   final String orderDate;
   final int orderStatus;
-
-  CheckoutModel({
-    required this.orderId,
-    required this.userId,
-    required this.address,
-    required this.city,
-    required this.country,
-    required this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.checkoutPrice,
-    required this.postalCode,
-    required this.items,
-    this.deliveryDate,
-    required this.orderDate,
-    required this.orderStatus,
-  });
-
-  static CheckoutModel? fromDocument(
-      DocumentSnapshot<Map<String, dynamic>> document) {
-    final json = document.data();
-    CheckoutModel? checkoutModel;
-    try {
-      if (json != null) {
-        checkoutModel = CheckoutModel(
-          orderId: json["orderId"],
-          userId: json["userId"],
-          address: json["address"],
-          city: json["city"],
-          country: json["country"],
-          email: json["email"],
-          firstName: json["firstName"],
-          lastName: json["lastName"],
-          checkoutPrice: json["checkoutPrice"],
-          postalCode: json["postalCode"],
-          items: (json["items"] as List)
-              .map((e) => CartModel.fromJson(e))
-              .toList(),
-          orderDate: json["orderDate"],
-          deliveryDate: json["deliveryDate"],
-          orderStatus: json["orderStatus"],
-        );
-      }
-    } catch (e) {
-      log("EXCEPTION CheckoutModel $e");
-    }
-    return checkoutModel;
-  }
 
   Map<String, dynamic> toMap() {
     return {
