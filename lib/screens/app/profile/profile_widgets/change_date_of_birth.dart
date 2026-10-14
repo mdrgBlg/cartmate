@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../auth/signup/date_picker.dart';
-import '../profile_providers/profile_provider.dart';
 import '/constants/custom_colors.dart';
 import '/helpers/loading.dart';
 import '/helpers/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
+import '../../../auth/signup/date_picker.dart';
+import '../profile_providers/profile_provider.dart';
 
 class ChangeDateOfBirth extends StatelessWidget {
-  final String sectionTitle;
-  final Function(String?) changeInfo;
-  final DateTime defaultValue;
-
   const ChangeDateOfBirth({
-    super.key,
     required this.sectionTitle,
     required this.changeInfo,
     required this.defaultValue,
+    super.key,
   });
+
+  final String sectionTitle;
+  final Future<bool> Function(String?) changeInfo;
+  final DateTime defaultValue;
 
   static const routeName = '/change_date_of_birth';
 
@@ -77,14 +77,16 @@ class ChangeDateOfBirth extends StatelessWidget {
                     },
                     onFinished: () {
                       if (success) {
-                        SnackBarPopup.showMessage(context,
-                            message: "User successfully changed $sectionTitle");
+                        SnackBarPopup.showMessage(
+                          context,
+                          message: "User successfully changed $sectionTitle",
+                        );
                       }
                       Navigator.of(context).pop();
                     },
                   );
                 },
-              )
+              ),
             ],
           ),
         ),

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 import '/constants/custom_colors.dart';
 import '/models/cart_model.dart';
 import '/providers/main_provider.dart';
+import '/widgets/app_network_image.dart';
 
 class CartItem extends StatelessWidget {
   final CartModel cartModel;
@@ -21,10 +21,7 @@ class CartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
       child: Container(
@@ -53,10 +50,11 @@ class CartItem extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          cartModel.productModel.productImageList.first,
+                    child: AppNetworkImage(
+                      imageUrl: cartModel.productModel.productImageList.first,
                       height: 64,
+                      width: 64,
+                      errorIconSize: 32,
                     ),
                   ),
                 ),
@@ -106,9 +104,7 @@ class CartItem extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                               children: [
-                                const TextSpan(
-                                  text: "Size: ",
-                                ),
+                                const TextSpan(text: "Size: "),
                                 TextSpan(
                                   text: cartModel.size,
                                   style: textTheme.bodySmall!.copyWith(
@@ -119,9 +115,7 @@ class CartItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 8,
-                        ),
+                        const SizedBox(width: 8),
                         if (!isCartItem)
                           Container(
                             alignment: AlignmentDirectional.centerStart,
@@ -132,9 +126,7 @@ class CartItem extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                                 children: [
-                                  const TextSpan(
-                                    text: "Quantity: ",
-                                  ),
+                                  const TextSpan(text: "Quantity: "),
                                   TextSpan(
                                     text: cartModel.quantity.toString(),
                                     style: textTheme.bodySmall!.copyWith(

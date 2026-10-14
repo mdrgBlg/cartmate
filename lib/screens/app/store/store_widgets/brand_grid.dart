@@ -1,31 +1,27 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../providers/main_provider.dart';
 import '/constants/custom_colors.dart';
 import '/helpers/custom_navigator.dart';
 import '/helpers/helpers.dart';
 import '/models/brand_model.dart';
+import '/providers/main_provider.dart';
+import '/widgets/app_network_image.dart';
 import 'brand_products.dart';
 
 class BrandGrid extends StatelessWidget {
-  final List<BrandModel> brandList;
-
-  final bool showLimited;
   const BrandGrid({
-    super.key,
     required this.brandList,
     required this.showLimited,
+    super.key,
   });
+  final List<BrandModel> brandList;
+  final bool showLimited;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
       child: GridView.builder(
@@ -39,45 +35,43 @@ class BrandGrid extends StatelessWidget {
         shrinkWrap: true,
         itemCount: showLimited
             ? brandList.length > 6
-                ? 6
-                : brandList.length
+                  ? 6
+                  : brandList.length
             : brandList.length,
         itemBuilder: (context, index) => brandList.isNotEmpty
             ? InkWell(
                 borderRadius: BorderRadius.circular(16),
-                onTap: () => CustomNavigator.pushNavigation(
-                  context: context,
+                onTap: () => CustomNavigator(context).pushNavigation(
                   routeName: BrandProducts.routeName,
                   screen: BrandProducts(
                     productsList: Helpers.getBrandProducts(
-                        mainProvider.productsList, brandList[index]),
+                      mainProvider.productsList,
+                      brandList[index],
+                    ),
                     brandModel: brandList[index],
                   ),
                 ),
                 child: Container(
-                  padding: const EdgeInsets.only(
-                    left: 12,
-                  ),
+                  padding: const EdgeInsets.only(left: 12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: CustomColors.text.withOpacity(0.4),
+                      color: CustomColors.text.withValues(alpha: 0.4),
                     ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
                         height: 36,
                         width: 36,
-                        child: CachedNetworkImage(
+                        child: AppNetworkImage(
                           imageUrl: brandList[index].iconName,
+                          errorIcon: Icons.store,
+                          errorIconSize: 20,
                         ),
                       ),
-                      const SizedBox(
-                        width: 12,
-                      ),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -99,9 +93,7 @@ class BrandGrid extends StatelessWidget {
                                   color: Colors.blueAccent,
                                   size: 14,
                                 ),
-                                SizedBox(
-                                  width: 12,
-                                )
+                                SizedBox(width: 12),
                               ],
                             ),
                             Row(
@@ -109,24 +101,26 @@ class BrandGrid extends StatelessWidget {
                                 Text(
                                   brandList[index].productCount.toString(),
                                   style: textTheme.bodySmall!.copyWith(
-                                    color: CustomColors.text.withOpacity(0.4),
+                                    color: CustomColors.text.withValues(
+                                      alpha: 0.4,
+                                    ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 2,
-                                ),
+                                const SizedBox(width: 2),
                                 Text(
                                   "products",
                                   style: textTheme.bodySmall!.copyWith(
-                                    color: CustomColors.text.withOpacity(0.4),
+                                    color: CustomColors.text.withValues(
+                                      alpha: 0.4,
+                                    ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
