@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
-import '../../screen_wrapper.dart';
-import '../checkout/cart_screen.dart';
 import '/constants/custom_colors.dart';
 import '/helpers/custom_navigator.dart';
 import '/providers/main_provider.dart';
 import '/widgets/shopping_cart.dart';
+import '../../screen_wrapper.dart';
+import '../checkout/cart_screen.dart';
 import 'store_providers/store_provider.dart';
 import 'store_widgets/brand_grid.dart';
 import 'store_widgets/categories_brands.dart';
@@ -21,14 +21,8 @@ class StoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
-    final storeProvider = Provider.of<StoreProvider>(
-      context,
-      listen: false,
-    );
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
+    final storeProvider = Provider.of<StoreProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: ScreenWrapper(
@@ -52,8 +46,7 @@ class StoreScreen extends StatelessWidget {
                     ),
                     const Spacer(),
                     InkWell(
-                      onTap: () => CustomNavigator.pushNavigation(
-                        context: context,
+                      onTap: () => CustomNavigator(context).pushNavigation(
                         routeName: CartScreen.routeName,
                         screen: const CartScreen(),
                       ),
@@ -68,8 +61,10 @@ class StoreScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 20,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -80,8 +75,7 @@ class StoreScreen extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () => CustomNavigator.pushNavigation(
-                        context: context,
+                      onTap: () => CustomNavigator(context).pushNavigation(
                         routeName: ViewAllBrands.routeName,
                         screen: ChangeNotifierProvider.value(
                           value: StoreProvider(),
@@ -90,11 +84,8 @@ class StoreScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      child: Text(
-                        "View all",
-                        style: textTheme.bodyMedium,
-                      ),
-                    )
+                      child: Text("View all", style: textTheme.bodyMedium),
+                    ),
                   ],
                 ),
               ),
@@ -105,16 +96,16 @@ class StoreScreen extends StatelessWidget {
                 ),
                 builder: (context, snapshot) =>
                     snapshot.connectionState == ConnectionState.waiting
-                        ? const Center(
-                            heightFactor: 3,
-                            child: CircularProgressIndicator(),
-                          )
-                        : storeProvider.brandsList.isNotEmpty
-                            ? BrandGrid(
-                                brandList: storeProvider.brandsList,
-                                showLimited: true,
-                              )
-                            : Container(),
+                    ? const Center(
+                        heightFactor: 3,
+                        child: CircularProgressIndicator(),
+                      )
+                    : storeProvider.brandsList.isNotEmpty
+                    ? BrandGrid(
+                        brandList: storeProvider.brandsList,
+                        showLimited: true,
+                      )
+                    : Container(),
               ),
               const Gap(32),
               SizedBox(
@@ -133,7 +124,8 @@ class StoreScreen extends StatelessWidget {
                           storeProvider.categoriesList[index],
                           mainProvider.productsList,
                         ),
-                        isActive: storeProvider.selectedCategory ==
+                        isActive:
+                            storeProvider.selectedCategory ==
                             storeProvider.categoriesList[index],
                       ),
                     ),

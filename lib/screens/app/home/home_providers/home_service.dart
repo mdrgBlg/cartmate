@@ -16,8 +16,11 @@ class HomeService {
     try {
       final res = await db.collection("Categories").get();
       for (var e in res.docs) {
-        CategoriesModel? categoriesModel = CategoriesModel.fromDocument(e);
-        if (categoriesModel != null && categoriesModel.parentId == null) {
+        final categoriesModel = CategoriesModel.fromDocument(
+          id: e.id,
+          json: e.data(),
+        );
+        if (categoriesModel.parentId == null) {
           categoryList.add(categoriesModel);
         }
       }
@@ -34,10 +37,11 @@ class HomeService {
     try {
       final res = await db.collection("Products").get();
       for (var e in res.docs) {
-        ProductsModel? productsModel = await ProductsModel.fromDocument(e);
-        if (productsModel != null) {
-          productList.add(productsModel);
-        }
+        final productsModel = ProductsModel.fromDocument(
+          id: e.id,
+          json: e.data(),
+        );
+        productList.add(productsModel);
       }
     } catch (e) {
       log("EXCEPTION fetchProducts $e");
@@ -92,28 +96,34 @@ class HomeService {
     List<ProductsModel> productsList = [];
     BrandModel? brandModel;
     try {
-      final List<Map<String, dynamic>>? productsMap =
-          await DbHelper.db?.query(DbConstants.whishlistTable);
+      final List<Map<String, dynamic>>? productsMap = await DbHelper.db?.query(
+        DbConstants.whishlistTable,
+      );
       if (productsMap != null && productsMap.isNotEmpty) {
-        log("Data successfully fetched from ${DbConstants.whishlistTable} table");
+        log(
+          "Data successfully fetched from ${DbConstants.whishlistTable} table",
+        );
         for (var e in productsMap) {
           final brandId = e["brandId"];
           final List<Map<String, dynamic>>? brandMap = await DbHelper.db?.query(
-              DbConstants.brandTable,
-              where: 'id = ?',
-              whereArgs: [brandId]);
+            DbConstants.brandTable,
+            where: 'id = ?',
+            whereArgs: [brandId],
+          );
 
           if (brandMap != null && brandMap.isNotEmpty) {
-            log("Data successfully fetched from ${DbConstants.brandTable} table");
+            log(
+              "Data successfully fetched from ${DbConstants.brandTable} table",
+            );
             brandModel = BrandModel.fromJsonDb(brandMap.first);
           }
           ProductsModel? productsModel = ProductsModel.fromDb(e, brandModel);
-          if (productsModel != null) {
-            productsList.add(productsModel);
-          }
+          productsList.add(productsModel);
         }
       } else {
-        log("Error fetching data or table is empty (${DbConstants.whishlistTable} table)");
+        log(
+          "Error fetching data or table is empty (${DbConstants.whishlistTable} table)",
+        );
       }
     } catch (e) {
       log("EXCEPTION fetchWhishlistProducts $e");

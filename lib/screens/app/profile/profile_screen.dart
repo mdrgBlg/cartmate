@@ -30,10 +30,7 @@ class ProfileScreen extends StatelessWidget {
       context,
       listen: false,
     );
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
 
     return SafeArea(
       child: ScreenWrapper(
@@ -99,14 +96,14 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             const Spacer(),
                             InkWell(
-                              onTap: () => CustomNavigator.pushNavigation(
-                                context: context,
-                                routeName: MyOrdersScreen.routeName,
-                                screen: ChangeNotifierProvider.value(
-                                  value: profileProvider,
-                                  child: const MyOrdersScreen(),
-                                ),
-                              ),
+                              onTap: () =>
+                                  CustomNavigator(context).pushNavigation(
+                                    routeName: MyOrdersScreen.routeName,
+                                    screen: ChangeNotifierProvider.value(
+                                      value: profileProvider,
+                                      child: const MyOrdersScreen(),
+                                    ),
+                                  ),
                               child: Image.asset(
                                 CustomIcons.myOrders,
                                 color: Colors.white,
@@ -114,7 +111,7 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -138,14 +135,23 @@ class ProfileScreen extends StatelessWidget {
                   sectionTitle: "Name",
                   sectionText:
                       "${mainProvider.userInfoModel?.firstName} ${mainProvider.userInfoModel?.lastName}",
-                  onTap: () => CustomNavigator.pushNavigation(
-                    context: context,
+                  onTap: () => CustomNavigator(context).pushNavigation(
                     routeName: ChangeUserName.routeName,
                     screen: ChangeUserName(
                       sectionTitle: "Name",
-                      changeInfo: mainProvider.changeUserName,
+                      changeInfo: (firstName, lastName) async {
+                        final success = await profileProvider.changeUserName(
+                          mainProvider.userInfoModel?.id ?? '',
+                          firstName,
+                          lastName,
+                        );
+                        if (success)
+                          mainProvider.setUserName(firstName, lastName);
+                        return success;
+                      },
                       firstNameController: TextEditingController(
-                          text: mainProvider.userInfoModel?.firstName),
+                        text: mainProvider.userInfoModel?.firstName,
+                      ),
                       lastNameController: TextEditingController(
                         text: mainProvider.userInfoModel?.lastName,
                       ),
@@ -158,12 +164,18 @@ class ProfileScreen extends StatelessWidget {
                 builder: (_, __, child) => InformationWidget(
                   sectionTitle: "Username",
                   sectionText: "${mainProvider.userInfoModel?.username}",
-                  onTap: () => CustomNavigator.pushNavigation(
-                    context: context,
+                  onTap: () => CustomNavigator(context).pushNavigation(
                     routeName: ChangeUserInfo.routeName,
                     screen: ChangeUserInfo(
                       sectionTitle: "Username",
-                      changeInfo: mainProvider.changeUsername,
+                      changeInfo: (value) async {
+                        final success = await profileProvider.changeUsername(
+                          mainProvider.userInfoModel?.id ?? '',
+                          value,
+                        );
+                        if (success) mainProvider.setUsername(value);
+                        return success;
+                      },
                       controller: TextEditingController(
                         text: mainProvider.userInfoModel?.username,
                       ),
@@ -174,9 +186,7 @@ class ProfileScreen extends StatelessWidget {
               const Gap(16),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Divider(
-                  color: CustomColors.grayDark,
-                ),
+                child: Divider(color: CustomColors.grayDark),
               ),
               const Gap(8),
               Padding(
@@ -195,14 +205,21 @@ class ProfileScreen extends StatelessWidget {
                 builder: (_, __, child) => InformationWidget(
                   sectionTitle: "E-mail",
                   sectionText: "${mainProvider.userInfoModel?.email}",
-                  onTap: () => CustomNavigator.pushNavigation(
-                    context: context,
+                  onTap: () => CustomNavigator(context).pushNavigation(
                     routeName: ChangeUserInfo.routeName,
                     screen: ChangeUserInfo(
                       sectionTitle: "E-mail",
-                      changeInfo: mainProvider.changeEmail,
+                      changeInfo: (value) async {
+                        final success = await profileProvider.changeEmail(
+                          mainProvider.userInfoModel?.id ?? '',
+                          value,
+                        );
+                        if (success) mainProvider.setEmail(value);
+                        return success;
+                      },
                       controller: TextEditingController(
-                          text: mainProvider.userInfoModel?.email),
+                        text: mainProvider.userInfoModel?.email,
+                      ),
                     ),
                   ),
                 ),
@@ -212,14 +229,21 @@ class ProfileScreen extends StatelessWidget {
                 builder: (_, __, child) => InformationWidget(
                   sectionTitle: "Phone Number",
                   sectionText: "${mainProvider.userInfoModel?.phoneNumber}",
-                  onTap: () => CustomNavigator.pushNavigation(
-                    context: context,
+                  onTap: () => CustomNavigator(context).pushNavigation(
                     routeName: ChangeUserInfo.routeName,
                     screen: ChangeUserInfo(
                       sectionTitle: "Phone Number",
-                      changeInfo: mainProvider.changeUserPhoneNumber,
+                      changeInfo: (value) async {
+                        final success = await profileProvider.changePhoneNumber(
+                          mainProvider.userInfoModel?.id ?? '',
+                          value,
+                        );
+                        if (success) mainProvider.setPhoneNumber(value);
+                        return success;
+                      },
                       controller: TextEditingController(
-                          text: mainProvider.userInfoModel?.phoneNumber),
+                        text: mainProvider.userInfoModel?.phoneNumber,
+                      ),
                     ),
                   ),
                 ),
@@ -232,14 +256,20 @@ class ProfileScreen extends StatelessWidget {
                   onTap: () {
                     profileProvider.selectedGender =
                         mainProvider.userInfoModel?.gender;
-                    CustomNavigator.pushNavigation(
-                      context: context,
+                    CustomNavigator(context).pushNavigation(
                       routeName: ChangeGender.routeName,
                       screen: ChangeNotifierProvider.value(
                         value: profileProvider,
                         child: ChangeGender(
                           sectionTitle: "Gender",
-                          changeInfo: mainProvider.changeGender,
+                          changeInfo: (value) async {
+                            final success = await profileProvider.changeGender(
+                              mainProvider.userInfoModel?.id ?? '',
+                              value,
+                            );
+                            if (success) mainProvider.setGender(value);
+                            return success;
+                          },
                           defaultValue: profileProvider.selectedGender,
                         ),
                       ),
@@ -263,20 +293,30 @@ class ProfileScreen extends StatelessWidget {
                     );
                     profileProvider.controller.text =
                         DateTimeService.formatDateTime(
-                      mainProvider.userInfoModel?.dateOfBirth ??
-                          DateTime.now().toString(),
-                    );
-                    CustomNavigator.pushNavigation(
-                      context: context,
+                          mainProvider.userInfoModel?.dateOfBirth ??
+                              DateTime.now().toString(),
+                        );
+                    CustomNavigator(context).pushNavigation(
                       routeName: ChangeDateOfBirth.routeName,
                       screen: ChangeNotifierProvider.value(
                         value: profileProvider,
                         child: ChangeDateOfBirth(
                           sectionTitle: "Date of Birth",
-                          changeInfo: mainProvider.changeDateOfBirth,
+                          changeInfo: (value) async {
+                            final success = await profileProvider
+                                .changeDateOfBirth(
+                                  mainProvider.userInfoModel?.id ?? '',
+                                  value,
+                                );
+                            if (success) {
+                              mainProvider.setDateOfBirth(value);
+                            }
+                            return success;
+                          },
                           defaultValue: DateTime.parse(
-                              mainProvider.userInfoModel?.dateOfBirth ??
-                                  DateTime.now().toString()),
+                            mainProvider.userInfoModel?.dateOfBirth ??
+                                DateTime.now().toString(),
+                          ),
                         ),
                       ),
                     );
@@ -286,9 +326,7 @@ class ProfileScreen extends StatelessWidget {
               const Gap(16),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Divider(
-                  color: CustomColors.grayDark,
-                ),
+                child: Divider(color: CustomColors.grayDark),
               ),
               const Gap(16),
               const Logout(),

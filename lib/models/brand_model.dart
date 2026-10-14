@@ -1,13 +1,4 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class BrandModel {
-  final String id;
-  final String brandName;
-  String iconName;
-  final int productCount;
-
   BrandModel({
     required this.id,
     required this.brandName,
@@ -15,61 +6,34 @@ class BrandModel {
     required this.productCount,
   });
 
-  static Future<BrandModel?> fromDocument(
-      DocumentSnapshot<Map<String, dynamic>> document) async {
-    final json = document.data();
-    BrandModel? brandModel;
-    try {
-      if (json != null) {
-        brandModel = BrandModel(
-          id: document.id,
-          brandName: json["brandName"],
-          iconName: json["iconName"],
-          productCount: json["productCount"],
-        );
-      }
-    } catch (e) {
-      log("EXCEPTION BrandModel $e");
-    }
-    return brandModel;
-  }
+  factory BrandModel.fromDocument({
+    required String id,
+    required Map<String, dynamic> json,
+  }) => BrandModel(
+    id: id,
+    brandName: json["brandName"] as String,
+    iconName: json["iconName"] as String,
+    productCount: (json["productCount"] as num).toInt(),
+  );
 
-  static Future<BrandModel?> fromJson(Map<String, dynamic> json) async {
-    BrandModel? brandModel;
-    try {
-      brandModel = BrandModel(
-        id: json["id"],
-        brandName: json["brandName"],
-        iconName: json["iconName"],
-        productCount: json["productCount"],
-      );
-    } catch (e) {
-      log("EXCEPTION BrandModel $e");
-    }
-    return brandModel;
-  }
+  factory BrandModel.fromJsonDb(Map<String, dynamic> json) => BrandModel(
+    id: json["id"] as String,
+    brandName: json["brandName"] as String,
+    iconName: json["iconName"] as String,
+    productCount: (json["productCount"] as num).toInt(),
+  );
 
-  static BrandModel? fromJsonDb(Map<String, dynamic> json) {
-    BrandModel? brandModel;
-    try {
-      brandModel = BrandModel(
-        id: json["id"],
-        brandName: json["brandName"],
-        iconName: json["iconName"],
-        productCount: json["productCount"],
-      );
-    } catch (e) {
-      log("EXCEPTION BrandModel $e");
-    }
-    return brandModel;
-  }
+  final String id;
+  final String brandName;
+  String iconName;
+  final int productCount;
 
-  static Map<String, dynamic> brandToMap(BrandModel brand) {
+  Map<String, dynamic> brandToMap() {
     return {
-      'id': brand.id,
-      'brandName': brand.brandName,
-      'iconName': brand.iconName,
-      'productCount': brand.productCount,
+      'id': id,
+      'brandName': brandName,
+      'iconName': iconName,
+      'productCount': productCount,
     };
   }
 }

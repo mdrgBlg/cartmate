@@ -22,22 +22,12 @@ class HomeScreen extends StatelessWidget {
 
   static const routeName = '/';
 
-  final debouncer = Debouncer(
-    delay: const Duration(
-      milliseconds: 600,
-    ),
-  );
+  final debouncer = Debouncer(delay: const Duration(milliseconds: 600));
 
   @override
   Widget build(BuildContext context) {
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
-    final homeProvider = Provider.of<HomeProvider>(
-      context,
-      listen: false,
-    );
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
+    final homeProvider = Provider.of<HomeProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: ScreenWrapper(
@@ -78,11 +68,11 @@ class HomeScreen extends StatelessWidget {
                               ),
                               const Spacer(),
                               InkWell(
-                                onTap: () => CustomNavigator.pushNavigation(
-                                  context: context,
-                                  routeName: CartScreen.routeName,
-                                  screen: const CartScreen(),
-                                ),
+                                onTap: () =>
+                                    CustomNavigator(context).pushNavigation(
+                                      routeName: CartScreen.routeName,
+                                      screen: const CartScreen(),
+                                    ),
                                 child: Consumer<MainProvider>(
                                   builder: (_, __, child) => ShoppingCart(
                                     productNumber:
@@ -90,7 +80,7 @@ class HomeScreen extends StatelessWidget {
                                     homeScreen: true,
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -100,8 +90,12 @@ class HomeScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 108, 20, 0),
+                                  padding: const EdgeInsets.fromLTRB(
+                                    20,
+                                    108,
+                                    20,
+                                    0,
+                                  ),
                                   child: Text(
                                     "Popular Categories",
                                     style: textTheme.bodyLarge!.copyWith(
@@ -115,8 +109,8 @@ class HomeScreen extends StatelessWidget {
                                   height: 72,
                                   child: FutureBuilder<List<CategoriesModel>>(
                                     future: homeProvider.fetchCategories(),
-                                    builder: (context, snapshot) => snapshot
-                                                .connectionState ==
+                                    builder: (context, snapshot) =>
+                                        snapshot.connectionState ==
                                             ConnectionState.waiting
                                         ? const Center(
                                             child: CircularProgressIndicator(),
@@ -129,9 +123,9 @@ class HomeScreen extends StatelessWidget {
                                             itemCount: snapshot.data?.length,
                                             itemBuilder: (context, index) =>
                                                 CategoriesWidget(
-                                              categoriesModel:
-                                                  snapshot.data![index],
-                                            ),
+                                                  categoriesModel:
+                                                      snapshot.data![index],
+                                                ),
                                           ),
                                   ),
                                 ),
@@ -152,7 +146,9 @@ class HomeScreen extends StatelessWidget {
                                     } else {
                                       debouncer.call(() {
                                         homeProvider.searchProduct(
-                                            value, mainProvider.productsList);
+                                          value,
+                                          mainProvider.productsList,
+                                        );
                                       });
                                     }
                                   },
@@ -212,12 +208,10 @@ class HomeScreen extends StatelessWidget {
                       : null,
                   builder: (context, snapshot) =>
                       snapshot.connectionState == ConnectionState.waiting
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : ProductsGridView(
-                              productsList: mainProvider.productsList,
-                            ),
+                      ? const Center(child: CircularProgressIndicator())
+                      : ProductsGridView(
+                          productsList: mainProvider.productsList,
+                        ),
                 ),
               ],
             ),
