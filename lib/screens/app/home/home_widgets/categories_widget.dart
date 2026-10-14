@@ -9,35 +9,25 @@ import '/helpers/custom_navigator.dart';
 import '/providers/main_provider.dart';
 
 class CategoriesWidget extends StatelessWidget {
-  final CategoriesModel categoriesModel;
+  const CategoriesWidget({required this.categoriesModel, super.key});
 
-  const CategoriesWidget({
-    super.key,
-    required this.categoriesModel,
-  });
+  final CategoriesModel categoriesModel;
 
   @override
   Widget build(BuildContext context) {
-    final homeProvider = Provider.of<HomeProvider>(
-      context,
-      listen: false,
-    );
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
+    final homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.only(left: 14),
       child: InkWell(
         onTap: () {
-          List<ProductsModel> categoryProducts =
-              homeProvider.getProductsForCategory(
-            categoriesModel.id,
-            mainProvider.productsList,
-          );
-          CustomNavigator.pushNavigation(
-            context: context,
+          List<ProductsModel> categoryProducts = homeProvider
+              .getProductsForCategory(
+                categoriesModel.id,
+                mainProvider.productsList,
+              );
+          CustomNavigator(context).pushNavigation(
             routeName: CategoriesScreen.routeName,
             screen: ChangeNotifierProvider.value(
               value: homeProvider,
@@ -58,9 +48,7 @@ class CategoriesWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(99),
                 color: Colors.white,
               ),
-              child: Image.asset(
-                categoriesModel.iconName,
-              ),
+              child: Image.asset(categoriesModel.iconName),
             ),
             Flexible(
               child: Container(
@@ -76,7 +64,7 @@ class CategoriesWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

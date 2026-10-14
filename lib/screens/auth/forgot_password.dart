@@ -14,6 +14,8 @@ import 'login/login_screen.dart';
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});
 
+  static const routeName = '/login';
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -67,7 +69,7 @@ class ForgotPassword extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 12),
                           child: Text(
                             "Forgot password",
-                            style: textTheme.headlineMedium!.copyWith(
+                            style: textTheme.headlineSmall!.copyWith(
                               fontWeight: FontWeight.w700,
                             ),
                             textAlign: TextAlign.center,
@@ -95,21 +97,25 @@ class ForgotPassword extends StatelessWidget {
                           buttonText: "Submit",
                           enable: loginProvider.forgotPasswordEnable,
                           onPress: () {
-                            ResponseModel responseModel = ResponseModel(success: false);
+                            ResponseModel responseModel = ResponseModel(
+                              success: false,
+                            );
                             Loading.callLoading(
                               context: context,
                               callback: () async {
-                                responseModel = await loginProvider.forgetPassword();
+                                responseModel = await loginProvider
+                                    .forgetPassword();
                               },
                               onFinished: () {
                                 if (responseModel.success) {
                                   SnackBarPopup.showMessage(
                                     context,
-                                    message: "Link to reset your password is sent to your email",
-                                    snackBarMessageType: SnackBarMessageType.success,
+                                    message:
+                                        "Link to reset your password is sent to your email",
+                                    snackBarMessageType:
+                                        SnackBarMessageType.success,
                                   );
-                                  CustomNavigator.pushReplacement(
-                                    context: context,
+                                  CustomNavigator(context).pushReplacement(
                                     routeName: LoginScreen.routeName,
                                     screen: ChangeNotifierProvider(
                                       create: (context) => LoginProvider(),
@@ -119,8 +125,11 @@ class ForgotPassword extends StatelessWidget {
                                 } else {
                                   SnackBarPopup.showMessage(
                                     context,
-                                    message: responseModel.error ?? "Something went wrong.",
-                                    snackBarMessageType: SnackBarMessageType.error,
+                                    message:
+                                        responseModel.error ??
+                                        "Something went wrong.",
+                                    snackBarMessageType:
+                                        SnackBarMessageType.error,
                                   );
                                 }
                               },
@@ -131,7 +140,7 @@ class ForgotPassword extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

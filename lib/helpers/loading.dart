@@ -11,14 +11,14 @@ class Loading {
     bool barrierDismissible = false,
   }) async {
     final textTheme = Theme.of(context).textTheme;
-    showDialog(
+    showDialog<void>(
       barrierDismissible: barrierDismissible,
       context: context,
       builder: (_) => PopScope(
         canPop: false,
         child: Center(
           child: Container(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

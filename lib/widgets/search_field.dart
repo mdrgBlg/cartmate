@@ -1,59 +1,54 @@
-import 'package:e_commerce/helpers/custom_navigator.dart';
-import 'package:e_commerce/providers/main_provider.dart';
-import 'package:e_commerce/providers/product_details_provider.dart';
-import 'package:e_commerce/screens/app/home/home_providers/home_provider.dart';
-import 'package:e_commerce/screens/app/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
+import '../helpers/custom_navigator.dart';
+import '../providers/main_provider.dart';
+import '../providers/product_details_provider.dart';
+import '../screens/app/home/home_providers/home_provider.dart';
+import '../screens/app/product_details_screen.dart';
 
 class SearchField extends StatelessWidget {
-  final TextEditingController searchController;
-  final String hintText;
-  final Function(String) onChanged;
-  final Function() clearInput;
   const SearchField({
-    super.key,
     required this.searchController,
     required this.hintText,
     required this.onChanged,
     required this.clearInput,
+    super.key,
   });
+  final TextEditingController searchController;
+  final String hintText;
+  final void Function(String) onChanged;
+  final void Function() clearInput;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final homeProvider = Provider.of<HomeProvider>(
-      context,
-      listen: true,
-    );
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
+    final homeProvider = Provider.of<HomeProvider>(context);
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     return Column(
       children: [
         Container(
           height: 52,
           width: double.infinity,
           decoration: BoxDecoration(
-            border: Border.all(
-              color: CustomColors.secondary,
-              width: 2,
-            ),
+            border: Border.all(color: CustomColors.secondary, width: 2),
             color: Colors.white,
             borderRadius: BorderRadius.only(
               topLeft: const Radius.circular(16),
               topRight: const Radius.circular(16),
-              bottomLeft: Radius.circular(!homeProvider.isFocused ||
-                      homeProvider.searchController.text.isEmpty
-                  ? 16
-                  : 0),
-              bottomRight: Radius.circular(!homeProvider.isFocused ||
-                      homeProvider.searchController.text.isEmpty
-                  ? 16
-                  : 0),
+              bottomLeft: Radius.circular(
+                !homeProvider.isFocused ||
+                        homeProvider.searchController.text.isEmpty
+                    ? 16
+                    : 0,
+              ),
+              bottomRight: Radius.circular(
+                !homeProvider.isFocused ||
+                        homeProvider.searchController.text.isEmpty
+                    ? 16
+                    : 0,
+              ),
             ),
           ),
           child: FocusScope(
@@ -80,22 +75,15 @@ class SearchField extends StatelessWidget {
                     color: Colors.grey,
                   ),
                   hintText: hintText,
-                  prefixIcon: const Icon(
-                    Icons.search,
-                  ),
+                  prefixIcon: const Icon(Icons.search),
                   prefixIconColor: Colors.grey,
                   suffixIcon: searchController.text.isNotEmpty
                       ? InkWell(
                           onTap: clearInput,
                           child: const Padding(
-                            padding: EdgeInsets.only(
-                              left: 8,
-                            ),
+                            padding: EdgeInsets.only(left: 8),
                             child: UnconstrainedBox(
-                              child: Icon(
-                                Icons.close,
-                                color: Colors.grey,
-                              ),
+                              child: Icon(Icons.close, color: Colors.grey),
                             ),
                           ),
                         )
@@ -111,8 +99,6 @@ class SearchField extends StatelessWidget {
             width: double.infinity,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(0),
-                topRight: Radius.circular(0),
                 bottomLeft: Radius.circular(12),
                 bottomRight: Radius.circular(12),
               ),
@@ -139,8 +125,7 @@ class SearchField extends StatelessWidget {
                         controller: homeProvider.searchScrollController,
                         itemCount: homeProvider.searchedProductsList.length,
                         itemBuilder: (context, index) => InkWell(
-                          onTap: () => CustomNavigator.pushNavigation(
-                            context: context,
+                          onTap: () => CustomNavigator(context).pushNavigation(
                             routeName: ProductDetailsScreen.routeName,
                             screen: ChangeNotifierProvider(
                               create: (_) => ProductDetailsProvider(),
@@ -149,22 +134,20 @@ class SearchField extends StatelessWidget {
                                   (element) =>
                                       element.id ==
                                       homeProvider
-                                          .searchedProductsList[index].id,
+                                          .searchedProductsList[index]
+                                          .id,
                                 ),
                               ),
                             ),
                           ),
                           child: Container(
-                            padding: const EdgeInsets.only(
-                              bottom: 12,
-                            ),
+                            padding: const EdgeInsets.only(bottom: 12),
                             alignment: AlignmentDirectional.centerStart,
                             child: Text(
                               homeProvider
-                                  .searchedProductsList[index].productName,
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
+                                  .searchedProductsList[index]
+                                  .productName,
+                              style: const TextStyle(fontSize: 16),
                             ),
                           ),
                         ),

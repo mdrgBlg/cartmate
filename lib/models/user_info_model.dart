@@ -1,15 +1,4 @@
-import 'dart:developer';
-
 class UserInfoModel {
-  final String id;
-  String firstName;
-  String lastName;
-  String email;
-  String username;
-  String phoneNumber;
-  String dateOfBirth;
-  String gender;
-
   UserInfoModel({
     required this.id,
     required this.firstName,
@@ -21,6 +10,26 @@ class UserInfoModel {
     required this.gender,
   });
 
+  factory UserInfoModel.fromJson(Map<String, dynamic> json) => UserInfoModel(
+    id: json["id"] as String,
+    firstName: json["firstName"] as String,
+    lastName: json["lastName"] as String,
+    email: json["email"] as String,
+    username: json["username"] as String,
+    phoneNumber: json["phoneNumber"] as String,
+    dateOfBirth: json["dateOfBirth"] as String,
+    gender: json["gender"] == true ? "Male" : "Female",
+  );
+
+  final String id;
+  String firstName;
+  String lastName;
+  String email;
+  String username;
+  String phoneNumber;
+  String dateOfBirth;
+  String gender;
+
   static Map<String, dynamic> toJson(UserInfoModel userInfoModel) {
     return {
       'id': userInfoModel.id,
@@ -30,26 +39,7 @@ class UserInfoModel {
       'username': userInfoModel.username,
       'phoneNumber': userInfoModel.phoneNumber,
       'dateOfBirth': userInfoModel.dateOfBirth,
-      'gender': userInfoModel.gender == "Male" ? true : false,
+      'gender': userInfoModel.gender == "Male",
     };
-  }
-
-  static UserInfoModel? fromJson(Map<String, dynamic> json) {
-    UserInfoModel? userModel;
-    try {
-      userModel = UserInfoModel(
-        id: json["id"],
-        firstName: json["firstName"],
-        lastName: json["lastName"],
-        email: json["email"],
-        username: json["username"],
-        phoneNumber: json["phoneNumber"],
-        dateOfBirth: json["dateOfBirth"],
-        gender: json["gender"] == true ? "Male" : "Female",
-      );
-    } catch (e) {
-      log("EXCEPTION UserModel $e");
-    }
-    return userModel;
   }
 }

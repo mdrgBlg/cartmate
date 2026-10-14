@@ -22,8 +22,7 @@ class Logout extends StatelessWidget {
             callback: () async {
               await Constants.firebaseAuth.signOut();
             },
-            onFinished: () => CustomNavigator.pushReplacement(
-              context: context,
+            onFinished: () => CustomNavigator(context).pushReplacement(
               routeName: LoginScreen.routeName,
               screen: ChangeNotifierProvider(
                 create: (context) => LoginProvider(),
@@ -34,9 +33,7 @@ class Logout extends StatelessWidget {
         },
         child: Text(
           "Log out",
-          style: textTheme.bodyLarge!.copyWith(
-            color: CustomColors.primary,
-          ),
+          style: textTheme.bodyLarge!.copyWith(color: CustomColors.primary),
         ),
       ),
     );

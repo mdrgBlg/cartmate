@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import '/constants/custom_colors.dart';
 
 class DatePicker extends StatelessWidget {
-  final TextEditingController dateController;
-  final Function(DateTime?) onDatePicked;
-  final DateTime? pickedDate;
-
   const DatePicker({
-    super.key,
     required this.onDatePicked,
     required this.dateController,
     required this.pickedDate,
+    super.key,
   });
+
+  final TextEditingController dateController;
+  final void Function(DateTime?) onDatePicked;
+  final DateTime? pickedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +22,7 @@ class DatePicker extends StatelessWidget {
       decoration: InputDecoration(
         contentPadding: EdgeInsets.zero,
         label: Padding(
-          padding: const EdgeInsets.only(
-            top: 18,
-          ),
+          padding: const EdgeInsets.only(top: 18),
           child: Text(
             dateController.text.isEmpty ? "Date of birth" : "",
             style: TextStyle(
@@ -35,8 +33,9 @@ class DatePicker extends StatelessWidget {
             ),
           ),
         ),
-        iconColor:
-            pickedDate == null ? CustomColors.grayDark : CustomColors.primary,
+        iconColor: pickedDate == null
+            ? CustomColors.grayDark
+            : CustomColors.primary,
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: pickedDate == null ? CustomColors.grayDark : Colors.black,

@@ -11,25 +11,21 @@ import '/constants/custom_colors.dart';
 import '/widgets/app_network_image.dart';
 
 class CustomProductCard extends StatelessWidget {
-  final ProductsModel productsModel;
-  final List<ProductsModel> productsList;
   const CustomProductCard({
-    super.key,
     required this.productsModel,
     required this.productsList,
+    super.key,
   });
+  final ProductsModel productsModel;
+  final List<ProductsModel> productsList;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     return InkWell(
-      onTap: () => CustomNavigator.pushNavigation(
-        context: context,
+      onTap: () => CustomNavigator(context).pushNavigation(
         routeName: ProductDetailsScreen.routeName,
         screen: ChangeNotifierProvider(
           create: (_) => ProductDetailsProvider(),
@@ -46,7 +42,7 @@ class CustomProductCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: CustomColors.grayDark.withOpacity(0.2),
+              color: CustomColors.grayDark.withValues(alpha: 0.2),
               blurRadius: 50,
               spreadRadius: 1,
             ),
@@ -88,17 +84,16 @@ class CustomProductCard extends StatelessWidget {
                     children: [
                       Text(
                         productsModel.brandModel?.brandName ?? "",
-                        style:
-                            textTheme.bodySmall!.copyWith(color: Colors.grey),
+                        style: textTheme.bodySmall!.copyWith(
+                          color: Colors.grey,
+                        ),
                       ),
-                      const SizedBox(
-                        width: 4,
-                      ),
+                      const SizedBox(width: 4),
                       const Icon(
                         Icons.check_circle,
                         color: Colors.blueAccent,
                         size: 14,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -146,8 +141,10 @@ class CustomProductCard extends StatelessWidget {
                           child: Consumer<MainProvider>(
                             builder: (_, mainProvider, child) {
                               final cartQty = mainProvider.cartProducts
-                                  .where((c) =>
-                                      c.productModel.id == productsModel.id)
+                                  .where(
+                                    (c) =>
+                                        c.productModel.id == productsModel.id,
+                                  )
                                   .fold(0, (sum, c) => sum + c.quantity);
                               return Text(
                                 cartQty == 0 ? "+" : cartQty.toString(),
@@ -161,11 +158,11 @@ class CustomProductCard extends StatelessWidget {
                               );
                             },
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
             Positioned(
@@ -197,8 +194,9 @@ class CustomProductCard extends StatelessWidget {
                   if (productsModel.whishlist) {
                     await mainProvider.addProductToWhishlist(productsModel);
                   } else {
-                    await mainProvider
-                        .removeProductFromWhishlist(productsModel);
+                    await mainProvider.removeProductFromWhishlist(
+                      productsModel,
+                    );
                   }
                 },
                 borderRadius: BorderRadius.circular(99),
@@ -217,7 +215,7 @@ class CustomProductCard extends StatelessWidget {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
