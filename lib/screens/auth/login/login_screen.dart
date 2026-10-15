@@ -10,6 +10,7 @@ import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
+import '/widgets/auth_layout.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
 import '/widgets/password_field.dart';
@@ -32,129 +33,110 @@ class LoginScreen extends StatelessWidget {
 
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
 
-    return Scaffold(
+    return AuthLayout(
+      showAppBar: false,
       backgroundColor: Colors.lightBlue,
-      resizeToAvoidBottomInset: false,
-      extendBody: true,
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-          child: Stack(
-            alignment: AlignmentDirectional.center,
+      overlays: [
+        Positioned(
+          top: 8,
+          right: 16,
+          child: Container(
+            alignment: Alignment.topRight,
+            child: InkWell(
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                CustomNavigator(context).pushNavigation(
+                  routeName: SignUpScreen.routeName,
+                  screen: ChangeNotifierProvider(
+                    create: (ctx) => SignUpProvider(
+                      authRepository: ctx.read<AuthRepository>(),
+                    ),
+                    child: const SignUpScreen(),
+                  ),
+                );
+              },
+              child: Text(
+                'Sign Up',
+                style: textTheme.labelLarge!.copyWith(
+                  decoration: TextDecoration.underline,
+                  decorationColor: CustomColors.appName,
+                  decorationThickness: 1.5,
+                  color: CustomColors.appName,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          top: 52,
+          child: Column(
             children: [
-              Column(
-                children: [
-                  Expanded(child: Container(color: Colors.lightBlue)),
-                  Expanded(child: Container(color: Colors.white)),
-                ],
-              ),
-              Positioned(
-                top: 8,
-                right: 16,
-                child: Container(
-                  alignment: Alignment.topRight,
-                  child: InkWell(
-                    onTap: () => CustomNavigator(context).pushNavigation(
-                      routeName: SignUpScreen.routeName,
-                      screen: ChangeNotifierProvider(
-                        create: (ctx) => SignUpProvider(
-                          authRepository: ctx.read<AuthRepository>(),
-                        ),
-                        child: const SignUpScreen(),
-                      ),
-                    ),
-                    child: Text(
-                      'Sign Up',
-                      style: textTheme.labelLarge!.copyWith(
-                        decoration: TextDecoration.underline,
-                        decorationColor: CustomColors.appName,
-                        decorationThickness: 1.5,
-                        color: CustomColors.appName,
-                      ),
-                    ),
-                  ),
+              Image.asset(CustomIcons.cartIcon, width: 80),
+              const SizedBox(height: 12),
+              const Text(
+                "Log In To CartMate",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w300,
+                  color: CustomColors.appName,
                 ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 52,
-                child: Column(
-                  children: [
-                    Image.asset(CustomIcons.cartIcon, width: 80),
-                    const SizedBox(height: 12),
-                    const Text(
-                      "Log In To CartMate",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w300,
-                        color: CustomColors.appName,
-                      ),
-                      textScaler: TextScaler.linear(1),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                margin: const EdgeInsets.symmetric(horizontal: 32),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                elevation: 3,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 24,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InputField(
-                        hintText: "E - mail:",
-                        onInputChanged: () => loginProvider.validateField(),
-                        controller: loginProvider.emailController,
-                      ),
-                      const SizedBox(height: 12),
-                      PasswordField(
-                        hintText: "Password:",
-                        onInputChanged: () => loginProvider.validateField(),
-                        controller: loginProvider.passwordController,
-                      ),
-                      const SizedBox(height: 20),
-                      CustomButton(
-                        buttonText: "Log in",
-                        enable: loginProvider.loginButtonEnable,
-                        onPress: () => onLoginTap(context),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 15),
-                        child: InkWell(
-                          onTap: () => CustomNavigator(context).pushNavigation(
-                            routeName: ForgotPassword.routeName,
-                            screen: ChangeNotifierProvider(
-                              create: (ctx) => ForgotPasswordProvider(
-                                authRepository: ctx.read<AuthRepository>(),
-                              ),
-                              child: const ForgotPassword(),
-                            ),
-                          ),
-                          child: Text(
-                            'Forgot password?',
-                            style: textTheme.bodyMedium!.copyWith(
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 1.5,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                textScaler: TextScaler.linear(1),
               ),
             ],
           ),
         ),
+      ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          InputField(
+            hintText: "E - mail:",
+            onInputChanged: () => loginProvider.validateField(),
+            controller: loginProvider.emailController,
+          ),
+          const SizedBox(height: 12),
+          PasswordField(
+            hintText: "Password:",
+            onInputChanged: () => loginProvider.validateField(),
+            controller: loginProvider.passwordController,
+          ),
+          const SizedBox(height: 20),
+          Selector<LoginProvider, bool>(
+            selector: (_, provider) => provider.loginButtonEnable,
+            builder: (context, loginButtonEnable, child) => CustomButton(
+              buttonText: "Log in",
+              enable: loginButtonEnable,
+              onPress: () => onLoginTap(context),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 15),
+            child: InkWell(
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                CustomNavigator(context).pushNavigation(
+                  routeName: ForgotPassword.routeName,
+                  screen: ChangeNotifierProvider(
+                    create: (ctx) => ForgotPasswordProvider(
+                      authRepository: ctx.read<AuthRepository>(),
+                    ),
+                    child: const ForgotPassword(),
+                  ),
+                );
+              },
+              child: Text(
+                'Forgot password?',
+                style: textTheme.bodyMedium!.copyWith(
+                  decoration: TextDecoration.underline,
+                  decorationThickness: 1.5,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

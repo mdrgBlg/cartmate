@@ -20,8 +20,14 @@ class ForgotPasswordProvider with ChangeNotifier {
   AuthErrorType? get error => _error;
 
   void validateField() {
-    _submitEnabled = emailController.text.isNotEmpty;
-    notifyListeners();
+    if (!submitEnabled && emailController.text.isNotEmpty) {
+      _submitEnabled = true;
+      notifyListeners();
+    }
+    if (submitEnabled && emailController.text.isEmpty) {
+      _submitEnabled = false;
+      notifyListeners();
+    }
   }
 
   Future<bool> submit() async {
