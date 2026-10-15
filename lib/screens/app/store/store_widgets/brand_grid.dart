@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/helpers/custom_navigator.dart';
-import '/helpers/helpers.dart';
 import '/models/brand_model.dart';
 import '/providers/main_provider.dart';
+import '/utils/custom_navigator.dart';
+import '/utils/helpers.dart';
 import '/widgets/app_network_image.dart';
 import 'brand_products.dart';
 

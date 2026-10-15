@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/helpers/helpers.dart';
-import '/helpers/loading.dart';
-import '/helpers/snack_bar_popup.dart';
+import '/utils/helpers.dart';
+import '/utils/loading.dart';
+import '/utils/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
 import '../../../auth/signup/gender_selector.dart';
 import '../profile_providers/profile_provider.dart';

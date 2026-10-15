@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '/constants/custom_colors.dart';
-import '/helpers/custom_navigator.dart';
 import '/models/brand_model.dart';
+import '/utils/custom_navigator.dart';
 import '/widgets/app_network_image.dart';
 import '../../home/home_models/products_model.dart';
 import 'brand_products.dart';

@@ -3,8 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/helpers/custom_navigator.dart';
 import '/providers/main_provider.dart';
+import '/utils/custom_navigator.dart';
 import '/widgets/shopping_cart.dart';
 import '../../screen_wrapper.dart';
 import '../checkout/cart_screen.dart';
@@ -137,7 +137,7 @@ class StoreScreen extends StatelessWidget {
                 child: Divider(
                   thickness: 2,
                   height: 1.5,
-                  color: CustomColors.text.withOpacity(0.2),
+                  color: CustomColors.text.withValues(alpha: 0.2),
                 ),
               ),
               const Gap(24),

@@ -1,8 +1,8 @@
-import 'package:e_commerce/helpers/loading.dart';
-import 'package:e_commerce/helpers/snack_bar_popup.dart';
 import 'package:flutter/material.dart';
 
 import '/constants/custom_colors.dart';
+import '/utils/loading.dart';
+import '/utils/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
 

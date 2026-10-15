@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/helpers/custom_navigator.dart';
-import '/helpers/loading.dart';
-import '/helpers/snack_bar_popup.dart';
+import '/constants/custom_icons.dart';
 import '/models/response_model.dart';
+import '/utils/custom_navigator.dart';
+import '/utils/loading.dart';
+import '/utils/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
 import '/widgets/password_field.dart';
-import '../../../constants/custom_icons.dart';
 import '../../app/home/home_providers/home_provider.dart';
 import '../../app/home/home_screen.dart';
 import '../forgot_password.dart';

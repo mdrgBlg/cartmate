@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '/constants/constants.dart';
 import '/constants/custom_colors.dart';
-import '/helpers/custom_navigator.dart';
-import '/helpers/loading.dart';
+import '/utils/custom_navigator.dart';
+import '/utils/loading.dart';
 import 'login/login_providers/login_provider.dart';
 import 'login/login_screen.dart';
 

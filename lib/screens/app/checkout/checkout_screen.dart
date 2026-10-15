@@ -1,22 +1,20 @@
 import 'package:country_picker/country_picker.dart';
-import 'package:e_commerce/providers/main_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/constants/custom_icons.dart';
-import '/helpers/loading.dart';
-import '/helpers/snack_bar_popup.dart';
 import '/models/response_model.dart';
+import '/providers/main_provider.dart';
+import '/utils/loading.dart';
+import '/utils/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
 import 'checkout_providers/checkout_provider.dart';
 import 'checkout_widgets/cart_item.dart';
 
 class CheckoutScreen extends StatelessWidget {
-  const CheckoutScreen({
-    super.key,
-  });
+  const CheckoutScreen({super.key});
 
   static const routeName = '/checkout';
 
@@ -26,10 +24,7 @@ class CheckoutScreen extends StatelessWidget {
       context,
       listen: false,
     );
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
@@ -93,9 +88,7 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 4,
-                      ),
+                      const SizedBox(height: 4),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -113,9 +106,7 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 12,
-                      ),
+                      const SizedBox(height: 12),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -133,16 +124,12 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 12,
-                      ),
+                      const SizedBox(height: 12),
                       const Divider(
                         color: CustomColors.customGrey,
                         thickness: 2,
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
                       Container(
                         alignment: AlignmentDirectional.centerStart,
                         child: Text(
@@ -153,19 +140,13 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 12,
-                      ),
+                      const SizedBox(height: 12),
                       Padding(
                         padding: const EdgeInsets.only(left: 20),
                         child: Row(
                           children: [
-                            Image.asset(
-                              CustomIcons.cash,
-                            ),
-                            const SizedBox(
-                              width: 16,
-                            ),
+                            Image.asset(CustomIcons.cash),
+                            const SizedBox(width: 16),
                             Text(
                               "Cash",
                               style: textTheme.bodyLarge!.copyWith(
@@ -175,9 +156,7 @@ class CheckoutScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 32,
-                      ),
+                      const SizedBox(height: 32),
                       Container(
                         alignment: AlignmentDirectional.centerStart,
                         child: Text(
@@ -188,9 +167,7 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 12,
-                      ),
+                      const SizedBox(height: 12),
                       Row(
                         children: [
                           Flexible(
@@ -211,17 +188,13 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 12,
-                      ),
+                      const SizedBox(height: 12),
                       InputField(
                         hintText: "E-mail:",
                         controller: checkoutProvider.eMailController,
                         onInputChanged: () => checkoutProvider.buttonChecker(),
                       ),
-                      const SizedBox(
-                        height: 12,
-                      ),
+                      const SizedBox(height: 12),
                       Row(
                         children: [
                           Flexible(
@@ -233,7 +206,6 @@ class CheckoutScreen extends StatelessWidget {
                               onTap: () => showCountryPicker(
                                 context: context,
                                 useSafeArea: true,
-                                showPhoneCode: false,
                                 countryListTheme: const CountryListThemeData(
                                   flagSize: 25,
                                   backgroundColor: Colors.white,
@@ -273,9 +245,7 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 12,
-                      ),
+                      const SizedBox(height: 12),
                       Row(
                         children: [
                           Flexible(
@@ -297,17 +267,13 @@ class CheckoutScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 12,
-                      ),
+                      const SizedBox(height: 12),
                       InputField(
                         hintText: "Address:",
                         controller: checkoutProvider.addressController,
                         onInputChanged: () => checkoutProvider.buttonChecker(),
                       ),
-                      const SizedBox(
-                        height: 24,
-                      ),
+                      const SizedBox(height: 24),
                       Consumer<CheckoutProvider>(
                         builder: (_, __, child) => SizedBox(
                           height: 50,
@@ -325,8 +291,8 @@ class CheckoutScreen extends StatelessWidget {
                               Loading.callLoading(
                                 context: context,
                                 callback: () async {
-                                  responseModel =
-                                      await checkoutProvider.orderProduct();
+                                  responseModel = await checkoutProvider
+                                      .orderProduct();
                                 },
                                 onFinished: () {
                                   Navigator.of(context).pop();
@@ -344,7 +310,8 @@ class CheckoutScreen extends StatelessWidget {
                                     } else {
                                       SnackBarPopup.showMessage(
                                         context,
-                                        message: responseModel?.error ??
+                                        message:
+                                            responseModel?.error ??
                                             "Something went wrong.",
                                         snackBarMessageType:
                                             SnackBarMessageType.error,
@@ -353,7 +320,8 @@ class CheckoutScreen extends StatelessWidget {
                                   } else {
                                     SnackBarPopup.showMessage(
                                       context,
-                                      message: responseModel?.error ??
+                                      message:
+                                          responseModel?.error ??
                                           "Something went wrong.",
                                       snackBarMessageType:
                                           SnackBarMessageType.error,
@@ -364,11 +332,11 @@ class CheckoutScreen extends StatelessWidget {
                             },
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

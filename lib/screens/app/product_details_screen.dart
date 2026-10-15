@@ -1,19 +1,18 @@
-import 'package:e_commerce/helpers/snack_bar_popup.dart';
-import 'package:e_commerce/models/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
+import '/models/cart_model.dart';
 import '/providers/main_provider.dart';
 import '/providers/product_details_provider.dart';
+import '/utils/snack_bar_popup.dart';
 import '/widgets/app_network_image.dart';
 import '/widgets/custom_button.dart';
 import 'home/home_models/products_model.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
+  const ProductDetailsScreen({required this.product, super.key});
   final ProductsModel product;
-
-  const ProductDetailsScreen({super.key, required this.product});
 
   static const routeName = '/details';
 
@@ -30,7 +29,7 @@ class ProductDetailsScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.black.withOpacity(0.1),
+          backgroundColor: Colors.black.withValues(alpha: 0.1),
           elevation: 0,
           foregroundColor: Colors.black,
           title: Row(
@@ -52,7 +51,7 @@ class ProductDetailsScreen extends StatelessWidget {
                     width: 36,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(99),
-                      color: Colors.grey.withOpacity(0.2),
+                      color: Colors.grey.withValues(alpha: 0.2),
                     ),
                     child: Icon(
                       Icons.favorite,
@@ -66,7 +65,7 @@ class ProductDetailsScreen extends StatelessWidget {
         ),
         body: Stack(
           children: [
-            Container(height: 348, color: Colors.black.withOpacity(0.1)),
+            Container(height: 348, color: Colors.black.withValues(alpha: 0.1)),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
@@ -112,8 +111,8 @@ class ProductDetailsScreen extends StatelessWidget {
                                     color:
                                         productDetailsProvider.selectedImage ==
                                             index
-                                        ? Colors.black.withOpacity(0.5)
-                                        : Colors.black.withOpacity(0.1),
+                                        ? Colors.black.withValues(alpha: 0.5)
+                                        : Colors.black.withValues(alpha: 0.1),
                                   ),
                                 ),
                                 child: InkWell(
@@ -266,7 +265,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                       color:
                                           productDetailsProvider.selectedSize ==
                                               product.productSize?[index]
-                                          ? Colors.black.withOpacity(0.2)
+                                          ? Colors.black.withValues(alpha: 0.2)
                                           : Colors.black,
                                       width: 1,
                                     ),
@@ -301,9 +300,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           buttonText: "Add to cart",
                           enable:
                               productDetailsProvider.selectedSize != null ||
-                                  product.productSize == null
-                              ? true
-                              : false,
+                              product.productSize == null,
                           margin: EdgeInsets.zero,
                           onPress: () {
                             ProductsModel copiedProduct = ProductsModel.copy(

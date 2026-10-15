@@ -1,9 +1,9 @@
-import 'package:e_commerce/helpers/order_status_enum.dart';
 import 'package:flutter/material.dart';
 
-import '../checkout_models/checkout_model.dart';
 import '/models/cart_model.dart';
 import '/models/response_model.dart';
+import '/utils/order_status_enum.dart';
+import '../checkout_models/checkout_model.dart';
 import 'checkout_service.dart';
 
 class CheckoutProvider with ChangeNotifier {
@@ -38,7 +38,8 @@ class CheckoutProvider with ChangeNotifier {
   final addressController = TextEditingController();
 
   void buttonChecker() {
-    isButtonEnabled = firstNameController.text.isNotEmpty &&
+    isButtonEnabled =
+        firstNameController.text.isNotEmpty &&
         lastNameController.text.isNotEmpty &&
         eMailController.text.isNotEmpty &&
         countryController.text.isNotEmpty &&

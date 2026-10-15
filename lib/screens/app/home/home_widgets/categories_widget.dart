@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/providers/main_provider.dart';
+import '/utils/custom_navigator.dart';
 import '../../categories_screen.dart';
 import '../home_models/categories_model.dart';
 import '../home_models/products_model.dart';
 import '../home_providers/home_provider.dart';
-import '/helpers/custom_navigator.dart';
-import '/providers/main_provider.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({required this.categoriesModel, super.key});

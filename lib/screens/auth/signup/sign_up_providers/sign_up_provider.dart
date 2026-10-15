@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '/helpers/date_time_service.dart';
 import '/models/response_model.dart';
 import '/models/user_info_model.dart';
+import '/utils/extensions/date_time_extension.dart';
 import 'sign_up_service.dart';
 
 class SignUpProvider with ChangeNotifier {
@@ -23,7 +23,8 @@ class SignUpProvider with ChangeNotifier {
   bool signUpButtonEnable = false;
 
   void validateField() {
-    signUpButtonEnable = passwordController.text.isNotEmpty &&
+    signUpButtonEnable =
+        passwordController.text.isNotEmpty &&
         eMailController.text.isNotEmpty &&
         firstNameController.text.isNotEmpty &&
         lastNameController.text.isNotEmpty &&
@@ -41,9 +42,7 @@ class SignUpProvider with ChangeNotifier {
 
   void setPickedDate(DateTime date) {
     pickedDate = date;
-    dateController.text = DateTimeService.formatDateTime(
-      date.toString(),
-    );
+    dateController.text = date.formatDateTime();
     notifyListeners();
   }
 
@@ -56,7 +55,9 @@ class SignUpProvider with ChangeNotifier {
     String? newUserId;
     String? error;
     (newUserId, error) = await SignUpService.signUp(
-        eMailController.text.trim(), passwordController.text.trim());
+      eMailController.text.trim(),
+      passwordController.text.trim(),
+    );
     if (newUserId != null) {
       ResponseModel responseModel = await SignUpService.saveUserData(
         UserInfoModel(

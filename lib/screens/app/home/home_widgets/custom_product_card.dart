@@ -1,13 +1,13 @@
-import 'package:e_commerce/helpers/custom_navigator.dart';
-import 'package:e_commerce/helpers/helpers.dart';
-import 'package:e_commerce/providers/main_provider.dart';
-import 'package:e_commerce/providers/product_details_provider.dart';
-import 'package:e_commerce/screens/app/home/home_models/products_model.dart';
-import 'package:e_commerce/screens/app/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
+import '/providers/main_provider.dart';
+import '/providers/product_details_provider.dart';
+import '/screens/app/home/home_models/products_model.dart';
+import '/screens/app/product_details_screen.dart';
+import '/utils/custom_navigator.dart';
+import '/utils/helpers.dart';
 import '/widgets/app_network_image.dart';
 
 class CustomProductCard extends StatelessWidget {
@@ -206,7 +206,7 @@ class CustomProductCard extends StatelessWidget {
                     width: 36,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(99),
-                      color: Colors.grey.withOpacity(0.2),
+                      color: Colors.grey.withValues(alpha: 0.2),
                     ),
                     child: Icon(
                       Icons.favorite,
