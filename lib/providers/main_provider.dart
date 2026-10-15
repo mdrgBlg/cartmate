@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -8,7 +5,6 @@ import '/db/db_constants.dart';
 import '/db/db_helper.dart';
 import '/db/db_service.dart';
 import '/models/cart_model.dart';
-import '/models/response_model.dart';
 import '/models/user_info_model.dart';
 import '/screens/app/home/home_models/products_model.dart';
 import '/screens/app/home/home_providers/home_service.dart';
@@ -29,8 +25,6 @@ class MainProvider with ChangeNotifier {
   List<ProductsModel> whishlistProductsList = [];
   List<ProductsModel> productsList = [];
   List<CartModel> cartProducts = [];
-
-  final collection = FirebaseFirestore.instance.collection('Users');
 
   void wishlistFlagChange(ProductsModel productsModel) {
     productsModel.whishlist = !productsModel.whishlist;
@@ -125,24 +119,17 @@ class MainProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<ResponseModel> fetchUserInfo(String userId) async {
-    try {
-      final response = await collection.doc(userId).get();
-      if (response.data() != null) {
-        userInfoModel = UserInfoModel.fromJson(response.data()!);
-        // await fetchWhishlistProducts();
-        return ResponseModel(success: true);
-      }
-      log("This user doesn't exist");
-      return ResponseModel(success: false);
-    } on FirebaseException catch (e) {
-      log("FirebaseException fetchUserInfo: $e");
-      return ResponseModel(success: false);
-    } catch (e) {
-      log("Exception fetchUserInfo: $e");
-    }
+  void setUserInfo(UserInfoModel? user) {
+    userInfoModel = user;
+    notifyListeners();
+  }
 
-    return ResponseModel(success: false);
+  /// In-memory only; SQLite tables are not touched.
+  void clearSession() {
+    userInfoModel = null;
+    cartProducts.clear();
+    whishlistProductsList.clear();
+    notifyListeners();
   }
 
   Future<void> fetchWhishlistProducts() async {

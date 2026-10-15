@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 
-class PasswordField extends StatelessWidget {
-  final TextEditingController? controller;
-  final String hintText;
-  final VoidCallback? onInputChanged;
-  final bool passwordVisibility;
-  final VoidCallback changeVisibility;
+class PasswordField extends StatefulWidget {
   const PasswordField({
-    super.key,
     required this.hintText,
     this.onInputChanged,
     this.controller,
-    required this.passwordVisibility,
-    required this.changeVisibility,
+    super.key,
   });
+
+  final TextEditingController? controller;
+  final String hintText;
+  final VoidCallback? onInputChanged;
+
+  @override
+  State<PasswordField> createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<PasswordField> {
+  bool _obscureText = true;
+
+  void _toggleVisibility() {
+    setState(() => _obscureText = !_obscureText);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,37 +31,36 @@ class PasswordField extends StatelessWidget {
         Align(
           alignment: Alignment.bottomLeft,
           child: Container(
-            padding: const EdgeInsets.only(
-              left: 20,
-            ),
-            child: Text(
-              hintText,
-              textAlign: TextAlign.left,
-            ),
+            padding: const EdgeInsets.only(left: 20),
+            child: Text(widget.hintText, textAlign: TextAlign.left),
           ),
         ),
         Container(
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 0),
           height: 44,
           child: TextFormField(
-            controller: controller,
+            controller: widget.controller,
             textAlign: TextAlign.left,
-            obscureText: passwordVisibility,
+            obscureText: _obscureText,
             onChanged: (value) {
-              if (onInputChanged != null) {
-                onInputChanged!();
+              if (widget.onInputChanged != null) {
+                widget.onInputChanged!();
               }
             },
+
             style: textTheme.headlineSmall!.copyWith(fontSize: 18),
             decoration: InputDecoration(
+              isDense: true,
+              fillColor: Colors.transparent,
               suffixIcon: IconButton(
                 color: Colors.black,
-                padding: const EdgeInsets.only(bottom: 4),
-                alignment: Alignment.centerRight,
+                iconSize: 20,
+                padding: EdgeInsets.zero,
+                splashRadius: 16,
                 icon: Icon(
-                  passwordVisibility ? Icons.visibility_off : Icons.visibility,
+                  _obscureText ? Icons.visibility_off : Icons.visibility,
                 ),
-                onPressed: () => changeVisibility(),
+                onPressed: _toggleVisibility,
               ),
             ),
           ),

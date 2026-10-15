@@ -3,7 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/models/response_model.dart';
+import '/data/models/auth_exception.dart';
+import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/helpers.dart';
 import '/utils/loading.dart';
@@ -23,16 +24,17 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 52,
-          backgroundColor: CustomColors.primary,
-          foregroundColor: Colors.white,
-          elevation: 0,
-        ),
-        resizeToAvoidBottomInset: true,
-        body: GestureDetector(
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 52,
+        backgroundColor: CustomColors.primary,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      resizeToAvoidBottomInset: false,
+      extendBody: true,
+      body: SafeArea(
+        child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           child: Stack(
             alignment: AlignmentDirectional.center,
@@ -186,27 +188,23 @@ class SignUpScreen extends StatelessWidget {
                                   signUpProvider.validateField();
                                 },
                                 controller: signUpProvider.passwordController,
-                                passwordVisibility:
-                                    signUpProvider.passwordVisibility,
-                                changeVisibility:
-                                    signUpProvider.changePasswordVisibility,
                               ),
                             ),
                             CustomButton(
                               buttonText: "Sign Up",
                               enable: signUpProvider.signUpButtonEnable,
                               onPress: () {
-                                ResponseModel responseModel = ResponseModel(
-                                  success: false,
-                                );
+                                bool isSuccess = false;
                                 Loading.callLoading(
                                   context: context,
                                   callback: () async {
-                                    responseModel = await signUpProvider
-                                        .signUp();
+                                    isSuccess = await signUpProvider.signUp();
                                   },
                                   onFinished: () {
-                                    if (responseModel.success) {
+                                    if (!context.mounted) {
+                                      return;
+                                    }
+                                    if (isSuccess) {
                                       SnackBarPopup.showMessage(
                                         context,
                                         message: "You successfully signed up!",
@@ -221,8 +219,9 @@ class SignUpScreen extends StatelessWidget {
                                       SnackBarPopup.showMessage(
                                         context,
                                         message:
-                                            responseModel.error ??
-                                            "Something went wrong.",
+                                            (signUpProvider.error ??
+                                                    AuthErrorType.unknown)
+                                                .message(context),
                                         snackBarMessageType:
                                             SnackBarMessageType.error,
                                       );

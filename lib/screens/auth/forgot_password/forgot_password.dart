@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/models/response_model.dart';
+import '/data/models/auth_exception.dart';
+import '/data/repositories/auth_repository.dart';
+import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
-import 'login/login_providers/login_provider.dart';
-import 'login/login_screen.dart';
+import 'providers/forgot_password_provider.dart';
+import '../login/login_providers/login_provider.dart';
+import '../login/login_screen.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});
@@ -45,8 +48,8 @@ class ForgotPassword extends StatelessWidget {
                   ),
                 ],
               ),
-              Consumer<LoginProvider>(
-                builder: (context, loginProvider, child) => Card(
+              Consumer<ForgotPasswordProvider>(
+                builder: (context, forgotPasswordProvider, child) => Card(
                   margin: const EdgeInsets.only(
                     bottom: 52,
                     left: 32,
@@ -88,26 +91,27 @@ class ForgotPassword extends StatelessWidget {
                           child: InputField(
                             hintText: "E-mail",
                             onInputChanged: () {
-                              loginProvider.validateForgotPasswordField();
+                              forgotPasswordProvider.validateField();
                             },
-                            controller: loginProvider.forgotPasswordController,
+                            controller: forgotPasswordProvider.emailController,
                           ),
                         ),
                         CustomButton(
                           buttonText: "Submit",
-                          enable: loginProvider.forgotPasswordEnable,
+                          enable: forgotPasswordProvider.submitEnabled,
                           onPress: () {
-                            ResponseModel responseModel = ResponseModel(
-                              success: false,
-                            );
+                            bool isSuccess = false;
                             Loading.callLoading(
                               context: context,
                               callback: () async {
-                                responseModel = await loginProvider
-                                    .forgetPassword();
+                                isSuccess = await forgotPasswordProvider
+                                    .submit();
                               },
                               onFinished: () {
-                                if (responseModel.success) {
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                if (isSuccess) {
                                   SnackBarPopup.showMessage(
                                     context,
                                     message:
@@ -118,7 +122,10 @@ class ForgotPassword extends StatelessWidget {
                                   CustomNavigator(context).pushReplacement(
                                     routeName: LoginScreen.routeName,
                                     screen: ChangeNotifierProvider(
-                                      create: (context) => LoginProvider(),
+                                      create: (ctx) => LoginProvider(
+                                        authRepository: ctx
+                                            .read<AuthRepository>(),
+                                      ),
                                       child: const LoginScreen(),
                                     ),
                                   );
@@ -126,8 +133,9 @@ class ForgotPassword extends StatelessWidget {
                                   SnackBarPopup.showMessage(
                                     context,
                                     message:
-                                        responseModel.error ??
-                                        "Something went wrong.",
+                                        (forgotPasswordProvider.error ??
+                                                AuthErrorType.unknown)
+                                            .message(context),
                                     snackBarMessageType:
                                         SnackBarMessageType.error,
                                   );

@@ -1,9 +1,12 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import '/data/services/database_service.dart';
+
+// TODO: remove when DbService/HomeService are migrated to DatabaseService
 class DbHelper {
-  static const dbName = "e_commerce.db";
-  static const dbVersion = 1;
+  static const dbName = DatabaseService.dbName;
+  static const dbVersion = DatabaseService.dbVersion;
 
   static Database? db;
 

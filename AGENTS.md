@@ -283,47 +283,212 @@ Still prefer targeted tests before running the complete test suite.
 
 ---
 
-## Naming Conventions
+## Testing Rules
 
-### Files
-- `snake_case.dart` for all Dart files (e.g., `home_provider.dart`, `user_info_model.dart`, `custom_colors.dart`)
+Tests exist under areas such as:
 
-### Classes & Types
-- `UpperCamelCase` for classes, enums, typedefs, and widgets (e.g., `UserInfoModel`, `HomeProvider`, `AuthStatus`, `CustomCurvedEdges`)
+- `test/unit/`
+- `test/widget/`
+- `test/data/`
 
-### Enums
-- Enum type: `UpperCamelCase`
-- Enum values: `camelCase` (e.g., `AuthStatus.successful`, `AuthStatus.wrongPassword`)
+API dependencies may be mocked with `mocktail`.
 
-### Variables & Fields
-- Public instance fields: `camelCase` (e.g., `firstName`, `phoneNumber`, `productModel`)
-- Private fields: `_camelCase` with underscore prefix (e.g., `_cartItems`, `_isLoading`)
-- Local variables: `camelCase` (e.g., `mainProvider`, `elementExists`, `cartIds`)
+### Important
 
-### Methods & Functions
-- `camelCase` for all methods and functions (e.g., `fetchUserInfo()`, `addProductToCart()`, `focusChange()`)
-- Method parameters: `camelCase` (e.g., `String firstName`, `String categoryId`)
+Do NOT run:
 
-### Constants
-- Static class constants: `camelCase` without prefix (e.g., `CustomColors.text`, `CustomColors.primary`)
-- Route names: `static const routeName` on each screen class
+```bash
+fvm flutter test
+```
 
-### Notes
-- The codebase uses `whishlist` (double-h) consistently as a typo — match this spelling when touching existing wishlist identifiers to avoid renames
+after every task.
 
-## Git Workflow
+Run tests when:
 
-Every piece of work — bug fix, feature, refactor — must follow this flow without exception:
+- The user explicitly requests tests.
+- Business logic has changed and relevant tests exist.
+- A bug fix has an appropriate regression test.
+- A refactor could reasonably introduce behavioral regressions.
+- Validation is necessary to establish correctness.
 
-1. **Sync master first:** `git checkout master && git pull origin master`
-2. **Create a branch** named for the work before touching any files:
-   - Features: `feat/<short-description>` (e.g. `feat/cart-quantity-field`)
-   - Fixes: `fix/<short-description>` (e.g. `fix/null-product-model`)
-   - Refactors: `refactor/<short-description>`
-3. **Before every commit, show the diff first:** Run `git diff --staged` (or `git diff HEAD` if nothing is staged yet) and present the output to the user so they can review what will be committed. Do not proceed with the commit until the user has seen the diff.
-4. **Commit locally** after every meaningful change with a descriptive message. Never batch unrelated changes into one commit. Do not push yet.
-5. **Push only when the entire feature is complete.** All commits for a feature travel together as one branch: `git push origin <branch-name>`
-6. **Never push directly to master** — all changes go through branches and PRs.
-7. **If the user says "work on this branch" or "don't make a new branch/PR"** — skip steps 1–2 and continue committing on the current branch.
+Prefer a targeted test:
 
-Do not wait to be reminded. Apply this workflow automatically at the start of every task.
+```bash
+fvm flutter test test/path/to/relevant_test.dart
+```
+
+over the entire suite.
+
+Do not create tests for trivial UI/property changes unless explicitly requested or clearly necessary.
+
+---
+
+## Analyze Rules
+
+Do NOT automatically run:
+
+```bash
+fvm flutter analyze
+```
+
+for every task.
+
+For small localized changes, code inspection is normally sufficient.
+
+For medium changes, prefer analyzing only relevant files when useful.
+
+Run full project analysis when:
+
+- The change is broad.
+- Multiple modules are affected.
+- Type/interface changes propagate through the project.
+- The user explicitly requests full validation.
+- There is a concrete reason to suspect project-wide analyzer issues.
+
+Do not run full analysis merely as a completion ritual.
+
+---
+
+## Formatting Rules
+
+Do NOT format all of `lib/` and `test/` after every task.
+
+Avoid:
+
+```bash
+fvm dart format lib/ test/
+```
+
+for ordinary changes.
+
+Format only modified Dart files when formatting is necessary.
+
+Example:
+
+```bash
+fvm dart format lib/presentation/scenes/login/login_screen.dart
+```
+
+Do not format unrelated files.
+
+---
+
+## Build and Runtime Rules
+
+Do NOT automatically run:
+
+```bash
+fvm flutter run
+fvm flutter build
+```
+
+Do not:
+
+- Start an iOS Simulator.
+- Start an Android Emulator.
+- Launch the application.
+- Perform an iOS/Android build.
+- Run CocoaPods commands.
+- Run Gradle tasks.
+
+unless the task specifically requires runtime/build verification or the user explicitly asks for it.
+
+Builds are expensive and should only be used when they provide necessary information.
+
+---
+
+## Dependencies
+
+Do not add a new package when the functionality can reasonably be implemented with:
+
+- Flutter/Dart SDK functionality, or
+- packages already present in the project.
+
+Before adding a dependency, check whether the project already has an appropriate solution.
+
+Do not run dependency upgrades unless explicitly requested.
+
+Avoid:
+
+```bash
+fvm flutter pub upgrade
+```
+
+unless dependency upgrading is the task.
+
+`pub get` should only be run when dependency changes require it.
+
+---
+
+## Generated Code
+
+Do not run `build_runner` automatically.
+
+Run:
+
+```bash
+fvm dart run build_runner build --delete-conflicting-outputs
+```
+
+only when:
+
+- The change affects code generation.
+- Generated output is required for the implementation to compile.
+- The user explicitly requests regeneration.
+
+Do not regenerate unrelated generated code.
+
+---
+
+## Completion Behavior
+
+When the requested change is complete, stop.
+
+Do not continue with unrelated cleanup, refactoring, optimization, or repository-wide validation.
+
+In the final response, briefly state:
+
+- What was changed.
+- Any important implementation detail.
+- What validation was performed, if any.
+
+If tests, analysis, or builds were intentionally not run because they were unnecessary, that is acceptable.
+
+For example:
+
+> Implemented the requested login UI change. Updated the localized strings and modified the login screen. No full analyze, tests, or build were run because the change was isolated to UI code.
+
+---
+
+## User Instructions Override Defaults
+
+Explicit instructions from the user take precedence over the default validation strategy.
+
+If the user says:
+
+- "run tests" → run the relevant tests.
+- "run all tests" → run the complete test suite.
+- "analyze everything" → run full analysis.
+- "build it" → perform the requested build.
+- "don't run tests" → do not run tests.
+- "just change the code" → make the change with minimal validation.
+
+Do not perform expensive commands contrary to an explicit user instruction.
+
+---
+
+## Core Principle
+
+**Make the smallest correct change and validate it proportionally.**
+
+For routine Flutter work, prefer:
+
+**inspect relevant code → implement → format modified files if needed → targeted validation if justified → stop**
+
+Avoid:
+
+**inspect entire repository → implement → format entire project → full analyze → full test suite → build app**
+
+unless the scope of the task genuinely requires it.
+
+

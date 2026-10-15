@@ -203,6 +203,7 @@ class CheckoutScreen extends StatelessWidget {
                               controller: checkoutProvider.countryController,
                               onInputChanged: () =>
                                   checkoutProvider.buttonChecker(),
+                              canRequestFocus: false,
                               onTap: () => showCountryPicker(
                                 context: context,
                                 useSafeArea: true,

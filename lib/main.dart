@@ -1,11 +1,11 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'constants/themes.dart';
+import 'di/app_dependencies.dart';
 import 'firebase_options.dart';
-import 'db/db_helper.dart';
 import 'providers/main_provider.dart';
 import 'screens/auth/welcome/welcome_screen.dart';
 
@@ -17,11 +17,15 @@ void main() async {
     providerAndroid: const AndroidDebugProvider(),
   );
 
-  await DbHelper.database;
-
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => MainProvider(),
+    MultiProvider(
+      providers: [
+        ...injectServiceDependencies(),
+        ...injectRepositoryDependencies(),
+        ChangeNotifierProvider<MainProvider>(
+          create: (context) => MainProvider(),
+        ),
+      ],
       child: const MyApp(),
     ),
   );

@@ -1,48 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '/models/response_model.dart';
-import '/providers/main_provider.dart';
-import 'login_service.dart';
+import '/data/models/auth_exception.dart';
+import '/data/models/result.dart';
+import '/data/repositories/auth_repository.dart';
+import '/models/user_info_model.dart';
+import '/utils/common_utils.dart';
 
 class LoginProvider with ChangeNotifier {
+  LoginProvider({required AuthRepository authRepository})
+    : _authRepository = authRepository;
+
+  final AuthRepository _authRepository;
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final forgotPasswordController = TextEditingController();
 
-  bool loginButtonEnable = false;
-  bool forgotPasswordEnable = false;
-  bool passwordVisibility = true;
+  bool _loginButtonEnable = false;
+  bool get loginButtonEnable => _loginButtonEnable;
+
+  AuthErrorType? _error;
+  AuthErrorType? get error => _error;
+
+  UserInfoModel? _loggedInUser;
+  UserInfoModel? get loggedInUser => _loggedInUser;
 
   void validateField() {
-    loginButtonEnable = emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
+    _loginButtonEnable =
+        emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
     notifyListeners();
   }
 
-  void validateForgotPasswordField() {
-    forgotPasswordEnable = forgotPasswordController.text.isNotEmpty;
-    notifyListeners();
-  }
+  Future<bool> login() async {
+    _error = null;
 
-  void changeVisibility() {
-    passwordVisibility = !passwordVisibility;
-    notifyListeners();
-  }
-
-  Future<ResponseModel> login(BuildContext context) async {
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
-    String? userId;
-    String? error;
-    (userId, error) = await LoginService.login(emailController.text.trim(), passwordController.text.trim());
-    if (userId != null && userId.isNotEmpty) {
-      ResponseModel responseModel = await mainProvider.fetchUserInfo(userId);
-      return responseModel;
+    final result = await _authRepository.login(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+    switch (result) {
+      case Success(:final data):
+        _loggedInUser = data;
+        return true;
+      case Failure(:final exception):
+        _error = fromException(exception);
+        return false;
     }
-
-    return ResponseModel(success: false, error: error);
   }
 
-  Future<ResponseModel> forgetPassword() async {
-    return await LoginService.forgetPassword(forgotPasswordController.text.trim());
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }
