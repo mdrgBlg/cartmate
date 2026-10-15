@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '/constants/custom_colors.dart';
-import '/helpers/loading.dart';
-import '/helpers/snack_bar_popup.dart';
+import '/utils/loading.dart';
+import '/utils/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
 

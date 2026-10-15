@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/constants/custom_icons.dart';
-import '/helpers/date_time_service.dart';
-import '/helpers/helpers.dart';
 import '/providers/main_provider.dart';
+import '/utils/extensions/date_time_extension.dart';
+import '/utils/helpers.dart';
 import 'profile_providers/profile_provider.dart';
 
 class MyOrdersScreen extends StatelessWidget {
@@ -20,10 +20,7 @@ class MyOrdersScreen extends StatelessWidget {
       context,
       listen: false,
     );
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
@@ -42,13 +39,12 @@ class MyOrdersScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         body: FutureBuilder<void>(
-          future: profileProvider
-              .fetchMyOrder(mainProvider.userInfoModel?.id ?? ""),
-          builder: (context, snapshot) => snapshot.connectionState ==
-                  ConnectionState.waiting
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
+          future: profileProvider.fetchMyOrder(
+            mainProvider.userInfoModel?.id ?? "",
+          ),
+          builder: (context, snapshot) =>
+              snapshot.connectionState == ConnectionState.waiting
+              ? const Center(child: CircularProgressIndicator())
               : Padding(
                   padding: const EdgeInsets.all(20),
                   child: ListView.builder(
@@ -61,17 +57,13 @@ class MyOrdersScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: CustomColors.greyShade200.withOpacity(0.4),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: CustomColors.greyShade200,
-                        ),
+                        border: Border.all(color: CustomColors.greyShade200),
                       ),
                       child: Column(
                         children: [
                           Row(
                             children: [
-                              const Icon(
-                                Icons.local_shipping_outlined,
-                              ),
+                              const Icon(Icons.local_shipping_outlined),
                               const Gap(4),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +71,8 @@ class MyOrdersScreen extends StatelessWidget {
                                   Text(
                                     Helpers.fetchOrderStatus(
                                       profileProvider
-                                          .myOrders[index].orderStatus,
+                                          .myOrders[index]
+                                          .orderStatus,
                                     ),
                                     style: textTheme.bodySmall!.copyWith(
                                       color: CustomColors.primary,
@@ -87,9 +80,9 @@ class MyOrdersScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    DateTimeService.formatDateTime(
+                                    DateTime.parse(
                                       profileProvider.myOrders[index].orderDate,
-                                    ),
+                                    ).formatDateTime(),
                                     style: textTheme.bodyMedium!.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -97,10 +90,7 @@ class MyOrdersScreen extends StatelessWidget {
                                 ],
                               ),
                               const Spacer(),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16,
-                              )
+                              const Icon(Icons.arrow_forward_ios, size: 16),
                             ],
                           ),
                           const Gap(16),
@@ -118,8 +108,9 @@ class MyOrdersScreen extends StatelessWidget {
                                   Text(
                                     "Order",
                                     style: textTheme.bodySmall!.copyWith(
-                                      color: CustomColors.grayDark
-                                          .withOpacity(0.8),
+                                      color: CustomColors.grayDark.withOpacity(
+                                        0.8,
+                                      ),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10,
                                     ),
@@ -145,15 +136,17 @@ class MyOrdersScreen extends StatelessWidget {
                                   Text(
                                     "Shipping Date",
                                     style: textTheme.bodySmall!.copyWith(
-                                      color: CustomColors.grayDark
-                                          .withOpacity(0.8),
+                                      color: CustomColors.grayDark.withOpacity(
+                                        0.8,
+                                      ),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10,
                                     ),
                                   ),
                                   Text(
                                     profileProvider
-                                            .myOrders[index].deliveryDate ??
+                                            .myOrders[index]
+                                            .deliveryDate ??
                                         "Unknown",
                                     style: textTheme.bodyMedium!.copyWith(
                                       fontWeight: FontWeight.bold,

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../helpers/custom_navigator.dart';
 import '/constants/custom_colors.dart';
 import '/providers/main_provider.dart';
+import '/utils/custom_navigator.dart';
 import '/widgets/custom_button.dart';
 import 'checkout_providers/checkout_provider.dart';
-import 'checkout_widgets/cart_item.dart';
 import 'checkout_screen.dart';
+import 'checkout_widgets/cart_item.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});

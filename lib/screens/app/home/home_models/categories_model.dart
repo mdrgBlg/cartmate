@@ -1,4 +1,4 @@
-import 'package:e_commerce/helpers/helpers.dart';
+import '/utils/helpers.dart';
 
 class CategoriesModel {
   CategoriesModel({

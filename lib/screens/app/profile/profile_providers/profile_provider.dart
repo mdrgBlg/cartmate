@@ -1,8 +1,8 @@
-import 'package:e_commerce/screens/app/profile/profile_providers/profile_service.dart';
 import 'package:flutter/material.dart';
 
+import '/utils/extensions/date_time_extension.dart';
 import '../../checkout/checkout_models/checkout_model.dart';
-import '/helpers/date_time_service.dart';
+import 'profile_service.dart';
 
 class ProfileProvider with ChangeNotifier {
   String? selectedGender;
@@ -13,9 +13,7 @@ class ProfileProvider with ChangeNotifier {
 
   void setPickedDate(DateTime date) {
     pickedDate = date;
-    controller.text = DateTimeService.formatDateTime(
-      date.toString(),
-    );
+    controller.text = date.formatDateTime();
     notifyListeners();
   }
 
@@ -28,8 +26,11 @@ class ProfileProvider with ChangeNotifier {
     myOrders = await ProfileService.fetchMyOrder(userId);
   }
 
-  Future<bool> changeUserName(String userId, String firstName, String lastName) =>
-      ProfileService.updateUserName(userId, firstName, lastName);
+  Future<bool> changeUserName(
+    String userId,
+    String firstName,
+    String lastName,
+  ) => ProfileService.updateUserName(userId, firstName, lastName);
 
   Future<bool> changeEmail(String userId, String value) =>
       ProfileService.updateEmail(userId, value);

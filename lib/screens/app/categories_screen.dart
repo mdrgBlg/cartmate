@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '/helpers/helpers.dart';
+import '/utils/helpers.dart';
 import '/widgets/products_grid_view.dart';
 import 'home/home_models/products_model.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  final List<ProductsModel> productsList;
-  final String categoryName;
   const CategoriesScreen({
-    super.key,
     required this.productsList,
     required this.categoryName,
+    super.key,
   });
+  final List<ProductsModel> productsList;
+  final String categoryName;
 
   static const routeName = '/categories';
 
@@ -26,9 +26,7 @@ class CategoriesScreen extends StatelessWidget {
           foregroundColor: Colors.black,
           title: Text(
             categoryName,
-            style: textTheme.titleLarge!.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
         backgroundColor: Colors.white,
@@ -54,10 +52,8 @@ class CategoriesScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 12),
-                  child: ProductsGridView(
-                    productsList: productsList,
-                  ),
-                )
+                  child: ProductsGridView(productsList: productsList),
+                ),
               ],
             ),
           ),

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/helpers/custom_navigator.dart';
-import '/helpers/loading.dart';
-import '/helpers/snack_bar_popup.dart';
 import '/models/response_model.dart';
+import '/utils/custom_navigator.dart';
+import '/utils/loading.dart';
+import '/utils/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
 import 'login/login_providers/login_provider.dart';

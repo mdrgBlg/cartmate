@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '../helpers/custom_navigator.dart';
-import '../providers/main_provider.dart';
-import '../providers/product_details_provider.dart';
-import '../screens/app/home/home_providers/home_provider.dart';
-import '../screens/app/product_details_screen.dart';
+import '/providers/main_provider.dart';
+import '/providers/product_details_provider.dart';
+import '/screens/app/home/home_providers/home_provider.dart';
+import '/screens/app/product_details_screen.dart';
+import '/utils/custom_navigator.dart';
 
 class SearchField extends StatelessWidget {
   const SearchField({

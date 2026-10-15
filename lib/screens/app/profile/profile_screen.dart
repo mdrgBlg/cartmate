@@ -1,15 +1,15 @@
-import 'package:e_commerce/constants/custom_icons.dart';
-import 'package:e_commerce/screens/app/profile/my_orders_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/constants/custom_colors.dart';
+import '/constants/custom_icons.dart';
+import '/providers/main_provider.dart';
+import '/screens/app/profile/my_orders_screen.dart';
+import '/utils/custom_navigator.dart';
+import '/utils/extensions/date_time_extension.dart';
 import '../../auth/logout.dart';
 import '../../screen_wrapper.dart';
-import '/constants/custom_colors.dart';
-import '/helpers/custom_navigator.dart';
-import '/helpers/date_time_service.dart';
-import '/providers/main_provider.dart';
 import 'profile_providers/profile_provider.dart';
 import 'profile_widgets/change_date_of_birth.dart';
 import 'profile_widgets/change_gender.dart';
@@ -145,8 +145,9 @@ class ProfileScreen extends StatelessWidget {
                           firstName,
                           lastName,
                         );
-                        if (success)
+                        if (success) {
                           mainProvider.setUserName(firstName, lastName);
+                        }
                         return success;
                       },
                       firstNameController: TextEditingController(
@@ -173,7 +174,9 @@ class ProfileScreen extends StatelessWidget {
                           mainProvider.userInfoModel?.id ?? '',
                           value,
                         );
-                        if (success) mainProvider.setUsername(value);
+                        if (success) {
+                          mainProvider.setUsername(value);
+                        }
                         return success;
                       },
                       controller: TextEditingController(
@@ -214,7 +217,9 @@ class ProfileScreen extends StatelessWidget {
                           mainProvider.userInfoModel?.id ?? '',
                           value,
                         );
-                        if (success) mainProvider.setEmail(value);
+                        if (success) {
+                          mainProvider.setEmail(value);
+                        }
                         return success;
                       },
                       controller: TextEditingController(
@@ -238,7 +243,9 @@ class ProfileScreen extends StatelessWidget {
                           mainProvider.userInfoModel?.id ?? '',
                           value,
                         );
-                        if (success) mainProvider.setPhoneNumber(value);
+                        if (success) {
+                          mainProvider.setPhoneNumber(value);
+                        }
                         return success;
                       },
                       controller: TextEditingController(
@@ -267,7 +274,9 @@ class ProfileScreen extends StatelessWidget {
                               mainProvider.userInfoModel?.id ?? '',
                               value,
                             );
-                            if (success) mainProvider.setGender(value);
+                            if (success) {
+                              mainProvider.setGender(value);
+                            }
                             return success;
                           },
                           defaultValue: profileProvider.selectedGender,
@@ -279,49 +288,53 @@ class ProfileScreen extends StatelessWidget {
               ),
               const Gap(12),
               Consumer<MainProvider>(
-                builder: (_, __, child) => InformationWidget(
-                  sectionTitle: "Date of Birth",
-                  sectionText: DateTimeService.formatDateTime(
-                    mainProvider.userInfoModel?.dateOfBirth,
-                  ),
-                  onTap: () {
-                    profileProvider.setPickedDate(
-                      DateTime.parse(
-                        mainProvider.userInfoModel?.dateOfBirth ??
-                            DateTime.now().toString(),
-                      ),
-                    );
-                    profileProvider.controller.text =
-                        DateTimeService.formatDateTime(
-                          mainProvider.userInfoModel?.dateOfBirth ??
-                              DateTime.now().toString(),
-                        );
-                    CustomNavigator(context).pushNavigation(
-                      routeName: ChangeDateOfBirth.routeName,
-                      screen: ChangeNotifierProvider.value(
-                        value: profileProvider,
-                        child: ChangeDateOfBirth(
-                          sectionTitle: "Date of Birth",
-                          changeInfo: (value) async {
-                            final success = await profileProvider
-                                .changeDateOfBirth(
-                                  mainProvider.userInfoModel?.id ?? '',
-                                  value,
-                                );
-                            if (success) {
-                              mainProvider.setDateOfBirth(value);
-                            }
-                            return success;
-                          },
-                          defaultValue: DateTime.parse(
-                            mainProvider.userInfoModel?.dateOfBirth ??
-                                DateTime.now().toString(),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                builder: (_, __, child) => mainProvider.userInfoModel != null
+                    ? InformationWidget(
+                        sectionTitle: "Date of Birth",
+                        sectionText:
+                            DateTime.tryParse(
+                              mainProvider.userInfoModel!.dateOfBirth,
+                            )?.formatDateTime() ??
+                            '',
+                        onTap: () {
+                          profileProvider.setPickedDate(
+                            DateTime.parse(
+                              mainProvider.userInfoModel!.dateOfBirth,
+                            ),
+                          );
+                          profileProvider.controller.text =
+                              DateTime.tryParse(
+                                mainProvider.userInfoModel!.dateOfBirth,
+                              )?.formatDateTime() ??
+                              '';
+
+                          CustomNavigator(context).pushNavigation(
+                            routeName: ChangeDateOfBirth.routeName,
+                            screen: ChangeNotifierProvider.value(
+                              value: profileProvider,
+                              child: ChangeDateOfBirth(
+                                sectionTitle: "Date of Birth",
+                                changeInfo: (value) async {
+                                  final success = await profileProvider
+                                      .changeDateOfBirth(
+                                        mainProvider.userInfoModel?.id ?? '',
+                                        value,
+                                      );
+                                  if (success) {
+                                    mainProvider.setDateOfBirth(value);
+                                  }
+                                  return success;
+                                },
+                                defaultValue: DateTime.parse(
+                                  mainProvider.userInfoModel?.dateOfBirth ??
+                                      DateTime.now().toString(),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    : const SizedBox(),
               ),
               const Gap(16),
               const Padding(

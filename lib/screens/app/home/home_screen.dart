@@ -1,16 +1,16 @@
-import 'package:e_commerce/screens/app/checkout/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:provider/provider.dart';
 
-import '../../screen_wrapper.dart';
 import '/constants/custom_colors.dart';
 import '/constants/custom_images.dart';
-import '/helpers/custom_navigator.dart';
 import '/providers/main_provider.dart';
+import '/screens/app/checkout/cart_screen.dart';
+import '/utils/custom_navigator.dart';
 import '/widgets/products_grid_view.dart';
 import '/widgets/search_field.dart';
 import '/widgets/shopping_cart.dart';
+import '../../screen_wrapper.dart';
 import 'home_models/categories_model.dart';
 import 'home_providers/home_provider.dart';
 import 'home_widgets/categories_widget.dart';

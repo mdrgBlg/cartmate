@@ -1,90 +1,287 @@
-# CLAUDE.md
+# Project: CartMate
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Purpose
 
-## Commands
+These instructions apply to coding agents working on the CartMate Flutter project.
 
-This project uses FVM (Flutter Version Manager) locked to Flutter 3.35.1 (see `.fvmrc`).
+Prioritize correct, minimal, and focused changes. Avoid unnecessary project-wide exploration, builds, tests, analysis, or other long-running commands unless they are justified by the task.
 
-```sh
-fvm flutter pub get       # Install dependencies
-fvm flutter run           # Run the app
-fvm flutter test          # Run all tests
-fvm flutter test test/widget_test.dart  # Run a single test file
-fvm flutter analyze       # Static analysis
-fvm flutter build apk     # Android release build
-fvm flutter build ios     # iOS release build
-```
+---
 
-If FVM is not installed, replace `fvm flutter` with `flutter` (ensure version 3.35.1 is active).
+## Stack
+
+- Flutter 3.41.4
+- Dart 3.11.1
+- State management: Provider (`ChangeNotifier`)
+- Backend: Custom REST API
+- HTTP client: `DfApiClient` from the custom `df_http` package
+- Routing: `Navigator`
+- Local storage: `shared_preferences`
+- Flutter SDK managed through FVM
+
+---
 
 ## Architecture
 
-### State Management
+Follow the existing project architecture.
 
-The app uses the **Provider** package with a `ChangeNotifier` pattern split into two layers:
+### Data
 
-- **`lib/providers/main_provider.dart`** — global singleton managing cross-screen state: authenticated user info (`UserInfoModel`), cart contents with price calculations, and wishlist
-- **Screen-level providers** (`HomeProvider`, `StoreProvider`, `CheckoutProvider`, `ProfileProvider`) — local state scoped to individual screens, accessed via `MultiProvider` in the widget tree
+- `Services`
+- `Repositories`
+- `Models`
 
-### Service Layer
+### Presentation
 
-`*Service` classes in each screen folder handle all data access. They are pure data-fetching classes (no ChangeNotifier) called by providers:
-- Firebase Firestore queries (products, categories, orders)
-- Firebase Authentication (login, signup, password reset via `http` to Google Identity Toolkit API)
-- SQLite via `lib/db/` (wishlist and brand data for offline persistence)
+- `Widgets`: Reusable UI components
+- `Screens`: Screens and views
+- `Providers`: Feature state and presentation logic
+- `Utils`: Utility functions and helpers
 
-### Navigation
+Do not introduce new architectural patterns or dependencies unless explicitly requested.
 
-- `CustomNavigator` (`lib/helpers/custom_navigator.dart`) wraps `Navigator.push/pushReplacement` — use it for all navigation
-- Each screen declares a `static const routeName` string used as the route identifier
-- `ScreenWrapper` + `AppNavigation` manage the bottom nav bar (4 tabs: Home, Store, Wishlist, Profile); active tab is detected by matching `ModalRoute.of(context).settings.name`
+When modifying an existing feature, follow the patterns already used by neighboring files.
 
-### Data Flow
+---
 
-```
-UI widget → calls Provider method → Provider calls Service → Service hits Firebase/SQLite
-                                  ← Provider calls notifyListeners() ← data returned
-```
+## General Working Rules
 
-### Provider Rules
+### Keep changes focused
 
-- **`notifyListeners()` belongs in the provider, never in widgets.** `notifyListeners()` is `@protected` and must only be called from inside a `ChangeNotifier` method. When a screen needs to trigger a UI refresh after an async operation, it must call a provider setter method (e.g. `mainProvider.setEmail(value)`) that mutates state and calls `notifyListeners()` internally — never call `someProvider.notifyListeners()` directly from a widget.
+- Make the smallest change necessary to complete the requested task.
+- Do not refactor unrelated code.
+- Do not rename or reorganize unrelated files.
+- Do not modify dependencies unless required.
+- Do not update package versions unless explicitly requested.
+- Do not modify generated files unless the task requires it.
+- Do not fix unrelated warnings or existing issues.
+- Preserve existing behavior outside the requested change.
 
-- **Providers must not receive other provider instances as parameters.** Never pass a provider instance into another provider's constructor or method. Each provider resolves its own dependencies (services, models) independently. Cross-provider coordination belongs in the widget tree, where both providers are accessible via `Provider.of` or `Consumer`.
+### Keep exploration focused
 
-- **Use `Consumer` or `Selector` for reactive UI, not `Provider.of` with `listen: true`.** Any widget that needs to rebuild when provider state changes must use `Consumer<T>` (rebuilds on any `notifyListeners`) or `Selector<T, R>` (rebuilds only when the selected value changes). `Provider.of<T>(context, listen: false)` is only for one-shot reads inside callbacks and `initState`-equivalent calls — never use it where a rebuild is needed.
+Do not scan or read large parts of the repository by default.
 
-### Widget Reuse Rules
+Start with files directly related to the request and expand only when necessary.
 
-- **Where a shared widget lives depends on where it is used:**
-  - Used in multiple places **within the same screen or section** → place it in that section's local `widgets/` folder (e.g. `lib/screens/app/profile/profile_widgets/`).
-  - Used across **different sections or screens** → place it in the global widgets folder (`lib/widgets/`).
-  - Never copy-paste a widget inline when it appears in more than one place.
+Prefer:
 
-- **Shared widgets must be designed to cover all their call sites.** When extracting a reusable widget, identify every place it is used and expose the parameters needed to satisfy all variants. No caller should need to wrap or workaround the widget because a case was missed.
+1. Locate the relevant feature/file.
+2. Inspect its immediate dependencies if necessary.
+3. Make the change.
+4. Perform proportional validation.
+5. Stop.
 
-### Storage
+Do not investigate unrelated modules merely to gain additional context.
+
+---
+
+## Storage
 
 - **Firestore** — product catalog (`Products` collection), categories (`Categories`), user orders
 - **Firebase Auth** — email/password authentication; Firebase App Check for security
 - **Cloud Storage** — product images (loaded via `cached_network_image`)
 - **SQLite** (`lib/db/`) — local persistence for wishlist and brand cache, enabling offline access
 
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `lib/main.dart` | App entry point, Provider setup, Firebase init |
-| `lib/providers/main_provider.dart` | Global cart/wishlist/user state |
-| `lib/constants/` | Theme colors, icon paths, asset URLs, global constants |
-| `lib/helpers/auth_enum.dart` | `AuthStatus` and `OrderStatus` enums used app-wide |
-| `lib/firebase_options.dart` | Auto-generated FlutterFire config (do not edit manually) |
-| `lib/db/db_helper.dart` | SQLite schema and CRUD for local data |
-
-### Firebase Project
+## Firebase Project
 
 Project ID: `e-commerce-14198` (EU region). Re-generate `firebase_options.dart` with `flutterfire configure` if Firebase config changes.
+
+---
+
+## Localization
+
+Never hardcode user-facing UI strings.
+
+All user-facing strings must use the project's localization system (`l10n` / ARB files).
+
+When adding a new user-facing string:
+
+- Add it to the appropriate ARB file.
+- Use the generated localization API in Dart.
+- Follow the naming conventions already present in existing ARB files.
+
+Do not replace localized strings with raw string literals.
+
+---
+
+## Provider Conventions
+
+Use `ChangeNotifier`-based Provider state management.
+
+- One `ChangeNotifier` per feature domain, e.g. `EmailLoginProvider`.
+- Register app-wide providers in `main.dart` through `MultiProvider`. Feature-local
+  providers may be created close to the screen that owns them.
+- Expose state through immutable/public getters.
+- Mutate state only through provider methods.
+- Call `notifyListeners()` when observable state changes.
+- Use `context.watch<T>()` when UI should rebuild from changes.
+- Use `context.read<T>()` for one-off actions and callbacks.
+- Use `Selector` or `Consumer` when rebuild scope should be limited.
+- Never call `notifyListeners()` synchronously during `build`.
+- Keep business logic out of widgets.
+
+Do not introduce another state-management solution unless explicitly requested.
+
+---
+
+## REST API Conventions
+
+All API communication must go through the existing service layer and its configured client.
+
+- There is no Base URL configuration in here because firebase is used for API-s.
+- Authentication tokens are handled by firebase
+- UI code must never call firebase APIs directly.
+- API communication belongs in service classes.
+- Preserve the existing Service → Repository → Provider architecture, or the
+  feature-specific flow used by neighboring code.
+- API operations return either a `Success` model or a `Failure` model.
+- Providers expose loading/error/success state to the presentation layer.
+
+Do not introduce another HTTP client unless explicitly requested.
+
+---
+
+## Error Handling
+
+Follow the existing error-handling architecture.
+
+Services return:
+
+```dart
+Failure(Exception(e))
+```
+
+for unsuccessful operations according to the project's existing patterns.
+
+Providers should:
+
+- Determine whether the response is `Success` or `Failure`.
+- Update the appropriate state.
+- Set/clear the `error` field as appropriate.
+- Call `notifyListeners()` when observable state changes.
+
+Screens should render errors based on provider state.
+
+Never expose raw exceptions directly in UI widgets.
+
+---
+
+## Dart and Flutter Conventions
+
+- Follow `analysis_options.yaml`.
+- Prefer `const` constructors whenever possible.
+- Prefix private widgets/classes with `_`.
+- Avoid multiple unrelated classes/widgets in one file.
+- Screens may contain small private supporting widgets when appropriate.
+- Models should remain immutable.
+- Use `copyWith` for model updates when the existing model follows that pattern.
+- Keep business logic out of widgets.
+- Follow existing naming and file-organization conventions.
+- Prefer existing project components over introducing duplicate widgets/helpers.
+- Avoid unnecessary abstractions for small changes.
+
+---
+
+## Commands
+
+The project uses FVM.
+
+Common commands include:
+
+```bash
+fvm flutter run
+fvm flutter test
+fvm flutter analyze
+```
+
+When `build_runner` is required:
+
+```bash
+fvm dart run build_runner build --delete-conflicting-outputs
+```
+
+These commands are available but **must not automatically be run after every task**.
+
+---
+
+## Validation Strategy
+
+Use **fast, proportional, and targeted validation**.
+
+The amount of validation should correspond to the risk and scope of the change.
+
+### Small Changes
+
+Examples:
+
+- Padding/margin changes
+- Colors
+- Text styles
+- Widget sizing
+- Simple layout adjustments
+- Adding/removing a small UI element
+- Small localization changes
+- Straightforward property changes
+- Minor isolated Dart changes
+
+For these tasks:
+
+- Do NOT run the full test suite.
+- Do NOT run a full project-wide `fvm flutter analyze`.
+- Do NOT build the application.
+- Do NOT start an emulator or simulator.
+- Do NOT run the application.
+- Inspect the changed code for obvious issues.
+- Format modified Dart files only when necessary.
+
+Do not perform expensive validation merely to mark a small task complete.
+
+### Medium Changes
+
+Examples:
+
+- Provider state changes
+- Form validation
+- Navigation changes
+- API integration changes
+- New service/repository methods
+- Changes affecting multiple related files
+
+Use targeted validation.
+
+Run only the narrowest useful checks when they provide meaningful confidence.
+
+Prefer targeted analysis such as:
+
+```bash
+fvm flutter analyze path/to/changed_file.dart
+```
+
+or the smallest relevant set of files.
+
+Run relevant tests only when tests exist for the changed behavior and running them provides useful validation.
+
+Do not automatically run the entire test suite.
+
+### Large or High-Risk Changes
+
+Examples:
+
+- Authentication flows
+- Significant Provider refactors
+- Core architecture changes
+- Shared infrastructure
+- Changes affecting many features
+- Complex API/data-layer changes
+- Large refactors
+
+For these tasks, broader validation may be appropriate.
+
+`fvm flutter analyze` and relevant tests may be run when justified by the scope of the change.
+
+Still prefer targeted tests before running the complete test suite.
+
+---
 
 ## Naming Conventions
 
