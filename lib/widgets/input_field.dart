@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
-  final String hintText;
-  final TextEditingController controller;
-  final VoidCallback? onInputChanged;
-  final double height;
-  final EdgeInsets padding;
-  final VoidCallback? onTap;
   const InputField({
-    super.key,
     required this.hintText,
     required this.controller,
     this.onInputChanged,
     this.height = 44,
     this.padding = const EdgeInsets.fromLTRB(20, 0, 20, 0),
     this.onTap,
+    this.canRequestFocus = true,
+    super.key,
   });
+
+  final String hintText;
+  final TextEditingController controller;
+  final VoidCallback? onInputChanged;
+  final double height;
+  final EdgeInsets padding;
+  final bool canRequestFocus;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +28,8 @@ class InputField extends StatelessWidget {
         Align(
           alignment: Alignment.bottomLeft,
           child: Container(
-            padding: const EdgeInsets.only(
-              left: 20,
-            ),
-            child: Text(
-              hintText,
-              textAlign: TextAlign.left,
-            ),
+            padding: const EdgeInsets.only(left: 20),
+            child: Text(hintText, textAlign: TextAlign.left),
           ),
         ),
         Container(
@@ -39,7 +37,7 @@ class InputField extends StatelessWidget {
           height: height,
           child: TextFormField(
             onTap: onTap,
-            canRequestFocus: onTap != null ? false : true,
+            canRequestFocus: canRequestFocus,
             controller: controller,
             textAlign: TextAlign.left,
             onChanged: (value) {
@@ -49,7 +47,7 @@ class InputField extends StatelessWidget {
             },
             style: textTheme.headlineSmall!.copyWith(fontSize: 16),
           ),
-        )
+        ),
       ],
     );
   }

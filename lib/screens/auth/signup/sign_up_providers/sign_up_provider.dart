@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '/models/response_model.dart';
-import '/models/user_info_model.dart';
+import '/data/models/auth_exception.dart';
+import '/data/models/result.dart';
+import '/data/repositories/auth_repository.dart';
+import '/utils/common_utils.dart';
 import '/utils/extensions/date_time_extension.dart';
-import 'sign_up_service.dart';
 
 class SignUpProvider with ChangeNotifier {
+  SignUpProvider({required AuthRepository authRepository})
+    : _authRepository = authRepository;
+
+  final AuthRepository _authRepository;
+
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final usernameController = TextEditingController();
@@ -13,66 +19,74 @@ class SignUpProvider with ChangeNotifier {
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
   final dateController = TextEditingController();
-  DateTime? pickedDate;
 
-  // List of genders to select from
+  DateTime? _pickedDate;
+  DateTime? get pickedDate => _pickedDate;
 
-  String? selectedGender;
+  String? _selectedGender;
+  String? get selectedGender => _selectedGender;
 
-  bool passwordVisibility = true;
-  bool signUpButtonEnable = false;
+  bool _signUpButtonEnable = false;
+  bool get signUpButtonEnable => _signUpButtonEnable;
+
+  AuthErrorType? _error;
+  AuthErrorType? get error => _error;
 
   void validateField() {
-    signUpButtonEnable =
+    _signUpButtonEnable =
         passwordController.text.isNotEmpty &&
         eMailController.text.isNotEmpty &&
         firstNameController.text.isNotEmpty &&
         lastNameController.text.isNotEmpty &&
         usernameController.text.isNotEmpty &&
         phoneNumberController.text.isNotEmpty &&
-        selectedGender != null &&
+        _selectedGender != null &&
         dateController.text.isNotEmpty;
     notifyListeners();
   }
 
-  void changePasswordVisibility() {
-    passwordVisibility = !passwordVisibility;
-    notifyListeners();
-  }
-
   void setPickedDate(DateTime date) {
-    pickedDate = date;
+    _pickedDate = date;
     dateController.text = date.formatDateTime();
     notifyListeners();
   }
 
   void setGender(String? value) {
-    selectedGender = value;
+    _selectedGender = value;
     notifyListeners();
   }
 
-  Future<ResponseModel> signUp() async {
-    String? newUserId;
-    String? error;
-    (newUserId, error) = await SignUpService.signUp(
-      eMailController.text.trim(),
-      passwordController.text.trim(),
+  Future<bool> signUp() async {
+    _error = null;
+
+    final result = await _authRepository.signUp(
+      email: eMailController.text.trim(),
+      password: passwordController.text.trim(),
+      firstName: firstNameController.text.trim(),
+      lastName: lastNameController.text.trim(),
+      username: usernameController.text.trim(),
+      phoneNumber: phoneNumberController.text.trim(),
+      dateOfBirth: _pickedDate.toString(),
+      gender: _selectedGender ?? "",
     );
-    if (newUserId != null) {
-      ResponseModel responseModel = await SignUpService.saveUserData(
-        UserInfoModel(
-          id: newUserId,
-          firstName: firstNameController.text.trim(),
-          lastName: lastNameController.text.trim(),
-          email: eMailController.text.trim(),
-          username: usernameController.text.trim(),
-          phoneNumber: phoneNumberController.text.trim(),
-          dateOfBirth: pickedDate.toString(),
-          gender: selectedGender ?? "",
-        ),
-      );
-      return responseModel;
+    switch (result) {
+      case Success():
+        return true;
+      case Failure(:final exception):
+        _error = fromException(exception);
+        return false;
     }
-    return ResponseModel(success: false, error: error);
+  }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    usernameController.dispose();
+    eMailController.dispose();
+    phoneNumberController.dispose();
+    passwordController.dispose();
+    dateController.dispose();
+    super.dispose();
   }
 }

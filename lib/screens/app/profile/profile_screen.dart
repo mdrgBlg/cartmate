@@ -342,7 +342,7 @@ class ProfileScreen extends StatelessWidget {
                 child: Divider(color: CustomColors.grayDark),
               ),
               const Gap(16),
-              const Logout(),
+              Logout(signOut: profileProvider.signOut),
             ],
           ),
         ),

@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '/data/models/auth_exception.dart';
+import '/data/models/result.dart';
+import '/data/repositories/auth_repository.dart';
+import '/utils/common_utils.dart';
 import '/utils/extensions/date_time_extension.dart';
 import '../../checkout/checkout_models/checkout_model.dart';
 import 'profile_service.dart';
 
 class ProfileProvider with ChangeNotifier {
+  ProfileProvider({required AuthRepository authRepository})
+    : _authRepository = authRepository;
+
+  final AuthRepository _authRepository;
   String? selectedGender;
   DateTime? pickedDate;
   List<CheckoutModel> myOrders = [];
@@ -46,4 +54,12 @@ class ProfileProvider with ChangeNotifier {
 
   Future<bool> changeDateOfBirth(String userId, String? value) =>
       ProfileService.updateDateOfBirth(userId, value);
+
+  Future<AuthErrorType?> signOut() async {
+    final result = await _authRepository.signOut();
+    if (result case Failure(:final exception)) {
+      return fromException(exception);
+    }
+    return null;
+  }
 }
