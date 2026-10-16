@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import '../services/firebase_service.dart';
-
 import '/models/user_info_model.dart';
+import '/utils/global_enums.dart';
 import '../models/result.dart';
 import '../services/auth_service.dart';
+import '../services/firebase_service.dart';
 import '../services/user_service.dart';
 
 class AuthRepository {
@@ -56,8 +56,8 @@ class AuthRepository {
     required String lastName,
     required String username,
     required String phoneNumber,
-    required String dateOfBirth,
-    required String gender,
+    required DateTime dateOfBirth,
+    required Gender gender,
   }) async {
     final signUpResult = await _authService.signUp(
       email: email,

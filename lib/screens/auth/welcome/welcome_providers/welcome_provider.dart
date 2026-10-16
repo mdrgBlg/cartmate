@@ -13,21 +13,26 @@ class WelcomeProvider with ChangeNotifier {
     required UserRepository userRepository,
   }) : _authRepository = authRepository,
        _userRepository = userRepository {
-    final userId = _authRepository.currentUserId;
-    _sessionFuture = userId == null ? null : _restoreSession(userId);
+    _sessionFuture = _restoreSession();
   }
 
   final AuthRepository _authRepository;
   final UserRepository _userRepository;
 
-  Future<Result<UserInfoModel>>? _sessionFuture;
+  late Future<Result<UserInfoModel>?> _sessionFuture;
 
   /// Null when there is no persisted session to restore.
-  Future<Result<UserInfoModel>>? get sessionFuture => _sessionFuture;
+  Future<Result<UserInfoModel>?> get sessionFuture => _sessionFuture;
 
   /// Loads the profile for the current Firebase session. On failure the
   /// session is signed out.
-  Future<Result<UserInfoModel>> _restoreSession(String userId) async {
+  Future<Result<UserInfoModel>?> _restoreSession() async {
+    final userId = _authRepository.currentUserId;
+
+    if (userId == null) {
+      return null;
+    }
+
     final result = await _userRepository.fetchUserInfo(userId);
     if (result is Failure<UserInfoModel>) {
       final signOutResult = await _authRepository.signOut();

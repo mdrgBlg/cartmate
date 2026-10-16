@@ -5,6 +5,7 @@ import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
 import '/utils/common_utils.dart';
 import '/utils/extensions/date_time_extension.dart';
+import '/utils/global_enums.dart';
 
 class SignUpProvider with ChangeNotifier {
   SignUpProvider({required AuthRepository authRepository})
@@ -23,8 +24,8 @@ class SignUpProvider with ChangeNotifier {
   DateTime? _pickedDate;
   DateTime? get pickedDate => _pickedDate;
 
-  String? _selectedGender;
-  String? get selectedGender => _selectedGender;
+  Gender? _selectedGender;
+  Gender? get selectedGender => _selectedGender;
 
   bool _signUpButtonEnable = false;
   bool get signUpButtonEnable => _signUpButtonEnable;
@@ -41,7 +42,7 @@ class SignUpProvider with ChangeNotifier {
         usernameController.text.isNotEmpty &&
         phoneNumberController.text.isNotEmpty &&
         _selectedGender != null &&
-        dateController.text.isNotEmpty;
+        _pickedDate != null;
     notifyListeners();
   }
 
@@ -51,13 +52,17 @@ class SignUpProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setGender(String? value) {
+  void setGender(Gender? value) {
     _selectedGender = value;
     notifyListeners();
   }
 
   Future<bool> signUp() async {
     _error = null;
+
+    if (_pickedDate == null || _selectedGender == null) {
+      return false;
+    }
 
     final result = await _authRepository.signUp(
       email: eMailController.text.trim(),
@@ -66,8 +71,8 @@ class SignUpProvider with ChangeNotifier {
       lastName: lastNameController.text.trim(),
       username: usernameController.text.trim(),
       phoneNumber: phoneNumberController.text.trim(),
-      dateOfBirth: _pickedDate.toString(),
-      gender: _selectedGender ?? "",
+      dateOfBirth: _pickedDate!,
+      gender: _selectedGender!,
     );
     switch (result) {
       case Success():

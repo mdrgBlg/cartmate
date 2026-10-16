@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '/constants/custom_colors.dart';
-import '/utils/loading.dart';
-import '/utils/snack_bar_popup.dart';
-import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
+import 'change_info_layout.dart';
 
 class ChangeUserName extends StatelessWidget {
   const ChangeUserName({
     required this.sectionTitle,
-    required this.changeInfo,
+    required this.onSave,
+    required this.onSuccess,
     required this.firstNameController,
     required this.lastNameController,
     super.key,
   });
 
   final String sectionTitle;
-  final Future<bool> Function(String, String) changeInfo;
+  final Future<bool> Function() onSave;
+  final VoidCallback onSuccess;
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
 
@@ -24,69 +23,27 @@ class ChangeUserName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 52,
-          backgroundColor: CustomColors.primary,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          title: Text(
-            "Change $sectionTitle",
-            style: textTheme.titleLarge!.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+    return ChangeInfoLayout(
+      sectionTitle: sectionTitle,
+      onSave: onSave,
+      onSuccess: onSuccess,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 12, bottom: 24),
+            child: InputField(
+              hintText: "First name",
+              controller: firstNameController,
             ),
           ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 24),
-                child: InputField(
-                  hintText: "First name",
-                  controller: firstNameController,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12, bottom: 24),
-                child: InputField(
-                  hintText: "Last name",
-                  controller: lastNameController,
-                ),
-              ),
-              CustomButton(
-                buttonText: "Save",
-                enable: true,
-                onPress: () {
-                  bool success = false;
-                  Loading.callLoading(
-                    context: context,
-                    callback: () async {
-                      success = await changeInfo(
-                        firstNameController.text,
-                        lastNameController.text,
-                      );
-                    },
-                    onFinished: () {
-                      if (success) {
-                        SnackBarPopup.showMessage(
-                          context,
-                          message: "User successfully changed $sectionTitle",
-                        );
-                      }
-                      Navigator.of(context).pop();
-                    },
-                  );
-                },
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(top: 12, bottom: 24),
+            child: InputField(
+              hintText: "Last name",
+              controller: lastNameController,
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

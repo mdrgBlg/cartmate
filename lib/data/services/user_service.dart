@@ -19,7 +19,7 @@ class UserService {
 
   Future<Result<void>> saveUserData(UserInfoModel user) async {
     try {
-      await _users().doc(user.id).set(UserInfoModel.toJson(user));
+      await _users().doc(user.id).set(user.toJson());
       return const Success<void>(null);
     } on FirebaseException catch (e) {
       log("FirebaseException saveUserData: $e");

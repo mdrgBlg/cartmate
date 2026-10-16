@@ -1,94 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '/constants/custom_colors.dart';
-import '/utils/loading.dart';
-import '/utils/snack_bar_popup.dart';
-import '/widgets/custom_button.dart';
+import '/utils/extensions/date_time_extension.dart';
 import '../../../auth/signup/date_picker.dart';
-import '../profile_providers/profile_provider.dart';
+import 'change_info_layout.dart';
 
-class ChangeDateOfBirth extends StatelessWidget {
+class ChangeDateOfBirth extends StatefulWidget {
   const ChangeDateOfBirth({
     required this.sectionTitle,
-    required this.changeInfo,
-    required this.defaultValue,
+    required this.initialDate,
+    required this.onSave,
+    required this.onSuccess,
     super.key,
   });
 
   final String sectionTitle;
-  final Future<bool> Function(String?) changeInfo;
-  final DateTime defaultValue;
+  final DateTime? initialDate;
+  final Future<bool> Function(DateTime date) onSave;
+  final void Function(DateTime date) onSuccess;
 
-  static const routeName = '/change_date_of_birth';
+  @override
+  State<ChangeDateOfBirth> createState() => _ChangeDateOfBirthState();
+}
+
+class _ChangeDateOfBirthState extends State<ChangeDateOfBirth> {
+  late final TextEditingController _dateController;
+  DateTime? _pickedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _pickedDate = widget.initialDate;
+    _dateController = TextEditingController(
+      text: _pickedDate?.formatDateTime(),
+    );
+  }
+
+  @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  void _onDatePicked(DateTime? date) {
+    if (date == null) {
+      return;
+    }
+    setState(() {
+      _pickedDate = date;
+      _dateController.text = date.formatDateTime();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final profileProvider = Provider.of<ProfileProvider>(
-      context,
-      listen: false,
-    );
-
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 52,
-          backgroundColor: CustomColors.primary,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          title: Text(
-            "Change $sectionTitle",
-            style: textTheme.titleLarge!.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 24, left: 20, right: 20),
-                child: Consumer<ProfileProvider>(
-                  builder: (_, __, child) => DatePicker(
-                    dateController: profileProvider.controller,
-                    pickedDate: profileProvider.pickedDate,
-                    onDatePicked: (DateTime? pickedDate) {
-                      if (pickedDate != null) {
-                        profileProvider.setPickedDate(pickedDate);
-                      }
-                    },
-                  ),
-                ),
-              ),
-              CustomButton(
-                buttonText: "Save",
-                enable: true,
-                onPress: () {
-                  bool success = false;
-                  Loading.callLoading(
-                    context: context,
-                    callback: () async {
-                      success = await changeInfo(
-                        profileProvider.pickedDate.toString(),
-                      );
-                    },
-                    onFinished: () {
-                      if (success) {
-                        SnackBarPopup.showMessage(
-                          context,
-                          message: "User successfully changed $sectionTitle",
-                        );
-                      }
-                      Navigator.of(context).pop();
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
+    return ChangeInfoLayout(
+      sectionTitle: widget.sectionTitle,
+      enableSave: _pickedDate != null,
+      onSave: () => widget.onSave(_pickedDate!),
+      onSuccess: () => widget.onSuccess(_pickedDate!),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 24, left: 20, right: 20),
+        child: DatePicker(
+          dateController: _dateController,
+          pickedDate: _pickedDate,
+          onDatePicked: _onDatePicked,
         ),
       ),
     );

@@ -34,20 +34,10 @@ class _WelcomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sessionFuture = Provider.of<WelcomeProvider>(
-      context,
-      listen: false,
-    ).sessionFuture;
+    final provider = Provider.of<WelcomeProvider>(context, listen: false);
 
-    if (sessionFuture == null) {
-      return ChangeNotifierProvider(
-        create: (ctx) =>
-            LoginProvider(authRepository: ctx.read<AuthRepository>()),
-        child: const LoginScreen(),
-      );
-    }
-    return FutureBuilder<Result<UserInfoModel>>(
-      future: sessionFuture,
+    return FutureBuilder<Result<UserInfoModel>?>(
+      future: provider.sessionFuture,
       builder: (_, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SplashScreen();
@@ -59,8 +49,10 @@ class _WelcomeView extends StatelessWidget {
           );
         }
         return ChangeNotifierProvider(
-          create: (ctx) =>
-              LoginProvider(authRepository: ctx.read<AuthRepository>()),
+          create: (ctx) => LoginProvider(
+            authRepository: ctx.read<AuthRepository>(),
+            userRepository: ctx.read<UserRepository>(),
+          ),
           child: const LoginScreen(),
         );
       },
