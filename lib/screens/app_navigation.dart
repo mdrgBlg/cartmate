@@ -89,8 +89,10 @@ class AppNavigation extends StatelessWidget {
                   onTap: () => CustomNavigator(context).pushNavigation(
                     routeName: ProfileScreen.routeName,
                     screen: ChangeNotifierProvider(
-                      create: (_) =>
-                          ProfileProvider(authRepository: context.read()),
+                      create: (_) => ProfileProvider(
+                        authRepository: context.read(),
+                        userRepository: context.read(),
+                      ),
                       child: const ProfileScreen(),
                     ),
                   ),

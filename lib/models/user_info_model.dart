@@ -1,3 +1,5 @@
+import '/utils/global_enums.dart';
+
 class UserInfoModel {
   UserInfoModel({
     required this.id,
@@ -17,8 +19,8 @@ class UserInfoModel {
     email: json["email"] as String,
     username: json["username"] as String,
     phoneNumber: json["phoneNumber"] as String,
-    dateOfBirth: json["dateOfBirth"] as String,
-    gender: json["gender"] == true ? "Male" : "Female",
+    dateOfBirth: DateTime.parse(json["dateOfBirth"] as String),
+    gender: json["gender"] == true ? Gender.male : Gender.female,
   );
 
   final String id;
@@ -27,19 +29,19 @@ class UserInfoModel {
   String email;
   String username;
   String phoneNumber;
-  String dateOfBirth;
-  String gender;
+  DateTime dateOfBirth;
+  Gender gender;
 
-  static Map<String, dynamic> toJson(UserInfoModel userInfoModel) {
+  Map<String, dynamic> toJson() {
     return {
-      'id': userInfoModel.id,
-      'firstName': userInfoModel.firstName,
-      'lastName': userInfoModel.lastName,
-      'email': userInfoModel.email,
-      'username': userInfoModel.username,
-      'phoneNumber': userInfoModel.phoneNumber,
-      'dateOfBirth': userInfoModel.dateOfBirth,
-      'gender': userInfoModel.gender == "Male",
+      'id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'username': username,
+      'phoneNumber': phoneNumber,
+      'dateOfBirth': dateOfBirth,
+      'gender': gender == Gender.male,
     };
   }
 }

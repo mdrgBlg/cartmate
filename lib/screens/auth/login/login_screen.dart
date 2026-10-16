@@ -5,7 +5,6 @@ import '/constants/custom_colors.dart';
 import '/constants/custom_icons.dart';
 import '/data/models/auth_exception.dart';
 import '/data/repositories/auth_repository.dart';
-import '/providers/main_provider.dart';
 import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/loading.dart';
@@ -155,7 +154,6 @@ class LoginScreen extends StatelessWidget {
           return;
         }
         if (isSuccess) {
-          context.read<MainProvider>().setUserInfo(loginProvider.loggedInUser);
           SnackBarPopup.showMessage(
             context,
             message: "You successfully logged in!",

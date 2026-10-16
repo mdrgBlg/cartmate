@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '/utils/global_enums.dart';
 import '../../checkout/checkout_models/checkout_model.dart';
 
 class ProfileService {
@@ -51,11 +52,11 @@ class ProfileService {
     return success;
   }
 
-  static Future<bool> updateGender(String userId, String? value) async {
+  static Future<bool> updateGender(String userId, Gender? value) async {
     bool success = false;
     await _users
         .doc(userId)
-        .update({'gender': value == 'Male'})
+        .update({'gender': value == Gender.male})
         .then((_) => success = true)
         .catchError((_) => success = false);
     return success;

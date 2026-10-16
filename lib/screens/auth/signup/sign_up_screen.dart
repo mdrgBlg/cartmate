@@ -5,16 +5,16 @@ import 'package:provider/provider.dart';
 import '/data/models/auth_exception.dart';
 import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
-import '/utils/helpers.dart';
+import '/utils/global_enums.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
 import '/widgets/auth_layout.dart';
 import '/widgets/custom_button.dart';
+import '/widgets/gender_selector.dart';
 import '/widgets/input_field.dart';
 import '/widgets/password_field.dart';
 import '../welcome/welcome_screen.dart';
 import 'date_picker.dart';
-import 'gender_selector.dart';
 import 'sign_up_providers/sign_up_provider.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -90,10 +90,9 @@ class SignUpScreen extends StatelessWidget {
                   Flexible(
                     child: Consumer<SignUpProvider>(
                       builder: (_, signUpProvider, child) => GenderSelector(
-                        value: signUpProvider.selectedGender,
-                        onChanged: (newValue) =>
-                            signUpProvider.setGender(newValue),
-                        genders: Helpers.genders,
+                        genders: Gender.values,
+                        initialGender: signUpProvider.selectedGender,
+                        onChanged: signUpProvider.setGender,
                       ),
                     ),
                   ),

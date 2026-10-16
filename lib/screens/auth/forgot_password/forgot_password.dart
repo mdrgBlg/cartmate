@@ -95,8 +95,10 @@ class ForgotPassword extends StatelessWidget {
           CustomNavigator(context).pushReplacement(
             routeName: LoginScreen.routeName,
             screen: ChangeNotifierProvider(
-              create: (ctx) =>
-                  LoginProvider(authRepository: ctx.read<AuthRepository>()),
+              create: (ctx) => LoginProvider(
+                authRepository: ctx.read<AuthRepository>(),
+                userRepository: ctx.read(),
+              ),
               child: const LoginScreen(),
             ),
           );

@@ -3,14 +3,19 @@ import 'package:flutter/material.dart';
 import '/data/models/auth_exception.dart';
 import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
+import '/data/repositories/user_repository.dart';
 import '/models/user_info_model.dart';
 import '/utils/common_utils.dart';
 
 class LoginProvider with ChangeNotifier {
-  LoginProvider({required AuthRepository authRepository})
-    : _authRepository = authRepository;
+  LoginProvider({
+    required AuthRepository authRepository,
+    required UserRepository userRepository,
+  }) : _authRepository = authRepository,
+       _userRepository = userRepository;
 
   final AuthRepository _authRepository;
+  final UserRepository _userRepository;
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -40,6 +45,8 @@ class LoginProvider with ChangeNotifier {
     switch (result) {
       case Success(:final data):
         _loggedInUser = data;
+        _userRepository.setCurrentUser(_loggedInUser);
+
         return true;
       case Failure(:final exception):
         _error = fromException(exception);

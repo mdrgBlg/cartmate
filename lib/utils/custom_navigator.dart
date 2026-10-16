@@ -6,8 +6,8 @@ class CustomNavigator {
 
   ///TODO ADD LOGGER
   Future<T?> pushNavigation<T extends Object?>({
-    required String routeName,
     required Widget screen,
+    String? routeName,
   }) async {
     try {
       if (context.mounted) {

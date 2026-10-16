@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
+
 import '/models/user_info_model.dart';
+import '/utils/global_enums.dart';
 import '../models/result.dart';
 import '../services/user_service.dart';
 
-class UserRepository {
+class UserRepository with ChangeNotifier {
   UserRepository({required UserService userService})
     : _userService = userService;
 
@@ -12,18 +15,6 @@ class UserRepository {
 
   UserInfoModel? get currentUser => _currentUser;
 
-  /// Fetches the profile and caches it as the current user on success.
-  Future<Result<UserInfoModel>> fetchUserInfo(String userId) async {
-    final result = await _userService.fetchUserInfo(userId);
-    if (result case Success(:final data)) {
-      _currentUser = data;
-    }
-    return result;
-  }
-
-  Future<Result<void>> saveUserData(UserInfoModel user) =>
-      _userService.saveUserData(user);
-
   void setCurrentUser(UserInfoModel? user) {
     _currentUser = user;
   }
@@ -31,6 +22,7 @@ class UserRepository {
   void updateName(String firstName, String lastName) {
     _currentUser?.firstName = firstName;
     _currentUser?.lastName = lastName;
+    notifyListeners();
   }
 
   void updateEmail(String value) {
@@ -45,16 +37,28 @@ class UserRepository {
     _currentUser?.phoneNumber = value;
   }
 
-  void updateGender(String? value) {
-    _currentUser?.gender = value ?? '';
+  void updateGender(Gender value) {
+    _currentUser?.gender = value;
   }
 
-  void updateDateOfBirth(String? value) {
-    _currentUser?.dateOfBirth = value ?? '';
+  void updateDateOfBirth(DateTime value) {
+    _currentUser?.dateOfBirth = value;
   }
 
   /// In-memory only.
   void clearCurrentUser() {
     _currentUser = null;
   }
+
+  /// Fetches the profile and caches it as the current user on success.
+  Future<Result<UserInfoModel>> fetchUserInfo(String userId) async {
+    final result = await _userService.fetchUserInfo(userId);
+    if (result case Success(:final data)) {
+      _currentUser = data;
+    }
+    return result;
+  }
+
+  Future<Result<void>> saveUserData(UserInfoModel user) =>
+      _userService.saveUserData(user);
 }

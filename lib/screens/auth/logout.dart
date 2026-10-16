@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '/constants/custom_colors.dart';
 import '/data/models/auth_exception.dart';
 import '/data/repositories/auth_repository.dart';
+import '/data/repositories/user_repository.dart';
 import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/loading.dart';
@@ -38,6 +39,7 @@ class Logout extends StatelessWidget {
                   screen: ChangeNotifierProvider(
                     create: (ctx) => LoginProvider(
                       authRepository: ctx.read<AuthRepository>(),
+                      userRepository: ctx.read<UserRepository>(),
                     ),
                     child: const LoginScreen(),
                   ),

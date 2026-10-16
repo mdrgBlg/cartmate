@@ -3,30 +3,73 @@ import 'package:flutter/material.dart';
 import '/data/models/auth_exception.dart';
 import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
+import '/data/repositories/user_repository.dart';
+import '/models/user_info_model.dart';
 import '/utils/common_utils.dart';
-import '/utils/extensions/date_time_extension.dart';
+import '/utils/global_enums.dart';
 import '../../checkout/checkout_models/checkout_model.dart';
 import 'profile_service.dart';
 
 class ProfileProvider with ChangeNotifier {
-  ProfileProvider({required AuthRepository authRepository})
-    : _authRepository = authRepository;
+  ProfileProvider({
+    required AuthRepository authRepository,
+    required UserRepository userRepository,
+  }) : _authRepository = authRepository,
+       _userRepository = userRepository {
+    final userInfo = _userRepository.currentUser;
+
+    firstNameController = TextEditingController(text: userInfo?.firstName);
+    lastNameController = TextEditingController(text: userInfo?.lastName);
+    usernameController = TextEditingController(text: userInfo?.username);
+    emailController = TextEditingController(text: userInfo?.email);
+    phoneController = TextEditingController(text: userInfo?.phoneNumber);
+  }
 
   final AuthRepository _authRepository;
-  String? selectedGender;
-  DateTime? pickedDate;
+  final UserRepository _userRepository;
   List<CheckoutModel> myOrders = [];
 
-  final controller = TextEditingController();
+  late final TextEditingController firstNameController;
+  late final TextEditingController lastNameController;
+  late final TextEditingController usernameController;
+  late final TextEditingController emailController;
+  late final TextEditingController phoneController;
 
-  void setPickedDate(DateTime date) {
-    pickedDate = date;
-    controller.text = date.formatDateTime();
+  String get _userId => _userRepository.currentUser?.id ?? '';
+  UserInfoModel? get userInfo => _userRepository.currentUser;
+
+  void setName() {
+    _userRepository.updateName(
+      firstNameController.text,
+      lastNameController.text,
+    );
     notifyListeners();
   }
 
-  void setGender(String? value) {
-    selectedGender = value;
+  void setEmail() {
+    _userRepository.updateEmail(emailController.text);
+    notifyListeners();
+  }
+
+  void setUsername() {
+    _userRepository.updateUsername(usernameController.text);
+    notifyListeners();
+  }
+
+  void setPhoneNumber() {
+    _userRepository.updatePhoneNumber(phoneController.text);
+    notifyListeners();
+  }
+
+  void setGender(Gender? value) {
+    if (value != null) {
+      _userRepository.updateGender(value);
+      notifyListeners();
+    }
+  }
+
+  void setDateOfBirth(DateTime value) {
+    _userRepository.updateDateOfBirth(value);
     notifyListeners();
   }
 
@@ -34,26 +77,26 @@ class ProfileProvider with ChangeNotifier {
     myOrders = await ProfileService.fetchMyOrder(userId);
   }
 
-  Future<bool> changeUserName(
-    String userId,
-    String firstName,
-    String lastName,
-  ) => ProfileService.updateUserName(userId, firstName, lastName);
+  Future<bool> changeName() => ProfileService.updateUserName(
+    _userId,
+    firstNameController.text,
+    lastNameController.text,
+  );
 
-  Future<bool> changeEmail(String userId, String value) =>
-      ProfileService.updateEmail(userId, value);
+  Future<bool> changeEmail() =>
+      ProfileService.updateEmail(_userId, emailController.text);
 
-  Future<bool> changeUsername(String userId, String value) =>
-      ProfileService.updateUsername(userId, value);
+  Future<bool> changeUsername() =>
+      ProfileService.updateUsername(_userId, usernameController.text);
 
-  Future<bool> changePhoneNumber(String userId, String value) =>
-      ProfileService.updatePhoneNumber(userId, value);
+  Future<bool> changePhoneNumber() =>
+      ProfileService.updatePhoneNumber(_userId, phoneController.text);
 
-  Future<bool> changeGender(String userId, String? value) =>
-      ProfileService.updateGender(userId, value);
+  Future<bool> changeGender(Gender gender) =>
+      ProfileService.updateGender(_userId, gender);
 
-  Future<bool> changeDateOfBirth(String userId, String? value) =>
-      ProfileService.updateDateOfBirth(userId, value);
+  Future<bool> changeDateOfBirth(DateTime value) =>
+      ProfileService.updateDateOfBirth(_userId, value.toString());
 
   Future<AuthErrorType?> signOut() async {
     final result = await _authRepository.signOut();

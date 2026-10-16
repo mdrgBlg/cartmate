@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '/data/repositories/user_repository.dart';
 import '/db/db_constants.dart';
 import '/db/db_helper.dart';
 import '/db/db_service.dart';
@@ -10,8 +11,13 @@ import '/screens/app/home/home_models/products_model.dart';
 import '/screens/app/home/home_providers/home_service.dart';
 
 class MainProvider with ChangeNotifier {
+  MainProvider({required UserRepository userRepository})
+    : _userRepository = userRepository;
+
+  final UserRepository _userRepository;
+
   int get cartProductNumber => cartProducts.length;
-  UserInfoModel? userInfoModel;
+  UserInfoModel? get userInfoModel => _userRepository.currentUser;
 
   double get checkoutPrice => cartProducts.fold(
     0,
@@ -88,45 +94,9 @@ class MainProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setUserName(String firstName, String lastName) {
-    userInfoModel?.firstName = firstName;
-    userInfoModel?.lastName = lastName;
-    notifyListeners();
-  }
-
-  void setEmail(String value) {
-    userInfoModel?.email = value;
-    notifyListeners();
-  }
-
-  void setUsername(String value) {
-    userInfoModel?.username = value;
-    notifyListeners();
-  }
-
-  void setPhoneNumber(String value) {
-    userInfoModel?.phoneNumber = value;
-    notifyListeners();
-  }
-
-  void setGender(String? value) {
-    userInfoModel?.gender = value ?? '';
-    notifyListeners();
-  }
-
-  void setDateOfBirth(String? value) {
-    userInfoModel?.dateOfBirth = value ?? '';
-    notifyListeners();
-  }
-
-  void setUserInfo(UserInfoModel? user) {
-    userInfoModel = user;
-    notifyListeners();
-  }
-
   /// In-memory only; SQLite tables are not touched.
   void clearSession() {
-    userInfoModel = null;
+    _userRepository.clearCurrentUser();
     cartProducts.clear();
     whishlistProductsList.clear();
     notifyListeners();
