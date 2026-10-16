@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import '/models/user_info_model.dart';
 import '/utils/global_enums.dart';
 import '../models/result.dart';
-import '../services/user_service.dart';
+import '../services/api_service.dart';
 
 class UserRepository with ChangeNotifier {
-  UserRepository({required UserService userService})
-    : _userService = userService;
+  UserRepository({required ApiService apiService}) : _apiService = apiService;
 
-  final UserService _userService;
+  final ApiService _apiService;
 
   UserInfoModel? _currentUser;
 
@@ -19,30 +18,94 @@ class UserRepository with ChangeNotifier {
     _currentUser = user;
   }
 
-  void updateName(String firstName, String lastName) {
-    _currentUser?.firstName = firstName;
-    _currentUser?.lastName = lastName;
-    notifyListeners();
+  /// Writes remotely, then updates the cached current user on success.
+  Future<Result<void>> updateName(String firstName, String lastName) async {
+    final userId = _currentUser?.id;
+    if (userId == null) {
+      return Failure(Exception('No current user'));
+    }
+
+    final result = await _apiService.updateUserName(
+      userId,
+      firstName,
+      lastName,
+    );
+    if (result case Success()) {
+      _currentUser?.firstName = firstName;
+      _currentUser?.lastName = lastName;
+      notifyListeners();
+    }
+    return result;
   }
 
-  void updateEmail(String value) {
-    _currentUser?.email = value;
+  Future<Result<void>> updateEmail(String value) async {
+    final userId = _currentUser?.id;
+    if (userId == null) {
+      return Failure(Exception('No current user'));
+    }
+
+    final result = await _apiService.updateEmail(userId, value);
+    if (result case Success()) {
+      _currentUser?.email = value;
+      notifyListeners();
+    }
+    return result;
   }
 
-  void updateUsername(String value) {
-    _currentUser?.username = value;
+  Future<Result<void>> updateUsername(String value) async {
+    final userId = _currentUser?.id;
+    if (userId == null) {
+      return Failure(Exception('No current user'));
+    }
+
+    final result = await _apiService.updateUsername(userId, value);
+    if (result case Success()) {
+      _currentUser?.username = value;
+      notifyListeners();
+    }
+    return result;
   }
 
-  void updatePhoneNumber(String value) {
-    _currentUser?.phoneNumber = value;
+  Future<Result<void>> updatePhoneNumber(String value) async {
+    final userId = _currentUser?.id;
+    if (userId == null) {
+      return Failure(Exception('No current user'));
+    }
+
+    final result = await _apiService.updatePhoneNumber(userId, value);
+    if (result case Success()) {
+      _currentUser?.phoneNumber = value;
+      notifyListeners();
+    }
+    return result;
   }
 
-  void updateGender(Gender value) {
-    _currentUser?.gender = value;
+  Future<Result<void>> updateGender(Gender value) async {
+    final userId = _currentUser?.id;
+    if (userId == null) {
+      return Failure(Exception('No current user'));
+    }
+
+    final result = await _apiService.updateGender(userId, value);
+    if (result case Success()) {
+      _currentUser?.gender = value;
+      notifyListeners();
+    }
+    return result;
   }
 
-  void updateDateOfBirth(DateTime value) {
-    _currentUser?.dateOfBirth = value;
+  Future<Result<void>> updateDateOfBirth(DateTime value) async {
+    final userId = _currentUser?.id;
+    if (userId == null) {
+      return Failure(Exception('No current user'));
+    }
+
+    final result = await _apiService.updateDateOfBirth(userId, value);
+    if (result case Success()) {
+      _currentUser?.dateOfBirth = value;
+      notifyListeners();
+    }
+    return result;
   }
 
   /// In-memory only.
@@ -52,7 +115,7 @@ class UserRepository with ChangeNotifier {
 
   /// Fetches the profile and caches it as the current user on success.
   Future<Result<UserInfoModel>> fetchUserInfo(String userId) async {
-    final result = await _userService.fetchUserInfo(userId);
+    final result = await _apiService.fetchUserInfo(userId);
     if (result case Success(:final data)) {
       _currentUser = data;
     }
@@ -60,5 +123,5 @@ class UserRepository with ChangeNotifier {
   }
 
   Future<Result<void>> saveUserData(UserInfoModel user) =>
-      _userService.saveUserData(user);
+      _apiService.saveUserData(user);
 }

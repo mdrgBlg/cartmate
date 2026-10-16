@@ -57,6 +57,11 @@ When modifying an existing feature, follow the patterns already used by neighbor
 - Do not fix unrelated warnings or existing issues.
 - Preserve existing behavior outside the requested change.
 
+### Git
+
+- Never commit anything. Do not run `git commit` (or push) under any circumstances.
+- When the work is finished, inform the user; the user reviews the changes and handles the commit.
+
 ### Keep exploration focused
 
 Do not scan or read large parts of the repository by default.
