@@ -4,10 +4,9 @@ import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/constants/custom_icons.dart';
-import '/providers/main_provider.dart';
 import '/utils/extensions/date_time_extension.dart';
 import '/utils/helpers.dart';
-import 'profile_providers/profile_provider.dart';
+import 'profile_providers/my_orders_provider.dart';
 
 class MyOrdersScreen extends StatelessWidget {
   const MyOrdersScreen({super.key});
@@ -16,11 +15,10 @@ class MyOrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profileProvider = Provider.of<ProfileProvider>(
+    final myOrdersProvider = Provider.of<MyOrdersProvider>(
       context,
       listen: false,
     );
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
@@ -39,23 +37,29 @@ class MyOrdersScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         body: FutureBuilder<void>(
-          future: profileProvider.fetchMyOrder(
-            mainProvider.userInfoModel?.id ?? "",
-          ),
+          future: myOrdersProvider.myOrdersFuture,
           builder: (context, snapshot) =>
-              snapshot.connectionState == ConnectionState.waiting
+              snapshot.connectionState != ConnectionState.done
               ? const Center(child: CircularProgressIndicator())
+              : snapshot.hasError || myOrdersProvider.hasError
+              ? Center(
+                  child: Text(
+                    // TODO(l10n): myOrdersError
+                    "Something went wrong. Please try again",
+                    style: textTheme.bodyMedium,
+                  ),
+                )
               : Padding(
                   padding: const EdgeInsets.all(20),
                   child: ListView.builder(
-                    itemCount: profileProvider.myOrders.length,
+                    itemCount: myOrdersProvider.myOrders.length,
                     itemBuilder: (_, index) => Container(
                       height: 120,
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
-                        color: CustomColors.greyShade200.withOpacity(0.4),
+                        color: CustomColors.greyShade200.withValues(alpha: 0.4),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: CustomColors.greyShade200),
                       ),
@@ -70,7 +74,7 @@ class MyOrdersScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     Helpers.fetchOrderStatus(
-                                      profileProvider
+                                      myOrdersProvider
                                           .myOrders[index]
                                           .orderStatus,
                                     ),
@@ -81,7 +85,9 @@ class MyOrdersScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     DateTime.parse(
-                                      profileProvider.myOrders[index].orderDate,
+                                      myOrdersProvider
+                                          .myOrders[index]
+                                          .orderDate,
                                     ).formatDateTime(),
                                     style: textTheme.bodyMedium!.copyWith(
                                       fontWeight: FontWeight.bold,
@@ -108,15 +114,15 @@ class MyOrdersScreen extends StatelessWidget {
                                   Text(
                                     "Order",
                                     style: textTheme.bodySmall!.copyWith(
-                                      color: CustomColors.grayDark.withOpacity(
-                                        0.8,
+                                      color: CustomColors.grayDark.withValues(
+                                        alpha: 0.8,
                                       ),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10,
                                     ),
                                   ),
                                   Text(
-                                    profileProvider.myOrders[index].orderId,
+                                    myOrdersProvider.myOrders[index].orderId,
                                     style: textTheme.bodyMedium!.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -136,15 +142,15 @@ class MyOrdersScreen extends StatelessWidget {
                                   Text(
                                     "Shipping Date",
                                     style: textTheme.bodySmall!.copyWith(
-                                      color: CustomColors.grayDark.withOpacity(
-                                        0.8,
+                                      color: CustomColors.grayDark.withValues(
+                                        alpha: 0.8,
                                       ),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10,
                                     ),
                                   ),
                                   Text(
-                                    profileProvider
+                                    myOrdersProvider
                                             .myOrders[index]
                                             .deliveryDate ??
                                         "Unknown",

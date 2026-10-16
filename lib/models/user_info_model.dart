@@ -40,7 +40,7 @@ class UserInfoModel {
       'email': email,
       'username': username,
       'phoneNumber': phoneNumber,
-      'dateOfBirth': dateOfBirth,
+      'dateOfBirth': dateOfBirth.toString(),
       'gender': gender == Gender.male,
     };
   }

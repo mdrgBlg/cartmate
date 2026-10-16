@@ -1,24 +1,24 @@
 import 'dart:developer';
 
+import '/data/services/api_service.dart';
 import '/models/user_info_model.dart';
 import '/utils/global_enums.dart';
 import '../models/result.dart';
 import '../services/auth_service.dart';
 import '../services/firebase_service.dart';
-import '../services/user_service.dart';
 
 class AuthRepository {
   AuthRepository({
     required FirebaseService firebaseService,
     required AuthService authService,
-    required UserService userService,
+    required ApiService apiService,
   }) : _firebaseService = firebaseService,
        _authService = authService,
-       _userService = userService;
+       _apiService = apiService;
 
   final FirebaseService _firebaseService;
   final AuthService _authService;
-  final UserService _userService;
+  final ApiService _apiService;
 
   String? get currentUserId => _firebaseService.auth.currentUser?.uid;
 
@@ -37,7 +37,7 @@ class AuthRepository {
       case Failure(:final exception):
         return Failure(exception);
       case Success(data: final uid):
-        final fetchResult = await _userService.fetchUserInfo(uid);
+        final fetchResult = await _apiService.fetchUserInfo(uid);
         if (fetchResult is Failure<UserInfoModel>) {
           final signOutResult = await _authService.signOut();
           log("Login profile fetch failed, sign-out result: $signOutResult");
@@ -77,7 +77,7 @@ class AuthRepository {
           dateOfBirth: dateOfBirth,
           gender: gender,
         );
-        final saveResult = await _userService.saveUserData(user);
+        final saveResult = await _apiService.saveUserData(user);
         switch (saveResult) {
           case Success():
             return Success(user);
