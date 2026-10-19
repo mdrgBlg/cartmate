@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/constants/custom_images.dart';
 import '/providers/main_provider.dart';
 import '/screens/app/checkout/cart_screen.dart';
 import '/utils/custom_navigator.dart';
@@ -15,14 +13,12 @@ import 'home_models/categories_model.dart';
 import 'home_providers/home_provider.dart';
 import 'home_widgets/categories_widget.dart';
 import 'home_widgets/custom_curved_edges.dart';
-import 'home_widgets/custom_progress_indicator.dart';
+import 'home_widgets/home_banner_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   static const routeName = '/';
-
-  final debouncer = Debouncer(delay: const Duration(milliseconds: 600));
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +28,8 @@ class HomeScreen extends StatelessWidget {
     return SafeArea(
       child: ScreenWrapper(
         child: GestureDetector(
-          onTap: () => {
-            FocusScope.of(context).requestFocus(FocusNode()),
-            homeProvider.focusChange(false),
-          },
+          // Unfocusing the search field reports the change to its provider.
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -131,27 +125,9 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                              child: Consumer<HomeProvider>(
-                                builder: (_, __, child) => SearchField(
-                                  searchController:
-                                      homeProvider.searchController,
-                                  hintText: "Search product...",
-                                  onChanged: (value) {
-                                    if (value.isEmpty) {
-                                      debouncer.call(() {
-                                        homeProvider.clearInput();
-                                      });
-                                    } else {
-                                      debouncer.call(() {
-                                        homeProvider.searchProduct(value);
-                                      });
-                                    }
-                                  },
-                                  clearInput: homeProvider.clearInput,
-                                ),
-                              ),
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                              child: SearchField(hintText: "Search product..."),
                             ),
                           ],
                         ),
@@ -159,32 +135,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 250,
-                  child: PageView.builder(
-                    itemCount: CustomImages.homeImages.length,
-                    onPageChanged: (value) =>
-                        homeProvider.changeScreenIndex(value),
-                    itemBuilder: (_, index) => Container(
-                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          CustomImages.homeImages[index],
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Consumer<HomeProvider>(
-                  builder: (_, __, child) => CustomProgressIndicator(
-                    screenIndex: homeProvider.screenIndex,
-                  ),
-                ),
+                const HomeBannerCarousel(),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 32, 20, 20),
                   child: Row(
