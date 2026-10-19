@@ -6,7 +6,3 @@ AuthErrorType fromException(Exception exception) {
   }
   return AuthErrorType.unknown;
 }
-
-double calculateDiscountPrice(int price, int discount) {
-  return price - price * (discount / 100);
-}

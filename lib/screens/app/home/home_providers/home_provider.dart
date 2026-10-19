@@ -19,38 +19,7 @@ class HomeProvider with ChangeNotifier {
   UnmodifiableListView<ProductsModel> get products =>
       UnmodifiableListView(_products);
 
-  int screenIndex = 0;
-  bool isFocused = false;
-
-  List<ProductsModel> searchedProductsList = [];
-
   final scrollController = ScrollController();
-  final searchController = TextEditingController();
-  final searchScrollController = ScrollController();
-
-  void changeScreenIndex(int value) {
-    screenIndex = value;
-    notifyListeners();
-  }
-
-  void searchProduct(String input) {
-    searchedProductsList = _products.where((element) {
-      return element.productName.toLowerCase().contains(input.toLowerCase());
-    }).toList();
-
-    notifyListeners();
-  }
-
-  void clearInput() {
-    searchController.clear();
-    searchedProductsList = [];
-    notifyListeners();
-  }
-
-  void focusChange(bool value) {
-    isFocused = value;
-    notifyListeners();
-  }
 
   void _updateWishlistFlags() {
     _products = [for (final product in _products) _withCurrentFlag(product)];

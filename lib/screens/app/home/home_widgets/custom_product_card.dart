@@ -6,7 +6,6 @@ import '/providers/main_provider.dart';
 import '/providers/product_details_provider.dart';
 import '/screens/app/home/home_models/products_model.dart';
 import '/screens/app/product_details_screen.dart';
-import '/utils/common_utils.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/app_network_image.dart';
 import '/widgets/wishlist_heart_button.dart';
@@ -120,7 +119,7 @@ class CustomProductCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             Text(
-                              "${calculateDiscountPrice(productsModel.price, productsModel.discount)} ${productsModel.currency}",
+                              productsModel.getPriceWithDiscount,
                               style: textTheme.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
