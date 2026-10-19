@@ -150,18 +150,8 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-
-                ///TODO
                 FutureBuilder<void>(
-                  future:
-                      (mainProvider.productsList.isEmpty
-                              ? mainProvider.fetchProducts()
-                              : Future<void>.value())
-                          .then(
-                            (_) => homeProvider.syncWishlistFlags(
-                              mainProvider.productsList,
-                            ),
-                          ),
+                  future: homeProvider.productsFuture,
                   builder: (context, snapshot) =>
                       snapshot.connectionState == ConnectionState.waiting
                       ? const Center(child: CircularProgressIndicator())

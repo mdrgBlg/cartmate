@@ -3,8 +3,6 @@ import 'package:flutter/foundation.dart';
 import '/data/repositories/user_repository.dart';
 import '/models/cart_model.dart';
 import '/models/user_info_model.dart';
-import '/screens/app/home/home_models/products_model.dart';
-import '/screens/app/home/home_providers/home_service.dart';
 
 class MainProvider with ChangeNotifier {
   MainProvider({required UserRepository userRepository})
@@ -24,7 +22,6 @@ class MainProvider with ChangeNotifier {
                 item.productModel.price * (item.productModel.discount / 100)),
   );
 
-  List<ProductsModel> productsList = [];
   List<CartModel> cartProducts = [];
 
   void addProductToCart(CartModel cartModel) {
@@ -74,9 +71,5 @@ class MainProvider with ChangeNotifier {
     _userRepository.clearCurrentUser();
     cartProducts.clear();
     notifyListeners();
-  }
-
-  Future<void> fetchProducts() async {
-    productsList = await HomeService.fetchProducts();
   }
 }

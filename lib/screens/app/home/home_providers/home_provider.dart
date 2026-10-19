@@ -19,6 +19,10 @@ class HomeProvider with ChangeNotifier {
   UnmodifiableListView<ProductsModel> get products =>
       UnmodifiableListView(_products);
 
+  // Cached so rebuilds of `HomeScreen` don't refetch products.
+  Future<void>? _productsFuture;
+  Future<void> get productsFuture => _productsFuture ??= fetchProducts();
+
   final scrollController = ScrollController();
 
   void _updateWishlistFlags() {
@@ -43,10 +47,11 @@ class HomeProvider with ChangeNotifier {
     return HomeService.fetchCategories();
   }
 
-  Future<void> syncWishlistFlags(List<ProductsModel> productsList) async {
-    _products = List.of(productsList);
+  Future<void> fetchProducts() async {
+    _products = await HomeService.fetchProducts();
     await _wishlistRepository.getWishlistProducts();
     _updateWishlistFlags();
+    notifyListeners();
   }
 
   @override

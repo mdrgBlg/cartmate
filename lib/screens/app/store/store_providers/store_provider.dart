@@ -46,6 +46,25 @@ class StoreProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void _updateWishlistFlags() {
+    _products = [for (final product in _products) _withCurrentFlag(product)];
+    brandProducts = [
+      for (final product in brandProducts) _withCurrentFlag(product),
+    ];
+  }
+
+  void _onWishlistChanged() {
+    _updateWishlistFlags();
+    notifyListeners();
+  }
+
+  ProductsModel _withCurrentFlag(ProductsModel product) {
+    final isWishlisted = _wishlistRepository.isWishlisted(product.id);
+    return product.whishlist == isWishlisted
+        ? product
+        : product.copyWith(whishlist: isWishlisted);
+  }
+
   List<ProductsModel> getProducts(BrandModel categoryBrand) {
     List<ProductsModel> products = [];
     for (var e in brandProducts) {
@@ -64,15 +83,14 @@ class StoreProvider with ChangeNotifier {
     return products.where((e) => e.categoryId == categoryId).toList();
   }
 
-  Future<void> fetchBrands(List<ProductsModel> productsList) async {
+  Future<void> fetchBrands() async {
     brandsList = await StoreService.fetchBrands();
-    await fetchCategories(productsList);
+    await fetchCategories();
     changeSelectedCategory(selectedCategory!);
   }
 
-  // `productsList` (from `MainProvider`) only seeds the provider's own list.
-  Future<void> fetchCategories(List<ProductsModel> productsList) async {
-    _products = List.of(productsList);
+  Future<void> fetchCategories() async {
+    _products = await HomeService.fetchProducts();
     await _wishlistRepository.getWishlistProducts();
     _updateWishlistFlags();
     categoriesList = await HomeService.fetchCategories();
@@ -80,25 +98,6 @@ class StoreProvider with ChangeNotifier {
     if (categoriesList.isNotEmpty) {
       notifyListeners();
     }
-  }
-
-  void _updateWishlistFlags() {
-    _products = [for (final product in _products) _withCurrentFlag(product)];
-    brandProducts = [
-      for (final product in brandProducts) _withCurrentFlag(product),
-    ];
-  }
-
-  ProductsModel _withCurrentFlag(ProductsModel product) {
-    final isWishlisted = _wishlistRepository.isWishlisted(product.id);
-    return product.whishlist == isWishlisted
-        ? product
-        : product.copyWith(whishlist: isWishlisted);
-  }
-
-  void _onWishlistChanged() {
-    _updateWishlistFlags();
-    notifyListeners();
   }
 
   @override

@@ -90,7 +90,7 @@ class StoreScreen extends StatelessWidget {
                 ),
               ),
               FutureBuilder<void>(
-                future: storeProvider.fetchBrands(mainProvider.productsList),
+                future: storeProvider.fetchBrands(),
                 builder: (context, snapshot) =>
                     snapshot.connectionState == ConnectionState.waiting
                     ? const Center(
