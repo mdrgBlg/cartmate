@@ -78,7 +78,7 @@ class StoreScreen extends StatelessWidget {
                       onTap: () => CustomNavigator(context).pushNavigation(
                         routeName: ViewAllBrands.routeName,
                         screen: ChangeNotifierProvider.value(
-                          value: StoreProvider(),
+                          value: storeProvider,
                           child: ViewAllBrands(
                             brandsList: storeProvider.brandsList,
                           ),
@@ -90,10 +90,7 @@ class StoreScreen extends StatelessWidget {
                 ),
               ),
               FutureBuilder<void>(
-                future: storeProvider.fetchBrands(
-                  mainProvider.whishlistProductsList,
-                  mainProvider.productsList,
-                ),
+                future: storeProvider.fetchBrands(mainProvider.productsList),
                 builder: (context, snapshot) =>
                     snapshot.connectionState == ConnectionState.waiting
                     ? const Center(
@@ -122,7 +119,6 @@ class StoreScreen extends StatelessWidget {
                         categoriesModel: storeProvider.categoriesList[index],
                         onTap: () => storeProvider.changeSelectedCategory(
                           storeProvider.categoriesList[index],
-                          mainProvider.productsList,
                         ),
                         isActive:
                             storeProvider.selectedCategory ==

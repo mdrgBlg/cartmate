@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../screen_wrapper.dart';
-import '/providers/main_provider.dart';
 import '/widgets/products_grid_view.dart';
+import 'whishlist_providers/wishlist_provider.dart';
 
 class WhishlistScreen extends StatelessWidget {
   const WhishlistScreen({super.key});
@@ -12,11 +12,8 @@ class WhishlistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mainProvider = Provider.of<MainProvider>(
-      context,
-      listen: false,
-    );
     final textTheme = Theme.of(context).textTheme;
+    final provider = Provider.of<WishlistProvider>(context, listen: false);
     return SafeArea(
       child: ScreenWrapper(
         child: SingleChildScrollView(
@@ -26,9 +23,7 @@ class WhishlistScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const SizedBox(
-                      width: 20,
-                    ),
+                    const SizedBox(width: 20),
                     Text(
                       "Whislist",
                       style: textTheme.headlineSmall!.copyWith(
@@ -39,10 +34,21 @@ class WhishlistScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
-                  child: Consumer<MainProvider>(
-                    builder: (_, __, child) => ProductsGridView(
-                      productsList: mainProvider.whishlistProductsList,
-                    ),
+                  child: FutureBuilder(
+                    future: provider.wishlistFuture,
+                    builder: (context, snapshot) =>
+                        snapshot.connectionState == ConnectionState.waiting
+                        ? const Center(child: CircularProgressIndicator())
+                        : snapshot.data == null
+                        ? Consumer<WishlistProvider>(
+                            builder: (_, wishlistProvider, child) =>
+                                ProductsGridView(
+                                  productsList: wishlistProvider.products,
+                                ),
+                          )
+                        :
+                          /// TODO Handle error
+                          Text("Error"),
                   ),
                 ),
               ],

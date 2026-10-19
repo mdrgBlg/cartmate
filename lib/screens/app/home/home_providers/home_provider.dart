@@ -1,10 +1,24 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 
+import '/data/repositories/wishlist_repository.dart';
 import '../home_models/categories_model.dart';
 import '../home_models/products_model.dart';
 import 'home_service.dart';
 
 class HomeProvider with ChangeNotifier {
+  HomeProvider({required WishlistRepository wishlistRepository})
+    : _wishlistRepository = wishlistRepository {
+    _wishlistRepository.addListener(_onWishlistChanged);
+  }
+
+  final WishlistRepository _wishlistRepository;
+
+  List<ProductsModel> _products = [];
+  UnmodifiableListView<ProductsModel> get products =>
+      UnmodifiableListView(_products);
+
   int screenIndex = 0;
   bool isFocused = false;
 
@@ -19,11 +33,9 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void searchProduct(String input, List<ProductsModel> productsList) {
-    searchedProductsList = productsList.where((element) {
-      return element.productName.toLowerCase().contains(
-            input.toLowerCase(),
-          );
+  void searchProduct(String input) {
+    searchedProductsList = _products.where((element) {
+      return element.productName.toLowerCase().contains(input.toLowerCase());
     }).toList();
 
     notifyListeners();
@@ -40,12 +52,37 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void _updateWishlistFlags() {
+    _products = [for (final product in _products) _withCurrentFlag(product)];
+  }
+
+  void _onWishlistChanged() {
+    _updateWishlistFlags();
+    notifyListeners();
+  }
+
+  ProductsModel _withCurrentFlag(ProductsModel product) {
+    final isWishlisted = _wishlistRepository.isWishlisted(product.id);
+    return product.copyWith(whishlist: isWishlisted);
+  }
+
+  List<ProductsModel> getProductsForCategory(String id) {
+    return _products.where((element) => element.categoryId == id).toList();
+  }
+
   Future<List<CategoriesModel>> fetchCategories() {
     return HomeService.fetchCategories();
   }
 
-  List<ProductsModel> getProductsForCategory(
-      String id, List<ProductsModel> productsList) {
-    return productsList.where((element) => element.categoryId == id).toList();
+  Future<void> syncWishlistFlags(List<ProductsModel> productsList) async {
+    _products = List.of(productsList);
+    await _wishlistRepository.getWishlistProducts();
+    _updateWishlistFlags();
+  }
+
+  @override
+  void dispose() {
+    _wishlistRepository.removeListener(_onWishlistChanged);
+    super.dispose();
   }
 }

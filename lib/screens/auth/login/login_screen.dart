@@ -162,7 +162,7 @@ class LoginScreen extends StatelessWidget {
           CustomNavigator(context).pushReplacement(
             routeName: HomeScreen.routeName,
             screen: ChangeNotifierProvider(
-              create: (_) => HomeProvider(),
+              create: (ctx) => HomeProvider(wishlistRepository: ctx.read()),
               child: HomeScreen(),
             ),
           );

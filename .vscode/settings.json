@@ -12,7 +12,8 @@
     "signup",
     "spinkit",
     "sqflite",
-    "Whishlist"
+    "Whishlist",
+    "Wishlisted"
   ],
   "dart.flutterSdkPath": ".fvm/versions/3.35.1"
 }
