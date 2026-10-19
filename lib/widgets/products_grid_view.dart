@@ -4,11 +4,9 @@ import '/screens/app/home/home_models/products_model.dart';
 import '/screens/app/home/home_widgets/custom_product_card.dart';
 
 class ProductsGridView extends StatelessWidget {
+  const ProductsGridView({required this.productsList, super.key});
+
   final List<ProductsModel> productsList;
-  const ProductsGridView({
-    super.key,
-    required this.productsList,
-  });
 
   @override
   Widget build(BuildContext context) {

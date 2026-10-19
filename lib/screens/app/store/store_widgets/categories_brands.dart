@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/models/brand_model.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/app_network_image.dart';
 import '../../home/home_models/products_model.dart';
+import '../store_providers/store_provider.dart';
 import 'brand_products.dart';
 
 class CategoriesBrands extends StatelessWidget {
@@ -25,9 +27,12 @@ class CategoriesBrands extends StatelessWidget {
     return InkWell(
       onTap: () => CustomNavigator(context).pushNavigation(
         routeName: BrandProducts.routeName,
-        screen: BrandProducts(
-          productsList: productsList,
-          brandModel: categoryBrand,
+        screen: ChangeNotifierProvider.value(
+          value: context.read<StoreProvider>(),
+          child: BrandProducts(
+            brandModel: categoryBrand,
+            categoryId: context.read<StoreProvider>().selectedCategory?.id,
+          ),
         ),
       ),
       borderRadius: BorderRadius.circular(16),

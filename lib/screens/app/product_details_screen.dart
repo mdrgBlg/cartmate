@@ -8,17 +8,19 @@ import '/providers/product_details_provider.dart';
 import '/utils/snack_bar_popup.dart';
 import '/widgets/app_network_image.dart';
 import '/widgets/custom_button.dart';
+import '/widgets/product_image_gallery.dart';
+import '/widgets/product_size_selector.dart';
+import '/widgets/wishlist_heart_button.dart';
 import 'home/home_models/products_model.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({required this.product, super.key});
-  final ProductsModel product;
+  const ProductDetailsScreen({super.key});
 
   static const routeName = '/details';
 
   @override
   Widget build(BuildContext context) {
-    final productDetailsProvider = Provider.of<ProductDetailsProvider>(
+    final provider = Provider.of<ProductDetailsProvider>(
       context,
       listen: false,
     );
@@ -35,30 +37,10 @@ class ProductDetailsScreen extends StatelessWidget {
           title: Row(
             children: [
               const Spacer(),
-              InkWell(
-                onTap: () async {
-                  mainProvider.wishlistFlagChange(product);
-                  if (product.whishlist) {
-                    await mainProvider.addProductToWhishlist(product);
-                  } else {
-                    await mainProvider.removeProductFromWhishlist(product);
-                  }
-                },
-                borderRadius: BorderRadius.circular(99),
-                child: Consumer<MainProvider>(
-                  builder: (_, __, child) => Container(
-                    height: 36,
-                    width: 36,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(99),
-                      color: Colors.grey.withValues(alpha: 0.2),
-                    ),
-                    child: Icon(
-                      Icons.favorite,
-                      color: product.whishlist ? Colors.red : Colors.grey,
-                    ),
-                  ),
-                ),
+              Selector<ProductDetailsProvider, ProductsModel>(
+                selector: (_, provider) => provider.product,
+                builder: (_, product, __) =>
+                    WishlistHeartButton(product: product),
               ),
             ],
           ),
@@ -71,66 +53,8 @@ class ProductDetailsScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Consumer<ProductDetailsProvider>(
-                      builder: (_, __, child) => Container(
-                        color: Colors.transparent,
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        width: double.infinity,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: AppNetworkImage(
-                            imageUrl:
-                                product.productImageList[productDetailsProvider
-                                    .selectedImage],
-                            height: 220,
-                            width: double.infinity,
-                            fit: BoxFit.fill,
-                            errorIconSize: 80,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      height: 90,
-                      alignment: Alignment.centerLeft,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: product.productImageList.length,
-                        itemBuilder: (context, index) =>
-                            Consumer<ProductDetailsProvider>(
-                              builder: (_, __, child) => Container(
-                                width: 92,
-                                margin: EdgeInsets.only(
-                                  left: index == 0 ? 0 : 12,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color:
-                                        productDetailsProvider.selectedImage ==
-                                            index
-                                        ? Colors.black.withValues(alpha: 0.5)
-                                        : Colors.black.withValues(alpha: 0.1),
-                                  ),
-                                ),
-                                child: InkWell(
-                                  onTap: () => productDetailsProvider
-                                      .changeSelectedImage(index),
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: AppNetworkImage(
-                                      imageUrl: product.productImageList[index],
-                                      fit: BoxFit.fill,
-                                      errorIconSize: 36,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                      ),
+                    ProductImageGallery(
+                      images: provider.product.productImageList,
                     ),
                     const SizedBox(height: 28),
                     Row(
@@ -139,7 +63,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           child: Container(
                             alignment: AlignmentDirectional.centerStart,
                             child: Text(
-                              product.productName,
+                              provider.product.productName,
                               style: textTheme.bodyLarge!.copyWith(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -158,7 +82,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
-                            "${product.discount}%",
+                            "${provider.product.discount}%",
                             style: textTheme.bodyMedium!.copyWith(
                               fontWeight: FontWeight.bold,
                               fontSize: 10,
@@ -167,7 +91,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          "${product.price.toDouble().toString()} ${product.currency}",
+                          provider.product.getPriceWithCurrency,
                           style: textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                             color: CustomColors.customGrey,
@@ -186,7 +110,8 @@ class ProductDetailsScreen extends StatelessWidget {
                             height: 20,
                             width: 20,
                             child: AppNetworkImage(
-                              imageUrl: product.brandModel?.iconName ?? "",
+                              imageUrl:
+                                  provider.product.brandModel?.iconName ?? "",
                               errorIcon: Icons.store,
                               errorIconSize: 14,
                             ),
@@ -194,7 +119,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 6),
                             child: Text(
-                              product.brandModel?.brandName ?? "",
+                              provider.product.brandModel?.brandName ?? "",
                               style: textTheme.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -207,7 +132,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           ),
                           const Spacer(),
                           Text(
-                            "${(product.price - product.price * (product.discount / 100))} ${product.currency}",
+                            provider.product.getPriceWithDiscount,
                             style: textTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
@@ -221,94 +146,35 @@ class ProductDetailsScreen extends StatelessWidget {
                       children: [
                         Text('Stock: ', style: textTheme.bodyMedium),
                         Text(
-                          product.stock > 0 ? "In stock" : "Out of stock",
+                          provider.product.stock > 0
+                              ? "In stock"
+                              : "Out of stock",
                           style: textTheme.bodyMedium!.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
-                    if (product.productSize?.isNotEmpty ?? false)
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          "Size",
-                          style: textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Wrap(
-                        spacing: 10, // spacing between adjacent containers
-                        runSpacing: 8, // spacing between rows
-                        children: List.generate(
-                          product.productSize?.length ?? 0,
-                          (index) {
-                            return Consumer<ProductDetailsProvider>(
-                              builder: (_, __, child) => InkWell(
-                                borderRadius: BorderRadius.circular(8),
-                                onTap: () =>
-                                    productDetailsProvider.changeSelectedSize(
-                                      product.productSize?[index] ?? "",
-                                    ),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 64,
-                                  height:
-                                      40, // adjust the height as per your need
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                      color:
-                                          productDetailsProvider.selectedSize ==
-                                              product.productSize?[index]
-                                          ? Colors.black.withValues(alpha: 0.2)
-                                          : Colors.black,
-                                      width: 1,
-                                    ),
-                                    color:
-                                        productDetailsProvider.selectedSize ==
-                                            product.productSize?[index]
-                                        ? CustomColors.primary
-                                        : CustomColors.secondary,
-                                  ),
-                                  child: Text(
-                                    product.productSize?[index] ?? "",
-                                    style: textTheme.bodyMedium!.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color:
-                                          productDetailsProvider.selectedSize ==
-                                              product.productSize?[index]
-                                          ? CustomColors.secondary
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                    ProductSizeSelector(
+                      sizes: provider.product.productSize ?? const [],
+                      onChanged: provider.setSelectedSize,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: Consumer<ProductDetailsProvider>(
-                        builder: (_, __, child) => CustomButton(
+                        builder: (context, sizeProvider, _) => CustomButton(
                           buttonText: "Add to cart",
                           enable:
-                              productDetailsProvider.selectedSize != null ||
-                              product.productSize == null,
+                              sizeProvider.selectedSize != null ||
+                              provider.product.productSize == null,
                           margin: EdgeInsets.zero,
                           onPress: () {
                             ProductsModel copiedProduct = ProductsModel.copy(
-                              product,
+                              provider.product,
                             );
                             CartModel cartModel = CartModel(
                               productModel: copiedProduct,
-                              size: productDetailsProvider.selectedSize ?? "",
+                              size: sizeProvider.selectedSize ?? "",
                             );
                             mainProvider.addProductToCart(cartModel);
                             SnackBarPopup.showMessage(

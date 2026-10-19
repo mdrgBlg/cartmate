@@ -3,10 +3,9 @@ import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/models/brand_model.dart';
-import '/providers/main_provider.dart';
 import '/utils/custom_navigator.dart';
-import '/utils/helpers.dart';
 import '/widgets/app_network_image.dart';
+import '../store_providers/store_provider.dart';
 import 'brand_products.dart';
 
 class BrandGrid extends StatelessWidget {
@@ -21,7 +20,6 @@ class BrandGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
       child: GridView.builder(
@@ -43,12 +41,9 @@ class BrandGrid extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 onTap: () => CustomNavigator(context).pushNavigation(
                   routeName: BrandProducts.routeName,
-                  screen: BrandProducts(
-                    productsList: Helpers.getBrandProducts(
-                      mainProvider.productsList,
-                      brandList[index],
-                    ),
-                    brandModel: brandList[index],
+                  screen: ChangeNotifierProvider.value(
+                    value: context.read<StoreProvider>(),
+                    child: BrandProducts(brandModel: brandList[index]),
                   ),
                 ),
                 child: Container(

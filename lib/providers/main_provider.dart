@@ -1,10 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:sqflite/sqflite.dart';
 
 import '/data/repositories/user_repository.dart';
-import '/db/db_constants.dart';
-import '/db/db_helper.dart';
-import '/db/db_service.dart';
 import '/models/cart_model.dart';
 import '/models/user_info_model.dart';
 import '/screens/app/home/home_models/products_model.dart';
@@ -28,29 +24,8 @@ class MainProvider with ChangeNotifier {
                 item.productModel.price * (item.productModel.discount / 100)),
   );
 
-  List<ProductsModel> whishlistProductsList = [];
   List<ProductsModel> productsList = [];
   List<CartModel> cartProducts = [];
-
-  void wishlistFlagChange(ProductsModel productsModel) {
-    productsModel.whishlist = !productsModel.whishlist;
-    if (productsModel.whishlist) {
-      whishlistProductsList.add(productsModel);
-    } else {
-      whishlistProductsList.removeWhere(
-        (element) => element.id == productsModel.id,
-      );
-    }
-    notifyListeners();
-  }
-
-  void setWishlistFlag() {
-    for (var e in productsList) {
-      if (whishlistProductsList.any((element) => element.id == e.id)) {
-        e.whishlist = true;
-      }
-    }
-  }
 
   void addProductToCart(CartModel cartModel) {
     bool elementExists = false;
@@ -98,49 +73,10 @@ class MainProvider with ChangeNotifier {
   void clearSession() {
     _userRepository.clearCurrentUser();
     cartProducts.clear();
-    whishlistProductsList.clear();
     notifyListeners();
-  }
-
-  Future<void> fetchWhishlistProducts() async {
-    whishlistProductsList = await HomeService.fetchWhishlistProducts();
-  }
-
-  Future<bool> addProductToWhishlist(ProductsModel productsModel) async {
-    bool brandInserted = false;
-    await DbService.whishlistTableExists();
-    await DbService.brandTableExists();
-    if (productsModel.brandModel != null) {
-      // Check if brand exists (assuming you have a method to check)
-      if (!await DbService.doesBrandExist(productsModel.brandModel!.id)) {
-        // Insert brand if it doesn't exist
-        brandInserted = await HomeService.addBrand(
-          productsModel.brandModel!.brandToMap(),
-        );
-      } else {
-        brandInserted = true;
-      }
-    }
-    if (brandInserted) {
-      return await HomeService.addProductToWhishlist(
-        productsModel.productToMap(),
-      );
-    } else {
-      return false;
-    }
-  }
-
-  Future<void> removeProductFromWhishlist(ProductsModel productsModel) async {
-    Database db = await DbHelper.database;
-    await db.delete(
-      DbConstants.whishlistTable,
-      where: 'id = ?',
-      whereArgs: [productsModel.id],
-    );
   }
 
   Future<void> fetchProducts() async {
     productsList = await HomeService.fetchProducts();
-    setWishlistFlag();
   }
 }

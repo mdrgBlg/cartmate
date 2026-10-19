@@ -145,10 +145,7 @@ class HomeScreen extends StatelessWidget {
                                       });
                                     } else {
                                       debouncer.call(() {
-                                        homeProvider.searchProduct(
-                                          value,
-                                          mainProvider.productsList,
-                                        );
+                                        homeProvider.searchProduct(value);
                                       });
                                     }
                                   },
@@ -202,15 +199,25 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+
+                ///TODO
                 FutureBuilder<void>(
-                  future: mainProvider.productsList.isEmpty
-                      ? mainProvider.fetchProducts()
-                      : null,
+                  future:
+                      (mainProvider.productsList.isEmpty
+                              ? mainProvider.fetchProducts()
+                              : Future<void>.value())
+                          .then(
+                            (_) => homeProvider.syncWishlistFlags(
+                              mainProvider.productsList,
+                            ),
+                          ),
                   builder: (context, snapshot) =>
                       snapshot.connectionState == ConnectionState.waiting
                       ? const Center(child: CircularProgressIndicator())
-                      : ProductsGridView(
-                          productsList: mainProvider.productsList,
+                      : Consumer<HomeProvider>(
+                          builder: (_, homeProvider, __) => ProductsGridView(
+                            productsList: homeProvider.products,
+                          ),
                         ),
                 ),
               ],

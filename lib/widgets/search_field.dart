@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/providers/main_provider.dart';
 import '/providers/product_details_provider.dart';
 import '/screens/app/home/home_providers/home_provider.dart';
 import '/screens/app/product_details_screen.dart';
@@ -25,7 +24,6 @@ class SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final homeProvider = Provider.of<HomeProvider>(context);
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     return Column(
       children: [
         Container(
@@ -96,6 +94,7 @@ class SearchField extends StatelessWidget {
         if (homeProvider.isFocused &&
             homeProvider.searchedProductsList.isNotEmpty)
           Container(
+            height: 140,
             width: double.infinity,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -104,58 +103,54 @@ class SearchField extends StatelessWidget {
               ),
               color: Colors.white,
             ),
-            child: Column(
-              children: [
-                Container(
-                  padding: homeProvider.searchController.text.isNotEmpty
-                      ? const EdgeInsets.fromLTRB(16, 16, 16, 4)
-                      : null,
-                  child: MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    child: Scrollbar(
-                      radius: const Radius.circular(2),
-                      thumbVisibility: true,
-                      controller: homeProvider.searchScrollController,
-                      thickness: 4,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        controller: homeProvider.searchScrollController,
-                        itemCount: homeProvider.searchedProductsList.length,
-                        itemBuilder: (context, index) => InkWell(
-                          onTap: () => CustomNavigator(context).pushNavigation(
-                            routeName: ProductDetailsScreen.routeName,
-                            screen: ChangeNotifierProvider(
-                              create: (_) => ProductDetailsProvider(),
-                              child: ProductDetailsScreen(
-                                product: mainProvider.productsList.singleWhere(
-                                  (element) =>
-                                      element.id ==
-                                      homeProvider
-                                          .searchedProductsList[index]
-                                          .id,
-                                ),
-                              ),
+            child: Scrollbar(
+              radius: const Radius.circular(2),
+              thumbVisibility: true,
+              controller: homeProvider.searchScrollController,
+              thickness: 4,
+              child: Container(
+                padding: homeProvider.searchController.text.isNotEmpty
+                    ? const EdgeInsets.fromLTRB(16, 16, 16, 4)
+                    : null,
+                child: MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    controller: homeProvider.searchScrollController,
+                    itemCount: homeProvider.searchedProductsList.length,
+                    itemBuilder: (context, index) => InkWell(
+                      onTap: () {
+                        final product = homeProvider.products.singleWhere(
+                          (element) =>
+                              element.id ==
+                              homeProvider.searchedProductsList[index].id,
+                        );
+                        CustomNavigator(context).pushNavigation(
+                          routeName: ProductDetailsScreen.routeName,
+                          screen: ChangeNotifierProvider(
+                            create: (ctx) => ProductDetailsProvider(
+                              wishlistRepository: ctx.read(),
+                              product: product,
                             ),
+                            child: const ProductDetailsScreen(),
                           ),
-                          child: Container(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            alignment: AlignmentDirectional.centerStart,
-                            child: Text(
-                              homeProvider
-                                  .searchedProductsList[index]
-                                  .productName,
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          homeProvider.searchedProductsList[index].productName,
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
       ],

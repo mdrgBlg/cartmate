@@ -9,6 +9,7 @@ import '/screens/app/product_details_screen.dart';
 import '/utils/common_utils.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/app_network_image.dart';
+import '/widgets/wishlist_heart_button.dart';
 
 class CustomProductCard extends StatelessWidget {
   const CustomProductCard({
@@ -23,19 +24,19 @@ class CustomProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     return InkWell(
-      onTap: () => CustomNavigator(context).pushNavigation(
-        routeName: ProductDetailsScreen.routeName,
-        screen: ChangeNotifierProvider(
-          create: (_) => ProductDetailsProvider(),
-          child: ProductDetailsScreen(
-            product: productsList.singleWhere(
-              (element) => element.id == productsModel.id,
+      onTap: () {
+        CustomNavigator(context).pushNavigation(
+          routeName: ProductDetailsScreen.routeName,
+          screen: ChangeNotifierProvider(
+            create: (ctx) => ProductDetailsProvider(
+              wishlistRepository: ctx.read(),
+              product: productsModel,
             ),
+            child: const ProductDetailsScreen(),
           ),
-        ),
-      ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -188,33 +189,7 @@ class CustomProductCard extends StatelessWidget {
             Positioned(
               right: 4,
               top: 4,
-              child: InkWell(
-                onTap: () async {
-                  mainProvider.wishlistFlagChange(productsModel);
-                  if (productsModel.whishlist) {
-                    await mainProvider.addProductToWhishlist(productsModel);
-                  } else {
-                    await mainProvider.removeProductFromWhishlist(
-                      productsModel,
-                    );
-                  }
-                },
-                borderRadius: BorderRadius.circular(99),
-                child: Consumer<MainProvider>(
-                  builder: (context, value, child) => Container(
-                    height: 36,
-                    width: 36,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(99),
-                      color: Colors.grey.withValues(alpha: 0.2),
-                    ),
-                    child: Icon(
-                      Icons.favorite,
-                      color: productsModel.whishlist ? Colors.red : Colors.grey,
-                    ),
-                  ),
-                ),
-              ),
+              child: WishlistHeartButton(product: productsModel),
             ),
           ],
         ),

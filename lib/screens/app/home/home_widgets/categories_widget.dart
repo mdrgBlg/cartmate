@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/providers/main_provider.dart';
 import '/utils/custom_navigator.dart';
 import '../../categories_screen.dart';
 import '../home_models/categories_model.dart';
-import '../home_models/products_model.dart';
 import '../home_providers/home_provider.dart';
 
 class CategoriesWidget extends StatelessWidget {
@@ -16,23 +14,17 @@ class CategoriesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.only(left: 14),
       child: InkWell(
         onTap: () {
-          List<ProductsModel> categoryProducts = homeProvider
-              .getProductsForCategory(
-                categoriesModel.id,
-                mainProvider.productsList,
-              );
           CustomNavigator(context).pushNavigation(
             routeName: CategoriesScreen.routeName,
             screen: ChangeNotifierProvider.value(
               value: homeProvider,
               child: CategoriesScreen(
-                productsList: categoryProducts,
+                categoryId: categoriesModel.id,
                 categoryName: categoriesModel.categoryName,
               ),
             ),

@@ -100,6 +100,26 @@ class ProductsModel {
   final int stock;
   bool whishlist;
 
+  String get getPriceWithCurrency =>
+      "${price.toDouble().toString()} ${currency}";
+
+  String get getPriceWithDiscount =>
+      "${(price - price * (discount / 100))} ${currency}";
+
+  ProductsModel copyWith({bool? whishlist}) => ProductsModel(
+    id: id,
+    brandModel: brandModel,
+    categoryId: categoryId,
+    currency: currency,
+    productImageList: productImageList,
+    productName: productName,
+    discount: discount,
+    price: price,
+    productSize: productSize,
+    stock: stock,
+    whishlist: whishlist ?? this.whishlist,
+  );
+
   Map<String, dynamic> productToMap() {
     return {
       'id': id,
