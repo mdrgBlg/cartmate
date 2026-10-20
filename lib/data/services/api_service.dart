@@ -2,7 +2,10 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '/models/brand_model.dart';
 import '/screens/app/checkout/checkout_models/checkout_model.dart';
+import '/screens/app/home/home_models/categories_model.dart';
+import '/screens/app/home/home_models/products_model.dart';
 import '/utils/global_enums.dart';
 import '../../models/user_info_model.dart';
 import '../models/result.dart';
@@ -14,6 +17,9 @@ class ApiService {
 
   static const _usersCollection = 'Users';
   static const _ordersCollection = 'Orders';
+  static const _productsCollection = 'Products';
+  static const _categoriesCollection = 'Categories';
+  static const _brandsCollection = 'Brands';
 
   final FirebaseService _firebaseService;
 
@@ -108,6 +114,64 @@ class ApiService {
       return Failure(Exception(e));
     } catch (e) {
       log("Exception fetchMyOrders: $e");
+      return Failure(Exception(e));
+    }
+  }
+
+  Future<Result<List<ProductsModel>>> fetchProducts() async {
+    try {
+      final response = await _firebaseService.firestore
+          .collection(_productsCollection)
+          .get();
+      return Success(
+        response.docs
+            .map((e) => ProductsModel.fromDocument(id: e.id, json: e.data()))
+            .toList(),
+      );
+    } on FirebaseException catch (e) {
+      log("FirebaseException fetchProducts: $e");
+      return Failure(Exception(e));
+    } catch (e) {
+      log("Exception fetchProducts: $e");
+      return Failure(Exception(e));
+    }
+  }
+
+  Future<Result<List<CategoriesModel>>> fetchCategories() async {
+    try {
+      final response = await _firebaseService.firestore
+          .collection(_categoriesCollection)
+          .get();
+      return Success(
+        response.docs
+            .map((e) => CategoriesModel.fromDocument(id: e.id, json: e.data()))
+            .where((category) => category.parentId == null)
+            .toList(),
+      );
+    } on FirebaseException catch (e) {
+      log("FirebaseException fetchCategories: $e");
+      return Failure(Exception(e));
+    } catch (e) {
+      log("Exception fetchCategories: $e");
+      return Failure(Exception(e));
+    }
+  }
+
+  Future<Result<List<BrandModel>>> fetchBrands() async {
+    try {
+      final response = await _firebaseService.firestore
+          .collection(_brandsCollection)
+          .get();
+      return Success(
+        response.docs
+            .map((e) => BrandModel.fromDocument(id: e.id, json: e.data()))
+            .toList(),
+      );
+    } on FirebaseException catch (e) {
+      log("FirebaseException fetchBrands: $e");
+      return Failure(Exception(e));
+    } catch (e) {
+      log("Exception fetchBrands: $e");
       return Failure(Exception(e));
     }
   }

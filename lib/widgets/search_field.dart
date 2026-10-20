@@ -15,7 +15,10 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => SearchProvider(wishlistRepository: context.read()),
+      create: (context) => SearchProvider(
+        wishlistRepository: context.read(),
+        productRepository: context.read(),
+      ),
       child: _SearchFieldView(hintText: hintText),
     );
   }

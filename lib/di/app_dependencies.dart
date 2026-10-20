@@ -3,6 +3,7 @@ import 'package:provider/single_child_widget.dart';
 
 import '/data/repositories/auth_repository.dart';
 import '/data/repositories/order_repository.dart';
+import '/data/repositories/product_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
 import '/data/services/api_service.dart';
@@ -29,6 +30,9 @@ List<SingleChildWidget> injectRepositoryDependencies() {
       create: (context) => UserRepository(apiService: context.read()),
     ),
     Provider(create: (context) => OrderRepository(apiService: context.read())),
+    Provider(
+      create: (context) => ProductRepository(apiService: context.read()),
+    ),
     ChangeNotifierProvider(
       create: (context) => WishlistRepository(wishlistService: context.read()),
     ),

@@ -3,15 +3,23 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 
+import '/data/models/result.dart';
+import '/data/repositories/product_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
 import '/screens/app/home/home_models/products_model.dart';
-import '/screens/app/home/home_providers/home_service.dart';
 
 class SearchProvider with ChangeNotifier {
-  SearchProvider({required WishlistRepository wishlistRepository})
-    : _wishlistRepository = wishlistRepository;
+  SearchProvider({
+    required WishlistRepository wishlistRepository,
+    required ProductRepository productRepository,
+  }) : _wishlistRepository = wishlistRepository,
+       _productRepository = productRepository;
 
   final WishlistRepository _wishlistRepository;
+  final ProductRepository _productRepository;
+
+  Exception? _error;
+  bool get hasError => _error != null;
 
   final searchController = TextEditingController();
   final searchScrollController = ScrollController();
@@ -65,9 +73,16 @@ class SearchProvider with ChangeNotifier {
 
   Future<void> _searchProducts() async {
     if (_products.isEmpty) {
-      _products = await HomeService.fetchProducts();
+      _error = null;
+      final result = await _productRepository.fetchProducts();
       if (_isDisposed) {
         return;
+      }
+      switch (result) {
+        case Success(:final data):
+          _products = data;
+        case Failure(:final exception):
+          _error = exception;
       }
     }
 
