@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/utils/helpers.dart';
+import '/widgets/custom_app_bar.dart';
+import '/widgets/main_layout.dart';
 import '/widgets/products_grid_view.dart';
 import 'home/home_providers/home_provider.dart';
 
@@ -18,52 +20,35 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          foregroundColor: Colors.black,
-          title: Text(
-            categoryName,
-            style: textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
-          ),
-        ),
-        backgroundColor: Colors.white,
-        body: SizedBox(
-          width: double.infinity,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      Helpers.fetchImage(categoryName),
-                      fit: BoxFit.fill,
-                      height: 200,
-                    ),
-                  ),
+    return MainLayout(
+      appBar: CustomAppBar(titleText: categoryName, type: AppBarType.dark),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  Helpers.fetchImage(categoryName),
+                  fit: BoxFit.fill,
+                  height: 200,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: Consumer<HomeProvider>(
-                    builder: (_, homeProvider, __) => ProductsGridView(
-                      productsList: homeProvider.getProductsForCategory(
-                        categoryId,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Consumer<HomeProvider>(
+                builder: (_, homeProvider, __) => ProductsGridView(
+                  productsList: homeProvider.getProductsForCategory(categoryId),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

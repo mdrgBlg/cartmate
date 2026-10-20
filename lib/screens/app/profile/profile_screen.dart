@@ -31,6 +31,7 @@ class ProfileScreen extends StatelessWidget {
     final navigator = CustomNavigator(context);
 
     return MainLayout(
+      showNavBar: true,
       child: SingleChildScrollView(
         child: Consumer<ProfileProvider>(
           builder: (context, value, child) {

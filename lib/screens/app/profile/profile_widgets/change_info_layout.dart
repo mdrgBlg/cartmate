@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '/constants/custom_colors.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
+import '/widgets/custom_app_bar.dart';
 import '/widgets/custom_button.dart';
+import '/widgets/main_layout.dart';
 
 class ChangeInfoLayout extends StatelessWidget {
   const ChangeInfoLayout({
@@ -25,35 +26,19 @@ class ChangeInfoLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 52,
-          backgroundColor: CustomColors.primary,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          title: Text(
-            "Change $sectionTitle",
-            style: textTheme.titleLarge!.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+    return MainLayout(
+      appBar: CustomAppBar(titleText: "Change $sectionTitle"),
+      child: Padding(
+        padding: padding,
+        child: Column(
+          children: [
+            child,
+            CustomButton(
+              buttonText: "Save",
+              enable: enableSave,
+              onPress: () => _onSave(context),
             ),
-          ),
-        ),
-        body: Padding(
-          padding: padding,
-          child: Column(
-            children: [
-              child,
-              CustomButton(
-                buttonText: "Save",
-                enable: enableSave,
-                onPress: () => _onSave(context),
-              ),
-            ],
-          ),
+          ],
         ),
       ),
     );

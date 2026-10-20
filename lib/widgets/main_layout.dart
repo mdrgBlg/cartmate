@@ -4,9 +4,17 @@ import 'package:flutter/services.dart';
 import '../screens/app_navigation.dart';
 
 class MainLayout extends StatelessWidget {
-  const MainLayout({required this.child, this.backgroundColor, super.key});
-  final Color? backgroundColor;
+  const MainLayout({
+    required this.child,
+    this.showNavBar = false,
+    this.backgroundColor,
+    this.appBar,
+    super.key,
+  });
+  final bool showNavBar;
   final Widget child;
+  final Color? backgroundColor;
+  final PreferredSizeWidget? appBar;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +25,9 @@ class MainLayout extends StatelessWidget {
         statusBarBrightness: Brightness.light,
       ),
       child: Scaffold(
-        bottomNavigationBar: const AppNavigation(),
+        appBar: appBar,
+        bottomNavigationBar: showNavBar ? const AppNavigation() : null,
+        backgroundColor: backgroundColor,
         body: SafeArea(
           child: Container(
             width: double.infinity,

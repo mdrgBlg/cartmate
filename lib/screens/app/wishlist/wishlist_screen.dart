@@ -15,6 +15,7 @@ class WhishlistScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final provider = Provider.of<WishlistProvider>(context, listen: false);
     return MainLayout(
+      showNavBar: true,
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 28),

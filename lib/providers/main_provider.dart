@@ -1,13 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-import '/data/repositories/user_repository.dart';
 import '/models/cart_model.dart';
 
 class MainProvider with ChangeNotifier {
-  MainProvider({required UserRepository userRepository})
-    : _userRepository = userRepository;
-
-  final UserRepository _userRepository;
+  MainProvider();
 
   int get cartProductNumber => cartProducts.length;
 
@@ -59,14 +55,8 @@ class MainProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void checkoutSuccessful() {
-    cartProducts.clear();
-    notifyListeners();
-  }
-
   /// In-memory only; SQLite tables are not touched.
   void clearSession() {
-    _userRepository.clearCurrentUser();
     cartProducts.clear();
     notifyListeners();
   }
