@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/models/cart_model.dart';
+import '/models/products_model.dart';
 import '/providers/main_provider.dart';
 import '/providers/product_details_provider.dart';
 import '/utils/snack_bar_popup.dart';
@@ -13,7 +14,6 @@ import '/widgets/main_layout.dart';
 import '/widgets/product_image_gallery.dart';
 import '/widgets/product_size_selector.dart';
 import '/widgets/wishlist_heart_button.dart';
-import 'home/home_models/products_model.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   const ProductDetailsScreen({super.key});

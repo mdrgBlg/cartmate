@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../home/home_models/categories_model.dart';
 import '/constants/custom_colors.dart';
+import '/models/categories_model.dart';
 
 class CategoriesTextWidget extends StatelessWidget {
-  final CategoriesModel categoriesModel;
-  final VoidCallback onTap;
-  final bool isActive;
   const CategoriesTextWidget({
-    super.key,
     required this.categoriesModel,
     required this.onTap,
     required this.isActive,
+    super.key,
   });
+
+  final CategoriesModel categoriesModel;
+  final VoidCallback onTap;
+  final bool isActive;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,9 @@ class CategoriesTextWidget extends StatelessWidget {
           child: Text(
             categoriesModel.categoryName,
             style: textTheme.bodyLarge!.copyWith(
-              color: isActive ? CustomColors.primary : CustomColors.text.withOpacity(0.4),
+              color: isActive
+                  ? CustomColors.primary
+                  : CustomColors.text.withOpacity(0.4),
               fontWeight: FontWeight.bold,
             ),
           ),

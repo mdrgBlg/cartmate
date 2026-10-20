@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '/constants/custom_colors.dart';
 import '/providers/main_provider.dart';
 import '/providers/product_details_provider.dart';
-import '/screens/app/home/home_models/products_model.dart';
+import '../../../models/products_model.dart';
 import '/screens/app/product_details_screen.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/app_network_image.dart';

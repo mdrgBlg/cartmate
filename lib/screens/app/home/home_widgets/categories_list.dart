@@ -1,35 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '/utils/custom_navigator.dart';
-import '../../categories_screen.dart';
-import '../home_models/categories_model.dart';
-import '../home_providers/home_provider.dart';
+import '/models/categories_model.dart';
 
-class CategoriesWidget extends StatelessWidget {
-  const CategoriesWidget({required this.categoriesModel, super.key});
+class CategoriesList extends StatelessWidget {
+  const CategoriesList({
+    required this.categoriesModel,
+    required this.onTap,
+    super.key,
+  });
 
   final CategoriesModel categoriesModel;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
-    final homeProvider = Provider.of<HomeProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.only(left: 14),
       child: InkWell(
-        onTap: () {
-          CustomNavigator(context).pushNavigation(
-            routeName: CategoriesScreen.routeName,
-            screen: ChangeNotifierProvider.value(
-              value: homeProvider,
-              child: CategoriesScreen(
-                categoryId: categoriesModel.id,
-                categoryName: categoriesModel.categoryName,
-              ),
-            ),
-          );
-        },
+        onTap: onTap,
         child: Column(
           children: [
             Container(

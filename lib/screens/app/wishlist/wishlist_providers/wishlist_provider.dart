@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '/data/models/result.dart';
 import '/data/repositories/wishlist_repository.dart';
-import '../../home/home_models/products_model.dart';
+import '../../../../models/products_model.dart';
 
 class WishlistProvider with ChangeNotifier {
   WishlistProvider({required WishlistRepository wishlistRepository})
