@@ -6,7 +6,6 @@ import '/data/repositories/wishlist_repository.dart';
 import '/models/brand_model.dart';
 import '/models/categories_model.dart';
 import '/models/products_model.dart';
-import '/utils/helpers.dart';
 
 class StoreProvider with ChangeNotifier {
   StoreProvider({
@@ -15,53 +14,82 @@ class StoreProvider with ChangeNotifier {
   }) : _wishlistRepository = wishlistRepository,
        _productRepository = productRepository {
     _wishlistRepository.addListener(_onWishlistChanged);
+    _loadFuture = _load();
   }
 
   final WishlistRepository _wishlistRepository;
   final ProductRepository _productRepository;
 
-  Exception? _error;
-  bool get hasError => _error != null;
+  // Separate errors so one failing fetch doesn't hide data from the others.
+  Exception? _brandsError;
+  bool get hasBrandsError => _brandsError != null;
+
+  Exception? _productsError;
+  bool get hasProductsError => _productsError != null;
+
+  Exception? _categoriesError;
+  bool get hasCategoriesError => _categoriesError != null;
+
+  // Cached so rebuilds of `StoreScreen` don't refetch everything.
+  late final Future<void> _loadFuture;
+  Future<void> get loadFuture => _loadFuture;
 
   List<ProductsModel> _products = [];
 
-  CategoriesModel? selectedCategory;
-  final scrollController = ScrollController();
-  List<CategoriesModel> categoriesList = [];
-  List<BrandModel> brandsList = [];
-  List<BrandModel> categoryBrandsList = [];
-  List<ProductsModel> brandProducts = [];
+  // Lists are stored unmodifiable and keep their identity between
+  // notifications so `Selector`s only rebuild when they actually change.
+  List<BrandModel> _brands = const [];
+  List<BrandModel> get brands => _brands;
 
-  void changeSelectedCategory(CategoriesModel value) {
-    selectedCategory = value;
-    categoryBrandsList = [];
+  List<CategoriesModel> _categories = const [];
+  List<CategoriesModel> get categories => _categories;
 
-    brandProducts = [];
-    for (var e in _products) {
-      if (selectedCategory?.id == e.categoryId) {
-        if (e.brandModel != null) {
-          if (!categoryBrandsList.any(
-            (brand) => brand.id == e.brandModel!.id,
-          )) {
-            categoryBrandsList.add(e.brandModel!);
-          }
-          brandProducts.add(e);
-        }
+  CategoriesModel? _selectedCategory;
+  CategoriesModel? get selectedCategory => _selectedCategory;
+
+  List<BrandModel> _categoryBrands = const [];
+  List<BrandModel> get categoryBrands => _categoryBrands;
+
+  // Products of the selected category, grouped by brand id.
+  Map<String, List<ProductsModel>> _categoryProductsByBrand = const {};
+
+  void changeSelectedCategory(CategoriesModel category) {
+    _selectCategory(category);
+    notifyListeners();
+  }
+
+  void _selectCategory(CategoriesModel? category) {
+    _selectedCategory = category;
+
+    final brands = <String, BrandModel>{};
+    final productsByBrand = <String, List<ProductsModel>>{};
+    for (final product in _products) {
+      final brand = product.brandModel;
+      if (brand == null || product.categoryId != category?.id) {
+        continue;
       }
+      brands.putIfAbsent(brand.id, () => brand);
+      productsByBrand.putIfAbsent(brand.id, () => []).add(product);
     }
 
-    notifyListeners();
+    _categoryBrands = List.unmodifiable(brands.values);
+    _categoryProductsByBrand = productsByBrand;
+  }
+
+  // Keeps the current selection if it still exists, otherwise the first one.
+  CategoriesModel? _resolveSelectedCategory() {
+    final currentId = _selectedCategory?.id;
+    return _categories.where((e) => e.id == currentId).firstOrNull ??
+        _categories.firstOrNull;
   }
 
   void _updateWishlistFlags() {
     _products = [for (final product in _products) _withCurrentFlag(product)];
-    brandProducts = [
-      for (final product in brandProducts) _withCurrentFlag(product),
-    ];
   }
 
   void _onWishlistChanged() {
     _updateWishlistFlags();
+    _selectCategory(_selectedCategory);
     notifyListeners();
   }
 
@@ -72,68 +100,66 @@ class StoreProvider with ChangeNotifier {
         : product.copyWith(whishlist: isWishlisted);
   }
 
-  List<ProductsModel> getProducts(BrandModel categoryBrand) {
-    List<ProductsModel> products = [];
-    for (var e in brandProducts) {
-      if (categoryBrand.id == e.brandModel?.id) {
-        products.add(e);
-      }
-    }
-    return products;
+  List<ProductsModel> categoryProductsForBrand(BrandModel brand) =>
+      _categoryProductsByBrand[brand.id] ?? const [];
+
+  Future<void> _load() async {
+    await Future.wait([_fetchBrands(), _fetchProducts(), _fetchCategories()]);
+    _selectCategory(_resolveSelectedCategory());
+    notifyListeners();
   }
 
-  List<ProductsModel> getBrandProducts(BrandModel brand, {String? categoryId}) {
-    final products = Helpers.getBrandProducts(_products, brand);
-    if (categoryId == null) {
-      return products;
-    }
-    return products.where((e) => e.categoryId == categoryId).toList();
-  }
-
-  Future<void> fetchBrands() async {
-    _error = null;
+  Future<void> _fetchBrands() async {
+    _brandsError = null;
     final result = await _productRepository.fetchBrands();
     switch (result) {
       case Success(:final data):
-        brandsList = data;
+        _brands = List.unmodifiable(data);
       case Failure(:final exception):
-        brandsList = [];
-        _error = exception;
-    }
-    await fetchCategories();
-    if (selectedCategory != null) {
-      changeSelectedCategory(selectedCategory!);
+        _brands = const [];
+        _brandsError = exception;
     }
   }
 
-  Future<void> fetchCategories() async {
-    final productsResult = await _productRepository.fetchProducts();
-    switch (productsResult) {
+  Future<void> _fetchProducts() async {
+    _productsError = null;
+    final result = await _productRepository.getProducts();
+    switch (result) {
       case Success(:final data):
         _products = data;
       case Failure(:final exception):
         _products = [];
-        _error = exception;
+        _productsError = exception;
     }
     await _wishlistRepository.getWishlistProducts();
     _updateWishlistFlags();
+  }
 
-    final categoriesResult = await _productRepository.fetchCategories();
-    switch (categoriesResult) {
+  Future<void> _fetchCategories() async {
+    _categoriesError = null;
+    final result = await _productRepository.getCategories();
+    switch (result) {
       case Success(:final data):
-        categoriesList = data;
+        _categories = List.unmodifiable(data);
       case Failure(:final exception):
-        categoriesList = [];
-        _error = exception;
+        _categories = const [];
+        _categoriesError = exception;
     }
-    if (categoriesList.isNotEmpty) {
-      selectedCategory = categoriesList.first;
-      notifyListeners();
+  }
+
+  // Loading can finish after the user has left the screen.
+  bool _disposed = false;
+
+  @override
+  void notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
     }
   }
 
   @override
   void dispose() {
+    _disposed = true;
     _wishlistRepository.removeListener(_onWishlistChanged);
     super.dispose();
   }

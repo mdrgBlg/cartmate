@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/models/brand_model.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/app_network_image.dart';
-import '../store_providers/store_provider.dart';
-import 'brand_products.dart';
+import '../brand_products_screen.dart';
 
 class BrandGrid extends StatelessWidget {
   const BrandGrid({
@@ -40,11 +38,8 @@ class BrandGrid extends StatelessWidget {
             ? InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () => CustomNavigator(context).pushNavigation(
-                  routeName: BrandProducts.routeName,
-                  screen: ChangeNotifierProvider.value(
-                    value: context.read<StoreProvider>(),
-                    child: BrandProducts(brandModel: brandList[index]),
-                  ),
+                  routeName: BrandProductsScreen.routeName,
+                  screen: BrandProductsScreen(brandModel: brandList[index]),
                 ),
                 child: Container(
                   padding: const EdgeInsets.only(left: 12),
@@ -88,7 +83,7 @@ class BrandGrid extends StatelessWidget {
                                   color: Colors.blueAccent,
                                   size: 14,
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                               ],
                             ),
                             Row(
@@ -103,7 +98,9 @@ class BrandGrid extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 2),
                                 Text(
-                                  "products",
+                                  brandList[index].productCount > 1
+                                      ? "products"
+                                      : "product",
                                   style: textTheme.bodySmall!.copyWith(
                                     color: CustomColors.text.withValues(
                                       alpha: 0.4,

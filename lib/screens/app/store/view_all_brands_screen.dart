@@ -5,10 +5,10 @@ import '/constants/custom_colors.dart';
 import '/models/brand_model.dart';
 import '/widgets/custom_app_bar.dart';
 import '/widgets/main_layout.dart';
-import 'brand_grid.dart';
+import 'store_widgets/brand_grid.dart';
 
-class ViewAllBrands extends StatelessWidget {
-  const ViewAllBrands({required this.brandsList, super.key});
+class ViewAllBrandsScreen extends StatelessWidget {
+  const ViewAllBrandsScreen({required this.brandsList, super.key});
   final List<BrandModel> brandsList;
 
   static const routeName = '/brands';
