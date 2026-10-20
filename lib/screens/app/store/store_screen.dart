@@ -3,16 +3,17 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/providers/main_provider.dart';
+import '/models/brand_model.dart';
+import '/models/categories_model.dart';
 import '/utils/custom_navigator.dart';
+import '/widgets/main_header.dart';
 import '/widgets/main_layout.dart';
-import '/widgets/shopping_cart.dart';
-import '../checkout/cart_screen.dart';
+import 'brand_products_screen.dart';
 import 'store_providers/store_provider.dart';
 import 'store_widgets/brand_grid.dart';
 import 'store_widgets/categories_brands.dart';
-import 'store_widgets/categories_text_widget.dart';
-import 'store_widgets/view_all_brands.dart';
+import 'store_widgets/category_tab.dart';
+import 'view_all_brands_screen.dart';
 
 class StoreScreen extends StatelessWidget {
   const StoreScreen({super.key});
@@ -21,7 +22,6 @@ class StoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     final storeProvider = Provider.of<StoreProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return MainLayout(
@@ -29,39 +29,11 @@ class StoreScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            const Gap(20),
+            const MainHeader(text: "Store", contentColor: Colors.black),
+            const Gap(20),
             Padding(
-              padding: EdgeInsets.fromLTRB(
-                20,
-                20,
-                mainProvider.cartProductNumber > 0 ? 20 : 12,
-                0,
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    "Store",
-                    style: textTheme.headlineSmall!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () => CustomNavigator(context).pushNavigation(
-                      routeName: CartScreen.routeName,
-                      screen: const CartScreen(),
-                    ),
-                    child: Consumer<MainProvider>(
-                      builder: (_, __, child) => ShoppingCart(
-                        productNumber: mainProvider.cartProductNumber,
-                        homeScreen: false,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -73,12 +45,9 @@ class StoreScreen extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () => CustomNavigator(context).pushNavigation(
-                      routeName: ViewAllBrands.routeName,
-                      screen: ChangeNotifierProvider.value(
-                        value: storeProvider,
-                        child: ViewAllBrands(
-                          brandsList: storeProvider.brandsList,
-                        ),
+                      routeName: ViewAllBrandsScreen.routeName,
+                      screen: ViewAllBrandsScreen(
+                        brandsList: storeProvider.brands,
                       ),
                     ),
                     child: Text("View all", style: textTheme.bodyMedium),
@@ -86,49 +55,36 @@ class StoreScreen extends StatelessWidget {
                 ],
               ),
             ),
-            FutureBuilder<void>(
-              future: storeProvider.fetchBrands(),
-              builder: (context, snapshot) =>
-                  snapshot.connectionState == ConnectionState.waiting
-                  ? const Center(
-                      heightFactor: 3,
-                      child: CircularProgressIndicator(),
-                    )
-                  : storeProvider.hasError
-                  // TODO(l10n): storeError
-                  ? const Center(
-                      heightFactor: 3,
-                      child: Text("Something went wrong. Please try again"),
-                    )
-                  : storeProvider.brandsList.isNotEmpty
-                  ? BrandGrid(
-                      brandList: storeProvider.brandsList,
-                      showLimited: true,
-                    )
-                  : Container(),
-            ),
+            const Gap(20),
+            const _FeaturedBrands(),
             const Gap(32),
             SizedBox(
               height: 40,
               child: Padding(
                 padding: const EdgeInsets.only(left: 20),
-                child: Consumer<StoreProvider>(
-                  builder: (_, __, child) => ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    controller: storeProvider.scrollController,
-                    itemCount: storeProvider.categoriesList.length,
-                    itemBuilder: (context, index) => CategoriesTextWidget(
-                      categoriesModel: storeProvider.categoriesList[index],
-                      onTap: () => storeProvider.changeSelectedCategory(
-                        storeProvider.categoriesList[index],
-                      ),
-                      isActive:
-                          storeProvider.selectedCategory ==
-                          storeProvider.categoriesList[index],
+                child:
+                    Selector<StoreProvider, (List<CategoriesModel>, String?)>(
+                      selector: (_, provider) =>
+                          (provider.categories, provider.selectedCategory?.id),
+                      builder: (_, data, __) {
+                        final (categories, selectedId) = data;
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            final category = categories[index];
+                            return CategoryTab(
+                              categoryName: category.categoryName,
+                              onTap: () => storeProvider.changeSelectedCategory(
+                                category,
+                              ),
+                              isActive: selectedId == category.id,
+                            );
+                          },
+                        );
+                      },
                     ),
-                  ),
-                ),
               ),
             ),
             Padding(
@@ -140,21 +96,38 @@ class StoreScreen extends StatelessWidget {
               ),
             ),
             const Gap(24),
-            Consumer<StoreProvider>(
-              builder: (_, __, child) {
+            Selector<StoreProvider, (List<BrandModel>, bool)>(
+              selector: (_, provider) => (
+                provider.categoryBrands,
+                provider.hasProductsError || provider.hasCategoriesError,
+              ),
+              builder: (_, data, __) {
+                final (categoryBrands, hasError) = data;
+                if (hasError) {
+                  return const Center(
+                    heightFactor: 3,
+                    child: Text("Something went wrong. Please try again"),
+                  );
+                }
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: storeProvider.categoryBrandsList.length,
+                    itemCount: categoryBrands.length,
                     itemBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.only(bottom: 16),
                       child: CategoriesBrands(
-                        categoryBrand: storeProvider.categoryBrandsList[index],
-                        brandProducts: storeProvider.brandProducts,
-                        productsList: storeProvider.getProducts(
-                          storeProvider.categoryBrandsList[index],
+                        categoryBrand: categoryBrands[index],
+                        productsList: storeProvider.categoryProductsForBrand(
+                          categoryBrands[index],
+                        ),
+                        onTap: () => CustomNavigator(context).pushNavigation(
+                          routeName: BrandProductsScreen.routeName,
+                          screen: BrandProductsScreen(
+                            categoryId: storeProvider.selectedCategory?.id,
+                            brandModel: categoryBrands[index],
+                          ),
                         ),
                       ),
                     ),
@@ -165,6 +138,36 @@ class StoreScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _FeaturedBrands extends StatelessWidget {
+  const _FeaturedBrands();
+
+  @override
+  Widget build(BuildContext context) {
+    final storeProvider = context.read<StoreProvider>();
+    return FutureBuilder<void>(
+      future: storeProvider.loadFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            heightFactor: 3,
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (storeProvider.hasBrandsError) {
+          return const Center(
+            heightFactor: 3,
+            child: Text("Something went wrong. Please try again"),
+          );
+        }
+        if (storeProvider.brands.isEmpty) {
+          return const SizedBox.shrink();
+        }
+        return BrandGrid(brandList: storeProvider.brands, showLimited: true);
+      },
     );
   }
 }

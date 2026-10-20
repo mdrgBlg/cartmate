@@ -3,14 +3,12 @@ import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/models/categories_model.dart';
-import '/providers/main_provider.dart';
 import '/utils/custom_navigator.dart';
+import '/widgets/main_header.dart';
 import '/widgets/main_layout.dart';
 import '/widgets/products_grid_view/products_grid_view.dart';
 import '/widgets/search_field.dart';
-import '/widgets/shopping_cart.dart';
 import '../categories_screen.dart';
-import '../checkout/cart_screen.dart';
 import 'home_providers/home_provider.dart';
 import 'home_widgets/categories_list.dart';
 import 'home_widgets/home_banner_carousel.dart';
@@ -28,6 +26,7 @@ class HomeScreen extends StatelessWidget {
     return MainLayout(
       showNavBar: true,
       child: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 20),
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           child: Column(
@@ -39,8 +38,8 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _HomeHeader(
-                      fullName: homeProvider.userInfoModel?.fullName ?? '',
+                    MainHeader(
+                      text: homeProvider.userInfoModel?.fullName ?? '',
                     ),
                     const _HomeSearchAndCategories(),
                   ],
@@ -106,47 +105,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _HomeHeader extends StatelessWidget {
-  const _HomeHeader({required this.fullName});
-  final String fullName;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 4),
-            child: Text(
-              fullName,
-              style: textTheme.titleLarge!.copyWith(
-                color: CustomColors.secondary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          InkWell(
-            onTap: () => CustomNavigator(context).pushNavigation(
-              routeName: CartScreen.routeName,
-              screen: const CartScreen(),
-            ),
-            child: Consumer<MainProvider>(
-              builder: (_, mainProvider, child) => ShoppingCart(
-                productNumber: mainProvider.cartProductNumber,
-                homeScreen: true,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _HomeSearchAndCategories extends StatelessWidget {
   const _HomeSearchAndCategories();
   @override
@@ -160,7 +118,7 @@ class _HomeSearchAndCategories extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 108, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 94, 20, 0),
               child: Text(
                 "Popular Categories",
                 style: textTheme.bodyLarge!.copyWith(

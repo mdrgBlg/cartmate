@@ -74,7 +74,7 @@ class SearchProvider with ChangeNotifier {
   Future<void> _searchProducts() async {
     if (_products.isEmpty) {
       _error = null;
-      final result = await _productRepository.fetchProducts();
+      final result = await _productRepository.getProducts();
       if (_isDisposed) {
         return;
       }

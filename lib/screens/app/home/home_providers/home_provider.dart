@@ -17,8 +17,8 @@ class HomeProvider with ChangeNotifier {
        _productRepository = productRepository,
        _userRepository = userRepository {
     _wishlistRepository.addListener(_onWishlistChanged);
-    _productsFuture = _fetchProducts();
-    _categoriesFuture = _fetchCategories();
+    _productsFuture = _getProducts();
+    _categoriesFuture = _getCategories();
   }
 
   final WishlistRepository _wishlistRepository;
@@ -62,9 +62,9 @@ class HomeProvider with ChangeNotifier {
     return _products.where((element) => element.categoryId == id).toList();
   }
 
-  Future<List<CategoriesModel>> _fetchCategories() async {
+  Future<List<CategoriesModel>> _getCategories() async {
     _categoriesError = null;
-    final result = await _productRepository.fetchCategories();
+    final result = await _productRepository.getCategories();
     switch (result) {
       case Success(:final data):
         return data;
@@ -74,9 +74,9 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  Future<void> _fetchProducts() async {
+  Future<void> _getProducts() async {
     _productsError = null;
-    final result = await _productRepository.fetchProducts();
+    final result = await _productRepository.getProducts();
     switch (result) {
       case Success(:final data):
         _products = data;
@@ -89,9 +89,21 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Loading can finish after the user has left the screen.
+  bool _disposed = false;
+
+  @override
+  void notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
+    }
+  }
+
   @override
   void dispose() {
+    _disposed = true;
     _wishlistRepository.removeListener(_onWishlistChanged);
+    scrollController.dispose();
     super.dispose();
   }
 }
