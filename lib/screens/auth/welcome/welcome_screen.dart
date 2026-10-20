@@ -44,7 +44,10 @@ class _WelcomeView extends StatelessWidget {
         }
         if (snapshot.data is Success<UserInfoModel>) {
           return ChangeNotifierProvider(
-            create: (ctx) => HomeProvider(wishlistRepository: ctx.read()),
+            create: (ctx) => HomeProvider(
+              wishlistRepository: ctx.read(),
+              productRepository: ctx.read(),
+            ),
             child: HomeScreen(),
           );
         }

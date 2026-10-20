@@ -43,7 +43,7 @@ class AuthLayout extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  Expanded(child: Container(color: Colors.lightBlue)),
+                  Expanded(child: Container(color: CustomColors.primary)),
                   Expanded(child: Container(color: Colors.white)),
                 ],
               ),

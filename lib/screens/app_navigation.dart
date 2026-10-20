@@ -10,8 +10,8 @@ import 'app/profile/profile_providers/profile_provider.dart';
 import 'app/profile/profile_screen.dart';
 import 'app/store/store_providers/store_provider.dart';
 import 'app/store/store_screen.dart';
-import 'app/whishlist/whishlist_providers/wishlist_provider.dart';
-import 'app/whishlist/whishlist_screen.dart';
+import 'app/wishlist/wishlist_providers/wishlist_provider.dart';
+import 'app/wishlist/wishlist_screen.dart';
 import 'navbar_item.dart';
 
 class AppNavigation extends StatelessWidget {
@@ -41,8 +41,10 @@ class AppNavigation extends StatelessWidget {
                   onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: HomeScreen.routeName,
                     screen: ChangeNotifierProvider(
-                      create: (_) =>
-                          HomeProvider(wishlistRepository: context.read()),
+                      create: (_) => HomeProvider(
+                        wishlistRepository: context.read(),
+                        productRepository: context.read(),
+                      ),
                       child: HomeScreen(),
                     ),
                   ),
@@ -59,8 +61,10 @@ class AppNavigation extends StatelessWidget {
                   onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: StoreScreen.routeName,
                     screen: ChangeNotifierProvider(
-                      create: (_) =>
-                          StoreProvider(wishlistRepository: context.read()),
+                      create: (_) => StoreProvider(
+                        wishlistRepository: context.read(),
+                        productRepository: context.read(),
+                      ),
                       child: const StoreScreen(),
                     ),
                   ),

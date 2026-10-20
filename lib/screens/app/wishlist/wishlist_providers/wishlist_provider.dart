@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 
 import '/data/models/result.dart';
@@ -19,25 +17,10 @@ class WishlistProvider with ChangeNotifier {
   Future<Exception?> get wishlistFuture => _wishlistFuture;
 
   List<ProductsModel> _products = [];
-  UnmodifiableListView<ProductsModel> get products =>
-      UnmodifiableListView(_products);
+  List<ProductsModel> get products => [..._products];
 
   Exception? _error;
   bool get hasError => _error != null;
-
-  // Started once from the constructor and awaited by `WhishlistScreen`'s
-  // `FutureBuilder`, which owns the loading state.
-  Future<Exception?> _fetchWishlist() async {
-    final result = await _wishlistRepository.getWishlistProducts();
-    switch (result) {
-      case Success():
-        _updateProducts();
-        return null;
-      case Failure(:final exception):
-        _products = [];
-        return exception;
-    }
-  }
 
   // The list always mirrors the repository content, so un-hearting an item
   // removes it from this list.
@@ -51,6 +34,20 @@ class WishlistProvider with ChangeNotifier {
   void _onWishlistChanged() {
     _updateProducts();
     notifyListeners();
+  }
+
+  // Started once from the constructor and awaited by `WhishlistScreen`'s
+  // `FutureBuilder`, which owns the loading state.
+  Future<Exception?> _fetchWishlist() async {
+    final result = await _wishlistRepository.getWishlistProducts();
+    switch (result) {
+      case Success():
+        _updateProducts();
+        return null;
+      case Failure(:final exception):
+        _products = [];
+        return exception;
+    }
   }
 
   @override

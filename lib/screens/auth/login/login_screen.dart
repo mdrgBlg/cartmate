@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
 
     return AuthLayout(
       showAppBar: false,
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: CustomColors.primary,
       overlays: [
         Positioned(
           top: 8,
@@ -162,7 +162,10 @@ class LoginScreen extends StatelessWidget {
           CustomNavigator(context).pushReplacement(
             routeName: HomeScreen.routeName,
             screen: ChangeNotifierProvider(
-              create: (ctx) => HomeProvider(wishlistRepository: ctx.read()),
+              create: (ctx) => HomeProvider(
+                wishlistRepository: ctx.read(),
+                productRepository: ctx.read(),
+              ),
               child: HomeScreen(),
             ),
           );

@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 
-import '../../home/home_models/categories_model.dart';
-import '../../home/home_models/products_model.dart';
-import '../../home/home_providers/home_service.dart';
+import '/data/models/result.dart';
+import '/data/repositories/product_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
 import '/models/brand_model.dart';
 import '/utils/helpers.dart';
-import 'store_service.dart';
+import '../../home/home_models/categories_model.dart';
+import '../../home/home_models/products_model.dart';
 
 class StoreProvider with ChangeNotifier {
-  StoreProvider({required WishlistRepository wishlistRepository})
-    : _wishlistRepository = wishlistRepository {
+  StoreProvider({
+    required WishlistRepository wishlistRepository,
+    required ProductRepository productRepository,
+  }) : _wishlistRepository = wishlistRepository,
+       _productRepository = productRepository {
     _wishlistRepository.addListener(_onWishlistChanged);
   }
 
   final WishlistRepository _wishlistRepository;
+  final ProductRepository _productRepository;
+
+  Exception? _error;
+  bool get hasError => _error != null;
 
   List<ProductsModel> _products = [];
 
@@ -84,18 +91,43 @@ class StoreProvider with ChangeNotifier {
   }
 
   Future<void> fetchBrands() async {
-    brandsList = await StoreService.fetchBrands();
+    _error = null;
+    final result = await _productRepository.fetchBrands();
+    switch (result) {
+      case Success(:final data):
+        brandsList = data;
+      case Failure(:final exception):
+        brandsList = [];
+        _error = exception;
+    }
     await fetchCategories();
-    changeSelectedCategory(selectedCategory!);
+    if (selectedCategory != null) {
+      changeSelectedCategory(selectedCategory!);
+    }
   }
 
   Future<void> fetchCategories() async {
-    _products = await HomeService.fetchProducts();
+    final productsResult = await _productRepository.fetchProducts();
+    switch (productsResult) {
+      case Success(:final data):
+        _products = data;
+      case Failure(:final exception):
+        _products = [];
+        _error = exception;
+    }
     await _wishlistRepository.getWishlistProducts();
     _updateWishlistFlags();
-    categoriesList = await HomeService.fetchCategories();
-    selectedCategory = categoriesList.first;
+
+    final categoriesResult = await _productRepository.fetchCategories();
+    switch (categoriesResult) {
+      case Success(:final data):
+        categoriesList = data;
+      case Failure(:final exception):
+        categoriesList = [];
+        _error = exception;
+    }
     if (categoriesList.isNotEmpty) {
+      selectedCategory = categoriesList.first;
       notifyListeners();
     }
   }
