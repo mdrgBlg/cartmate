@@ -49,10 +49,10 @@ class CheckoutScreen extends StatelessWidget {
                 key: UniqueKey(),
                 padding: const EdgeInsets.only(top: 8),
                 shrinkWrap: true,
-                itemCount: checkoutProvider.cartProductsList.length,
+                itemCount: checkoutProvider.cartProducts.length,
                 itemBuilder: (_, index) => CartItem(
                   key: UniqueKey(),
-                  cartModel: checkoutProvider.cartProductsList[index],
+                  cartModel: checkoutProvider.cartProducts[index],
                   isCartItem: false,
                   height: 90,
                 ),
@@ -81,7 +81,7 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${checkoutProvider.checkoutPrice.toString()} ${checkoutProvider.cartProductsList.first.productModel.currency}",
+                            "${checkoutProvider.checkoutPrice.toString()} ${checkoutProvider.cartProducts.first.productModel.currency}",
                             style: textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -99,7 +99,7 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "8.0 ${checkoutProvider.cartProductsList.first.productModel.currency}",
+                            "8.0 ${checkoutProvider.cartProducts.first.productModel.currency}",
                             style: textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -117,7 +117,7 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${checkoutProvider.getTotalPrice().toString()} ${checkoutProvider.cartProductsList.first.productModel.currency}",
+                            "${checkoutProvider.getTotalPrice().toString()} ${checkoutProvider.cartProducts.first.productModel.currency}",
                             style: textTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -191,7 +191,7 @@ class CheckoutScreen extends StatelessWidget {
                       const SizedBox(height: 12),
                       InputField(
                         hintText: "E-mail:",
-                        controller: checkoutProvider.eMailController,
+                        controller: checkoutProvider.emailController,
                         onInputChanged: () => checkoutProvider.buttonChecker(),
                       ),
                       const SizedBox(height: 12),
@@ -285,7 +285,7 @@ class CheckoutScreen extends StatelessWidget {
                               right: 20,
                             ),
                             buttonText:
-                                "Checkout ${checkoutProvider.getTotalPrice()} ${checkoutProvider.cartProductsList.first.productModel.currency}",
+                                "Checkout ${checkoutProvider.getTotalPrice()} ${checkoutProvider.cartProducts.first.productModel.currency}",
                             enable: checkoutProvider.isButtonEnabled,
                             onPress: () {
                               ResponseModel? responseModel;

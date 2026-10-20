@@ -9,24 +9,6 @@ import 'db_constants.dart';
 import 'db_helper.dart';
 
 class DbService {
-  static Future<void> brandTableExists() async {
-    Database db = await DbHelper.database;
-    try {
-      var tables = await findTable(db, DbConstants.brandTable);
-      if (tables.isEmpty) {
-        await db.execute('''CREATE TABLE ${DbConstants.brandTable} (
-      id TEXT PRIMARY KEY,
-      brandName TEXT,
-      iconName TEXT,
-      productCount INTEGER
-      )''');
-        log("Table ${DbConstants.brandTable} is created");
-      }
-    } catch (e) {
-      log("Error creating ${DbConstants.brandTable} table: $e");
-    }
-  }
-
   static Future<void> cartTableExists() async {
     Database db = await DbHelper.database;
     try {

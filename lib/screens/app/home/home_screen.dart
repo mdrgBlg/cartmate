@@ -48,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 4),
                             child: Text(
-                              "${mainProvider.userInfoModel?.firstName ?? ""} ${mainProvider.userInfoModel?.lastName ?? ""}",
+                              homeProvider.userInfoModel?.fullName ?? '',
                               style: textTheme.titleLarge!.copyWith(
                                 color: CustomColors.secondary,
                                 fontWeight: FontWeight.bold,

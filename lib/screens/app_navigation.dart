@@ -42,6 +42,7 @@ class AppNavigation extends StatelessWidget {
                     routeName: HomeScreen.routeName,
                     screen: ChangeNotifierProvider(
                       create: (_) => HomeProvider(
+                        userRepository: context.read(),
                         wishlistRepository: context.read(),
                         productRepository: context.read(),
                       ),
