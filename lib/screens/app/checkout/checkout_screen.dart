@@ -24,7 +24,6 @@ class CheckoutScreen extends StatelessWidget {
       context,
       listen: false,
     );
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
@@ -287,50 +286,7 @@ class CheckoutScreen extends StatelessWidget {
                             buttonText:
                                 "Checkout ${checkoutProvider.getTotalPrice()} ${checkoutProvider.cartProducts.first.productModel.currency}",
                             enable: checkoutProvider.isButtonEnabled,
-                            onPress: () {
-                              ResponseModel? responseModel;
-                              Loading.callLoading(
-                                context: context,
-                                callback: () async {
-                                  responseModel = await checkoutProvider
-                                      .orderProduct();
-                                },
-                                onFinished: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                  if (responseModel != null) {
-                                    if (responseModel!.success) {
-                                      mainProvider.checkoutSuccessful();
-                                      SnackBarPopup.showMessage(
-                                        context,
-                                        message:
-                                            "Your order has been received!",
-                                        snackBarMessageType:
-                                            SnackBarMessageType.success,
-                                      );
-                                    } else {
-                                      SnackBarPopup.showMessage(
-                                        context,
-                                        message:
-                                            responseModel?.error ??
-                                            "Something went wrong.",
-                                        snackBarMessageType:
-                                            SnackBarMessageType.error,
-                                      );
-                                    }
-                                  } else {
-                                    SnackBarPopup.showMessage(
-                                      context,
-                                      message:
-                                          responseModel?.error ??
-                                          "Something went wrong.",
-                                      snackBarMessageType:
-                                          SnackBarMessageType.error,
-                                    );
-                                  }
-                                },
-                              );
-                            },
+                            onPress: () => onCheckoutTap(context),
                           ),
                         ),
                       ),
@@ -342,6 +298,49 @@ class CheckoutScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void onCheckoutTap(BuildContext context) {
+    final checkoutProvider = Provider.of<CheckoutProvider>(
+      context,
+      listen: false,
+    );
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
+
+    ResponseModel? responseModel;
+    Loading.callLoading(
+      context: context,
+      callback: () async {
+        responseModel = await checkoutProvider.orderProduct();
+      },
+      onFinished: () {
+        Navigator.of(
+          context,
+        ).popUntil((route) => route.settings.name == routeName);
+        if (responseModel != null) {
+          if (responseModel!.success) {
+            mainProvider.clearSession();
+            SnackBarPopup.showMessage(
+              context,
+              message: "Your order has been received!",
+              snackBarMessageType: SnackBarMessageType.success,
+            );
+          } else {
+            SnackBarPopup.showMessage(
+              context,
+              message: responseModel?.error ?? "Something went wrong.",
+              snackBarMessageType: SnackBarMessageType.error,
+            );
+          }
+        } else {
+          SnackBarPopup.showMessage(
+            context,
+            message: responseModel?.error ?? "Something went wrong.",
+            snackBarMessageType: SnackBarMessageType.error,
+          );
+        }
+      },
     );
   }
 }

@@ -25,6 +25,7 @@ class StoreScreen extends StatelessWidget {
     final storeProvider = Provider.of<StoreProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return MainLayout(
+      showNavBar: true,
       child: SingleChildScrollView(
         child: Column(
           children: [

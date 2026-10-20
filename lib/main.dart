@@ -23,8 +23,7 @@ void main() async {
         ...injectServiceDependencies(),
         ...injectRepositoryDependencies(),
         ChangeNotifierProvider<MainProvider>(
-          create: (context) =>
-              MainProvider(userRepository: context.read()),
+          create: (context) => MainProvider(),
         ),
       ],
       child: const MyApp(),

@@ -51,6 +51,16 @@ class ProfileProvider with ChangeNotifier {
 
   void setDateOfBirth(DateTime value) => notifyListeners();
 
+  bool _handleUpdateResult(Result<void> result) {
+    switch (result) {
+      case Success():
+        return true;
+      case Failure(:final exception):
+        _error = exception;
+        return false;
+    }
+  }
+
   Future<bool> changeName() async {
     _error = null;
     final result = await _userRepository.updateName(
@@ -94,18 +104,9 @@ class ProfileProvider with ChangeNotifier {
     return _handleUpdateResult(result);
   }
 
-  bool _handleUpdateResult(Result<void> result) {
-    switch (result) {
-      case Success():
-        return true;
-      case Failure(:final exception):
-        _error = exception;
-        return false;
-    }
-  }
-
   Future<AuthErrorType?> signOut() async {
     final result = await _authRepository.signOut();
+    _userRepository.clearCurrentUser();
     if (result case Failure(:final exception)) {
       return fromException(exception);
     }

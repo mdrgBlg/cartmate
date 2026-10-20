@@ -5,10 +5,10 @@ import '/constants/custom_colors.dart';
 import '/providers/main_provider.dart';
 import '/screens/app/checkout/cart_screen.dart';
 import '/utils/custom_navigator.dart';
+import '/widgets/main_layout.dart';
 import '/widgets/products_grid_view.dart';
 import '/widgets/search_field.dart';
 import '/widgets/shopping_cart.dart';
-import '../../../widgets/main_layout.dart';
 import 'home_models/categories_model.dart';
 import 'home_providers/home_provider.dart';
 import 'home_widgets/categories_widget.dart';
@@ -25,6 +25,7 @@ class HomeScreen extends StatelessWidget {
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return MainLayout(
+      showNavBar: true,
       child: GestureDetector(
         // Unfocusing the search field reports the change to its provider.
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -163,18 +164,17 @@ class HomeScreen extends StatelessWidget {
                         builder: (context, snapshot) =>
                             snapshot.connectionState == ConnectionState.waiting
                             ? const Center(child: CircularProgressIndicator())
+                            : homeProvider.hasProductsError
+                            ? const Center(
+                                child: Text(
+                                  "Something went wrong. Please try again",
+                                ),
+                              )
                             : Consumer<HomeProvider>(
-                                builder: (_, homeProvider, __) =>
-                                    homeProvider.hasProductsError
-                                    // TODO(l10n): productsError
-                                    ? const Center(
-                                        child: Text(
-                                          "Something went wrong. Please try again",
-                                        ),
-                                      )
-                                    : ProductsGridView(
-                                        productsList: homeProvider.products,
-                                      ),
+                                builder: (context, value, child) =>
+                                    ProductsGridView(
+                                      productsList: homeProvider.products,
+                                    ),
                               ),
                       ),
                     ],
