@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 
 import '/data/repositories/user_repository.dart';
 import '/models/cart_model.dart';
-import '/models/user_info_model.dart';
 
 class MainProvider with ChangeNotifier {
   MainProvider({required UserRepository userRepository})
@@ -11,7 +10,6 @@ class MainProvider with ChangeNotifier {
   final UserRepository _userRepository;
 
   int get cartProductNumber => cartProducts.length;
-  UserInfoModel? get userInfoModel => _userRepository.currentUser;
 
   double get checkoutPrice => cartProducts.fold(
     0,

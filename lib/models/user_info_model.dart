@@ -32,6 +32,8 @@ class UserInfoModel {
   DateTime dateOfBirth;
   Gender gender;
 
+  String get fullName => "${firstName} ${lastName}";
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

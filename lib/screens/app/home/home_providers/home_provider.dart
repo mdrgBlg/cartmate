@@ -1,10 +1,10 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 
 import '/data/models/result.dart';
 import '/data/repositories/product_repository.dart';
+import '/data/repositories/user_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
+import '/models/user_info_model.dart';
 import '../home_models/categories_model.dart';
 import '../home_models/products_model.dart';
 
@@ -12,8 +12,10 @@ class HomeProvider with ChangeNotifier {
   HomeProvider({
     required WishlistRepository wishlistRepository,
     required ProductRepository productRepository,
+    required UserRepository userRepository,
   }) : _wishlistRepository = wishlistRepository,
-       _productRepository = productRepository {
+       _productRepository = productRepository,
+       _userRepository = userRepository {
     _wishlistRepository.addListener(_onWishlistChanged);
     _productsFuture = _fetchProducts();
     _categoriesFuture = _fetchCategories();
@@ -21,6 +23,7 @@ class HomeProvider with ChangeNotifier {
 
   final WishlistRepository _wishlistRepository;
   final ProductRepository _productRepository;
+  final UserRepository _userRepository;
 
   // Separate errors: both fetches run concurrently from two FutureBuilders.
   Exception? _categoriesError;
@@ -30,14 +33,14 @@ class HomeProvider with ChangeNotifier {
   bool get hasProductsError => _productsError != null;
 
   List<ProductsModel> _products = [];
-  UnmodifiableListView<ProductsModel> get products =>
-      UnmodifiableListView(_products);
+  List<ProductsModel> get products => [..._products];
 
   // Cached so rebuilds of `HomeScreen` don't refetch products and categories.
   late Future<void> _productsFuture;
   late Future<List<CategoriesModel>> _categoriesFuture;
   Future<void> get productsFuture => _productsFuture;
   Future<List<CategoriesModel>> get categoriesFuture => _categoriesFuture;
+  UserInfoModel? get userInfoModel => _userRepository.currentUser;
 
   final scrollController = ScrollController();
 

@@ -69,29 +69,10 @@ class CartScreen extends StatelessWidget {
                                 CustomNavigator(context).pushNavigation(
                                   routeName: CheckoutScreen.routeName,
                                   screen: ChangeNotifierProvider(
-                                    create: (_) => CheckoutProvider(
-                                      firstName:
-                                          mainProvider
-                                              .userInfoModel
-                                              ?.firstName ??
-                                          "",
-                                      lastName:
-                                          mainProvider
-                                              .userInfoModel
-                                              ?.lastName ??
-                                          "",
-                                      email:
-                                          mainProvider.userInfoModel?.email ??
-                                          "",
-                                      phoneNumber:
-                                          mainProvider
-                                              .userInfoModel
-                                              ?.phoneNumber ??
-                                          "",
+                                    create: (ctx) => CheckoutProvider(
+                                      userRepository: ctx.read(),
                                       cartProducts: mainProvider.cartProducts,
                                       checkoutPrice: mainProvider.checkoutPrice,
-                                      userId:
-                                          mainProvider.userInfoModel?.id ?? "",
                                     ),
                                     child: const CheckoutScreen(),
                                   ),

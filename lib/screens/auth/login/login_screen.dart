@@ -163,6 +163,7 @@ class LoginScreen extends StatelessWidget {
             routeName: HomeScreen.routeName,
             screen: ChangeNotifierProvider(
               create: (ctx) => HomeProvider(
+                userRepository: ctx.read(),
                 wishlistRepository: ctx.read(),
                 productRepository: ctx.read(),
               ),
