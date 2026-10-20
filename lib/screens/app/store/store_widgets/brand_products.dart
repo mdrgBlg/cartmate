@@ -6,7 +6,7 @@ import '/constants/custom_colors.dart';
 import '/models/brand_model.dart';
 import '/widgets/custom_app_bar.dart';
 import '/widgets/main_layout.dart';
-import '/widgets/products_grid_view.dart';
+import '../../../../widgets/products_grid_view/products_grid_view.dart';
 import '../store_providers/store_provider.dart';
 import 'brand_container.dart';
 

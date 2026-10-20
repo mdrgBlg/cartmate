@@ -1,4 +1,4 @@
-import '/screens/app/home/home_models/products_model.dart';
+import 'products_model.dart';
 
 class CartModel {
   CartModel({

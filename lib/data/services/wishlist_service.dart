@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 import '/db/db_constants.dart';
 import '/models/brand_model.dart';
-import '/screens/app/home/home_models/products_model.dart';
+import '/models/products_model.dart';
 import '../models/result.dart';
 import 'database_service.dart';
 

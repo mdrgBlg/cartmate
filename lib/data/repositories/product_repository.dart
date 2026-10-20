@@ -1,6 +1,6 @@
 import '/models/brand_model.dart';
-import '/screens/app/home/home_models/categories_model.dart';
-import '/screens/app/home/home_models/products_model.dart';
+import '/models/categories_model.dart';
+import '/models/products_model.dart';
 import '../models/result.dart';
 import '../services/api_service.dart';
 

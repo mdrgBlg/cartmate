@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
+import '/models/products_model.dart';
 import '/utils/helpers.dart';
 import '/widgets/custom_app_bar.dart';
 import '/widgets/main_layout.dart';
-import '/widgets/products_grid_view.dart';
-import 'home/home_providers/home_provider.dart';
+import '/widgets/products_grid_view/products_grid_view.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({
-    required this.categoryId,
     required this.categoryName,
+    required this.productsList,
     super.key,
   });
-  final String categoryId;
   final String categoryName;
+  final List<ProductsModel> productsList;
 
   static const routeName = '/categories';
 
@@ -42,11 +41,7 @@ class CategoriesScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: Consumer<HomeProvider>(
-                builder: (_, homeProvider, __) => ProductsGridView(
-                  productsList: homeProvider.getProductsForCategory(categoryId),
-                ),
-              ),
+              child: ProductsGridView(productsList: productsList),
             ),
           ],
         ),

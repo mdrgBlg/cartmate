@@ -1,7 +1,7 @@
 import '/constants/custom_images.dart';
 import '/constants/custom_icons.dart';
 import '/models/brand_model.dart';
-import '/screens/app/home/home_models/products_model.dart';
+import '../models/products_model.dart';
 
 class Helpers {
   static String fetchIcon(String? iconName) {

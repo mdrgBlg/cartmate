@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/models/brand_model.dart';
+import '/models/categories_model.dart';
+import '/models/products_model.dart';
+import '/models/user_info_model.dart';
 import '/screens/app/checkout/checkout_models/checkout_model.dart';
-import '/screens/app/home/home_models/categories_model.dart';
-import '/screens/app/home/home_models/products_model.dart';
 import '/utils/global_enums.dart';
-import '../../models/user_info_model.dart';
 import '../models/result.dart';
 import 'firebase_service.dart';
 

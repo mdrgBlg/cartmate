@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:sqflite/sqflite.dart';
 
-import '/models/cart_model.dart';
-import '/screens/app/home/home_models/products_model.dart';
 import '/models/brand_model.dart';
+import '/models/cart_model.dart';
+import '/models/products_model.dart';
 import 'db_constants.dart';
 import 'db_helper.dart';
 

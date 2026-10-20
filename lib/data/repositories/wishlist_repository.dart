@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
-import '/screens/app/home/home_models/products_model.dart';
+import '/models/products_model.dart';
 import '../models/result.dart';
 import '../services/wishlist_service.dart';
 

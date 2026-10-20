@@ -6,7 +6,7 @@ import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import '/data/models/result.dart';
 import '/data/repositories/product_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
-import '/screens/app/home/home_models/products_model.dart';
+import '/models/products_model.dart';
 
 class SearchProvider with ChangeNotifier {
   SearchProvider({

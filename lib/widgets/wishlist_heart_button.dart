@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/providers/wishlist_heart_provider.dart';
-import '/screens/app/home/home_models/products_model.dart';
+import '../models/products_model.dart';
 
 class WishlistHeartButton extends StatelessWidget {
   const WishlistHeartButton({required this.product, super.key});

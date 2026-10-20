@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '/data/repositories/wishlist_repository.dart';
-import '/screens/app/home/home_models/products_model.dart';
+import '/models/products_model.dart';
 
 class ProductDetailsProvider with ChangeNotifier {
   ProductDetailsProvider({
