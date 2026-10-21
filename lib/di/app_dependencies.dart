@@ -11,6 +11,7 @@ import '/data/services/api_service.dart';
 import '/data/services/auth_service.dart';
 import '/data/services/database_service.dart';
 import '/data/services/firebase_service.dart';
+import '/data/services/order_service.dart';
 import '/data/services/wishlist_service.dart';
 
 List<SingleChildWidget> injectServiceDependencies() {
@@ -22,6 +23,9 @@ List<SingleChildWidget> injectServiceDependencies() {
     Provider(
       create: (context) => WishlistService(databaseService: context.read()),
     ),
+    Provider(
+      create: (context) => OrderService(databaseService: context.read()),
+    ),
   ];
 }
 
@@ -30,7 +34,9 @@ List<SingleChildWidget> injectRepositoryDependencies() {
     ChangeNotifierProvider(
       create: (context) => UserRepository(apiService: context.read()),
     ),
-    Provider(create: (context) => OrderRepository(apiService: context.read())),
+    Provider(
+      create: (context) => OrderRepository(orderService: context.read()),
+    ),
     Provider(
       create: (context) => ProductRepository(apiService: context.read()),
     ),

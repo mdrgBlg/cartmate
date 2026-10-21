@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '/models/cart_model.dart';
 
 class CheckoutModel {
@@ -37,6 +39,28 @@ class CheckoutModel {
     orderStatus: (json["orderStatus"] as num).toInt(),
   );
 
+  factory CheckoutModel.fromDb(Map<String, dynamic> row) => CheckoutModel(
+    orderId: row["orderId"] as String,
+    userId: row["userId"] as String,
+    address: row["address"] as String,
+    city: row["city"] as String,
+    country: row["country"] as String,
+    email: row["email"] as String,
+    firstName: row["firstName"] as String,
+    lastName: row["lastName"] as String,
+    checkoutPrice: (row["checkoutPrice"] as num).toDouble(),
+    postalCode: (row["postalCode"] as num).toInt(),
+    items: (jsonDecode(row["items"] as String) as List<dynamic>)
+        .map<CartModel?>(
+          (e) =>
+              e == null ? null : CartModel.fromJson(e as Map<String, dynamic>),
+        )
+        .toList(),
+    orderDate: row["orderDate"] as String,
+    deliveryDate: row["deliveryDate"] as String?,
+    orderStatus: (row["orderStatus"] as num).toInt(),
+  );
+
   final String orderId;
   final String userId;
   final String address;
@@ -65,6 +89,26 @@ class CheckoutModel {
       "checkoutPrice": checkoutPrice,
       "postalCode": postalCode,
       "items": items.map((e) => e?.toMap()).toList(),
+      "deliveryDate": deliveryDate,
+      "orderDate": orderDate,
+      "orderStatus": orderStatus,
+    };
+  }
+
+  /// Same as [toMap], but [items] are JSON encoded into a single column.
+  Map<String, dynamic> toDbMap() {
+    return {
+      "orderId": orderId,
+      "userId": userId,
+      "address": address,
+      "city": city,
+      "country": country,
+      "email": email,
+      "firstName": firstName,
+      "lastName": lastName,
+      "checkoutPrice": checkoutPrice,
+      "postalCode": postalCode,
+      "items": jsonEncode(items.map((e) => e?.toMap()).toList()),
       "deliveryDate": deliveryDate,
       "orderDate": orderDate,
       "orderStatus": orderStatus,
