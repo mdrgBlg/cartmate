@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/providers/main_provider.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/custom_app_bar.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/main_layout.dart';
+import 'checkout_providers/cart_provider.dart';
 import 'checkout_providers/checkout_provider.dart';
 import 'checkout_screen.dart';
 import 'checkout_widgets/cart_item.dart';
@@ -17,7 +17,7 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
 
     return MainLayout(
       appBar: const CustomAppBar(titleText: "Cart"),
@@ -25,16 +25,20 @@ class CartScreen extends StatelessWidget {
         fit: StackFit.expand,
         alignment: Alignment.topCenter,
         children: [
-          Consumer<MainProvider>(
+          Consumer<CartProvider>(
             builder: (_, __, child) => ListView.builder(
               key: UniqueKey(),
               padding: const EdgeInsets.only(top: 8),
               shrinkWrap: true,
-              itemCount: mainProvider.cartProducts.length,
-              itemBuilder: (_, index) => CartItem(
-                key: UniqueKey(),
-                cartModel: mainProvider.cartProducts[index],
-              ),
+              itemCount: cartProvider.cartProducts.length,
+              itemBuilder: (_, index) {
+                final item = cartProvider.cartProducts[index];
+                return CartItem(
+                  cartModel: item,
+                  onIncrease: () => cartProvider.increaseQuantity(item),
+                  onDecrease: () => cartProvider.decreaseQuantity(item),
+                );
+              },
             ),
           ),
           Positioned(
@@ -45,21 +49,22 @@ class CartScreen extends StatelessWidget {
               height: 50,
               child: Container(
                 margin: const EdgeInsets.only(bottom: 10.0),
-                child: Consumer<MainProvider>(
+                child: Consumer<CartProvider>(
                   builder: (_, __, child) =>
-                      mainProvider.cartProducts.isNotEmpty
+                      cartProvider.cartProducts.isNotEmpty
                       ? CustomButton(
                           buttonText:
-                              "Checkout ${mainProvider.checkoutPrice.toStringAsFixed(2)} ${mainProvider.cartProducts.first.productModel.currency}",
-                          enable: mainProvider.cartProducts.isNotEmpty,
+                              "Checkout ${cartProvider.checkoutPrice.toStringAsFixed(2)} ${cartProvider.cartProducts.first.productModel.currency}",
+                          enable: cartProvider.cartProducts.isNotEmpty,
                           onPress: () =>
                               CustomNavigator(context).pushNavigation(
                                 routeName: CheckoutScreen.routeName,
                                 screen: ChangeNotifierProvider(
                                   create: (ctx) => CheckoutProvider(
                                     userRepository: ctx.read(),
-                                    cartProducts: mainProvider.cartProducts,
-                                    checkoutPrice: mainProvider.checkoutPrice,
+                                    cartRepository: ctx.read(),
+                                    cartProducts: cartProvider.cartProducts,
+                                    checkoutPrice: cartProvider.checkoutPrice,
                                   ),
                                   child: const CheckoutScreen(),
                                 ),

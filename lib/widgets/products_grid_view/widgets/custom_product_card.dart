@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/providers/main_provider.dart';
+import '/models/products_model.dart';
 import '/providers/product_details_provider.dart';
-import '../../../models/products_model.dart';
 import '/screens/app/product_details_screen.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/app_network_image.dart';
+import '/widgets/product_cart_quantity.dart';
 import '/widgets/wishlist_heart_button.dart';
 
 class CustomProductCard extends StatelessWidget {
@@ -30,6 +30,7 @@ class CustomProductCard extends StatelessWidget {
           screen: ChangeNotifierProvider(
             create: (ctx) => ProductDetailsProvider(
               wishlistRepository: ctx.read(),
+              cartRepository: ctx.read(),
               product: productsModel,
             ),
             child: const ProductDetailsScreen(),
@@ -138,25 +139,8 @@ class CustomProductCard extends StatelessWidget {
                               bottomRight: Radius.circular(16),
                             ),
                           ),
-                          child: Consumer<MainProvider>(
-                            builder: (_, mainProvider, child) {
-                              final cartQty = mainProvider.cartProducts
-                                  .where(
-                                    (c) =>
-                                        c.productModel.id == productsModel.id,
-                                  )
-                                  .fold(0, (sum, c) => sum + c.quantity);
-                              return Text(
-                                cartQty == 0 ? "+" : cartQty.toString(),
-                                style: cartQty == 0
-                                    ? textTheme.titleLarge!.copyWith(
-                                        color: Colors.white,
-                                      )
-                                    : textTheme.titleMedium!.copyWith(
-                                        color: Colors.white,
-                                      ),
-                              );
-                            },
+                          child: ProductCartQuantity(
+                            productId: productsModel.id,
                           ),
                         ),
                       ],

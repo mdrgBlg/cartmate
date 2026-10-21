@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'constants/themes.dart';
 import 'di/app_dependencies.dart';
 import 'firebase_options.dart';
-import 'providers/main_provider.dart';
 import 'screens/auth/welcome/welcome_screen.dart';
 
 void main() async {
@@ -22,9 +21,6 @@ void main() async {
       providers: [
         ...injectServiceDependencies(),
         ...injectRepositoryDependencies(),
-        ChangeNotifierProvider<MainProvider>(
-          create: (context) => MainProvider(),
-        ),
       ],
       child: const MyApp(),
     ),

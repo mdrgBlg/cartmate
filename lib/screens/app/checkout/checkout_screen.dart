@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '/constants/custom_colors.dart';
 import '/constants/custom_icons.dart';
 import '/models/response_model.dart';
-import '/providers/main_provider.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
@@ -62,10 +61,7 @@ class CheckoutScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: CustomColors.customGrey,
-                      width: 1,
-                    ),
+                    border: Border.all(color: CustomColors.customGrey),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Column(
@@ -306,7 +302,6 @@ class CheckoutScreen extends StatelessWidget {
       context,
       listen: false,
     );
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
 
     ResponseModel? responseModel;
     Loading.callLoading(
@@ -318,21 +313,13 @@ class CheckoutScreen extends StatelessWidget {
         Navigator.of(
           context,
         ).popUntil((route) => route.settings.name == routeName);
-        if (responseModel != null) {
-          if (responseModel!.success) {
-            mainProvider.clearSession();
-            SnackBarPopup.showMessage(
-              context,
-              message: "Your order has been received!",
-              snackBarMessageType: SnackBarMessageType.success,
-            );
-          } else {
-            SnackBarPopup.showMessage(
-              context,
-              message: responseModel?.error ?? "Something went wrong.",
-              snackBarMessageType: SnackBarMessageType.error,
-            );
-          }
+        if (responseModel != null && responseModel!.success) {
+          checkoutProvider.clearCart();
+          SnackBarPopup.showMessage(
+            context,
+            message: "Your order has been received!",
+            snackBarMessageType: SnackBarMessageType.success,
+          );
         } else {
           SnackBarPopup.showMessage(
             context,
