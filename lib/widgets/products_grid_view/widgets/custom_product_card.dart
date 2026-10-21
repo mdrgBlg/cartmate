@@ -120,7 +120,7 @@ class CustomProductCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             Text(
-                              productsModel.getPriceWithDiscount,
+                              productsModel.getPriceWithDiscountAndCurrency,
                               style: textTheme.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),

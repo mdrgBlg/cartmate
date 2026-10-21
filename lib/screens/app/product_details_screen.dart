@@ -131,7 +131,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         ),
                         const Spacer(),
                         Text(
-                          provider.product.getPriceWithDiscount,
+                          provider.product.getPriceWithDiscountAndCurrency,
                           style: textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
