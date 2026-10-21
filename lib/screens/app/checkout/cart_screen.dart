@@ -58,6 +58,7 @@ class CartScreen extends StatelessWidget {
                                   create: (ctx) => CheckoutProvider(
                                     userRepository: ctx.read(),
                                     cartRepository: ctx.read(),
+                                    orderRepository: ctx.read(),
                                     cartProducts: cartProvider.cartProducts,
                                     checkoutPrice: cartProvider.checkoutPrice,
                                   ),
