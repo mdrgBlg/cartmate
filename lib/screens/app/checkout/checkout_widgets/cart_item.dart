@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/models/cart_model.dart';
+import '/providers/cart_item_provider.dart';
 import '/widgets/app_network_image.dart';
 
 class CartItem extends StatelessWidget {
@@ -10,16 +12,42 @@ class CartItem extends StatelessWidget {
     required this.cartModel,
     this.isCartItem = true,
     this.height = 112,
-    this.onIncrease,
-    this.onDecrease,
     super.key,
-  }) : assert(!isCartItem || (onIncrease != null && onDecrease != null));
+  });
 
   final CartModel cartModel;
   final bool isCartItem;
   final double height;
-  final VoidCallback? onIncrease;
-  final VoidCallback? onDecrease;
+
+  @override
+  Widget build(BuildContext context) {
+    // The key recreates the provider when the list reuses this element for a
+    // different cart entry.
+    return ChangeNotifierProvider(
+      key: ValueKey('${cartModel.productModel.id}:${cartModel.size}'),
+      create: (context) => CartItemProvider(
+        cartRepository: context.read(),
+        cartModel: cartModel,
+      ),
+      child: _CartItemView(
+        cartModel: cartModel,
+        isCartItem: isCartItem,
+        height: height,
+      ),
+    );
+  }
+}
+
+class _CartItemView extends StatelessWidget {
+  const _CartItemView({
+    required this.cartModel,
+    required this.isCartItem,
+    required this.height,
+  });
+
+  final CartModel cartModel;
+  final bool isCartItem;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -144,69 +172,75 @@ class CartItem extends StatelessWidget {
                 ),
               ],
             ),
-            if (isCartItem)
-              Row(
-                children: [
-                  const Gap(72),
-                  InkWell(
-                    onTap: onDecrease,
-                    child: Container(
-                      height: 24,
-                      width: 24,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(99),
-                        color: Colors.black.withValues(alpha: 0.4),
-                      ),
-                      alignment: AlignmentDirectional.center,
-                      child: Text(
-                        "-",
-                        style: textTheme.bodyLarge!.copyWith(
-                          fontSize: 20,
-                          height: 1.1,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Gap(12),
-                  Text(
-                    cartModel.quantity.toString(),
-                    style: textTheme.bodyLarge,
-                  ),
-                  const Gap(12),
-                  InkWell(
-                    onTap: onIncrease,
-                    child: Container(
-                      height: 24,
-                      width: 24,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(99),
-                        color: CustomColors.primary,
-                      ),
-                      alignment: AlignmentDirectional.center,
-                      child: Text(
-                        "+",
-                        style: textTheme.bodyLarge!.copyWith(
-                          fontSize: 20,
-                          height: 1.1,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    "${(cartModel.productModel.price - cartModel.productModel.price * (cartModel.productModel.discount / 100)) * cartModel.quantity} ${cartModel.productModel.currency}",
-                    style: textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
+            if (isCartItem) const _CartQuantityAndPrice(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _CartQuantityAndPrice extends StatelessWidget {
+  const _CartQuantityAndPrice();
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final cartItemProvider = context.watch<CartItemProvider>();
+    final cartModel = cartItemProvider.cartModel;
+    return Row(
+      children: [
+        const Gap(72),
+        InkWell(
+          onTap: cartItemProvider.decreaseQuantity,
+          child: Container(
+            height: 24,
+            width: 24,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(99),
+              color: Colors.black.withValues(alpha: 0.4),
+            ),
+            alignment: AlignmentDirectional.center,
+            child: Text(
+              "-",
+              style: textTheme.bodyLarge!.copyWith(
+                fontSize: 20,
+                height: 1.1,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        const Gap(12),
+        Text(cartModel.quantity.toString(), style: textTheme.bodyLarge),
+        const Gap(12),
+        InkWell(
+          onTap: cartItemProvider.increaseQuantity,
+          child: Container(
+            height: 24,
+            width: 24,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(99),
+              color: CustomColors.primary,
+            ),
+            alignment: AlignmentDirectional.center,
+            child: Text(
+              "+",
+              style: textTheme.bodyLarge!.copyWith(
+                fontSize: 20,
+                height: 1.1,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        const Spacer(),
+        Text(
+          cartModel.getTotalPricerWithCurrency,
+          style: textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 }

@@ -19,6 +19,9 @@ class CartModel {
   final String size;
   int quantity;
 
+  String get getTotalPricerWithCurrency =>
+      "${(productModel.getPriceWithDiscount * quantity)} ${productModel.currency}";
+
   Map<String, dynamic> toMap() {
     return {
       'product': productModel.toMap(),

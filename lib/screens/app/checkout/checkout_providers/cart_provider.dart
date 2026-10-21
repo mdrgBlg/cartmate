@@ -16,12 +16,6 @@ class CartProvider with ChangeNotifier {
 
   double get checkoutPrice => _cartRepository.checkoutPrice;
 
-  void increaseQuantity(CartModel cartModel) =>
-      _cartRepository.addProductToCart(cartModel);
-
-  void decreaseQuantity(CartModel cartModel) =>
-      _cartRepository.removeProductFromCart(cartModel);
-
   void _onCartChanged() => notifyListeners();
 
   @override

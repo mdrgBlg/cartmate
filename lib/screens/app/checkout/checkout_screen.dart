@@ -44,12 +44,10 @@ class CheckoutScreen extends StatelessWidget {
           child: Column(
             children: [
               ListView.builder(
-                key: UniqueKey(),
                 padding: const EdgeInsets.only(top: 8),
                 shrinkWrap: true,
                 itemCount: checkoutProvider.cartProducts.length,
                 itemBuilder: (_, index) => CartItem(
-                  key: UniqueKey(),
                   cartModel: checkoutProvider.cartProducts[index],
                   isCartItem: false,
                   height: 90,

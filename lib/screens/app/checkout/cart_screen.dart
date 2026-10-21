@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/models/cart_model.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/custom_app_bar.dart';
 import '/widgets/custom_button.dart';
@@ -25,20 +26,14 @@ class CartScreen extends StatelessWidget {
         fit: StackFit.expand,
         alignment: Alignment.topCenter,
         children: [
-          Consumer<CartProvider>(
-            builder: (_, __, child) => ListView.builder(
-              key: UniqueKey(),
+          Selector<CartProvider, List<CartModel>>(
+            selector: (_, provider) => provider.cartProducts,
+            builder: (context, cartProducts, child) => ListView.builder(
               padding: const EdgeInsets.only(top: 8),
               shrinkWrap: true,
-              itemCount: cartProvider.cartProducts.length,
-              itemBuilder: (_, index) {
-                final item = cartProvider.cartProducts[index];
-                return CartItem(
-                  cartModel: item,
-                  onIncrease: () => cartProvider.increaseQuantity(item),
-                  onDecrease: () => cartProvider.decreaseQuantity(item),
-                );
-              },
+              itemCount: cartProducts.length,
+              itemBuilder: (_, index) =>
+                  CartItem(cartModel: cartProducts[index]),
             ),
           ),
           Positioned(
