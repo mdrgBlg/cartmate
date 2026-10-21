@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
+import '/data/models/result.dart';
 import '/data/repositories/cart_repository.dart';
+import '/data/repositories/order_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/models/cart_model.dart';
 import '/models/response_model.dart';
 import '/utils/order_status_enum.dart';
 import '../checkout_models/checkout_model.dart';
-import 'checkout_service.dart';
 
 class CheckoutProvider with ChangeNotifier {
   CheckoutProvider({
     required UserRepository userRepository,
     required CartRepository cartRepository,
+    required OrderRepository orderRepository,
     required this.cartProducts,
     required this.checkoutPrice,
   }) : _userRepository = userRepository,
-       _cartRepository = cartRepository {
+       _cartRepository = cartRepository,
+       _orderRepository = orderRepository {
     final userInfo = userRepository.currentUser;
     firstNameController.text = userInfo?.firstName ?? '';
     lastNameController.text = userInfo?.lastName ?? '';
@@ -24,6 +27,7 @@ class CheckoutProvider with ChangeNotifier {
   }
   final UserRepository _userRepository;
   final CartRepository _cartRepository;
+  final OrderRepository _orderRepository;
   final double checkoutPrice;
   bool isButtonEnabled = false;
 
@@ -58,24 +62,31 @@ class CheckoutProvider with ChangeNotifier {
     return checkoutPrice + 8;
   }
 
-  Future<ResponseModel> orderProduct() {
-    return CheckoutService.orderProduct(
-      CheckoutModel(
-        orderId:
-            "#${firstNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(5, 7)}${lastNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(7, 9)}",
-        userId: _userRepository.currentUser?.id ?? '',
-        address: addressController.text,
-        city: cityController.text,
-        country: countryController.text,
-        email: emailController.text,
-        firstName: firstNameController.text,
-        lastName: lastNameController.text,
-        checkoutPrice: checkoutPrice,
-        postalCode: int.parse(zipCodeController.text),
-        items: cartProducts,
-        orderDate: DateTime.now().toString(),
-        orderStatus: OrderStatus.pending.index,
-      ),
+  Future<ResponseModel> orderProduct() async {
+    final order = CheckoutModel(
+      orderId:
+          "#${firstNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(5, 7)}${lastNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(7, 9)}",
+      userId: _userRepository.currentUser?.id ?? '',
+      address: addressController.text,
+      city: cityController.text,
+      country: countryController.text,
+      email: emailController.text,
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+      checkoutPrice: checkoutPrice,
+      postalCode: int.parse(zipCodeController.text),
+      items: cartProducts,
+      orderDate: DateTime.now().toString(),
+      orderStatus: OrderStatus.pending.index,
     );
+    final result = await _orderRepository.saveOrder(order);
+    return switch (result) {
+      Success() => ResponseModel(success: true),
+      // TODO(l10n): orderSaveError
+      Failure() => ResponseModel(
+        success: false,
+        error: "Something went wrong. Please try again",
+      ),
+    };
   }
 }
