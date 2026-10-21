@@ -3,13 +3,9 @@ import 'package:flutter/material.dart';
 import '/constants/custom_colors.dart';
 
 class ShoppingCart extends StatelessWidget {
+  const ShoppingCart({required this.productNumber, this.iconColor, super.key});
   final int productNumber;
-  final bool homeScreen;
-  const ShoppingCart({
-    super.key,
-    required this.productNumber,
-    required this.homeScreen,
-  });
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +18,7 @@ class ShoppingCart extends StatelessWidget {
         children: [
           Icon(
             Icons.shopping_cart,
-            color: homeScreen ? Colors.white : CustomColors.text,
+            color: iconColor ?? CustomColors.secondary,
             size: 28,
           ),
           if (productNumber > 0)
@@ -39,13 +35,11 @@ class ShoppingCart extends StatelessWidget {
                 child: Center(
                   child: Text(
                     productNumber.toString(),
-                    style: textTheme.labelLarge!.copyWith(
-                      color: Colors.white,
-                    ),
+                    style: textTheme.labelLarge!.copyWith(color: Colors.white),
                   ),
                 ),
               ),
-            )
+            ),
         ],
       ),
     );

@@ -1,223 +1,170 @@
-import 'package:e_commerce/screens/app/checkout/cart_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:provider/provider.dart';
 
-import '../../screen_wrapper.dart';
 import '/constants/custom_colors.dart';
-import '/constants/custom_images.dart';
-import '/helpers/custom_navigator.dart';
-import '/providers/main_provider.dart';
-import '/widgets/products_grid_view.dart';
+import '/models/categories_model.dart';
+import '/utils/custom_navigator.dart';
+import '/widgets/main_header.dart';
+import '/widgets/main_layout.dart';
+import '/widgets/products_grid_view/products_grid_view.dart';
 import '/widgets/search_field.dart';
-import '/widgets/shopping_cart.dart';
-import 'home_models/categories_model.dart';
+import '../categories_screen.dart';
 import 'home_providers/home_provider.dart';
-import 'home_widgets/categories_widget.dart';
-import 'home_widgets/custom_curved_edges.dart';
-import 'home_widgets/custom_progress_indicator.dart';
+import 'home_widgets/categories_list.dart';
+import 'home_widgets/home_banner_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   static const routeName = '/';
 
-  final debouncer = Debouncer(delay: const Duration(milliseconds: 600));
-
   @override
   Widget build(BuildContext context) {
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
-    return SafeArea(
-      child: ScreenWrapper(
+
+    return MainLayout(
+      showNavBar: true,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 20),
         child: GestureDetector(
-          onTap: () => {
-            FocusScope.of(context).requestFocus(FocusNode()),
-            homeProvider.focusChange(false),
-          },
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ClipPath(
-                  clipper: CustomCurvedEdges(),
-                  child: Container(
-                    height: 320,
-                    width: double.infinity,
-                    color: CustomColors.primary,
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: 20,
-                            right: mainProvider.cartProductNumber > 0 ? 20 : 12,
-                          ),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 4),
-                                child: Text(
-                                  "${mainProvider.userInfoModel?.firstName ?? ""} ${mainProvider.userInfoModel?.lastName ?? ""}",
-                                  style: textTheme.titleLarge!.copyWith(
-                                    color: CustomColors.secondary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              const Spacer(),
-                              InkWell(
-                                onTap: () =>
-                                    CustomNavigator(context).pushNavigation(
-                                      routeName: CartScreen.routeName,
-                                      screen: const CartScreen(),
-                                    ),
-                                child: Consumer<MainProvider>(
-                                  builder: (_, __, child) => ShoppingCart(
-                                    productNumber:
-                                        mainProvider.cartProductNumber,
-                                    homeScreen: true,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Stack(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                color: CustomColors.primary,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    MainHeader(
+                      text: homeProvider.userInfoModel?.fullName ?? '',
+                    ),
+                    const _HomeSearchAndCategories(),
+                  ],
+                ),
+              ),
+              Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: const BoxDecoration(color: CustomColors.primary),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(top: 12),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    children: [
+                      const HomeBannerCarousel(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 32, 20, 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    20,
-                                    108,
-                                    20,
-                                    0,
-                                  ),
-                                  child: Text(
-                                    "Popular Categories",
-                                    style: textTheme.bodyLarge!.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 16),
-                                  height: 72,
-                                  child: FutureBuilder<List<CategoriesModel>>(
-                                    future: homeProvider.fetchCategories(),
-                                    builder: (context, snapshot) =>
-                                        snapshot.connectionState ==
-                                            ConnectionState.waiting
-                                        ? const Center(
-                                            child: CircularProgressIndicator(),
-                                          )
-                                        : ListView.builder(
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.horizontal,
-                                            controller:
-                                                homeProvider.scrollController,
-                                            itemCount: snapshot.data?.length,
-                                            itemBuilder: (context, index) =>
-                                                CategoriesWidget(
-                                                  categoriesModel:
-                                                      snapshot.data![index],
-                                                ),
-                                          ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                              child: Consumer<HomeProvider>(
-                                builder: (_, __, child) => SearchField(
-                                  searchController:
-                                      homeProvider.searchController,
-                                  hintText: "Search product...",
-                                  onChanged: (value) {
-                                    if (value.isEmpty) {
-                                      debouncer.call(() {
-                                        homeProvider.clearInput();
-                                      });
-                                    } else {
-                                      debouncer.call(() {
-                                        homeProvider.searchProduct(
-                                          value,
-                                          mainProvider.productsList,
-                                        );
-                                      });
-                                    }
-                                  },
-                                  clearInput: homeProvider.clearInput,
-                                ),
+                            Text(
+                              "Popular Products",
+                              style: textTheme.titleLarge!.copyWith(
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 250,
-                  child: PageView.builder(
-                    itemCount: CustomImages.homeImages.length,
-                    onPageChanged: (value) =>
-                        homeProvider.changeScreenIndex(value),
-                    itemBuilder: (_, index) => Container(
-                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          CustomImages.homeImages[index],
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Consumer<HomeProvider>(
-                  builder: (_, __, child) => CustomProgressIndicator(
-                    screenIndex: homeProvider.screenIndex,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 32, 20, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Popular Products",
-                        style: textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      FutureBuilder<void>(
+                        future: homeProvider.productsFuture,
+                        builder: (context, snapshot) =>
+                            snapshot.connectionState == ConnectionState.waiting
+                            ? const Center(child: CircularProgressIndicator())
+                            : homeProvider.hasProductsError
+                            ? const Center(
+                                child: Text(
+                                  "Something went wrong. Please try again",
+                                ),
+                              )
+                            : Consumer<HomeProvider>(
+                                builder: (context, value, child) =>
+                                    ProductsGridView(
+                                      productsList: homeProvider.products,
+                                    ),
+                              ),
                       ),
                     ],
                   ),
                 ),
-                FutureBuilder<void>(
-                  future: mainProvider.productsList.isEmpty
-                      ? mainProvider.fetchProducts()
-                      : null,
-                  builder: (context, snapshot) =>
-                      snapshot.connectionState == ConnectionState.waiting
-                      ? const Center(child: CircularProgressIndicator())
-                      : ProductsGridView(
-                          productsList: mainProvider.productsList,
-                        ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _HomeSearchAndCategories extends StatelessWidget {
+  const _HomeSearchAndCategories();
+  @override
+  Widget build(BuildContext context) {
+    final homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    final textTheme = Theme.of(context).textTheme;
+
+    return Stack(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 94, 20, 0),
+              child: Text(
+                "Popular Categories",
+                style: textTheme.bodyLarge!.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 16),
+              height: 72,
+              child: FutureBuilder<List<CategoriesModel>>(
+                future: homeProvider.categoriesFuture,
+                builder: (context, snapshot) =>
+                    snapshot.connectionState == ConnectionState.waiting
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        controller: homeProvider.scrollController,
+                        itemCount: snapshot.data?.length,
+                        itemBuilder: (context, index) {
+                          final category = snapshot.data![index];
+                          return CategoriesList(
+                            categoriesModel: category,
+                            onTap: () =>
+                                CustomNavigator(context).pushNavigation(
+                                  routeName: CategoriesScreen.routeName,
+                                  screen: CategoriesScreen(
+                                    productsList: homeProvider
+                                        .getProductsForCategory(category.id),
+                                    categoryName: category.categoryName,
+                                  ),
+                                ),
+                          );
+                        },
+                      ),
+              ),
+            ),
+          ],
+        ),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+          child: SearchField(hintText: "Search product..."),
+        ),
+      ],
     );
   }
 }

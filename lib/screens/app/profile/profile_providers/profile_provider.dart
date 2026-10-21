@@ -1,48 +1,115 @@
-import 'package:e_commerce/screens/app/profile/profile_providers/profile_service.dart';
 import 'package:flutter/material.dart';
 
-import '../../checkout/checkout_models/checkout_model.dart';
-import '/helpers/date_time_service.dart';
+import '/data/models/auth_exception.dart';
+import '/data/models/result.dart';
+import '/data/repositories/auth_repository.dart';
+import '/data/repositories/user_repository.dart';
+import '/models/user_info_model.dart';
+import '/utils/common_utils.dart';
+import '/utils/global_enums.dart';
 
 class ProfileProvider with ChangeNotifier {
-  String? selectedGender;
-  DateTime? pickedDate;
-  List<CheckoutModel> myOrders = [];
+  ProfileProvider({
+    required AuthRepository authRepository,
+    required UserRepository userRepository,
+  }) : _authRepository = authRepository,
+       _userRepository = userRepository {
+    final userInfo = _userRepository.currentUser;
 
-  final controller = TextEditingController();
+    firstNameController = TextEditingController(text: userInfo?.firstName);
+    lastNameController = TextEditingController(text: userInfo?.lastName);
+    usernameController = TextEditingController(text: userInfo?.username);
+    emailController = TextEditingController(text: userInfo?.email);
+    phoneController = TextEditingController(text: userInfo?.phoneNumber);
+  }
 
-  void setPickedDate(DateTime date) {
-    pickedDate = date;
-    controller.text = DateTimeService.formatDateTime(
-      date.toString(),
+  final AuthRepository _authRepository;
+  final UserRepository _userRepository;
+
+  late final TextEditingController firstNameController;
+  late final TextEditingController lastNameController;
+  late final TextEditingController usernameController;
+  late final TextEditingController emailController;
+  late final TextEditingController phoneController;
+
+  Exception? _error;
+  bool get hasError => _error != null;
+
+  UserInfoModel? get userInfo => _userRepository.currentUser;
+
+  // The repository updates the cached user after a successful remote write,
+  // so the `setX` callbacks only need to refresh the UI.
+  void setName() => notifyListeners();
+
+  void setEmail() => notifyListeners();
+
+  void setUsername() => notifyListeners();
+
+  void setPhoneNumber() => notifyListeners();
+
+  void setGender(Gender? value) => notifyListeners();
+
+  void setDateOfBirth(DateTime value) => notifyListeners();
+
+  bool _handleUpdateResult(Result<void> result) {
+    switch (result) {
+      case Success():
+        return true;
+      case Failure(:final exception):
+        _error = exception;
+        return false;
+    }
+  }
+
+  Future<bool> changeName() async {
+    _error = null;
+    final result = await _userRepository.updateName(
+      firstNameController.text,
+      lastNameController.text,
     );
-    notifyListeners();
+    return _handleUpdateResult(result);
   }
 
-  void setGender(String? value) {
-    selectedGender = value;
-    notifyListeners();
+  Future<bool> changeEmail() async {
+    _error = null;
+    final result = await _userRepository.updateEmail(emailController.text);
+    return _handleUpdateResult(result);
   }
 
-  Future<void> fetchMyOrder(String userId) async {
-    myOrders = await ProfileService.fetchMyOrder(userId);
+  Future<bool> changeUsername() async {
+    _error = null;
+    final result = await _userRepository.updateUsername(
+      usernameController.text,
+    );
+    return _handleUpdateResult(result);
   }
 
-  Future<bool> changeUserName(String userId, String firstName, String lastName) =>
-      ProfileService.updateUserName(userId, firstName, lastName);
+  Future<bool> changePhoneNumber() async {
+    _error = null;
+    final result = await _userRepository.updatePhoneNumber(
+      phoneController.text,
+    );
+    return _handleUpdateResult(result);
+  }
 
-  Future<bool> changeEmail(String userId, String value) =>
-      ProfileService.updateEmail(userId, value);
+  Future<bool> changeGender(Gender gender) async {
+    _error = null;
+    final result = await _userRepository.updateGender(gender);
+    return _handleUpdateResult(result);
+  }
 
-  Future<bool> changeUsername(String userId, String value) =>
-      ProfileService.updateUsername(userId, value);
+  Future<bool> changeDateOfBirth(DateTime value) async {
+    _error = null;
+    final result = await _userRepository.updateDateOfBirth(value);
+    return _handleUpdateResult(result);
+  }
 
-  Future<bool> changePhoneNumber(String userId, String value) =>
-      ProfileService.updatePhoneNumber(userId, value);
-
-  Future<bool> changeGender(String userId, String? value) =>
-      ProfileService.updateGender(userId, value);
-
-  Future<bool> changeDateOfBirth(String userId, String? value) =>
-      ProfileService.updateDateOfBirth(userId, value);
+  Future<AuthErrorType?> signOut() async {
+    final result = await _authRepository.signOut();
+    _userRepository.clearCurrentUser();
+    if (result case Failure(:final exception)) {
+      return fromException(exception);
+    }
+    return null;
+  }
 }

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../helpers/custom_navigator.dart';
-import '/constants/custom_colors.dart';
 import '/providers/main_provider.dart';
+import '/utils/custom_navigator.dart';
+import '/widgets/custom_app_bar.dart';
 import '/widgets/custom_button.dart';
+import '/widgets/main_layout.dart';
 import 'checkout_providers/checkout_provider.dart';
-import 'checkout_widgets/cart_item.dart';
 import 'checkout_screen.dart';
+import 'checkout_widgets/cart_item.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -16,94 +17,60 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final mainProvider = Provider.of<MainProvider>(context, listen: false);
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 52,
-          backgroundColor: CustomColors.primary,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          title: Text(
-            "Cart",
-            style: textTheme.titleLarge!.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+    return MainLayout(
+      appBar: const CustomAppBar(titleText: "Cart"),
+      child: Stack(
+        fit: StackFit.expand,
+        alignment: Alignment.topCenter,
+        children: [
+          Consumer<MainProvider>(
+            builder: (_, __, child) => ListView.builder(
+              key: UniqueKey(),
+              padding: const EdgeInsets.only(top: 8),
+              shrinkWrap: true,
+              itemCount: mainProvider.cartProducts.length,
+              itemBuilder: (_, index) => CartItem(
+                key: UniqueKey(),
+                cartModel: mainProvider.cartProducts[index],
+              ),
             ),
           ),
-        ),
-        body: Stack(
-          fit: StackFit.expand,
-          alignment: Alignment.topCenter,
-          children: [
-            Consumer<MainProvider>(
-              builder: (_, __, child) => ListView.builder(
-                key: UniqueKey(),
-                padding: const EdgeInsets.only(top: 8),
-                shrinkWrap: true,
-                itemCount: mainProvider.cartProducts.length,
-                itemBuilder: (_, index) => CartItem(
-                  key: UniqueKey(),
-                  cartModel: mainProvider.cartProducts[index],
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: SizedBox(
-                height: 50,
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 10.0),
-                  child: Consumer<MainProvider>(
-                    builder: (_, __, child) =>
-                        mainProvider.cartProducts.isNotEmpty
-                        ? CustomButton(
-                            buttonText:
-                                "Checkout ${mainProvider.checkoutPrice.toStringAsFixed(2)} ${mainProvider.cartProducts.first.productModel.currency}",
-                            enable: mainProvider.cartProducts.isNotEmpty,
-                            onPress: () =>
-                                CustomNavigator(context).pushNavigation(
-                                  routeName: CheckoutScreen.routeName,
-                                  screen: ChangeNotifierProvider(
-                                    create: (_) => CheckoutProvider(
-                                      firstName:
-                                          mainProvider
-                                              .userInfoModel
-                                              ?.firstName ??
-                                          "",
-                                      lastName:
-                                          mainProvider
-                                              .userInfoModel
-                                              ?.lastName ??
-                                          "",
-                                      email:
-                                          mainProvider.userInfoModel?.email ??
-                                          "",
-                                      phoneNumber:
-                                          mainProvider
-                                              .userInfoModel
-                                              ?.phoneNumber ??
-                                          "",
-                                      cartProducts: mainProvider.cartProducts,
-                                      checkoutPrice: mainProvider.checkoutPrice,
-                                      userId:
-                                          mainProvider.userInfoModel?.id ?? "",
-                                    ),
-                                    child: const CheckoutScreen(),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: SizedBox(
+              height: 50,
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 10.0),
+                child: Consumer<MainProvider>(
+                  builder: (_, __, child) =>
+                      mainProvider.cartProducts.isNotEmpty
+                      ? CustomButton(
+                          buttonText:
+                              "Checkout ${mainProvider.checkoutPrice.toStringAsFixed(2)} ${mainProvider.cartProducts.first.productModel.currency}",
+                          enable: mainProvider.cartProducts.isNotEmpty,
+                          onPress: () =>
+                              CustomNavigator(context).pushNavigation(
+                                routeName: CheckoutScreen.routeName,
+                                screen: ChangeNotifierProvider(
+                                  create: (ctx) => CheckoutProvider(
+                                    userRepository: ctx.read(),
+                                    cartProducts: mainProvider.cartProducts,
+                                    checkoutPrice: mainProvider.checkoutPrice,
                                   ),
+                                  child: const CheckoutScreen(),
                                 ),
-                          )
-                        : const SizedBox(),
-                  ),
+                              ),
+                        )
+                      : const SizedBox(),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

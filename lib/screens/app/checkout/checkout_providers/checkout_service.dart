@@ -6,13 +6,14 @@ import '../checkout_models/checkout_model.dart';
 import '/models/response_model.dart';
 
 class CheckoutService {
-  static Future<ResponseModel> orderProduct(
-      CheckoutModel checkoutModel, String userId) async {
+  static Future<ResponseModel> orderProduct(CheckoutModel checkoutModel) async {
     final FirebaseFirestore db = FirebaseFirestore.instance;
     try {
-      await db.collection("Users").doc(userId).collection("Orders").add(
-            checkoutModel.toMap(),
-          );
+      await db
+          .collection("Users")
+          .doc(checkoutModel.userId)
+          .collection("Orders")
+          .add(checkoutModel.toMap());
       return ResponseModel(success: true);
     } on FirebaseException catch (e) {
       log("FirebaseException saveUserData: $e");
@@ -20,7 +21,9 @@ class CheckoutService {
     } catch (e) {
       log("Exception saveUserData: $e");
       return ResponseModel(
-          success: false, error: "Something went wrong. Please try again");
+        success: false,
+        error: "Something went wrong. Please try again",
+      );
     }
   }
 }

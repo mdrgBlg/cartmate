@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/helpers/custom_navigator.dart';
-import '/helpers/helpers.dart';
 import '/models/brand_model.dart';
-import '/providers/main_provider.dart';
+import '/utils/custom_navigator.dart';
 import '/widgets/app_network_image.dart';
-import 'brand_products.dart';
+import '../brand_products_screen.dart';
 
 class BrandGrid extends StatelessWidget {
   const BrandGrid({
@@ -21,7 +18,6 @@ class BrandGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
       child: GridView.builder(
@@ -42,14 +38,8 @@ class BrandGrid extends StatelessWidget {
             ? InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () => CustomNavigator(context).pushNavigation(
-                  routeName: BrandProducts.routeName,
-                  screen: BrandProducts(
-                    productsList: Helpers.getBrandProducts(
-                      mainProvider.productsList,
-                      brandList[index],
-                    ),
-                    brandModel: brandList[index],
-                  ),
+                  routeName: BrandProductsScreen.routeName,
+                  screen: BrandProductsScreen(brandModel: brandList[index]),
                 ),
                 child: Container(
                   padding: const EdgeInsets.only(left: 12),
@@ -93,7 +83,7 @@ class BrandGrid extends StatelessWidget {
                                   color: Colors.blueAccent,
                                   size: 14,
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                               ],
                             ),
                             Row(
@@ -108,7 +98,9 @@ class BrandGrid extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 2),
                                 Text(
-                                  "products",
+                                  brandList[index].productCount > 1
+                                      ? "products"
+                                      : "product",
                                   style: textTheme.bodySmall!.copyWith(
                                     color: CustomColors.text.withValues(
                                       alpha: 0.4,

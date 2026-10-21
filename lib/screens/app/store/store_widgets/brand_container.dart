@@ -1,48 +1,35 @@
-import 'package:e_commerce/models/brand_model.dart';
 import 'package:flutter/material.dart';
 
 import '/constants/custom_colors.dart';
+import '/models/brand_model.dart';
 import '/widgets/app_network_image.dart';
 
 class BrandContainer extends StatelessWidget {
+  const BrandContainer({required this.brand, super.key});
   final BrandModel brand;
-  const BrandContainer({
-    super.key,
-    required this.brand,
-  });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Container(
-      padding: const EdgeInsets.only(
-        left: 16,
-        top: 12,
-        bottom: 12,
-      ),
+      padding: const EdgeInsets.only(left: 16, top: 12, bottom: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: CustomColors.text.withOpacity(0.4),
-        ),
+        border: Border.all(color: CustomColors.text.withValues(alpha: 0.4)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
             height: 36,
             width: 36,
             child: AppNetworkImage(
               imageUrl: brand.iconName,
-              fit: BoxFit.cover,
               errorIcon: Icons.store,
               errorIconSize: 20,
             ),
           ),
-          const SizedBox(
-            width: 12,
-          ),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -56,9 +43,7 @@ class BrandContainer extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
-                      width: 4,
-                    ),
+                    const SizedBox(width: 4),
                     const Icon(
                       Icons.check_circle,
                       color: Colors.blueAccent,
@@ -71,24 +56,22 @@ class BrandContainer extends StatelessWidget {
                     Text(
                       brand.productCount.toString(),
                       style: textTheme.bodySmall!.copyWith(
-                        color: CustomColors.text.withOpacity(0.4),
+                        color: CustomColors.text.withValues(alpha: 0.4),
                       ),
                     ),
-                    const SizedBox(
-                      width: 2,
-                    ),
+                    const SizedBox(width: 2),
                     Text(
                       "products",
                       style: textTheme.bodySmall!.copyWith(
-                        color: CustomColors.text.withOpacity(0.4),
+                        color: CustomColors.text.withValues(alpha: 0.4),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

@@ -1,22 +1,20 @@
-import 'package:e_commerce/constants/custom_icons.dart';
-import 'package:e_commerce/screens/app/profile/my_orders_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/screens/app/profile/my_orders_screen.dart';
+import '/utils/custom_navigator.dart';
+import '/utils/extensions/date_time_extension.dart';
+import '/widgets/main_layout.dart';
 import '../../auth/logout.dart';
-import '../../screen_wrapper.dart';
-import '/constants/custom_colors.dart';
-import '/helpers/custom_navigator.dart';
-import '/helpers/date_time_service.dart';
-import '/providers/main_provider.dart';
+import 'profile_providers/my_orders_provider.dart';
 import 'profile_providers/profile_provider.dart';
 import 'profile_widgets/change_date_of_birth.dart';
 import 'profile_widgets/change_gender.dart';
 import 'profile_widgets/change_user_info.dart';
 import 'profile_widgets/change_user_name.dart';
-import 'profile_widgets/curved_edges.dart';
 import 'profile_widgets/information_widget.dart';
+import 'profile_widgets/profile_header.dart';
+import 'profile_widgets/profile_section.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -25,313 +23,127 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final profileProvider = Provider.of<ProfileProvider>(
       context,
       listen: false,
     );
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
 
-    return SafeArea(
-      child: ScreenWrapper(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipPath(
-                clipper: CurvedEdges(),
-                child: Container(
-                  width: double.infinity,
-                  height: 170,
-                  color: CustomColors.primary,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Gap(8),
-                        Text(
-                          "Profile",
-                          style: textTheme.headlineSmall!.copyWith(
-                            color: CustomColors.secondary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Gap(16),
-                        Row(
-                          children: [
-                            Container(
-                              height: 48,
-                              width: 50,
-                              padding: const EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(99),
-                              ),
-                              child: Image.asset(
-                                mainProvider.userInfoModel?.gender == 'Male'
-                                    ? CustomIcons.manAvatar
-                                    : CustomIcons.manAvatar,
-                                fit: BoxFit.scaleDown,
-                              ),
-                            ),
-                            const Gap(12),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${mainProvider.userInfoModel?.username}",
-                                  style: textTheme.titleLarge!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  "${mainProvider.userInfoModel?.email}",
-                                  style: textTheme.bodyMedium!.copyWith(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Spacer(),
-                            InkWell(
-                              onTap: () =>
-                                  CustomNavigator(context).pushNavigation(
-                                    routeName: MyOrdersScreen.routeName,
-                                    screen: ChangeNotifierProvider.value(
-                                      value: profileProvider,
-                                      child: const MyOrdersScreen(),
-                                    ),
-                                  ),
-                              child: Image.asset(
-                                CustomIcons.myOrders,
-                                color: Colors.white,
-                                height: 32,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+    final navigator = CustomNavigator(context);
+
+    return MainLayout(
+      showNavBar: true,
+      child: SingleChildScrollView(
+        child: Consumer<ProfileProvider>(
+          builder: (context, value, child) {
+            final userInfo = profileProvider.userInfo;
+            return Column(
+              spacing: 8,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ProfileHeader(
+                  userInfo: userInfo,
+                  onMyOrdersTap: () => navigator.pushNavigation(
+                    routeName: MyOrdersScreen.routeName,
+                    screen: ChangeNotifierProvider(
+                      create: (_) => MyOrdersProvider(
+                        orderRepository: context.read(),
+                        userRepository: context.read(),
+                      ),
+                      child: const MyOrdersScreen(),
                     ),
                   ),
                 ),
-              ),
-              const Gap(8),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Text(
-                  "Profile information",
-                  style: textTheme.titleLarge!.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              const Gap(16),
-              Consumer<MainProvider>(
-                builder: (_, __, child) => InformationWidget(
-                  sectionTitle: "Name",
-                  sectionText:
-                      "${mainProvider.userInfoModel?.firstName} ${mainProvider.userInfoModel?.lastName}",
-                  onTap: () => CustomNavigator(context).pushNavigation(
-                    routeName: ChangeUserName.routeName,
-                    screen: ChangeUserName(
+                ProfileSection(
+                  title: "Profile information",
+                  children: [
+                    InformationWidget(
                       sectionTitle: "Name",
-                      changeInfo: (firstName, lastName) async {
-                        final success = await profileProvider.changeUserName(
-                          mainProvider.userInfoModel?.id ?? '',
-                          firstName,
-                          lastName,
-                        );
-                        if (success)
-                          mainProvider.setUserName(firstName, lastName);
-                        return success;
-                      },
-                      firstNameController: TextEditingController(
-                        text: mainProvider.userInfoModel?.firstName,
-                      ),
-                      lastNameController: TextEditingController(
-                        text: mainProvider.userInfoModel?.lastName,
+                      sectionText:
+                          "${userInfo?.firstName} ${userInfo?.lastName}",
+                      onTap: () => navigator.pushNavigation(
+                        routeName: ChangeUserName.routeName,
+                        screen: ChangeUserName(
+                          sectionTitle: "Name",
+                          firstNameController:
+                              profileProvider.firstNameController,
+                          lastNameController:
+                              profileProvider.lastNameController,
+                          onSave: profileProvider.changeName,
+                          onSuccess: profileProvider.setName,
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              const Gap(12),
-              Consumer<MainProvider>(
-                builder: (_, __, child) => InformationWidget(
-                  sectionTitle: "Username",
-                  sectionText: "${mainProvider.userInfoModel?.username}",
-                  onTap: () => CustomNavigator(context).pushNavigation(
-                    routeName: ChangeUserInfo.routeName,
-                    screen: ChangeUserInfo(
+                    InformationWidget(
                       sectionTitle: "Username",
-                      changeInfo: (value) async {
-                        final success = await profileProvider.changeUsername(
-                          mainProvider.userInfoModel?.id ?? '',
-                          value,
-                        );
-                        if (success) mainProvider.setUsername(value);
-                        return success;
-                      },
-                      controller: TextEditingController(
-                        text: mainProvider.userInfoModel?.username,
+                      sectionText: "${userInfo?.username}",
+                      onTap: () => navigator.pushNavigation(
+                        screen: ChangeUserInfo(
+                          sectionTitle: "Username",
+                          controller: profileProvider.usernameController,
+                          onSave: profileProvider.changeUsername,
+                          onSuccess: profileProvider.setUsername,
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
-              const Gap(16),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Divider(color: CustomColors.grayDark),
-              ),
-              const Gap(8),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Text(
-                  "Personal information",
-                  style: textTheme.titleLarge!.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              const Gap(16),
-              Consumer<MainProvider>(
-                builder: (_, __, child) => InformationWidget(
-                  sectionTitle: "E-mail",
-                  sectionText: "${mainProvider.userInfoModel?.email}",
-                  onTap: () => CustomNavigator(context).pushNavigation(
-                    routeName: ChangeUserInfo.routeName,
-                    screen: ChangeUserInfo(
+                ProfileSection(
+                  title: "Personal information",
+                  children: [
+                    InformationWidget(
                       sectionTitle: "E-mail",
-                      changeInfo: (value) async {
-                        final success = await profileProvider.changeEmail(
-                          mainProvider.userInfoModel?.id ?? '',
-                          value,
-                        );
-                        if (success) mainProvider.setEmail(value);
-                        return success;
-                      },
-                      controller: TextEditingController(
-                        text: mainProvider.userInfoModel?.email,
+                      sectionText: "${userInfo?.email}",
+                      onTap: () => navigator.pushNavigation(
+                        screen: ChangeUserInfo(
+                          sectionTitle: "E-mail",
+                          controller: profileProvider.emailController,
+                          onSave: profileProvider.changeEmail,
+                          onSuccess: profileProvider.setEmail,
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              const Gap(12),
-              Consumer<MainProvider>(
-                builder: (_, __, child) => InformationWidget(
-                  sectionTitle: "Phone Number",
-                  sectionText: "${mainProvider.userInfoModel?.phoneNumber}",
-                  onTap: () => CustomNavigator(context).pushNavigation(
-                    routeName: ChangeUserInfo.routeName,
-                    screen: ChangeUserInfo(
+                    InformationWidget(
                       sectionTitle: "Phone Number",
-                      changeInfo: (value) async {
-                        final success = await profileProvider.changePhoneNumber(
-                          mainProvider.userInfoModel?.id ?? '',
-                          value,
-                        );
-                        if (success) mainProvider.setPhoneNumber(value);
-                        return success;
-                      },
-                      controller: TextEditingController(
-                        text: mainProvider.userInfoModel?.phoneNumber,
+                      sectionText: "${userInfo?.phoneNumber}",
+                      onTap: () => navigator.pushNavigation(
+                        screen: ChangeUserInfo(
+                          sectionTitle: "Phone Number",
+                          controller: profileProvider.phoneController,
+                          onSave: profileProvider.changePhoneNumber,
+                          onSuccess: profileProvider.setPhoneNumber,
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              const Gap(12),
-              Consumer<MainProvider>(
-                builder: (_, __, child) => InformationWidget(
-                  sectionTitle: "Gender",
-                  sectionText: "${mainProvider.userInfoModel?.gender}",
-                  onTap: () {
-                    profileProvider.selectedGender =
-                        mainProvider.userInfoModel?.gender;
-                    CustomNavigator(context).pushNavigation(
-                      routeName: ChangeGender.routeName,
-                      screen: ChangeNotifierProvider.value(
-                        value: profileProvider,
-                        child: ChangeGender(
+                    InformationWidget(
+                      sectionTitle: "Gender",
+                      sectionText: "${userInfo?.gender.genderName()}",
+                      onTap: () => navigator.pushNavigation(
+                        screen: ChangeGender(
                           sectionTitle: "Gender",
-                          changeInfo: (value) async {
-                            final success = await profileProvider.changeGender(
-                              mainProvider.userInfoModel?.id ?? '',
-                              value,
-                            );
-                            if (success) mainProvider.setGender(value);
-                            return success;
-                          },
-                          defaultValue: profileProvider.selectedGender,
+                          initialGender: profileProvider.userInfo?.gender,
+                          onSave: profileProvider.changeGender,
+                          onSuccess: profileProvider.setGender,
                         ),
                       ),
-                    );
-                  },
-                ),
-              ),
-              const Gap(12),
-              Consumer<MainProvider>(
-                builder: (_, __, child) => InformationWidget(
-                  sectionTitle: "Date of Birth",
-                  sectionText: DateTimeService.formatDateTime(
-                    mainProvider.userInfoModel?.dateOfBirth,
-                  ),
-                  onTap: () {
-                    profileProvider.setPickedDate(
-                      DateTime.parse(
-                        mainProvider.userInfoModel?.dateOfBirth ??
-                            DateTime.now().toString(),
-                      ),
-                    );
-                    profileProvider.controller.text =
-                        DateTimeService.formatDateTime(
-                          mainProvider.userInfoModel?.dateOfBirth ??
-                              DateTime.now().toString(),
-                        );
-                    CustomNavigator(context).pushNavigation(
-                      routeName: ChangeDateOfBirth.routeName,
-                      screen: ChangeNotifierProvider.value(
-                        value: profileProvider,
-                        child: ChangeDateOfBirth(
+                    ),
+                    InformationWidget(
+                      sectionTitle: "Date of Birth",
+                      sectionText: userInfo?.dateOfBirth.formatDateTime() ?? '',
+                      onTap: () => navigator.pushNavigation(
+                        screen: ChangeDateOfBirth(
                           sectionTitle: "Date of Birth",
-                          changeInfo: (value) async {
-                            final success = await profileProvider
-                                .changeDateOfBirth(
-                                  mainProvider.userInfoModel?.id ?? '',
-                                  value,
-                                );
-                            if (success) {
-                              mainProvider.setDateOfBirth(value);
-                            }
-                            return success;
-                          },
-                          defaultValue: DateTime.parse(
-                            mainProvider.userInfoModel?.dateOfBirth ??
-                                DateTime.now().toString(),
-                          ),
+                          initialDate: profileProvider.userInfo?.dateOfBirth,
+                          onSave: profileProvider.changeDateOfBirth,
+                          onSuccess: profileProvider.setDateOfBirth,
                         ),
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
-              ),
-              const Gap(16),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Divider(color: CustomColors.grayDark),
-              ),
-              const Gap(16),
-              const Logout(),
-            ],
-          ),
+                Logout(signOut: profileProvider.signOut),
+              ],
+            );
+          },
         ),
       ),
     );
