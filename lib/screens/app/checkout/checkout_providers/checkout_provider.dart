@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/data/repositories/cart_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/models/cart_model.dart';
 import '/models/response_model.dart';
@@ -10,9 +11,11 @@ import 'checkout_service.dart';
 class CheckoutProvider with ChangeNotifier {
   CheckoutProvider({
     required UserRepository userRepository,
+    required CartRepository cartRepository,
     required this.cartProducts,
     required this.checkoutPrice,
-  }) : _userRepository = userRepository {
+  }) : _userRepository = userRepository,
+       _cartRepository = cartRepository {
     final userInfo = userRepository.currentUser;
     firstNameController.text = userInfo?.firstName ?? '';
     lastNameController.text = userInfo?.lastName ?? '';
@@ -20,6 +23,7 @@ class CheckoutProvider with ChangeNotifier {
     phoneNumberController.text = userInfo?.phoneNumber ?? '';
   }
   final UserRepository _userRepository;
+  final CartRepository _cartRepository;
   final double checkoutPrice;
   bool isButtonEnabled = false;
 
@@ -47,6 +51,8 @@ class CheckoutProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void clearCart() => _cartRepository.clearCart();
 
   double getTotalPrice() {
     return checkoutPrice + 8;

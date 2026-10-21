@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '/constants/custom_colors.dart';
 import '/models/cart_model.dart';
 import '/models/products_model.dart';
-import '/providers/main_provider.dart';
 import '/providers/product_details_provider.dart';
 import '/utils/snack_bar_popup.dart';
 import '/widgets/app_network_image.dart';
@@ -26,7 +25,6 @@ class ProductDetailsScreen extends StatelessWidget {
       context,
       listen: false,
     );
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
 
     return MainLayout(
@@ -170,14 +168,11 @@ class ProductDetailsScreen extends StatelessWidget {
                             provider.product.productSize == null,
                         margin: EdgeInsets.zero,
                         onPress: () {
-                          ProductsModel copiedProduct = ProductsModel.copy(
-                            provider.product,
-                          );
                           CartModel cartModel = CartModel(
-                            productModel: copiedProduct,
+                            productModel: ProductsModel.copy(provider.product),
                             size: sizeProvider.selectedSize ?? "",
                           );
-                          mainProvider.addProductToCart(cartModel);
+                          provider.addToCart(cartModel);
                           SnackBarPopup.showMessage(
                             context,
                             message: "Product is added to cart",

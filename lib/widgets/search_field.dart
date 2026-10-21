@@ -131,6 +131,7 @@ class _SearchFieldView extends StatelessWidget {
                           screen: ChangeNotifierProvider(
                             create: (ctx) => ProductDetailsProvider(
                               wishlistRepository: ctx.read(),
+                              cartRepository: ctx.read(),
                               product: product,
                             ),
                             child: const ProductDetailsScreen(),

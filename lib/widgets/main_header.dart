@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../constants/custom_colors.dart';
-import '../providers/main_provider.dart';
-import '../screens/app/checkout/cart_screen.dart';
-import '../utils/custom_navigator.dart';
 import 'shopping_cart.dart';
 
 class MainHeader extends StatelessWidget {
@@ -36,19 +32,7 @@ class MainHeader extends StatelessWidget {
               ),
             ),
           ),
-          if (showCartIcon)
-            InkWell(
-              onTap: () => CustomNavigator(context).pushNavigation(
-                routeName: CartScreen.routeName,
-                screen: const CartScreen(),
-              ),
-              child: Consumer<MainProvider>(
-                builder: (_, mainProvider, child) => ShoppingCart(
-                  productNumber: mainProvider.cartProductNumber,
-                  iconColor: contentColor,
-                ),
-              ),
-            ),
+          if (showCartIcon) ShoppingCart(iconColor: contentColor),
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '/data/repositories/auth_repository.dart';
+import '/data/repositories/cart_repository.dart';
 import '/data/repositories/order_repository.dart';
 import '/data/repositories/product_repository.dart';
 import '/data/repositories/user_repository.dart';
@@ -36,6 +37,7 @@ List<SingleChildWidget> injectRepositoryDependencies() {
     ChangeNotifierProvider(
       create: (context) => WishlistRepository(wishlistService: context.read()),
     ),
+    ChangeNotifierProvider(create: (context) => CartRepository()),
     Provider(
       create: (context) => AuthRepository(
         firebaseService: context.read(),

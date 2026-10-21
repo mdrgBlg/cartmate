@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
 import '/models/cart_model.dart';
-import '/providers/main_provider.dart';
 import '/widgets/app_network_image.dart';
 
 class CartItem extends StatelessWidget {
-  final CartModel cartModel;
-  final bool isCartItem;
-  final double height;
   const CartItem({
-    super.key,
     required this.cartModel,
     this.isCartItem = true,
     this.height = 112,
-  });
+    this.onIncrease,
+    this.onDecrease,
+    super.key,
+  }) : assert(!isCartItem || (onIncrease != null && onDecrease != null));
+
+  final CartModel cartModel;
+  final bool isCartItem;
+  final double height;
+  final VoidCallback? onIncrease;
+  final VoidCallback? onDecrease;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
       child: Container(
@@ -33,7 +35,7 @@ class CartItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: CustomColors.grayDark.withOpacity(0.2),
+              color: CustomColors.grayDark.withValues(alpha: 0.2),
               blurRadius: 50,
               spreadRadius: 1,
             ),
@@ -54,7 +56,6 @@ class CartItem extends StatelessWidget {
                       imageUrl: cartModel.productModel.productImageList.first,
                       height: 64,
                       width: 64,
-                      errorIconSize: 32,
                     ),
                   ),
                 ),
@@ -148,13 +149,13 @@ class CartItem extends StatelessWidget {
                 children: [
                   const Gap(72),
                   InkWell(
-                    onTap: () => mainProvider.removeProductFromCart(cartModel),
+                    onTap: onDecrease,
                     child: Container(
                       height: 24,
                       width: 24,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(99),
-                        color: Colors.black.withOpacity(0.4),
+                        color: Colors.black.withValues(alpha: 0.4),
                       ),
                       alignment: AlignmentDirectional.center,
                       child: Text(
@@ -168,15 +169,13 @@ class CartItem extends StatelessWidget {
                     ),
                   ),
                   const Gap(12),
-                  Consumer<MainProvider>(
-                    builder: (_, value, child) => Text(
-                      cartModel.quantity.toString(),
-                      style: textTheme.bodyLarge,
-                    ),
+                  Text(
+                    cartModel.quantity.toString(),
+                    style: textTheme.bodyLarge,
                   ),
                   const Gap(12),
                   InkWell(
-                    onTap: () => mainProvider.addProductToCart(cartModel),
+                    onTap: onIncrease,
                     child: Container(
                       height: 24,
                       width: 24,
