@@ -4,15 +4,16 @@ import '/models/cart_model.dart';
 
 /// Single shared instance (registered in DI) and the source of truth for the
 /// cart. In-memory only; SQLite tables are not touched. UI must reach it
-/// through a provider.
+/// through a provider. Cart lines are keyed by [CartModel.id] (insertion
+/// ordered), so lookups on add/remove do not scan the cart.
 class CartRepository with ChangeNotifier {
-  final List<CartModel> _cartProducts = [];
+  final Map<String, CartModel> _cartProducts = {};
 
-  List<CartModel> get cartProducts => [..._cartProducts];
+  List<CartModel> get cartProducts => _cartProducts.values.toList();
 
   int get cartProductNumber => _cartProducts.length;
 
-  double get checkoutPrice => _cartProducts.fold(
+  double get checkoutPrice => _cartProducts.values.fold(
     0,
     (sum, item) =>
         sum +
@@ -22,38 +23,23 @@ class CartRepository with ChangeNotifier {
   );
 
   void addProductToCart(CartModel cartModel) {
-    bool elementExists = false;
-
-    for (var e in _cartProducts) {
-      if (e.productModel.id == cartModel.productModel.id &&
-          e.size == cartModel.size) {
-        ++e.quantity;
-        elementExists = true;
-        break;
-      }
-    }
-
-    if (!elementExists) {
-      _cartProducts.add(cartModel);
+    final existing = _cartProducts[cartModel.id];
+    if (existing != null) {
+      ++existing.quantity;
+    } else {
+      _cartProducts[cartModel.id] = cartModel;
     }
 
     notifyListeners();
   }
 
   void removeProductFromCart(CartModel cartModel) {
-    int? indexToRemove;
-    for (int i = 0; i < _cartProducts.length; i++) {
-      if (_cartProducts[i].productModel.id == cartModel.productModel.id &&
-          _cartProducts[i].size == cartModel.size) {
-        --_cartProducts[i].quantity;
-        if (_cartProducts[i].quantity == 0) {
-          indexToRemove = i;
-        }
-        break;
+    final existing = _cartProducts[cartModel.id];
+    if (existing != null) {
+      --existing.quantity;
+      if (existing.quantity <= 0) {
+        _cartProducts.remove(cartModel.id);
       }
-    }
-    if (indexToRemove != null) {
-      _cartProducts.removeAt(indexToRemove);
     }
     notifyListeners();
   }

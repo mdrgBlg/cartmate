@@ -49,7 +49,7 @@ class CartScreen extends StatelessWidget {
                       cartProvider.cartProducts.isNotEmpty
                       ? CustomButton(
                           buttonText:
-                              "Checkout ${cartProvider.checkoutPrice.toStringAsFixed(2)} ${cartProvider.cartProducts.first.productModel.currency}",
+                              "Checkout ${cartProvider.checkoutPrice.toStringAsFixed(2)} ${cartProvider.cartProducts.first.currency}",
                           enable: cartProvider.cartProducts.isNotEmpty,
                           onPress: () =>
                               CustomNavigator(context).pushNavigation(
