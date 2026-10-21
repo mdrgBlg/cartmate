@@ -1,36 +1,33 @@
-import 'package:e_commerce/helpers/order_status_enum.dart';
 import 'package:flutter/material.dart';
 
-import '../checkout_models/checkout_model.dart';
+import '/data/repositories/user_repository.dart';
 import '/models/cart_model.dart';
 import '/models/response_model.dart';
+import '/utils/order_status_enum.dart';
+import '../checkout_models/checkout_model.dart';
 import 'checkout_service.dart';
 
 class CheckoutProvider with ChangeNotifier {
   CheckoutProvider({
-    required String firstName,
-    required String lastName,
-    required String email,
-    required String phoneNumber,
-    required List<CartModel> cartProducts,
-    required this.userId,
+    required UserRepository userRepository,
+    required this.cartProducts,
     required this.checkoutPrice,
-  }) {
-    firstNameController.text = firstName;
-    lastNameController.text = lastName;
-    eMailController.text = email;
-    phoneNumberController.text = phoneNumber;
-    cartProductsList = cartProducts;
+  }) : _userRepository = userRepository {
+    final userInfo = userRepository.currentUser;
+    firstNameController.text = userInfo?.firstName ?? '';
+    lastNameController.text = userInfo?.lastName ?? '';
+    emailController.text = userInfo?.email ?? '';
+    phoneNumberController.text = userInfo?.phoneNumber ?? '';
   }
-  final String userId;
+  final UserRepository _userRepository;
   final double checkoutPrice;
   bool isButtonEnabled = false;
 
-  List<CartModel> cartProductsList = [];
+  List<CartModel> cartProducts;
 
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
-  final eMailController = TextEditingController();
+  final emailController = TextEditingController();
   final countryController = TextEditingController();
   final cityController = TextEditingController();
   final zipCodeController = TextEditingController();
@@ -38,9 +35,10 @@ class CheckoutProvider with ChangeNotifier {
   final addressController = TextEditingController();
 
   void buttonChecker() {
-    isButtonEnabled = firstNameController.text.isNotEmpty &&
+    isButtonEnabled =
+        firstNameController.text.isNotEmpty &&
         lastNameController.text.isNotEmpty &&
-        eMailController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
         countryController.text.isNotEmpty &&
         cityController.text.isNotEmpty &&
         zipCodeController.text.isNotEmpty &&
@@ -59,20 +57,19 @@ class CheckoutProvider with ChangeNotifier {
       CheckoutModel(
         orderId:
             "#${firstNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(5, 7)}${lastNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(7, 9)}",
-        userId: userId,
+        userId: _userRepository.currentUser?.id ?? '',
         address: addressController.text,
         city: cityController.text,
         country: countryController.text,
-        email: eMailController.text,
+        email: emailController.text,
         firstName: firstNameController.text,
         lastName: lastNameController.text,
         checkoutPrice: checkoutPrice,
         postalCode: int.parse(zipCodeController.text),
-        items: cartProductsList,
+        items: cartProducts,
         orderDate: DateTime.now().toString(),
         orderStatus: OrderStatus.pending.index,
       ),
-      userId,
     );
   }
 }

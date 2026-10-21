@@ -2,30 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '../helpers/custom_navigator.dart';
-import '../providers/main_provider.dart';
-import '../providers/product_details_provider.dart';
-import '../screens/app/home/home_providers/home_provider.dart';
-import '../screens/app/product_details_screen.dart';
+import '/providers/product_details_provider.dart';
+import '/providers/search_provider.dart';
+import '/screens/app/product_details_screen.dart';
+import '/utils/custom_navigator.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({
-    required this.searchController,
-    required this.hintText,
-    required this.onChanged,
-    required this.clearInput,
-    super.key,
-  });
-  final TextEditingController searchController;
+  const SearchField({required this.hintText, super.key});
+
   final String hintText;
-  final void Function(String) onChanged;
-  final void Function() clearInput;
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => SearchProvider(
+        wishlistRepository: context.read(),
+        productRepository: context.read(),
+      ),
+      child: _SearchFieldView(hintText: hintText),
+    );
+  }
+}
+
+class _SearchFieldView extends StatelessWidget {
+  const _SearchFieldView({required this.hintText});
+
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final homeProvider = Provider.of<HomeProvider>(context);
-    final mainProvider = Provider.of<MainProvider>(context, listen: false);
+    final searchProvider = context.watch<SearchProvider>();
     return Column(
       children: [
         Container(
@@ -38,27 +45,21 @@ class SearchField extends StatelessWidget {
               topLeft: const Radius.circular(16),
               topRight: const Radius.circular(16),
               bottomLeft: Radius.circular(
-                !homeProvider.isFocused ||
-                        homeProvider.searchController.text.isEmpty
-                    ? 16
-                    : 0,
+                !searchProvider.isFocused || !searchProvider.hasQuery ? 16 : 0,
               ),
               bottomRight: Radius.circular(
-                !homeProvider.isFocused ||
-                        homeProvider.searchController.text.isEmpty
-                    ? 16
-                    : 0,
+                !searchProvider.isFocused || !searchProvider.hasQuery ? 16 : 0,
               ),
             ),
           ),
           child: FocusScope(
             child: Focus(
-              onFocusChange: (value) => homeProvider.focusChange(value),
+              onFocusChange: searchProvider.focusChange,
               child: TextFormField(
-                controller: searchController,
+                controller: searchProvider.searchController,
                 textAlign: TextAlign.left,
                 textInputAction: TextInputAction.next,
-                onChanged: onChanged,
+                onChanged: searchProvider.onQueryChanged,
                 style: textTheme.bodyLarge!.copyWith(
                   color: CustomColors.text,
                   height: 1,
@@ -77,9 +78,9 @@ class SearchField extends StatelessWidget {
                   hintText: hintText,
                   prefixIcon: const Icon(Icons.search),
                   prefixIconColor: Colors.grey,
-                  suffixIcon: searchController.text.isNotEmpty
+                  suffixIcon: searchProvider.hasQuery
                       ? InkWell(
-                          onTap: clearInput,
+                          onTap: searchProvider.clearInput,
                           child: const Padding(
                             padding: EdgeInsets.only(left: 8),
                             child: UnconstrainedBox(
@@ -93,9 +94,9 @@ class SearchField extends StatelessWidget {
             ),
           ),
         ),
-        if (homeProvider.isFocused &&
-            homeProvider.searchedProductsList.isNotEmpty)
+        if (searchProvider.showResults)
           Container(
+            height: 140,
             width: double.infinity,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -104,58 +105,50 @@ class SearchField extends StatelessWidget {
               ),
               color: Colors.white,
             ),
-            child: Column(
-              children: [
-                Container(
-                  padding: homeProvider.searchController.text.isNotEmpty
-                      ? const EdgeInsets.fromLTRB(16, 16, 16, 4)
-                      : null,
-                  child: MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    child: Scrollbar(
-                      radius: const Radius.circular(2),
-                      thumbVisibility: true,
-                      controller: homeProvider.searchScrollController,
-                      thickness: 4,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        controller: homeProvider.searchScrollController,
-                        itemCount: homeProvider.searchedProductsList.length,
-                        itemBuilder: (context, index) => InkWell(
-                          onTap: () => CustomNavigator(context).pushNavigation(
-                            routeName: ProductDetailsScreen.routeName,
-                            screen: ChangeNotifierProvider(
-                              create: (_) => ProductDetailsProvider(),
-                              child: ProductDetailsScreen(
-                                product: mainProvider.productsList.singleWhere(
-                                  (element) =>
-                                      element.id ==
-                                      homeProvider
-                                          .searchedProductsList[index]
-                                          .id,
-                                ),
-                              ),
+            child: Scrollbar(
+              radius: const Radius.circular(2),
+              thumbVisibility: true,
+              controller: searchProvider.searchScrollController,
+              thickness: 4,
+              child: Container(
+                padding: searchProvider.hasQuery
+                    ? const EdgeInsets.fromLTRB(16, 16, 16, 4)
+                    : null,
+                child: MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    controller: searchProvider.searchScrollController,
+                    itemCount: searchProvider.searchedProducts.length,
+                    itemBuilder: (context, index) => InkWell(
+                      onTap: () {
+                        final product = searchProvider.productAt(index);
+                        CustomNavigator(context).pushNavigation(
+                          routeName: ProductDetailsScreen.routeName,
+                          screen: ChangeNotifierProvider(
+                            create: (ctx) => ProductDetailsProvider(
+                              wishlistRepository: ctx.read(),
+                              product: product,
                             ),
+                            child: const ProductDetailsScreen(),
                           ),
-                          child: Container(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            alignment: AlignmentDirectional.centerStart,
-                            child: Text(
-                              homeProvider
-                                  .searchedProductsList[index]
-                                  .productName,
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          searchProvider.searchedProducts[index].productName,
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
       ],

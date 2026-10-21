@@ -2,34 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '/constants/custom_colors.dart';
-import '/helpers/custom_navigator.dart';
 import '/models/brand_model.dart';
+import '/models/products_model.dart';
 import '/widgets/app_network_image.dart';
-import '../../home/home_models/products_model.dart';
-import 'brand_products.dart';
 
 class CategoriesBrands extends StatelessWidget {
   const CategoriesBrands({
     required this.categoryBrand,
-    required this.brandProducts,
     required this.productsList,
+    required this.onTap,
     super.key,
   });
   final BrandModel categoryBrand;
-  final List<ProductsModel> brandProducts;
   final List<ProductsModel> productsList;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return InkWell(
-      onTap: () => CustomNavigator(context).pushNavigation(
-        routeName: BrandProducts.routeName,
-        screen: BrandProducts(
-          productsList: productsList,
-          brandModel: categoryBrand,
-        ),
-      ),
+      onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
         decoration: BoxDecoration(
@@ -104,7 +96,6 @@ class CategoriesBrands extends StatelessWidget {
                       child: AppNetworkImage(
                         imageUrl: productsList[index].productImageList.first,
                         fit: BoxFit.fill,
-                        errorIconSize: 32,
                       ),
                     ),
                   ),

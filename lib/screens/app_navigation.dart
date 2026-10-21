@@ -1,16 +1,17 @@
-import 'package:e_commerce/screens/app/profile/profile_providers/profile_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/custom_colors.dart';
-import '/helpers/custom_navigator.dart';
+import '/utils/custom_navigator.dart';
 import 'app/home/home_providers/home_provider.dart';
 import 'app/home/home_screen.dart';
+import 'app/profile/profile_providers/profile_provider.dart';
 import 'app/profile/profile_screen.dart';
 import 'app/store/store_providers/store_provider.dart';
 import 'app/store/store_screen.dart';
-import 'app/whishlist/whishlist_screen.dart';
+import 'app/wishlist/wishlist_providers/wishlist_provider.dart';
+import 'app/wishlist/wishlist_screen.dart';
 import 'navbar_item.dart';
 
 class AppNavigation extends StatelessWidget {
@@ -32,16 +33,19 @@ class AppNavigation extends StatelessWidget {
             color: CustomColors.primary,
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: NavBarItem(
                   itemIcon: Icons.home,
                   itemText: "Home",
-                  onTap: () => CustomNavigator(context).pushNavigation(
+                  onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: HomeScreen.routeName,
                     screen: ChangeNotifierProvider(
-                      create: (_) => HomeProvider(),
+                      create: (_) => HomeProvider(
+                        userRepository: context.read(),
+                        wishlistRepository: context.read(),
+                        productRepository: context.read(),
+                      ),
                       child: HomeScreen(),
                     ),
                   ),
@@ -55,10 +59,13 @@ class AppNavigation extends StatelessWidget {
                 child: NavBarItem(
                   itemIcon: Icons.store,
                   itemText: "Store",
-                  onTap: () => CustomNavigator(context).pushNavigation(
+                  onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: StoreScreen.routeName,
                     screen: ChangeNotifierProvider(
-                      create: (_) => StoreProvider(),
+                      create: (_) => StoreProvider(
+                        wishlistRepository: context.read(),
+                        productRepository: context.read(),
+                      ),
                       child: const StoreScreen(),
                     ),
                   ),
@@ -72,9 +79,13 @@ class AppNavigation extends StatelessWidget {
                 child: NavBarItem(
                   itemIcon: CupertinoIcons.heart,
                   itemText: "Wishlist",
-                  onTap: () => CustomNavigator(context).pushNavigation(
+                  onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: WhishlistScreen.routeName,
-                    screen: const WhishlistScreen(),
+                    screen: ChangeNotifierProvider(
+                      create: (_) =>
+                          WishlistProvider(wishlistRepository: context.read()),
+                      child: const WhishlistScreen(),
+                    ),
                   ),
                   active: isTabActive(
                     routeName: WhishlistScreen.routeName,
@@ -86,10 +97,13 @@ class AppNavigation extends StatelessWidget {
                 child: NavBarItem(
                   itemIcon: CupertinoIcons.profile_circled,
                   itemText: "Profile",
-                  onTap: () => CustomNavigator(context).pushNavigation(
+                  onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: ProfileScreen.routeName,
                     screen: ChangeNotifierProvider(
-                      create: (_) => ProfileProvider(),
+                      create: (_) => ProfileProvider(
+                        authRepository: context.read(),
+                        userRepository: context.read(),
+                      ),
                       child: const ProfileScreen(),
                     ),
                   ),

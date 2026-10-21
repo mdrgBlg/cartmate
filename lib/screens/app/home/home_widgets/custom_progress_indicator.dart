@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import '/constants/custom_colors.dart';
 
 class CustomProgressIndicator extends StatelessWidget {
-  final int screenIndex;
   const CustomProgressIndicator({
-    super.key,
     required this.screenIndex,
+    required this.progressLength,
+    super.key,
   });
+  final int screenIndex;
 
-  final int screenCount = 6;
+  final int progressLength;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class CustomProgressIndicator extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: List.generate(
-        screenCount,
+        progressLength,
         (index) => Container(
           margin: const EdgeInsets.symmetric(horizontal: 8),
           height: 4,

@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import '/constants/custom_colors.dart';
 
 class InformationWidget extends StatelessWidget {
-  final String sectionTitle;
-  final String sectionText;
-  final VoidCallback onTap;
   const InformationWidget({
-    super.key,
     required this.sectionTitle,
     required this.sectionText,
     required this.onTap,
+    super.key,
   });
+
+  final String sectionTitle;
+  final String sectionText;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
