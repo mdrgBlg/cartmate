@@ -24,7 +24,7 @@ class CartItem extends StatelessWidget {
     // The key recreates the provider when the list reuses this element for a
     // different cart entry.
     return ChangeNotifierProvider(
-      key: ValueKey('${cartModel.productModel.id}:${cartModel.size}'),
+      key: ValueKey(cartModel.id),
       create: (context) => CartItemProvider(
         cartRepository: context.read(),
         cartModel: cartModel,

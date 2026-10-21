@@ -74,7 +74,7 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${checkoutProvider.checkoutPrice.toString()} ${checkoutProvider.cartProducts.first.productModel.currency}",
+                            "${checkoutProvider.checkoutPrice.toString()} ${checkoutProvider.cartProducts.first.currency}",
                             style: textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -92,7 +92,7 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "8.0 ${checkoutProvider.cartProducts.first.productModel.currency}",
+                            "8.0 ${checkoutProvider.cartProducts.first.currency}",
                             style: textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -110,7 +110,7 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${checkoutProvider.getTotalPrice().toString()} ${checkoutProvider.cartProducts.first.productModel.currency}",
+                            "${checkoutProvider.getTotalPrice().toString()} ${checkoutProvider.cartProducts.first.currency}",
                             style: textTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -278,7 +278,7 @@ class CheckoutScreen extends StatelessWidget {
                               right: 20,
                             ),
                             buttonText:
-                                "Checkout ${checkoutProvider.getTotalPrice()} ${checkoutProvider.cartProducts.first.productModel.currency}",
+                                "Checkout ${checkoutProvider.getTotalPrice()} ${checkoutProvider.cartProducts.first.currency}",
                             enable: checkoutProvider.isButtonEnabled,
                             onPress: () => onCheckoutTap(context),
                           ),
