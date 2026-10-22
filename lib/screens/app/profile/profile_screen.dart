@@ -4,17 +4,17 @@ import 'package:provider/provider.dart';
 import '/screens/app/profile/my_orders_screen.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/extensions/date_time_extension.dart';
-import '/widgets/main_layout.dart';
-import '../../auth/logout.dart';
-import 'profile_providers/my_orders_provider.dart';
-import 'profile_providers/profile_provider.dart';
-import 'profile_widgets/change_date_of_birth.dart';
-import 'profile_widgets/change_gender.dart';
-import 'profile_widgets/change_user_info.dart';
-import 'profile_widgets/change_user_name.dart';
-import 'profile_widgets/information_widget.dart';
-import 'profile_widgets/profile_header.dart';
-import 'profile_widgets/profile_section.dart';
+import '/widgets/layouts/main_layout.dart';
+import 'widgets/logout.dart';
+import 'providers/my_orders_provider.dart';
+import 'providers/profile_provider.dart';
+import 'widgets/change_date_of_birth.dart';
+import 'widgets/change_gender.dart';
+import 'widgets/change_user_info.dart';
+import 'widgets/change_user_name.dart';
+import 'widgets/information_widget.dart';
+import 'widgets/profile_header.dart';
+import 'widgets/profile_section.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

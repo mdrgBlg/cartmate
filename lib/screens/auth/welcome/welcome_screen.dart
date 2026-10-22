@@ -5,7 +5,7 @@ import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/models/user_info_model.dart';
-import '../../app/home/home_providers/home_provider.dart';
+import '../../app/home/providers/home_provider.dart';
 import '../../app/home/home_screen.dart';
 import '../login/login_providers/login_provider.dart';
 import '../login/login_screen.dart';

@@ -7,8 +7,8 @@ import '/constants/custom_icons.dart';
 import '/utils/extensions/date_time_extension.dart';
 import '/utils/helpers.dart';
 import '/widgets/custom_app_bar.dart';
-import '/widgets/main_layout.dart';
-import 'profile_providers/my_orders_provider.dart';
+import '/widgets/layouts/main_layout.dart';
+import 'providers/my_orders_provider.dart';
 
 class MyOrdersScreen extends StatelessWidget {
   const MyOrdersScreen({super.key});

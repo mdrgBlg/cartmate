@@ -6,14 +6,14 @@ import '/constants/custom_colors.dart';
 import '/models/brand_model.dart';
 import '/models/categories_model.dart';
 import '/utils/custom_navigator.dart';
-import '/widgets/main_header.dart';
-import '/widgets/main_layout.dart';
+import '/widgets/layouts/main_layout.dart';
+import '/widgets/main_header/main_header.dart';
 import 'brand_products_screen.dart';
-import 'store_providers/store_provider.dart';
-import 'store_widgets/brand_grid.dart';
-import 'store_widgets/categories_brands.dart';
-import 'store_widgets/category_tab.dart';
+import 'providers/store_provider.dart';
 import 'view_all_brands_screen.dart';
+import 'widgets/brand_grid.dart';
+import 'widgets/categories_brands.dart';
+import 'widgets/category_tab.dart';
 
 class StoreScreen extends StatelessWidget {
   const StoreScreen({super.key});

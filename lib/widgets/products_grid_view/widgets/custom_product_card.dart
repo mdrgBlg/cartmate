@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 import '/constants/custom_colors.dart';
 import '/models/products_model.dart';
 import '/providers/product_details_provider.dart';
-import '/screens/app/product_details_screen.dart';
+import '../../../screens/app/product_details/product_details_screen.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/app_network_image.dart';
-import '/widgets/product_cart_quantity.dart';
+import 'product_cart_quantity.dart';
 import '/widgets/wishlist_heart_button.dart';
 
 class CustomProductCard extends StatelessWidget {

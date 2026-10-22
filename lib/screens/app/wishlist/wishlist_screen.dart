@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/widgets/main_layout.dart';
+import '/widgets/layouts/main_layout.dart';
 import '/widgets/products_grid_view/products_grid_view.dart';
-import 'wishlist_providers/wishlist_provider.dart';
+import 'providers/wishlist_provider.dart';
 
 class WhishlistScreen extends StatelessWidget {
   const WhishlistScreen({super.key});

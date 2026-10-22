@@ -13,14 +13,8 @@ class CartRepository with ChangeNotifier {
 
   int get cartProductNumber => _cartProducts.length;
 
-  double get checkoutPrice => _cartProducts.values.fold(
-    0,
-    (sum, item) =>
-        sum +
-        item.quantity *
-            (item.productModel.price -
-                item.productModel.price * (item.productModel.discount / 100)),
-  );
+  double get checkoutPrice =>
+      _cartProducts.values.fold(0, (sum, item) => sum + item.getTotalPrice);
 
   void addProductToCart(CartModel cartModel) {
     final existing = _cartProducts[cartModel.id];
