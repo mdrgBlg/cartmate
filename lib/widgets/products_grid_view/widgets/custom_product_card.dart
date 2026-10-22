@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '/utils/constants/custom_colors.dart';
 import '/models/products_model.dart';
-import '/providers/product_details_provider.dart';
-import '../../../screens/app/product_details/product_details_screen.dart';
+import '/screens/app/product_details/product_details_screen.dart';
+import '/utils/constants/custom_colors.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/app_network_image.dart';
-import 'product_cart_quantity.dart';
-import '/widgets/wishlist_heart_button.dart';
+import '../../wishlist_heart_button/wishlist_heart_button.dart';
+import 'product_cart_quantity/product_cart_quantity.dart';
 
 class CustomProductCard extends StatelessWidget {
   const CustomProductCard({
@@ -24,19 +22,10 @@ class CustomProductCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return InkWell(
-      onTap: () {
-        CustomNavigator(context).pushNavigation(
-          routeName: ProductDetailsScreen.routeName,
-          screen: ChangeNotifierProvider(
-            create: (ctx) => ProductDetailsProvider(
-              wishlistRepository: ctx.read(),
-              cartRepository: ctx.read(),
-              product: productsModel,
-            ),
-            child: const ProductDetailsScreen(),
-          ),
-        );
-      },
+      onTap: () => CustomNavigator(context).pushNavigation(
+        routeName: ProductDetailsScreen.routeName,
+        screen: ProductDetailsScreen(productsModel: productsModel),
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,

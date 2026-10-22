@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'providers/search_provider.dart';
+import '/screens/app/product_details/product_details_screen.dart';
 import '/utils/constants/custom_colors.dart';
-import '/providers/product_details_provider.dart';
-import '/providers/search_provider.dart';
-import '../screens/app/product_details/product_details_screen.dart';
 import '/utils/custom_navigator.dart';
 
 class SearchField extends StatelessWidget {
@@ -128,13 +127,8 @@ class _SearchFieldView extends StatelessWidget {
                           final product = provider.productAt(index);
                           CustomNavigator(context).pushNavigation(
                             routeName: ProductDetailsScreen.routeName,
-                            screen: ChangeNotifierProvider(
-                              create: (ctx) => ProductDetailsProvider(
-                                wishlistRepository: ctx.read(),
-                                cartRepository: ctx.read(),
-                                product: product,
-                              ),
-                              child: const ProductDetailsScreen(),
+                            screen: ProductDetailsScreen(
+                              productsModel: product,
                             ),
                           );
                         },
