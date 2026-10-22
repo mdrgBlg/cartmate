@@ -9,6 +9,7 @@ import '/data/repositories/user_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
 import '/data/services/api_service.dart';
 import '/data/services/auth_service.dart';
+import '/data/services/cart_service.dart';
 import '/data/services/database_service.dart';
 import '/data/services/firebase_service.dart';
 import '/data/services/order_service.dart';
@@ -26,6 +27,7 @@ List<SingleChildWidget> injectServiceDependencies() {
     Provider(
       create: (context) => OrderService(databaseService: context.read()),
     ),
+    Provider(create: (context) => CartService(databaseService: context.read())),
   ];
 }
 
