@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/providers/product_cart_quantity_provider.dart';
+import 'providers/product_cart_quantity_provider.dart';
 
 class ProductCartQuantity extends StatelessWidget {
   const ProductCartQuantity({required this.productId, super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/providers/product_size_provider.dart';
 import '/utils/constants/custom_colors.dart';
+import 'providers/product_size_provider.dart';
 
 class ProductSizeSelector extends StatelessWidget {
   const ProductSizeSelector({required this.sizes, this.onChanged, super.key});

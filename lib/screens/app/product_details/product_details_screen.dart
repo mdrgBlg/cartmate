@@ -3,21 +3,38 @@ import 'package:provider/provider.dart';
 
 import '/models/cart_model.dart';
 import '/models/products_model.dart';
-import '/providers/product_details_provider.dart';
 import '/utils/constants/custom_colors.dart';
 import '/utils/snack_bar_popup.dart';
 import '/widgets/app_network_image.dart';
 import '/widgets/custom_app_bar.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/layouts/main_layout.dart';
-import '/widgets/wishlist_heart_button.dart';
+import '/widgets/wishlist_heart_button/wishlist_heart_button.dart';
+import 'providers/product_details_provider.dart';
 import 'widgets/product_image_gallery.dart';
-import 'widgets/product_size_selector.dart';
+import 'widgets/product_size_selector/product_size_selector.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({super.key});
+  const ProductDetailsScreen({required this.productsModel, super.key});
+  final ProductsModel productsModel;
 
   static const routeName = '/details';
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (ctx) => ProductDetailsProvider(
+        wishlistRepository: ctx.read(),
+        cartRepository: ctx.read(),
+        product: productsModel,
+      ),
+      child: const _ProductDetailsScreen(),
+    );
+  }
+}
+
+class _ProductDetailsScreen extends StatelessWidget {
+  const _ProductDetailsScreen();
 
   @override
   Widget build(BuildContext context) {
