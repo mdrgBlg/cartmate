@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:sqflite/sqflite.dart';
 
 import '/db/db_constants.dart';
-import '/screens/app/checkout/checkout_models/checkout_model.dart';
+import '/models/checkout_model.dart';
 import '../models/result.dart';
 import 'database_service.dart';
 

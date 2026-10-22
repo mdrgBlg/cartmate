@@ -7,12 +7,12 @@ import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
-import '/widgets/auth_layout.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
-import 'providers/forgot_password_provider.dart';
+import '/widgets/layouts/auth_layout.dart';
 import '../login/login_providers/login_provider.dart';
 import '../login/login_screen.dart';
+import 'providers/forgot_password_provider.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});

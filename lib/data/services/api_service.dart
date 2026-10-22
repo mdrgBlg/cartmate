@@ -4,12 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/models/brand_model.dart';
 import '/models/categories_model.dart';
+import '/models/checkout_model.dart';
 import '/models/products_model.dart';
 import '/models/user_info_model.dart';
-import '/screens/app/checkout/checkout_models/checkout_model.dart';
 import '/utils/global_enums.dart';
 import '../models/result.dart';
 import 'firebase_service.dart';
+// import '../checkout_models/checkout_model.dart';
+// import '/models/response_model.dart';
 
 class ApiService {
   ApiService({required FirebaseService firebaseService})
@@ -175,4 +177,25 @@ class ApiService {
       return Failure(Exception(e));
     }
   }
+
+  // static Future<ResponseModel> orderProduct(CheckoutModel checkoutModel) async {
+  //   final FirebaseFirestore db = FirebaseFirestore.instance;
+  //   try {
+  //     await db
+  //         .collection("Users")
+  //         .doc(checkoutModel.userId)
+  //         .collection("Orders")
+  //         .add(checkoutModel.toMap());
+  //     return ResponseModel(success: true);
+  //   } on FirebaseException catch (e) {
+  //     log("FirebaseException saveUserData: $e");
+  //     return ResponseModel(success: false, error: e.message);
+  //   } catch (e) {
+  //     log("Exception saveUserData: $e");
+  //     return ResponseModel(
+  //       success: false,
+  //       error: "Something went wrong. Please try again",
+  //     );
+  //   }
+  // }
 }

@@ -4,8 +4,8 @@ import 'package:gap/gap.dart';
 import '/constants/custom_colors.dart';
 import '/models/brand_model.dart';
 import '/widgets/custom_app_bar.dart';
-import '/widgets/main_layout.dart';
-import 'store_widgets/brand_grid.dart';
+import '/widgets/layouts/main_layout.dart';
+import 'widgets/brand_grid.dart';
 
 class ViewAllBrandsScreen extends StatelessWidget {
   const ViewAllBrandsScreen({required this.brandsList, super.key});

@@ -141,9 +141,10 @@ Use `ChangeNotifier`-based Provider state management.
 - Expose state through immutable/public getters.
 - Mutate state only through provider methods.
 - Call `notifyListeners()` when observable state changes.
-- Use `context.watch<T>()` when UI should rebuild from changes.
-- Use `context.read<T>()` for one-off actions and callbacks.
-- Use `Selector` or `Consumer` when rebuild scope should be limited.
+- Do NOT use `context.watch<T>()` or `context.read<T>()`.
+- Use `Consumer<T>` when UI should rebuild from provider changes.
+- Use `Selector<T, S>` where only part of the provider state is needed, to limit rebuild scope.
+- Use `Provider.of<T>(context, listen: false)` for one-off actions and callbacks (replaces `context.read<T>()`).
 - Never call `notifyListeners()` synchronously during `build`.
 - Keep business logic out of widgets.
 

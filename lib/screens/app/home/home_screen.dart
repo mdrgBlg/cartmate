@@ -4,14 +4,14 @@ import 'package:provider/provider.dart';
 import '/constants/custom_colors.dart';
 import '/models/categories_model.dart';
 import '/utils/custom_navigator.dart';
-import '/widgets/main_header.dart';
-import '/widgets/main_layout.dart';
+import '/widgets/layouts/main_layout.dart';
+import '/widgets/main_header/main_header.dart';
 import '/widgets/products_grid_view/products_grid_view.dart';
 import '/widgets/search_field.dart';
-import '../categories_screen.dart';
-import 'home_providers/home_provider.dart';
-import 'home_widgets/categories_list.dart';
-import 'home_widgets/home_banner_carousel.dart';
+import 'categories_screen.dart';
+import 'providers/home_provider.dart';
+import 'widgets/categories_list.dart';
+import 'widgets/home_banner_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
