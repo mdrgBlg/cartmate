@@ -25,6 +25,7 @@ class ProfileScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => ProfileProvider(
         authRepository: context.read(),
+        cartRepository: context.read(),
         userRepository: context.read(),
       ),
       child: const _ProfileScreen(),
