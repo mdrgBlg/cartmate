@@ -41,21 +41,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return AppBar(
-      toolbarHeight: appBarHeight,
-      backgroundColor: type.backgroundColor,
-      foregroundColor: type.foregroundColor,
-      elevation: 0,
-      titleSpacing: 4,
-      title:
-          title ??
-          Text(
-            titleText ?? '',
-            style: textTheme.titleLarge!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: type.titleTextColor,
+    return SafeArea(
+      child: AppBar(
+        toolbarHeight: appBarHeight,
+        backgroundColor: type.backgroundColor,
+        foregroundColor: type.foregroundColor,
+        elevation: 0,
+        titleSpacing: 4,
+        title:
+            title ??
+            Text(
+              titleText ?? '',
+              style: textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.bold,
+                color: type.titleTextColor,
+              ),
             ),
-          ),
+      ),
     );
   }
 }

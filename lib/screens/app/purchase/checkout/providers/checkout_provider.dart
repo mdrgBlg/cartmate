@@ -14,8 +14,6 @@ class CheckoutProvider with ChangeNotifier {
     required UserRepository userRepository,
     required CartRepository cartRepository,
     required OrderRepository orderRepository,
-    required this.cartProducts,
-    required this.checkoutPrice,
   }) : _userRepository = userRepository,
        _cartRepository = cartRepository,
        _orderRepository = orderRepository {
@@ -28,10 +26,7 @@ class CheckoutProvider with ChangeNotifier {
   final UserRepository _userRepository;
   final CartRepository _cartRepository;
   final OrderRepository _orderRepository;
-  final double checkoutPrice;
   bool isButtonEnabled = false;
-
-  List<CartModel> cartProducts;
 
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -41,6 +36,9 @@ class CheckoutProvider with ChangeNotifier {
   final zipCodeController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final addressController = TextEditingController();
+
+  List<CartModel> get cartProducts => _cartRepository.cartProducts;
+  double get checkoutPrice => _cartRepository.checkoutPrice;
 
   void buttonChecker() {
     isButtonEnabled =
@@ -59,7 +57,7 @@ class CheckoutProvider with ChangeNotifier {
   void clearCart() => _cartRepository.clearCart();
 
   double getTotalPrice() {
-    return checkoutPrice + 8;
+    return _cartRepository.checkoutPrice + 8;
   }
 
   Future<ResponseModel> orderProduct() async {
@@ -73,9 +71,9 @@ class CheckoutProvider with ChangeNotifier {
       email: emailController.text,
       firstName: firstNameController.text,
       lastName: lastNameController.text,
-      checkoutPrice: checkoutPrice,
+      checkoutPrice: _cartRepository.checkoutPrice,
       postalCode: int.parse(zipCodeController.text),
-      items: cartProducts,
+      items: _cartRepository.cartProducts,
       orderDate: DateTime.now().toString(),
       orderStatus: OrderStatus.pending.index,
     );

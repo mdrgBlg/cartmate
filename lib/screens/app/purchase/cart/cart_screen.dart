@@ -51,28 +51,21 @@ class _CartScreen extends StatelessWidget {
             bottom: 0,
             left: 0,
             right: 0,
-            child: SizedBox(
+            child: Container(
               height: 50,
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 10.0),
-                child: Consumer<CartProvider>(
-                  builder: (_, __, child) =>
-                      cartProvider.cartProducts.isNotEmpty
-                      ? CustomButton(
-                          buttonText:
-                              "Checkout ${cartProvider.checkoutPrice.toStringAsFixed(2)} ${cartProvider.cartProducts.first.currency}",
-                          enable: cartProvider.cartProducts.isNotEmpty,
-                          onPress: () =>
-                              CustomNavigator(context).pushNavigation(
-                                routeName: CheckoutScreen.routeName,
-                                screen: CheckoutScreen(
-                                  cartProducts: cartProvider.cartProducts,
-                                  checkoutPrice: cartProvider.checkoutPrice,
-                                ),
-                              ),
-                        )
-                      : const SizedBox(),
-                ),
+              margin: const EdgeInsets.only(bottom: 10.0),
+              child: Consumer<CartProvider>(
+                builder: (_, __, child) => cartProvider.cartProducts.isNotEmpty
+                    ? CustomButton(
+                        buttonText:
+                            "Checkout ${cartProvider.checkoutPrice.toStringAsFixed(2)} ${cartProvider.cartProducts.first.currency}",
+                        enable: cartProvider.cartProducts.isNotEmpty,
+                        onPress: () => CustomNavigator(context).pushNavigation(
+                          routeName: CheckoutScreen.routeName,
+                          screen: CheckoutScreen(),
+                        ),
+                      )
+                    : const SizedBox(),
               ),
             ),
           ),
