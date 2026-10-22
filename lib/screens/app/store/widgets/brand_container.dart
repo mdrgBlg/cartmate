@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/constants/custom_colors.dart';
+import '/utils/constants/custom_colors.dart';
 import '/models/brand_model.dart';
 import '/widgets/app_network_image.dart';
 

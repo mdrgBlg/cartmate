@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/constants/custom_colors.dart';
-import '/constants/custom_icons.dart';
 import '/data/models/auth_exception.dart';
 import '/data/repositories/auth_repository.dart';
 import '/utils/auth_error_message.dart';
+import '/utils/constants/custom_colors.dart';
+import '/utils/constants/custom_icons.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '/constants/custom_colors.dart';
+import '/utils/constants/custom_colors.dart';
 import '/models/brand_model.dart';
 import '/widgets/custom_app_bar.dart';
 import '/widgets/layouts/main_layout.dart';

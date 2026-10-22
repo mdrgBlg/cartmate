@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/constants/custom_colors.dart';
 import '/models/categories_model.dart';
+import '/utils/constants/custom_colors.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/layouts/main_layout.dart';
 import '/widgets/main_header/main_header.dart';

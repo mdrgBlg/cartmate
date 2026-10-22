@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
-import '/constants/custom_colors.dart';
 import '/models/brand_model.dart';
 import '/models/products_model.dart';
+import '/utils/constants/custom_colors.dart';
 import '/widgets/custom_app_bar.dart';
 import '/widgets/layouts/main_layout.dart';
 import '/widgets/products_grid_view/products_grid_view.dart';

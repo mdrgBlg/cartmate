@@ -2,15 +2,15 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/constants/custom_colors.dart';
-import '/constants/custom_icons.dart';
 import '/models/response_model.dart';
+import '/utils/constants/custom_colors.dart';
+import '/utils/constants/custom_icons.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
-import 'providers/checkout_provider.dart';
 import '../widgets/purchase_item/purchase_item.dart';
+import 'providers/checkout_provider.dart';
 
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({super.key});

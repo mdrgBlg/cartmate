@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/models/products_model.dart';
-import '/utils/helpers.dart';
+import '/utils/common_utils.dart';
 import '/widgets/custom_app_bar.dart';
 import '/widgets/layouts/main_layout.dart';
 import '/widgets/products_grid_view/products_grid_view.dart';
@@ -33,7 +33,7 @@ class CategoriesScreen extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.asset(
-                  Helpers.fetchImage(categoryName),
+                  fetchImage(categoryName),
                   fit: BoxFit.fill,
                   height: 200,
                 ),
