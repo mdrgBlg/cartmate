@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../utils/global_enums.dart';
-import '/constants/custom_colors.dart';
+import '/utils/global_enums.dart';
+import '/utils/constants/custom_colors.dart';
 
 class GenderSelector extends StatefulWidget {
   const GenderSelector({

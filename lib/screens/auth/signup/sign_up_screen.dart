@@ -8,19 +8,31 @@ import '/utils/custom_navigator.dart';
 import '/utils/global_enums.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
-import '/widgets/auth_layout.dart';
 import '/widgets/custom_button.dart';
+import '/widgets/date_picker.dart';
 import '/widgets/gender_selector.dart';
 import '/widgets/input_field.dart';
+import '/widgets/layouts/auth_layout.dart';
 import '/widgets/password_field.dart';
 import '../welcome/welcome_screen.dart';
-import 'date_picker.dart';
 import 'sign_up_providers/sign_up_provider.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
   static const routeName = '/signup';
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (ctx) => SignUpProvider(authRepository: ctx.read()),
+      child: const _SignUpScreen(),
+    );
+  }
+}
+
+class _SignUpScreen extends StatelessWidget {
+  const _SignUpScreen();
 
   @override
   Widget build(BuildContext context) {

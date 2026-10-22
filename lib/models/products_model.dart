@@ -103,8 +103,10 @@ class ProductsModel {
   String get getPriceWithCurrency =>
       "${price.toDouble().toString()} ${currency}";
 
-  String get getPriceWithDiscount =>
+  String get getPriceWithDiscountAndCurrency =>
       "${(price - price * (discount / 100))} ${currency}";
+
+  double get getPriceWithDiscount => price - price * (discount / 100);
 
   ProductsModel copyWith({bool? whishlist}) => ProductsModel(
     id: id,

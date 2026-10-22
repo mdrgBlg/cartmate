@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../constants/custom_colors.dart';
+import '/utils/constants/custom_colors.dart';
 
 class CustomButton extends StatelessWidget {
-  final String buttonText;
-  final bool enable;
-  final VoidCallback? onPress;
-  final EdgeInsets margin;
-  final TextStyle? style;
   const CustomButton({
-    super.key,
     required this.buttonText,
     required this.enable,
     this.onPress,
     this.margin = const EdgeInsets.symmetric(horizontal: 20),
     this.style,
+    super.key,
   });
+
+  final String buttonText;
+  final bool enable;
+  final VoidCallback? onPress;
+  final EdgeInsets margin;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +26,7 @@ class CustomButton extends StatelessWidget {
       child: Material(
         color: enable
             ? CustomColors.primary
-            : CustomColors.disabled.withOpacity(
-                0.4,
-              ),
+            : CustomColors.disabled.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
           onTap: enable ? onPress : null,
@@ -38,11 +37,12 @@ class CustomButton extends StatelessWidget {
               child: Center(
                 child: Text(
                   buttonText,
-                  style: style ??
+                  style:
+                      style ??
                       textTheme.titleLarge!.copyWith(
                         color: enable
                             ? Colors.white
-                            : Colors.white.withOpacity(0.5),
+                            : Colors.white.withValues(alpha: 0.5),
                         fontSize: 18,
                       ),
                 ),

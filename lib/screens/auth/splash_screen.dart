@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/custom_icons.dart';
-import '/constants/custom_colors.dart';
+import '/utils/constants/custom_icons.dart';
+import '/utils/constants/custom_colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,7 +19,6 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller = AnimationController(
       duration: const Duration(milliseconds: 500),

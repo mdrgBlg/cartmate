@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '/constants/custom_colors.dart';
-import '/providers/main_provider.dart';
-import '/providers/product_details_provider.dart';
-import '../../../models/products_model.dart';
-import '/screens/app/product_details_screen.dart';
+import '/models/products_model.dart';
+import '/screens/app/product_details/product_details_screen.dart';
+import '/utils/constants/custom_colors.dart';
 import '/utils/custom_navigator.dart';
 import '/widgets/app_network_image.dart';
-import '/widgets/wishlist_heart_button.dart';
+import '../../wishlist_heart_button/wishlist_heart_button.dart';
+import 'product_cart_quantity/product_cart_quantity.dart';
 
 class CustomProductCard extends StatelessWidget {
   const CustomProductCard({
@@ -24,18 +22,10 @@ class CustomProductCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return InkWell(
-      onTap: () {
-        CustomNavigator(context).pushNavigation(
-          routeName: ProductDetailsScreen.routeName,
-          screen: ChangeNotifierProvider(
-            create: (ctx) => ProductDetailsProvider(
-              wishlistRepository: ctx.read(),
-              product: productsModel,
-            ),
-            child: const ProductDetailsScreen(),
-          ),
-        );
-      },
+      onTap: () => CustomNavigator(context).pushNavigation(
+        routeName: ProductDetailsScreen.routeName,
+        screen: ProductDetailsScreen(productsModel: productsModel),
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -119,7 +109,7 @@ class CustomProductCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             Text(
-                              productsModel.getPriceWithDiscount,
+                              productsModel.getPriceWithDiscountAndCurrency,
                               style: textTheme.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -138,25 +128,8 @@ class CustomProductCard extends StatelessWidget {
                               bottomRight: Radius.circular(16),
                             ),
                           ),
-                          child: Consumer<MainProvider>(
-                            builder: (_, mainProvider, child) {
-                              final cartQty = mainProvider.cartProducts
-                                  .where(
-                                    (c) =>
-                                        c.productModel.id == productsModel.id,
-                                  )
-                                  .fold(0, (sum, c) => sum + c.quantity);
-                              return Text(
-                                cartQty == 0 ? "+" : cartQty.toString(),
-                                style: cartQty == 0
-                                    ? textTheme.titleLarge!.copyWith(
-                                        color: Colors.white,
-                                      )
-                                    : textTheme.titleMedium!.copyWith(
-                                        color: Colors.white,
-                                      ),
-                              );
-                            },
+                          child: ProductCartQuantity(
+                            productId: productsModel.id,
                           ),
                         ),
                       ],

@@ -59,8 +59,30 @@ When modifying an existing feature, follow the patterns already used by neighbor
 
 ### Git
 
-- Never commit anything. Do not run `git commit` (or push) under any circumstances.
-- When the work is finished, inform the user; the user reviews the changes and handles the commit.
+- Planning (`/plan-feature`, `flutter-planner`, `plan-reviewer`) never commits and never edits project code; it only writes plan files under `.claude/implementation_plans/`.
+- When implementing an approved plan from `.claude/implementation_plans/`, follow its Execution rules:
+  - Work on a `feature/<feature-slug>` branch. If the current branch is `main`, `master` or `develop`, create and switch to that branch before changing anything.
+  - Implement phases in order, one at a time.
+  - After each phase, run that phase's Verify step. If it still fails after a few attempts, stop and report to the user instead of committing.
+  - When Verify passes, stage only the files that phase touched (never `git add -A` or `git add .`) and commit with that phase's suggested commit message.
+- Outside of plan execution, do not commit; when the work is finished, inform the user so they can review and commit.
+- Never push, never amend commits, never rewrite history.
+
+### Commit message format
+
+- Single subject line, no body unless the change truly needs explanation.
+- Start with a capitalized past-tense verb: `Added`, `Fixed`, `Refactored`, `Removed`, `Renamed`, `Handled`, `Made`.
+- Describe what changed in plain words, naming the feature/screen/layer affected.
+- No type prefix (`feat:`, `refactor:`, ...), no trailing period, keep under ~72 characters.
+
+Examples:
+
+```
+Added products repository
+Refactored store screen and its provider
+Removed fetching of products from home provider
+Fixed search and home banner widgets on home screen
+```
 
 ### Keep exploration focused
 
@@ -119,9 +141,10 @@ Use `ChangeNotifier`-based Provider state management.
 - Expose state through immutable/public getters.
 - Mutate state only through provider methods.
 - Call `notifyListeners()` when observable state changes.
-- Use `context.watch<T>()` when UI should rebuild from changes.
-- Use `context.read<T>()` for one-off actions and callbacks.
-- Use `Selector` or `Consumer` when rebuild scope should be limited.
+- Do NOT use `context.watch<T>()` or `context.read<T>()`.
+- Use `Consumer<T>` when UI should rebuild from provider changes.
+- Use `Selector<T, S>` where only part of the provider state is needed, to limit rebuild scope.
+- Use `Provider.of<T>(context, listen: false)` for one-off actions and callbacks (replaces `context.read<T>()`).
 - Never call `notifyListeners()` synchronously during `build`.
 - Keep business logic out of widgets.
 

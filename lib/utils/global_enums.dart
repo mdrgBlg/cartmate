@@ -12,3 +12,17 @@ enum Gender {
     female => "Female",
   };
 }
+
+enum OrderStatus {
+  pending,
+  processing,
+  inTransit,
+  delivered;
+
+  String get name => switch (this) {
+    OrderStatus.pending => "Pending",
+    OrderStatus.processing => "Processing",
+    OrderStatus.inTransit => "In Transit",
+    OrderStatus.delivered => "Delivered",
+  };
+}

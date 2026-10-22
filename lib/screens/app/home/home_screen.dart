@@ -1,22 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/constants/custom_colors.dart';
 import '/models/categories_model.dart';
+import '/utils/constants/custom_colors.dart';
 import '/utils/custom_navigator.dart';
-import '/widgets/main_header.dart';
-import '/widgets/main_layout.dart';
+import '/widgets/layouts/main_layout.dart';
+import '/widgets/main_header/main_header.dart';
 import '/widgets/products_grid_view/products_grid_view.dart';
-import '/widgets/search_field.dart';
-import '../categories_screen.dart';
-import 'home_providers/home_provider.dart';
-import 'home_widgets/categories_list.dart';
-import 'home_widgets/home_banner_carousel.dart';
+import '/widgets/search_field/search_field.dart';
+import 'categories_screen.dart';
+import 'providers/home_provider.dart';
+import 'widgets/categories_list.dart';
+import 'widgets/home_banner_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   static const routeName = '/';
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (ctx) => HomeProvider(
+        userRepository: ctx.read(),
+        wishlistRepository: ctx.read(),
+        productRepository: ctx.read(),
+      ),
+      child: const _HomeScreen(),
+    );
+  }
+}
+
+class _HomeScreen extends StatelessWidget {
+  const _HomeScreen();
 
   @override
   Widget build(BuildContext context) {
