@@ -7,6 +7,7 @@ import '/models/categories_model.dart';
 import '/models/checkout_model.dart';
 import '/models/products_model.dart';
 import '/models/user_info_model.dart';
+import '/utils/constants/firebase_collection_constants.dart';
 import '/utils/global_enums.dart';
 import '../models/result.dart';
 import 'firebase_service.dart';
@@ -17,16 +18,11 @@ class ApiService {
   ApiService({required FirebaseService firebaseService})
     : _firebaseService = firebaseService;
 
-  static const _usersCollection = 'Users';
-  static const _ordersCollection = 'Orders';
-  static const _productsCollection = 'Products';
-  static const _categoriesCollection = 'Categories';
-  static const _brandsCollection = 'Brands';
-
   final FirebaseService _firebaseService;
 
-  CollectionReference<Map<String, dynamic>> _users() =>
-      _firebaseService.firestore.collection(_usersCollection);
+  CollectionReference<Map<String, dynamic>> _users() => _firebaseService
+      .firestore
+      .collection(FirebaseCollectionConstants.usersCollection);
 
   Future<Result<void>> saveUserData(UserInfoModel user) async {
     try {
@@ -106,7 +102,7 @@ class ApiService {
     try {
       final response = await _users()
           .doc(userId)
-          .collection(_ordersCollection)
+          .collection(FirebaseCollectionConstants.ordersCollection)
           .get();
       return Success(
         response.docs.map((e) => CheckoutModel.fromJson(e.data())).toList(),
@@ -123,7 +119,7 @@ class ApiService {
   Future<Result<List<ProductsModel>>> fetchProducts() async {
     try {
       final response = await _firebaseService.firestore
-          .collection(_productsCollection)
+          .collection(FirebaseCollectionConstants.productsCollection)
           .get();
       return Success(
         response.docs
@@ -142,7 +138,7 @@ class ApiService {
   Future<Result<List<CategoriesModel>>> fetchCategories() async {
     try {
       final response = await _firebaseService.firestore
-          .collection(_categoriesCollection)
+          .collection(FirebaseCollectionConstants.categoriesCollection)
           .get();
       return Success(
         response.docs
@@ -162,7 +158,7 @@ class ApiService {
   Future<Result<List<BrandModel>>> fetchBrands() async {
     try {
       final response = await _firebaseService.firestore
-          .collection(_brandsCollection)
+          .collection(FirebaseCollectionConstants.brandsCollection)
           .get();
       return Success(
         response.docs
@@ -182,9 +178,9 @@ class ApiService {
   //   final FirebaseFirestore db = FirebaseFirestore.instance;
   //   try {
   //     await db
-  //         .collection("Users")
+  //         .collection(FirebaseCollectionConstants.users)
   //         .doc(checkoutModel.userId)
-  //         .collection("Orders")
+  //         .collection(FirebaseCollectionConstants.orders)
   //         .add(checkoutModel.toMap());
   //     return ResponseModel(success: true);
   //   } on FirebaseException catch (e) {

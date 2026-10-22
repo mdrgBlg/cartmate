@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:sqflite/sqflite.dart';
 
-import '/db/db_constants.dart';
 import '/models/checkout_model.dart';
+import '/utils/constants/db_constants.dart';
 import '../models/result.dart';
 import 'database_service.dart';
 

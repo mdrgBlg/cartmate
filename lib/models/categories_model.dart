@@ -1,4 +1,4 @@
-import '/utils/helpers.dart';
+import '/utils/common_utils.dart';
 
 class CategoriesModel {
   CategoriesModel({
@@ -15,7 +15,7 @@ class CategoriesModel {
   }) => CategoriesModel(
     id: id,
     categoryName: json["categoryName"] as String,
-    iconName: Helpers.fetchIcon(json["iconName"] as String?),
+    iconName: fetchIcon(json["iconName"] as String?),
     isFeatured: json["isFeatured"] as bool,
     parentId: json["parentId"] as String?,
   );

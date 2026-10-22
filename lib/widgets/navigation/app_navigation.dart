@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/constants/custom_colors.dart';
+import '/utils/constants/custom_colors.dart';
 import '/screens/app/home/home_screen.dart';
 import '/screens/app/home/providers/home_provider.dart';
 import '/screens/app/profile/profile_screen.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/constants/custom_colors.dart';
+import '/utils/constants/custom_colors.dart';
 
 class InformationWidget extends StatelessWidget {
   const InformationWidget({

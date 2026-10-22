@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
-import '/constants/custom_colors.dart';
 import '/models/cart_model.dart';
-import 'providers/purchase_item_provider.dart';
+import '/utils/constants/custom_colors.dart';
 import '/widgets/app_network_image.dart';
+import 'providers/purchase_item_provider.dart';
 
 class PurchaseItem extends StatelessWidget {
   const PurchaseItem({

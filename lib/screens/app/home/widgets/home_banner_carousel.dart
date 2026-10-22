@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/constants/custom_images.dart';
+import '/utils/constants/custom_images.dart';
 import 'custom_progress_indicator.dart';
 
 class HomeBannerCarousel extends StatefulWidget {

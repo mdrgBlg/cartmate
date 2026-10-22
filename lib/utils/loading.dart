@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../constants/custom_colors.dart';
+import 'constants/custom_colors.dart';
 
 class Loading {
   static callLoading({
