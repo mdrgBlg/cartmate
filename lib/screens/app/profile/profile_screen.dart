@@ -4,22 +4,36 @@ import 'package:provider/provider.dart';
 import '/screens/app/profile/my_orders_screen.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/extensions/date_time_extension.dart';
-import '/widgets/main_layout.dart';
-import '../../auth/logout.dart';
-import 'profile_providers/my_orders_provider.dart';
-import 'profile_providers/profile_provider.dart';
-import 'profile_widgets/change_date_of_birth.dart';
-import 'profile_widgets/change_gender.dart';
-import 'profile_widgets/change_user_info.dart';
-import 'profile_widgets/change_user_name.dart';
-import 'profile_widgets/information_widget.dart';
-import 'profile_widgets/profile_header.dart';
-import 'profile_widgets/profile_section.dart';
+import '/widgets/layouts/main_layout.dart';
+import 'widgets/logout.dart';
+import 'providers/profile_provider.dart';
+import 'widgets/change_date_of_birth.dart';
+import 'widgets/change_gender.dart';
+import 'widgets/change_user_info.dart';
+import 'widgets/change_user_name.dart';
+import 'widgets/information_widget.dart';
+import 'widgets/profile_header.dart';
+import 'widgets/profile_section.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   static const routeName = '/profile';
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => ProfileProvider(
+        authRepository: context.read(),
+        userRepository: context.read(),
+      ),
+      child: const _ProfileScreen(),
+    );
+  }
+}
+
+class _ProfileScreen extends StatelessWidget {
+  const _ProfileScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +58,7 @@ class ProfileScreen extends StatelessWidget {
                   userInfo: userInfo,
                   onMyOrdersTap: () => navigator.pushNavigation(
                     routeName: MyOrdersScreen.routeName,
-                    screen: ChangeNotifierProvider(
-                      create: (_) => MyOrdersProvider(
-                        orderRepository: context.read(),
-                        userRepository: context.read(),
-                      ),
-                      child: const MyOrdersScreen(),
-                    ),
+                    screen: const MyOrdersScreen(),
                   ),
                 ),
                 ProfileSection(

@@ -2,23 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
-import '/constants/custom_colors.dart';
 import '/models/brand_model.dart';
 import '/models/categories_model.dart';
+import '/utils/constants/custom_colors.dart';
 import '/utils/custom_navigator.dart';
-import '/widgets/main_header.dart';
-import '/widgets/main_layout.dart';
+import '/widgets/layouts/main_layout.dart';
+import '/widgets/main_header/main_header.dart';
 import 'brand_products_screen.dart';
-import 'store_providers/store_provider.dart';
-import 'store_widgets/brand_grid.dart';
-import 'store_widgets/categories_brands.dart';
-import 'store_widgets/category_tab.dart';
+import 'providers/store_provider.dart';
 import 'view_all_brands_screen.dart';
+import 'widgets/brand_grid.dart';
+import 'widgets/categories_brands.dart';
+import 'widgets/category_tab.dart';
 
 class StoreScreen extends StatelessWidget {
   const StoreScreen({super.key});
 
   static const routeName = '/store';
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => StoreProvider(
+        wishlistRepository: context.read(),
+        productRepository: context.read(),
+      ),
+      child: const _StoreScreen(),
+    );
+  }
+}
+
+class _StoreScreen extends StatelessWidget {
+  const _StoreScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +44,10 @@ class StoreScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const Gap(20),
-            const MainHeader(text: "Store", contentColor: Colors.black),
-            const Gap(20),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: MainHeader(text: "Store", contentColor: Colors.black),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(

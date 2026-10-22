@@ -3,11 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'constants/themes.dart';
-import 'di/app_dependencies.dart';
+import 'app_dependencies.dart';
 import 'firebase_options.dart';
-import 'providers/main_provider.dart';
 import 'screens/auth/welcome/welcome_screen.dart';
+import 'utils/constants/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,9 +21,6 @@ void main() async {
       providers: [
         ...injectServiceDependencies(),
         ...injectRepositoryDependencies(),
-        ChangeNotifierProvider<MainProvider>(
-          create: (context) => MainProvider(),
-        ),
       ],
       child: const MyApp(),
     ),
