@@ -7,7 +7,7 @@ import '/utils/custom_navigator.dart';
 import '/widgets/layouts/main_layout.dart';
 import '/widgets/main_header/main_header.dart';
 import '/widgets/products_grid_view/products_grid_view.dart';
-import '../../../widgets/search_field/search_field.dart';
+import '/widgets/search_field/search_field.dart';
 import 'categories_screen.dart';
 import 'providers/home_provider.dart';
 import 'widgets/categories_list.dart';
@@ -17,6 +17,22 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   static const routeName = '/';
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (ctx) => HomeProvider(
+        userRepository: ctx.read(),
+        wishlistRepository: ctx.read(),
+        productRepository: ctx.read(),
+      ),
+      child: const _HomeScreen(),
+    );
+  }
+}
+
+class _HomeScreen extends StatelessWidget {
+  const _HomeScreen();
 
   @override
   Widget build(BuildContext context) {

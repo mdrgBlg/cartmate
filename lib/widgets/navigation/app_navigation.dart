@@ -1,16 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '/utils/constants/custom_colors.dart';
 import '/screens/app/home/home_screen.dart';
-import '/screens/app/home/providers/home_provider.dart';
 import '/screens/app/profile/profile_screen.dart';
-import '/screens/app/profile/providers/profile_provider.dart';
-import '/screens/app/store/providers/store_provider.dart';
 import '/screens/app/store/store_screen.dart';
-import '/screens/app/wishlist/providers/wishlist_provider.dart';
 import '/screens/app/wishlist/wishlist_screen.dart';
+import '/utils/constants/custom_colors.dart';
 import '/utils/custom_navigator.dart';
 import 'widgets/navbar_item.dart';
 
@@ -40,14 +35,7 @@ class AppNavigation extends StatelessWidget {
                   itemText: "Home",
                   onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: HomeScreen.routeName,
-                    screen: ChangeNotifierProvider(
-                      create: (_) => HomeProvider(
-                        userRepository: context.read(),
-                        wishlistRepository: context.read(),
-                        productRepository: context.read(),
-                      ),
-                      child: const HomeScreen(),
-                    ),
+                    screen: const HomeScreen(),
                   ),
                   active: isTabActive(
                     routeName: HomeScreen.routeName,
@@ -61,13 +49,7 @@ class AppNavigation extends StatelessWidget {
                   itemText: "Store",
                   onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: StoreScreen.routeName,
-                    screen: ChangeNotifierProvider(
-                      create: (_) => StoreProvider(
-                        wishlistRepository: context.read(),
-                        productRepository: context.read(),
-                      ),
-                      child: const StoreScreen(),
-                    ),
+                    screen: const StoreScreen(),
                   ),
                   active: isTabActive(
                     routeName: StoreScreen.routeName,
@@ -80,15 +62,11 @@ class AppNavigation extends StatelessWidget {
                   itemIcon: CupertinoIcons.heart,
                   itemText: "Wishlist",
                   onTap: () => CustomNavigator(context).pushReplacement(
-                    routeName: WhishlistScreen.routeName,
-                    screen: ChangeNotifierProvider(
-                      create: (_) =>
-                          WishlistProvider(wishlistRepository: context.read()),
-                      child: const WhishlistScreen(),
-                    ),
+                    routeName: WishlistScreen.routeName,
+                    screen: const WishlistScreen(),
                   ),
                   active: isTabActive(
-                    routeName: WhishlistScreen.routeName,
+                    routeName: WishlistScreen.routeName,
                     currentRoute: currentRoute,
                   ),
                 ),
@@ -99,13 +77,7 @@ class AppNavigation extends StatelessWidget {
                   itemText: "Profile",
                   onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: ProfileScreen.routeName,
-                    screen: ChangeNotifierProvider(
-                      create: (_) => ProfileProvider(
-                        authRepository: context.read(),
-                        userRepository: context.read(),
-                      ),
-                      child: const ProfileScreen(),
-                    ),
+                    screen: const ProfileScreen(),
                   ),
                   active: isTabActive(
                     routeName: ProfileScreen.routeName,

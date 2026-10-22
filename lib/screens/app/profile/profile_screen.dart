@@ -23,6 +23,21 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => ProfileProvider(
+        authRepository: context.read(),
+        userRepository: context.read(),
+      ),
+      child: const _ProfileScreen(),
+    );
+  }
+}
+
+class _ProfileScreen extends StatelessWidget {
+  const _ProfileScreen();
+
+  @override
+  Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(
       context,
       listen: false,

@@ -5,9 +5,7 @@ import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/models/user_info_model.dart';
-import '../../app/home/providers/home_provider.dart';
 import '../../app/home/home_screen.dart';
-import '../login/login_providers/login_provider.dart';
 import '../login/login_screen.dart';
 import '../splash_screen.dart';
 import 'welcome_providers/welcome_provider.dart';
@@ -43,22 +41,9 @@ class _WelcomeView extends StatelessWidget {
           return const SplashScreen();
         }
         if (snapshot.data is Success<UserInfoModel>) {
-          return ChangeNotifierProvider(
-            create: (ctx) => HomeProvider(
-              userRepository: ctx.read(),
-              wishlistRepository: ctx.read(),
-              productRepository: ctx.read(),
-            ),
-            child: HomeScreen(),
-          );
+          return const HomeScreen();
         }
-        return ChangeNotifierProvider(
-          create: (ctx) => LoginProvider(
-            authRepository: ctx.read<AuthRepository>(),
-            userRepository: ctx.read<UserRepository>(),
-          ),
-          child: const LoginScreen(),
-        );
+        return const LoginScreen();
       },
     );
   }

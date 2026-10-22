@@ -22,6 +22,21 @@ class StoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => StoreProvider(
+        wishlistRepository: context.read(),
+        productRepository: context.read(),
+      ),
+      child: const _StoreScreen(),
+    );
+  }
+}
+
+class _StoreScreen extends StatelessWidget {
+  const _StoreScreen();
+
+  @override
+  Widget build(BuildContext context) {
     final storeProvider = Provider.of<StoreProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return MainLayout(
@@ -29,9 +44,10 @@ class StoreScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const Gap(20),
-            const MainHeader(text: "Store", contentColor: Colors.black),
-            const Gap(20),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: MainHeader(text: "Store", contentColor: Colors.black),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(

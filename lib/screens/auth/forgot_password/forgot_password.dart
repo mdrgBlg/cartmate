@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/data/models/auth_exception.dart';
-import '/data/repositories/auth_repository.dart';
 import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/loading.dart';
@@ -10,7 +9,6 @@ import '/utils/snack_bar_popup.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/input_field.dart';
 import '/widgets/layouts/auth_layout.dart';
-import '../login/login_providers/login_provider.dart';
 import '../login/login_screen.dart';
 import 'providers/forgot_password_provider.dart';
 
@@ -94,13 +92,7 @@ class ForgotPassword extends StatelessWidget {
           );
           CustomNavigator(context).pushReplacement(
             routeName: LoginScreen.routeName,
-            screen: ChangeNotifierProvider(
-              create: (ctx) => LoginProvider(
-                authRepository: ctx.read<AuthRepository>(),
-                userRepository: ctx.read(),
-              ),
-              child: const LoginScreen(),
-            ),
+            screen: const LoginScreen(),
           );
         } else {
           SnackBarPopup.showMessage(

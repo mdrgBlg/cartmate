@@ -3,10 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'utils/constants/themes.dart';
-import 'di/app_dependencies.dart';
+import 'app_dependencies.dart';
 import 'firebase_options.dart';
 import 'screens/auth/welcome/welcome_screen.dart';
+import 'utils/constants/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
