@@ -25,8 +25,11 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx) =>
-          LoginProvider(authRepository: ctx.read(), userRepository: ctx.read()),
+      create: (ctx) => LoginProvider(
+        authRepository: ctx.read(),
+        cartRepository: ctx.read(),
+        userRepository: ctx.read(),
+      ),
       child: const _LoginScreen(),
     );
   }
