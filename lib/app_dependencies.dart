@@ -45,7 +45,9 @@ List<SingleChildWidget> injectRepositoryDependencies() {
     ChangeNotifierProvider(
       create: (context) => WishlistRepository(wishlistService: context.read()),
     ),
-    ChangeNotifierProvider(create: (context) => CartRepository()),
+    ChangeNotifierProvider(
+      create: (context) => CartRepository(cartService: context.read()),
+    ),
     Provider(
       create: (context) => AuthRepository(
         firebaseService: context.read(),
