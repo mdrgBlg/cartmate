@@ -2,6 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/models/cart_model.dart';
 import '/models/response_model.dart';
 import '/utils/constants/custom_colors.dart';
 import '/utils/constants/custom_icons.dart';
@@ -13,9 +14,34 @@ import '../widgets/purchase_item/purchase_item.dart';
 import 'providers/checkout_provider.dart';
 
 class CheckoutScreen extends StatelessWidget {
-  const CheckoutScreen({super.key});
+  const CheckoutScreen({
+    required this.cartProducts,
+    required this.checkoutPrice,
+    super.key,
+  });
 
   static const routeName = '/checkout';
+
+  final List<CartModel> cartProducts;
+  final double checkoutPrice;
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (ctx) => CheckoutProvider(
+        userRepository: ctx.read(),
+        cartRepository: ctx.read(),
+        orderRepository: ctx.read(),
+        cartProducts: cartProducts,
+        checkoutPrice: checkoutPrice,
+      ),
+      child: const _CheckoutScreen(),
+    );
+  }
+}
+
+class _CheckoutScreen extends StatelessWidget {
+  const _CheckoutScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -310,7 +336,7 @@ class CheckoutScreen extends StatelessWidget {
       onFinished: () {
         Navigator.of(
           context,
-        ).popUntil((route) => route.settings.name == routeName);
+        ).popUntil((route) => route.settings.name == CheckoutScreen.routeName);
         if (responseModel != null && responseModel!.success) {
           checkoutProvider.clearCart();
           SnackBarPopup.showMessage(

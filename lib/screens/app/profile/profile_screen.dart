@@ -6,7 +6,6 @@ import '/utils/custom_navigator.dart';
 import '/utils/extensions/date_time_extension.dart';
 import '/widgets/layouts/main_layout.dart';
 import 'widgets/logout.dart';
-import 'providers/my_orders_provider.dart';
 import 'providers/profile_provider.dart';
 import 'widgets/change_date_of_birth.dart';
 import 'widgets/change_gender.dart';
@@ -59,13 +58,7 @@ class _ProfileScreen extends StatelessWidget {
                   userInfo: userInfo,
                   onMyOrdersTap: () => navigator.pushNavigation(
                     routeName: MyOrdersScreen.routeName,
-                    screen: ChangeNotifierProvider(
-                      create: (_) => MyOrdersProvider(
-                        orderRepository: context.read(),
-                        userRepository: context.read(),
-                      ),
-                      child: const MyOrdersScreen(),
-                    ),
+                    screen: const MyOrdersScreen(),
                   ),
                 ),
                 ProfileSection(

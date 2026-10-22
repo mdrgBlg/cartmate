@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/data/models/auth_exception.dart';
-import '/data/repositories/auth_repository.dart';
 import '/utils/auth_error_message.dart';
 import '/utils/constants/custom_colors.dart';
 import '/utils/constants/custom_icons.dart';
@@ -15,8 +14,6 @@ import '/widgets/layouts/auth_layout.dart';
 import '/widgets/password_field.dart';
 import '../../app/home/home_screen.dart';
 import '../forgot_password/forgot_password.dart';
-import '../forgot_password/providers/forgot_password_provider.dart';
-import '../signup/sign_up_providers/sign_up_provider.dart';
 import '../signup/sign_up_screen.dart';
 import 'login_providers/login_provider.dart';
 
@@ -28,10 +25,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx) => LoginProvider(
-        authRepository: ctx.read<AuthRepository>(),
-        userRepository: ctx.read(),
-      ),
+      create: (ctx) =>
+          LoginProvider(authRepository: ctx.read(), userRepository: ctx.read()),
       child: const _LoginScreen(),
     );
   }
@@ -60,12 +55,7 @@ class _LoginScreen extends StatelessWidget {
                 FocusManager.instance.primaryFocus?.unfocus();
                 CustomNavigator(context).pushNavigation(
                   routeName: SignUpScreen.routeName,
-                  screen: ChangeNotifierProvider(
-                    create: (ctx) => SignUpProvider(
-                      authRepository: ctx.read<AuthRepository>(),
-                    ),
-                    child: const SignUpScreen(),
-                  ),
+                  screen: const SignUpScreen(),
                 );
               },
               child: Text(
@@ -132,12 +122,7 @@ class _LoginScreen extends StatelessWidget {
                 FocusManager.instance.primaryFocus?.unfocus();
                 CustomNavigator(context).pushNavigation(
                   routeName: ForgotPassword.routeName,
-                  screen: ChangeNotifierProvider(
-                    create: (ctx) => ForgotPasswordProvider(
-                      authRepository: ctx.read<AuthRepository>(),
-                    ),
-                    child: const ForgotPassword(),
-                  ),
+                  screen: const ForgotPassword(),
                 );
               },
               child: Text(
