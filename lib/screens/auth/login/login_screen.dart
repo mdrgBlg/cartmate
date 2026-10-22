@@ -14,7 +14,6 @@ import '/widgets/input_field.dart';
 import '/widgets/layouts/auth_layout.dart';
 import '/widgets/password_field.dart';
 import '../../app/home/home_screen.dart';
-import '../../app/home/providers/home_provider.dart';
 import '../forgot_password/forgot_password.dart';
 import '../forgot_password/providers/forgot_password_provider.dart';
 import '../signup/sign_up_providers/sign_up_provider.dart';
@@ -25,6 +24,21 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   static const routeName = '/login';
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (ctx) => LoginProvider(
+        authRepository: ctx.read<AuthRepository>(),
+        userRepository: ctx.read(),
+      ),
+      child: const _LoginScreen(),
+    );
+  }
+}
+
+class _LoginScreen extends StatelessWidget {
+  const _LoginScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -161,14 +175,7 @@ class LoginScreen extends StatelessWidget {
           );
           CustomNavigator(context).pushReplacement(
             routeName: HomeScreen.routeName,
-            screen: ChangeNotifierProvider(
-              create: (ctx) => HomeProvider(
-                userRepository: ctx.read(),
-                wishlistRepository: ctx.read(),
-                productRepository: ctx.read(),
-              ),
-              child: HomeScreen(),
-            ),
+            screen: const HomeScreen(),
           );
         } else {
           SnackBarPopup.showMessage(

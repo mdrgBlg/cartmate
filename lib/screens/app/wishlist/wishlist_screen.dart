@@ -5,10 +5,22 @@ import '/widgets/layouts/main_layout.dart';
 import '/widgets/products_grid_view/products_grid_view.dart';
 import 'providers/wishlist_provider.dart';
 
-class WhishlistScreen extends StatelessWidget {
-  const WhishlistScreen({super.key});
+class WishlistScreen extends StatelessWidget {
+  const WishlistScreen({super.key});
 
   static const routeName = '/wishlist';
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => WishlistProvider(wishlistRepository: context.read()),
+      child: const _WishlistScreen(),
+    );
+  }
+}
+
+class _WishlistScreen extends StatelessWidget {
+  const _WishlistScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -20,36 +32,32 @@ class WhishlistScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 28),
           child: Column(
+            spacing: 20,
             children: [
-              Row(
-                children: [
-                  const SizedBox(width: 20),
-                  Text(
-                    "Wishlist",
-                    style: textTheme.headlineSmall!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
               Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: FutureBuilder(
-                  future: provider.wishlistFuture,
-                  builder: (context, snapshot) =>
-                      snapshot.connectionState == ConnectionState.waiting
-                      ? const Center(child: CircularProgressIndicator())
-                      : snapshot.data == null
-                      ? Consumer<WishlistProvider>(
-                          builder: (_, wishlistProvider, child) =>
-                              ProductsGridView(
-                                productsList: wishlistProvider.products,
-                              ),
-                        )
-                      :
-                        /// TODO Handle error
-                        Text("Error"),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  "Wishlist",
+                  style: textTheme.headlineSmall!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
+              ),
+              FutureBuilder(
+                future: provider.wishlistFuture,
+                builder: (context, snapshot) =>
+                    snapshot.connectionState == ConnectionState.waiting
+                    ? const Center(child: CircularProgressIndicator())
+                    : snapshot.data == null
+                    ? Consumer<WishlistProvider>(
+                        builder: (_, wishlistProvider, child) =>
+                            ProductsGridView(
+                              productsList: wishlistProvider.products,
+                            ),
+                      )
+                    :
+                      /// TODO Handle error
+                      const Text("Error"),
               ),
             ],
           ),
