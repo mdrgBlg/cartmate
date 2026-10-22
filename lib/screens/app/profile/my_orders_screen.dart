@@ -17,6 +17,21 @@ class MyOrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (ctx) => MyOrdersProvider(
+        orderRepository: ctx.read(),
+        userRepository: ctx.read(),
+      ),
+      child: const _MyOrdersScreen(),
+    );
+  }
+}
+
+class _MyOrdersScreen extends StatelessWidget {
+  const _MyOrdersScreen();
+
+  @override
+  Widget build(BuildContext context) {
     final myOrdersProvider = Provider.of<MyOrdersProvider>(
       context,
       listen: false,

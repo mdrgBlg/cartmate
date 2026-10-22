@@ -19,6 +19,18 @@ class ForgotPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (ctx) => ForgotPasswordProvider(authRepository: ctx.read()),
+      child: const _ForgotPassword(),
+    );
+  }
+}
+
+class _ForgotPassword extends StatelessWidget {
+  const _ForgotPassword();
+
+  @override
+  Widget build(BuildContext context) {
     final provider = Provider.of<ForgotPasswordProvider>(
       context,
       listen: false,

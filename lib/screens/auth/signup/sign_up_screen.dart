@@ -24,6 +24,18 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (ctx) => SignUpProvider(authRepository: ctx.read()),
+      child: const _SignUpScreen(),
+    );
+  }
+}
+
+class _SignUpScreen extends StatelessWidget {
+  const _SignUpScreen();
+
+  @override
+  Widget build(BuildContext context) {
     return AuthLayout(
       cardMargin: const EdgeInsets.only(bottom: 52, left: 32, right: 32),
       child: Consumer<SignUpProvider>(

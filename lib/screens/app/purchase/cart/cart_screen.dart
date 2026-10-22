@@ -7,7 +7,6 @@ import '/widgets/custom_app_bar.dart';
 import '/widgets/custom_button.dart';
 import '/widgets/layouts/main_layout.dart';
 import '../checkout/checkout_screen.dart';
-import '../checkout/providers/checkout_provider.dart';
 import '../widgets/purchase_item/purchase_item.dart';
 import 'providers/cart_provider.dart';
 
@@ -15,6 +14,18 @@ class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
   static const routeName = '/cart';
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (ctx) => CartProvider(cartRepository: ctx.read()),
+      child: const _CartScreen(),
+    );
+  }
+}
+
+class _CartScreen extends StatelessWidget {
+  const _CartScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +65,9 @@ class CartScreen extends StatelessWidget {
                           onPress: () =>
                               CustomNavigator(context).pushNavigation(
                                 routeName: CheckoutScreen.routeName,
-                                screen: ChangeNotifierProvider(
-                                  create: (ctx) => CheckoutProvider(
-                                    userRepository: ctx.read(),
-                                    cartRepository: ctx.read(),
-                                    orderRepository: ctx.read(),
-                                    cartProducts: cartProvider.cartProducts,
-                                    checkoutPrice: cartProvider.checkoutPrice,
-                                  ),
-                                  child: const CheckoutScreen(),
+                                screen: CheckoutScreen(
+                                  cartProducts: cartProvider.cartProducts,
+                                  checkoutPrice: cartProvider.checkoutPrice,
                                 ),
                               ),
                         )

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '/utils/constants/custom_colors.dart';
 import '/screens/app/purchase/cart/cart_screen.dart';
-import '/screens/app/purchase/cart/providers/cart_provider.dart';
 import '/utils/custom_navigator.dart';
 import 'providers/shopping_cart_provider.dart';
 
@@ -30,10 +29,7 @@ class _ShoppingCartView extends StatelessWidget {
     return InkWell(
       onTap: () => CustomNavigator(context).pushNavigation(
         routeName: CartScreen.routeName,
-        screen: ChangeNotifierProvider(
-          create: (ctx) => CartProvider(cartRepository: ctx.read()),
-          child: const CartScreen(),
-        ),
+        screen: const CartScreen(),
       ),
       child: SizedBox(
         height: 48,
