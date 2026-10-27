@@ -28,7 +28,7 @@ class CheckoutModel {
     firstName: json["firstName"] as String,
     lastName: json["lastName"] as String,
     checkoutPrice: (json["checkoutPrice"] as num).toDouble(),
-    postalCode: (json["postalCode"] as num).toInt(),
+    postalCode: json["postalCode"] as String,
     items: (json["items"] as List<dynamic>)
         .map((e) => CartModel.fromJson(e as Map<String, dynamic>))
         .toList(),
@@ -46,7 +46,7 @@ class CheckoutModel {
   final String firstName;
   final String lastName;
   final double checkoutPrice;
-  final int postalCode;
+  final String postalCode;
   final List<CartModel?> items;
   final String? deliveryDate;
   final String orderDate;
