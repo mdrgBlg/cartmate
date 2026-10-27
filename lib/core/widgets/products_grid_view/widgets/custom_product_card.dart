@@ -4,6 +4,7 @@ import '/models/products_model.dart';
 import '/screens/app/product_details/product_details_screen.dart';
 import '../../../styles/custom_colors.dart';
 import '/utils/custom_navigator.dart';
+import '/utils/extensions/price_extension.dart';
 import '../../app_network_image.dart';
 import '../../wishlist_heart_button/wishlist_heart_button.dart';
 import 'product_cart_quantity/product_cart_quantity.dart';
@@ -20,6 +21,7 @@ class CustomProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final locale = Localizations.localeOf(context).toString();
 
     return InkWell(
       onTap: () => CustomNavigator(context).pushNavigation(
@@ -100,7 +102,10 @@ class CustomProductCard extends StatelessWidget {
                           children: [
                             if (productsModel.discount > 0)
                               Text(
-                                productsModel.price.toDouble().toString(),
+                                productsModel.price.formatPrice(
+                                  productsModel.currency,
+                                  locale: locale,
+                                ),
                                 style: textTheme.bodySmall!.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: CustomColors.customGrey,
@@ -109,7 +114,10 @@ class CustomProductCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             Text(
-                              productsModel.getPriceWithDiscountAndCurrency,
+                              productsModel.getPriceWithDiscount.formatPrice(
+                                productsModel.currency,
+                                locale: locale,
+                              ),
                               style: textTheme.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),

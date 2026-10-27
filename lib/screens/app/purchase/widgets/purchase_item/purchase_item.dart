@@ -6,6 +6,7 @@ import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/app_network_image.dart';
 import '/models/cart_model.dart';
+import '/utils/extensions/price_extension.dart';
 import 'providers/purchase_item_provider.dart';
 
 class PurchaseItem extends StatelessWidget {
@@ -246,7 +247,10 @@ class _CartQuantityAndPrice extends StatelessWidget {
             ),
             const Spacer(),
             Text(
-              cartModel.getTotalPriceWithCurrency,
+              cartModel.getTotalPrice.formatPrice(
+                cartModel.currency,
+                locale: Localizations.localeOf(context).toString(),
+              ),
               style: textTheme.bodyMedium!.copyWith(
                 fontWeight: FontWeight.bold,
               ),

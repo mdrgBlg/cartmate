@@ -10,6 +10,7 @@ import '/core/widgets/input_field.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/models/response_model.dart';
 import '/utils/assets/custom_icons.dart';
+import '/utils/extensions/price_extension.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
 import '../widgets/purchase_item/purchase_item.dart';
@@ -44,6 +45,8 @@ class _CheckoutScreen extends StatelessWidget {
       listen: false,
     );
     final textTheme = Theme.of(context).textTheme;
+    final locale = Localizations.localeOf(context).toString();
+    final currency = checkoutProvider.cartProducts.first.currency;
     return MainLayout(
       appBar: CustomAppBar(titleText: localization.checkoutOrderReview),
       child: SingleChildScrollView(
@@ -80,7 +83,10 @@ class _CheckoutScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${checkoutProvider.checkoutPrice.toString()} ${checkoutProvider.cartProducts.first.currency}",
+                          checkoutProvider.checkoutPrice.formatPrice(
+                            currency,
+                            locale: locale,
+                          ),
                           style: textTheme.bodySmall!.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -98,7 +104,10 @@ class _CheckoutScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${checkoutProvider.shippingFee} ${checkoutProvider.cartProducts.first.currency}",
+                          checkoutProvider.shippingFee.formatPrice(
+                            currency,
+                            locale: locale,
+                          ),
                           style: textTheme.bodySmall!.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -116,7 +125,10 @@ class _CheckoutScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${checkoutProvider.getTotalPrice().toString()} ${checkoutProvider.cartProducts.first.currency}",
+                          checkoutProvider.getTotalPrice().formatPrice(
+                            currency,
+                            locale: locale,
+                          ),
                           style: textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -282,8 +294,10 @@ class _CheckoutScreen extends StatelessWidget {
                             right: 20,
                           ),
                           buttonText: localization.checkoutButton(
-                            checkoutProvider.getTotalPrice().toString(),
-                            checkoutProvider.cartProducts.first.currency,
+                            checkoutProvider.getTotalPrice().formatPrice(
+                              currency,
+                              locale: locale,
+                            ),
                           ),
                           enable: checkoutProvider.isButtonEnabled,
                           onPress: () => onCheckoutTap(context),

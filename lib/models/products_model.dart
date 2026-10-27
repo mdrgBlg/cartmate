@@ -85,12 +85,6 @@ class ProductsModel {
   final int stock;
   final bool isWishlisted;
 
-  String get getPriceWithCurrency =>
-      "${price.toDouble().toString()} ${currency}";
-
-  String get getPriceWithDiscountAndCurrency =>
-      "${(price - price * (discount / 100))} ${currency}";
-
   double get getPriceWithDiscount => price - price * (discount / 100);
 
   ProductsModel copyWith({bool? isWishlisted}) => ProductsModel(
