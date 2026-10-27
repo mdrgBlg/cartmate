@@ -25,7 +25,7 @@ class BrandModel {
 
   final String id;
   final String brandName;
-  String iconName;
+  final String iconName;
   final int productCount;
 
   Map<String, dynamic> brandToMap() {
