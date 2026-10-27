@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/widgets/input_field.dart';
+import '/core/widgets/input_field.dart';
 import 'change_info_layout.dart';
 
 class ChangeUserInfo extends StatelessWidget {

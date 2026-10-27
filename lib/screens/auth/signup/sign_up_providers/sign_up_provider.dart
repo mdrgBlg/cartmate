@@ -3,15 +3,20 @@ import 'package:flutter/material.dart';
 import '/data/models/auth_exception.dart';
 import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
-import '/utils/common_utils.dart';
+import '/data/repositories/cart_repository.dart';
 import '/utils/extensions/date_time_extension.dart';
+import '/utils/extensions/exception_extension.dart';
 import '/utils/global_enums.dart';
 
 class SignUpProvider with ChangeNotifier {
-  SignUpProvider({required AuthRepository authRepository})
-    : _authRepository = authRepository;
+  SignUpProvider({
+    required AuthRepository authRepository,
+    required CartRepository cartRepository,
+  }) : _authRepository = authRepository,
+       _cartRepository = cartRepository;
 
   final AuthRepository _authRepository;
+  final CartRepository _cartRepository;
 
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -76,9 +81,11 @@ class SignUpProvider with ChangeNotifier {
     );
     switch (result) {
       case Success():
+        // Sign-up continues through the auto-login restore, so drop any stale cart.
+        await _cartRepository.clearCart();
         return true;
       case Failure(:final exception):
-        _error = fromException(exception);
+        _error = exception.getAuthErrorType();
         return false;
     }
   }

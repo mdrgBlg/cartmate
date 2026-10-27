@@ -27,20 +27,14 @@ class SnackBarPopup {
       SnackBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        margin: const EdgeInsets.symmetric(
-          horizontal: 8,
-        ),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         behavior: SnackBarBehavior.floating,
         content: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: 10,
-          ),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           alignment: AlignmentDirectional.center,
           decoration: BoxDecoration(
-            color: getMessageBgColor().withOpacity(0.8),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
-            ),
+            color: getMessageBgColor().withValues(alpha: 0.8),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
           ),
           child: Text(
             message,

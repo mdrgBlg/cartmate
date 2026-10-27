@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/core/styles/custom_colors.dart';
+import '/core/widgets/custom_app_bar.dart';
+import '/core/widgets/layouts/main_layout.dart';
+import '/utils/assets/custom_icons.dart';
 import '/utils/common_utils.dart';
-import '/utils/constants/custom_colors.dart';
-import '/utils/constants/custom_icons.dart';
 import '/utils/extensions/date_time_extension.dart';
-import '/widgets/custom_app_bar.dart';
-import '/widgets/layouts/main_layout.dart';
 import 'providers/my_orders_provider.dart';
 
 class MyOrdersScreen extends StatelessWidget {

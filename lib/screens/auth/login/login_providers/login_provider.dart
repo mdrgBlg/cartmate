@@ -3,18 +3,22 @@ import 'package:flutter/material.dart';
 import '/data/models/auth_exception.dart';
 import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
+import '/data/repositories/cart_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/models/user_info_model.dart';
-import '/utils/common_utils.dart';
+import '/utils/extensions/exception_extension.dart';
 
 class LoginProvider with ChangeNotifier {
   LoginProvider({
     required AuthRepository authRepository,
+    required CartRepository cartRepository,
     required UserRepository userRepository,
   }) : _authRepository = authRepository,
+       _cartRepository = cartRepository,
        _userRepository = userRepository;
 
   final AuthRepository _authRepository;
+  final CartRepository _cartRepository;
   final UserRepository _userRepository;
 
   final emailController = TextEditingController();
@@ -46,10 +50,12 @@ class LoginProvider with ChangeNotifier {
       case Success(:final data):
         _loggedInUser = data;
         _userRepository.setCurrentUser(_loggedInUser);
+        // Drop any cart left by a previous user who never logged out properly.
+        await _cartRepository.clearCart();
 
         return true;
       case Failure(:final exception):
-        _error = fromException(exception);
+        _error = exception.getAuthErrorType();
         return false;
     }
   }

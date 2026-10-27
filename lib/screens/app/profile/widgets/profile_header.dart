@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
+import '/core/styles/custom_colors.dart';
 import '/models/user_info_model.dart';
-import '/utils/constants/custom_colors.dart';
-import '/utils/constants/custom_icons.dart';
+import '/utils/assets/custom_icons.dart';
 import '/utils/global_enums.dart';
 import 'curved_edges.dart';
 

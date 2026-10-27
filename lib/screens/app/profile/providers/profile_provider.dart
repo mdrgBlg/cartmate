@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 import '/data/models/auth_exception.dart';
 import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
+import '/data/repositories/cart_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/models/user_info_model.dart';
-import '/utils/common_utils.dart';
+import '/utils/extensions/exception_extension.dart';
 import '/utils/global_enums.dart';
 
 class ProfileProvider with ChangeNotifier {
   ProfileProvider({
     required AuthRepository authRepository,
+    required CartRepository cartRepository,
     required UserRepository userRepository,
   }) : _authRepository = authRepository,
+       _cartRepository = cartRepository,
        _userRepository = userRepository {
     final userInfo = _userRepository.currentUser;
 
@@ -24,6 +27,7 @@ class ProfileProvider with ChangeNotifier {
   }
 
   final AuthRepository _authRepository;
+  final CartRepository _cartRepository;
   final UserRepository _userRepository;
 
   late final TextEditingController firstNameController;
@@ -107,8 +111,11 @@ class ProfileProvider with ChangeNotifier {
   Future<AuthErrorType?> signOut() async {
     final result = await _authRepository.signOut();
     _userRepository.clearCurrentUser();
+    if (result is Success<void>) {
+      await _cartRepository.clearCart();
+    }
     if (result case Failure(:final exception)) {
-      return fromException(exception);
+      return exception.getAuthErrorType();
     }
     return null;
   }

@@ -18,6 +18,7 @@ class WelcomeScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (ctx) => WelcomeProvider(
         authRepository: ctx.read(),
+        cartRepository: ctx.read(),
         userRepository: ctx.read(),
       ),
       child: const _WelcomeView(),
