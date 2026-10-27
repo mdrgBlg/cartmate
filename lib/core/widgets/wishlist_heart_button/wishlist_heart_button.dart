@@ -14,7 +14,7 @@ class WishlistHeartButton extends StatelessWidget {
     // The key recreates the provider when the owning list provider hands in a
     // product with a different flag (or a different product).
     return ChangeNotifierProvider(
-      key: ValueKey('${product.id}:${product.whishlist}'),
+      key: ValueKey('${product.id}:${product.isWishlisted}'),
       create: (context) => WishlistHeartProvider(
         wishlistRepository: context.read(),
         product: product,

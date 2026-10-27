@@ -35,7 +35,7 @@ class ProductDetailsProvider with ChangeNotifier {
 
   void _updateWishlistFlag() {
     final isWishlisted = _wishlistRepository.isWishlisted(_product.id);
-    _product = _product.copyWith(whishlist: isWishlisted);
+    _product = _product.copyWith(isWishlisted: isWishlisted);
   }
 
   void _onWishlistChanged() {

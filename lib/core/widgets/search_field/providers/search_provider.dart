@@ -68,7 +68,7 @@ class SearchProvider with ChangeNotifier {
   ProductsModel productAt(int index) {
     final product = _searchedProducts[index];
     return product.copyWith(
-      whishlist: _wishlistRepository.isWishlisted(product.id),
+      isWishlisted: _wishlistRepository.isWishlisted(product.id),
     );
   }
 

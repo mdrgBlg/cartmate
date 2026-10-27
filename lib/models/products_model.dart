@@ -12,7 +12,7 @@ class ProductsModel {
     required this.price,
     required this.productSize,
     required this.stock,
-    this.whishlist = false,
+    this.isWishlisted = false,
   });
 
   factory ProductsModel.fromDocument({
@@ -70,7 +70,7 @@ class ProductsModel {
       ',',
     ), // Split comma-separated string
     stock: json['stock'] as int,
-    whishlist: json['wishlist'] as int == 1,
+    isWishlisted: json['wishlist'] as int == 1,
   );
 
   final String id;
@@ -83,7 +83,7 @@ class ProductsModel {
   final int price;
   final List<String>? productSize;
   final int stock;
-  final bool whishlist;
+  final bool isWishlisted;
 
   String get getPriceWithCurrency =>
       "${price.toDouble().toString()} ${currency}";
@@ -93,7 +93,7 @@ class ProductsModel {
 
   double get getPriceWithDiscount => price - price * (discount / 100);
 
-  ProductsModel copyWith({bool? whishlist}) => ProductsModel(
+  ProductsModel copyWith({bool? isWishlisted}) => ProductsModel(
     id: id,
     brandModel: brandModel,
     categoryId: categoryId,
@@ -104,7 +104,7 @@ class ProductsModel {
     price: price,
     productSize: productSize,
     stock: stock,
-    whishlist: whishlist ?? this.whishlist,
+    isWishlisted: isWishlisted ?? this.isWishlisted,
   );
 
   Map<String, dynamic> toMap() {
