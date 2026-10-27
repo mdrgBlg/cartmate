@@ -69,7 +69,9 @@ class _CartScreen extends StatelessWidget {
                         enable: cartProvider.cartProducts.isNotEmpty,
                         onPress: () => CustomNavigator(context).pushNavigation(
                           routeName: CheckoutScreen.routeName,
-                          screen: const CheckoutScreen(),
+                          screen: CheckoutScreen(
+                            currency: cartProvider.cartProducts.first.currency,
+                          ),
                         ),
                       )
                     : const SizedBox(),
