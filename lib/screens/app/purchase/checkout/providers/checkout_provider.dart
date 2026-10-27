@@ -62,8 +62,7 @@ class CheckoutProvider with ChangeNotifier {
 
   Future<ResponseModel> orderProduct() async {
     final order = CheckoutModel(
-      orderId:
-          "#${firstNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(5, 7)}${lastNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(7, 9)}",
+      orderId: '',
       userId: _userRepository.currentUser?.id ?? '',
       address: addressController.text,
       city: cityController.text,
