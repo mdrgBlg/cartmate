@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/main_header/main_header.dart';
@@ -37,6 +38,7 @@ class _StoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final storeProvider = Provider.of<StoreProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
     return MainLayout(
@@ -44,9 +46,12 @@ class _StoreScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: MainHeader(text: "Store", contentColor: Colors.black),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: MainHeader(
+                text: localization.storeTitle,
+                contentColor: Colors.black,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -54,7 +59,7 @@ class _StoreScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Featured Brands",
+                    localization.storeFeaturedBrands,
                     style: textTheme.titleLarge!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -65,7 +70,10 @@ class _StoreScreen extends StatelessWidget {
                         brandsList: storeProvider.brands,
                       ),
                     ),
-                    child: Text("View all", style: textTheme.bodyMedium),
+                    child: Text(
+                      localization.storeViewAll,
+                      style: textTheme.bodyMedium,
+                    ),
                   ),
                 ],
               ),
@@ -119,9 +127,9 @@ class _StoreScreen extends StatelessWidget {
               builder: (_, data, __) {
                 final (categoryBrands, hasError) = data;
                 if (hasError) {
-                  return const Center(
+                  return Center(
                     heightFactor: 3,
-                    child: Text("Something went wrong. Please try again"),
+                    child: Text(localization.somethingWentWrong),
                   );
                 }
                 return Padding(
@@ -162,6 +170,7 @@ class _FeaturedBrands extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final storeProvider = context.read<StoreProvider>();
     return FutureBuilder<void>(
       future: storeProvider.loadFuture,
@@ -173,9 +182,9 @@ class _FeaturedBrands extends StatelessWidget {
           );
         }
         if (storeProvider.hasBrandsError) {
-          return const Center(
+          return Center(
             heightFactor: 3,
-            child: Text("Something went wrong. Please try again"),
+            child: Text(localization.somethingWentWrong),
           );
         }
         if (storeProvider.brands.isEmpty) {

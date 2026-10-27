@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/widgets/input_field.dart';
 import 'change_info_layout.dart';
 
@@ -21,6 +22,7 @@ class ChangeUserName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return ChangeInfoLayout(
       sectionTitle: sectionTitle,
       onSave: onSave,
@@ -30,14 +32,14 @@ class ChangeUserName extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 24),
             child: InputField(
-              hintText: "First name",
+              hintText: localization.firstName,
               controller: firstNameController,
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 24),
             child: InputField(
-              hintText: "Last name",
+              hintText: localization.lastName,
               controller: lastNameController,
             ),
           ),

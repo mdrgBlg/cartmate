@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/layouts/main_layout.dart';
@@ -29,10 +30,11 @@ class _CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
 
     return MainLayout(
-      appBar: const CustomAppBar(titleText: "Cart"),
+      appBar: CustomAppBar(titleText: localization.cartTitle),
       child: Stack(
         fit: StackFit.expand,
         alignment: Alignment.topCenter,
@@ -57,12 +59,14 @@ class _CartScreen extends StatelessWidget {
               child: Consumer<CartProvider>(
                 builder: (_, __, child) => cartProvider.cartProducts.isNotEmpty
                     ? CustomButton(
-                        buttonText:
-                            "Checkout ${cartProvider.checkoutPrice.toStringAsFixed(2)} ${cartProvider.cartProducts.first.currency}",
+                        buttonText: localization.checkoutButton(
+                          cartProvider.checkoutPrice.toStringAsFixed(2),
+                          cartProvider.cartProducts.first.currency,
+                        ),
                         enable: cartProvider.cartProducts.isNotEmpty,
                         onPress: () => CustomNavigator(context).pushNavigation(
                           routeName: CheckoutScreen.routeName,
-                          screen: CheckoutScreen(),
+                          screen: const CheckoutScreen(),
                         ),
                       )
                     : const SizedBox(),

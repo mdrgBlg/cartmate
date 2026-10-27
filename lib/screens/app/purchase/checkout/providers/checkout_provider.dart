@@ -80,11 +80,7 @@ class CheckoutProvider with ChangeNotifier {
     final result = await _orderRepository.saveOrder(order);
     return switch (result) {
       Success() => ResponseModel(success: true),
-      // TODO(l10n): orderSaveError
-      Failure() => ResponseModel(
-        success: false,
-        error: "Something went wrong. Please try again",
-      ),
+      Failure() => ResponseModel(success: false),
     };
   }
 }

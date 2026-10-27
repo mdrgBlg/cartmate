@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/app_network_image.dart';
 import '/models/brand_model.dart';
@@ -18,6 +19,7 @@ class BrandGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final localization = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
       child: GridView.builder(
@@ -98,9 +100,9 @@ class BrandGrid extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 2),
                                 Text(
-                                  brandList[index].productCount > 1
-                                      ? "products"
-                                      : "product",
+                                  localization.storeProductsLabel(
+                                    brandList[index].productCount,
+                                  ),
                                   style: textTheme.bodySmall!.copyWith(
                                     color: CustomColors.text.withValues(
                                       alpha: 0.4,

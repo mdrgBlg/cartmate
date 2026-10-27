@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/layouts/main_layout.dart';
@@ -13,11 +14,15 @@ class ViewAllBrandsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
 
     return MainLayout(
       backgroundColor: CustomColors.secondary,
-      appBar: const CustomAppBar(titleText: "Brand", type: AppBarType.dark),
+      appBar: CustomAppBar(
+        titleText: localization.storeBrand,
+        type: AppBarType.dark,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -25,7 +30,7 @@ class ViewAllBrandsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 20, bottom: 8),
             child: Text(
-              "Brands",
+              localization.storeBrands,
               style: textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.bold,
               ),

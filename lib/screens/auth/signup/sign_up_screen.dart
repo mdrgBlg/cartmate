@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/date_picker.dart';
 import '/core/widgets/gender_selector.dart';
@@ -39,6 +40,7 @@ class _SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return AuthLayout(
       cardMargin: const EdgeInsets.only(bottom: 52, left: 32, right: 32),
       child: Consumer<SignUpProvider>(
@@ -49,7 +51,7 @@ class _SignUpScreen extends StatelessWidget {
               children: [
                 Flexible(
                   child: InputField(
-                    hintText: "First name",
+                    hintText: localization.firstName,
                     onInputChanged: () {
                       signUpProvider.validateField();
                     },
@@ -58,7 +60,7 @@ class _SignUpScreen extends StatelessWidget {
                 ),
                 Flexible(
                   child: InputField(
-                    hintText: "Last name",
+                    hintText: localization.lastName,
                     onInputChanged: () {
                       signUpProvider.validateField();
                     },
@@ -70,7 +72,7 @@ class _SignUpScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 12),
               child: InputField(
-                hintText: "Username",
+                hintText: localization.signUpUsername,
                 onInputChanged: () {
                   signUpProvider.validateField();
                 },
@@ -80,7 +82,7 @@ class _SignUpScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 12),
               child: InputField(
-                hintText: "E-mail",
+                hintText: localization.signUpEmail,
                 onInputChanged: () {
                   signUpProvider.validateField();
                 },
@@ -90,7 +92,7 @@ class _SignUpScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 12, bottom: 8),
               child: InputField(
-                hintText: "Phone number",
+                hintText: localization.signUpPhoneNumber,
                 onInputChanged: () {
                   signUpProvider.validateField();
                 },
@@ -136,7 +138,7 @@ class _SignUpScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: PasswordField(
-                hintText: "Password:",
+                hintText: localization.signUpPassword,
                 onInputChanged: () {
                   signUpProvider.validateField();
                 },
@@ -144,7 +146,7 @@ class _SignUpScreen extends StatelessWidget {
               ),
             ),
             CustomButton(
-              buttonText: "Sign Up",
+              buttonText: localization.signUpButton,
               enable: signUpProvider.signUpButtonEnable,
               onPress: () {
                 bool isSuccess = false;
@@ -160,7 +162,7 @@ class _SignUpScreen extends StatelessWidget {
                     if (isSuccess) {
                       SnackBarPopup.showMessage(
                         context,
-                        message: "You successfully signed up!",
+                        message: localization.signUpSuccess,
                         snackBarMessageType: SnackBarMessageType.success,
                       );
                       CustomNavigator(context).pushReplacement(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/app_network_image.dart';
 import '/core/widgets/custom_app_bar.dart';
@@ -38,6 +39,7 @@ class _ProductDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final provider = Provider.of<ProductDetailsProvider>(
       context,
       listen: false,
@@ -160,11 +162,14 @@ class _ProductDetailsScreen extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text('Stock: ', style: textTheme.bodyMedium),
+                      Text(
+                        localization.productStock,
+                        style: textTheme.bodyMedium,
+                      ),
                       Text(
                         provider.product.stock > 0
-                            ? "In stock"
-                            : "Out of stock",
+                            ? localization.productInStock
+                            : localization.productOutOfStock,
                         style: textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -179,7 +184,9 @@ class _ProductDetailsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Consumer<ProductDetailsProvider>(
                       builder: (context, sizeProvider, _) => CustomButton(
-                        buttonText: "Add to cart",
+                        buttonText: AppLocalizations.of(
+                          context,
+                        ).productAddToCart,
                         enable:
                             sizeProvider.selectedSize != null ||
                             provider.product.productSize == null,
@@ -192,7 +199,9 @@ class _ProductDetailsScreen extends StatelessWidget {
                           provider.addToCart(cartModel);
                           SnackBarPopup.showMessage(
                             context,
-                            message: "Product is added to cart",
+                            message: AppLocalizations.of(
+                              context,
+                            ).productAddedToCart,
                             snackBarMessageType: SnackBarMessageType.success,
                           );
                         },

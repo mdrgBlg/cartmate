@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/utils/global_enums.dart';
 import '../styles/custom_colors.dart';
 
@@ -29,12 +30,13 @@ class _GenderSelectorState extends State<GenderSelector> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
 
     return DropdownButton<Gender>(
       padding: EdgeInsets.zero,
       hint: Text(
-        'Gender',
+        localization.gender,
         style: textTheme.bodyMedium!.copyWith(color: CustomColors.grayDark),
       ),
       underline: const Divider(color: Colors.black, height: 0),
@@ -47,7 +49,7 @@ class _GenderSelectorState extends State<GenderSelector> {
         return DropdownMenuItem<Gender>(
           value: value,
           child: Text(
-            value.genderName(),
+            value.genderName(localization),
             style: textTheme.headlineSmall!.copyWith(fontSize: 16),
           ),
         );
