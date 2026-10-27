@@ -427,8 +427,8 @@ abstract class AppLocalizations {
   /// No description provided for @checkoutButton.
   ///
   /// In en, this message translates to:
-  /// **'Checkout {price} {currency}'**
-  String checkoutButton(String price, String currency);
+  /// **'Checkout {price}'**
+  String checkoutButton(String price);
 
   /// No description provided for @checkoutOrderReview.
   ///

@@ -28,9 +28,6 @@ class CartModel {
 
   double get getTotalPrice => productModel.getPriceWithDiscount * quantity;
 
-  String get getTotalPriceWithCurrency =>
-      "${(productModel.getPriceWithDiscount * quantity)} $currency";
-
   CartModel copyWith({int? quantity}) => CartModel(
     productModel: productModel,
     size: size,
