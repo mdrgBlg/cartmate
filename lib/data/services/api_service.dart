@@ -4,15 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/models/brand_model.dart';
 import '/models/categories_model.dart';
-import '/models/checkout_model.dart';
 import '/models/products_model.dart';
 import '/models/user_info_model.dart';
 import '/utils/constants/firebase_collection_constants.dart';
 import '/utils/global_enums.dart';
 import '../models/result.dart';
 import 'firebase_service.dart';
-// import '../checkout_models/checkout_model.dart';
-// import '/models/response_model.dart';
 
 class ApiService {
   ApiService({required FirebaseService firebaseService})
@@ -81,9 +78,6 @@ class ApiService {
     'lastName': lastName,
   }, 'updateUserName');
 
-  Future<Result<void>> updateEmail(String userId, String value) =>
-      _updateUser(userId, {'email': value}, 'updateEmail');
-
   Future<Result<void>> updateUsername(String userId, String value) =>
       _updateUser(userId, {'username': value}, 'updateUsername');
 
@@ -97,24 +91,6 @@ class ApiService {
       _updateUser(userId, {
         'dateOfBirth': value.toString(),
       }, 'updateDateOfBirth');
-
-  Future<Result<List<CheckoutModel>>> fetchMyOrders(String userId) async {
-    try {
-      final response = await _users()
-          .doc(userId)
-          .collection(FirebaseCollectionConstants.ordersCollection)
-          .get();
-      return Success(
-        response.docs.map((e) => CheckoutModel.fromJson(e.data())).toList(),
-      );
-    } on FirebaseException catch (e) {
-      log("FirebaseException fetchMyOrders: $e");
-      return Failure(Exception(e));
-    } catch (e) {
-      log("Exception fetchMyOrders: $e");
-      return Failure(Exception(e));
-    }
-  }
 
   Future<Result<List<ProductsModel>>> fetchProducts() async {
     try {
@@ -173,25 +149,4 @@ class ApiService {
       return Failure(Exception(e));
     }
   }
-
-  // static Future<ResponseModel> orderProduct(CheckoutModel checkoutModel) async {
-  //   final FirebaseFirestore db = FirebaseFirestore.instance;
-  //   try {
-  //     await db
-  //         .collection(FirebaseCollectionConstants.users)
-  //         .doc(checkoutModel.userId)
-  //         .collection(FirebaseCollectionConstants.orders)
-  //         .add(checkoutModel.toMap());
-  //     return ResponseModel(success: true);
-  //   } on FirebaseException catch (e) {
-  //     log("FirebaseException saveUserData: $e");
-  //     return ResponseModel(success: false, error: e.message);
-  //   } catch (e) {
-  //     log("Exception saveUserData: $e");
-  //     return ResponseModel(
-  //       success: false,
-  //       error: "Something went wrong. Please try again",
-  //     );
-  //   }
-  // }
 }

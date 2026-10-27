@@ -122,22 +122,6 @@ class ProductsModel {
     whishlist: whishlist ?? this.whishlist,
   );
 
-  Map<String, dynamic> productToMap() {
-    return {
-      'id': id,
-      'brandId': brandModel?.id,
-      'categoryId': categoryId,
-      'currency': currency,
-      'productImage': productImageList.join(','),
-      'productName': productName,
-      'discount': discount,
-      'price': price,
-      'productSize': productSize != null ? productSize!.join(',') : "",
-      'stock': stock,
-      'wishlist': whishlist ? 1 : 0,
-    };
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -148,6 +132,7 @@ class ProductsModel {
       'productName': productName,
       'discount': discount,
       'price': price,
+      'productSize': productSize,
       'stock': stock,
     };
   }

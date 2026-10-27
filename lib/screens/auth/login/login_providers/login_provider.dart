@@ -5,6 +5,7 @@ import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/user_repository.dart';
+import '/data/repositories/wishlist_repository.dart';
 import '/models/user_info_model.dart';
 import '/utils/extensions/exception_extension.dart';
 
@@ -13,13 +14,16 @@ class LoginProvider with ChangeNotifier {
     required AuthRepository authRepository,
     required CartRepository cartRepository,
     required UserRepository userRepository,
+    required WishlistRepository wishlistRepository,
   }) : _authRepository = authRepository,
        _cartRepository = cartRepository,
-       _userRepository = userRepository;
+       _userRepository = userRepository,
+       _wishlistRepository = wishlistRepository;
 
   final AuthRepository _authRepository;
   final CartRepository _cartRepository;
   final UserRepository _userRepository;
+  final WishlistRepository _wishlistRepository;
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -52,6 +56,7 @@ class LoginProvider with ChangeNotifier {
         _userRepository.setCurrentUser(_loggedInUser);
         // Drop any cart left by a previous user who never logged out properly.
         await _cartRepository.clearCart();
+        _wishlistRepository.clear();
 
         return true;
       case Failure(:final exception):

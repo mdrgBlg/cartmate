@@ -28,6 +28,7 @@ class ProfileScreen extends StatelessWidget {
         authRepository: context.read(),
         cartRepository: context.read(),
         userRepository: context.read(),
+        wishlistRepository: context.read(),
       ),
       child: const _ProfileScreen(),
     );
@@ -103,14 +104,6 @@ class _ProfileScreen extends StatelessWidget {
                     InformationWidget(
                       sectionTitle: localization.profileEmail,
                       sectionText: "${userInfo?.email}",
-                      onTap: () => navigator.pushNavigation(
-                        screen: ChangeUserInfo(
-                          sectionTitle: localization.profileEmail,
-                          controller: profileProvider.emailController,
-                          onSave: profileProvider.changeEmail,
-                          onSuccess: profileProvider.setEmail,
-                        ),
-                      ),
                     ),
                     InformationWidget(
                       sectionTitle: localization.profilePhoneNumber,
