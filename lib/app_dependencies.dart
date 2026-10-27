@@ -22,7 +22,7 @@ List<SingleChildWidget> injectServiceDependencies() {
     Provider(create: (context) => AuthService(firebaseService: context.read())),
     Provider(create: (context) => ApiService(firebaseService: context.read())),
     Provider(
-      create: (context) => WishlistService(databaseService: context.read()),
+      create: (context) => WishlistService(firebaseService: context.read()),
     ),
     Provider(
       create: (context) => OrderService(firebaseService: context.read()),

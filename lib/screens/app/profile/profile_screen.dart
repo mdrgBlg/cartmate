@@ -28,6 +28,7 @@ class ProfileScreen extends StatelessWidget {
         authRepository: context.read(),
         cartRepository: context.read(),
         userRepository: context.read(),
+        wishlistRepository: context.read(),
       ),
       child: const _ProfileScreen(),
     );
