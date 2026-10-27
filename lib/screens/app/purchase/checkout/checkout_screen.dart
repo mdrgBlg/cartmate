@@ -16,7 +16,9 @@ import '../widgets/purchase_item/purchase_item.dart';
 import 'providers/checkout_provider.dart';
 
 class CheckoutScreen extends StatelessWidget {
-  const CheckoutScreen({super.key});
+  const CheckoutScreen({required this.currency, super.key});
+
+  final String currency;
 
   static const routeName = '/checkout';
 
@@ -28,13 +30,15 @@ class CheckoutScreen extends StatelessWidget {
         cartRepository: ctx.read(),
         orderRepository: ctx.read(),
       ),
-      child: const _CheckoutScreen(),
+      child: _CheckoutScreen(currency: currency),
     );
   }
 }
 
 class _CheckoutScreen extends StatelessWidget {
-  const _CheckoutScreen();
+  const _CheckoutScreen({required this.currency});
+
+  final String currency;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +49,6 @@ class _CheckoutScreen extends StatelessWidget {
     );
     final textTheme = Theme.of(context).textTheme;
     final locale = Localizations.localeOf(context).toString();
-    final currency = checkoutProvider.cartProducts.first.currency;
     return MainLayout(
       appBar: CustomAppBar(titleText: localization.checkoutOrderReview),
       child: SingleChildScrollView(

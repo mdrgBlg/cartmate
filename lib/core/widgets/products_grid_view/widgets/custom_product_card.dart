@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '/models/products_model.dart';
 import '/screens/app/product_details/product_details_screen.dart';
-import '../../../styles/custom_colors.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/extensions/price_extension.dart';
+import '../../../styles/custom_colors.dart';
 import '../../app_network_image.dart';
 import '../../wishlist_heart_button/wishlist_heart_button.dart';
 import 'product_cart_quantity/product_cart_quantity.dart';
@@ -46,20 +46,21 @@ class CustomProductCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: AppNetworkImage(
-                      imageUrl: productsModel.productImageList.first,
-                      height: 140,
-                      errorIconSize: 64,
+                if (productsModel.productImageList.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: AppNetworkImage(
+                        imageUrl: productsModel.productImageList.first,
+                        height: 140,
+                        errorIconSize: 64,
+                      ),
                     ),
                   ),
-                ),
                 Container(
                   margin: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                   child: Text(
