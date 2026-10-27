@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/app_network_image.dart';
 import '/models/cart_model.dart';
@@ -52,6 +53,7 @@ class _PurchaseItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final localization = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
       child: Container(
@@ -133,7 +135,11 @@ class _PurchaseItemView extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                               children: [
-                                const TextSpan(text: "Size: "),
+                                TextSpan(
+                                  text: AppLocalizations.of(
+                                    context,
+                                  ).purchaseItemSize,
+                                ),
                                 TextSpan(
                                   text: cartModel.size,
                                   style: textTheme.bodySmall!.copyWith(
@@ -155,7 +161,9 @@ class _PurchaseItemView extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                                 children: [
-                                  const TextSpan(text: "Quantity: "),
+                                  TextSpan(
+                                    text: localization.purchaseItemQuantity,
+                                  ),
                                   TextSpan(
                                     text: cartModel.quantity.toString(),
                                     style: textTheme.bodySmall!.copyWith(

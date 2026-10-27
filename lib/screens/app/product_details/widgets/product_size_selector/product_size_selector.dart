@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import 'providers/product_size_provider.dart';
 
@@ -30,6 +31,7 @@ class _SizeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
 
     return Align(
@@ -41,7 +43,7 @@ class _SizeView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Text(
-              "Size",
+              localization.productSize,
               style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
             ),
           ),

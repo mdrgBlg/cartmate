@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/layouts/main_layout.dart';
@@ -69,6 +70,7 @@ class _BrandProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final provider = Provider.of<BrandProductsProvider>(context, listen: false);
     return FutureBuilder<void>(
       future: provider.loadFuture,
@@ -84,10 +86,9 @@ class _BrandProducts extends StatelessWidget {
           builder: (_, data, __) {
             final (products, hasError) = data;
             if (hasError) {
-              return const Center(
+              return Center(
                 heightFactor: 3,
-                // TODO(l10n): genericError
-                child: Text("Something went wrong. Please try again"),
+                child: Text(localization.somethingWentWrong),
               );
             }
             return ProductsGridView(productsList: products);

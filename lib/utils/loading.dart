@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 
 class Loading {
@@ -10,6 +11,7 @@ class Loading {
     VoidCallback? onFinished,
   }) async {
     final textTheme = Theme.of(context).textTheme;
+    final localization = AppLocalizations.of(context);
     // showDialog pushes onto the root navigator, so the same one must pop it.
     final navigator = Navigator.of(context, rootNavigator: true);
 
@@ -25,7 +27,7 @@ class Loading {
               const SpinKitThreeInOut(color: CustomColors.primary, size: 36.0),
               const SizedBox(height: 12),
               Text(
-                "Loading...", // TODO(l10n): loading
+                localization.loading,
                 style: textTheme.bodyLarge?.copyWith(
                   color: Colors.white,
                   fontSize: 20,

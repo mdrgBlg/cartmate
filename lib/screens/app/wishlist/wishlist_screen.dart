@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
 import 'providers/wishlist_provider.dart';
@@ -24,6 +25,7 @@ class _WishlistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final provider = Provider.of<WishlistProvider>(context, listen: false);
     return MainLayout(
@@ -37,7 +39,7 @@ class _WishlistScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Wishlist",
+                  localization.wishlistTitle,
                   style: textTheme.headlineSmall!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -57,7 +59,7 @@ class _WishlistScreen extends StatelessWidget {
                       )
                     :
                       /// TODO Handle error
-                      const Text("Error"),
+                      Text(localization.wishlistError),
               ),
             ],
           ),

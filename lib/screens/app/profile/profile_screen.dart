@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/screens/app/profile/my_orders_screen.dart';
 import '/utils/custom_navigator.dart';
@@ -38,6 +39,7 @@ class _ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final profileProvider = Provider.of<ProfileProvider>(
       context,
       listen: false,
@@ -63,15 +65,15 @@ class _ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 ProfileSection(
-                  title: "Profile information",
+                  title: localization.profileInformation,
                   children: [
                     InformationWidget(
-                      sectionTitle: "Name",
+                      sectionTitle: localization.profileName,
                       sectionText:
                           "${userInfo?.firstName} ${userInfo?.lastName}",
                       onTap: () => navigator.pushNavigation(
                         screen: ChangeUserName(
-                          sectionTitle: "Name",
+                          sectionTitle: localization.profileName,
                           firstNameController:
                               profileProvider.firstNameController,
                           lastNameController:
@@ -82,11 +84,11 @@ class _ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     InformationWidget(
-                      sectionTitle: "Username",
+                      sectionTitle: localization.profileUsername,
                       sectionText: "${userInfo?.username}",
                       onTap: () => navigator.pushNavigation(
                         screen: ChangeUserInfo(
-                          sectionTitle: "Username",
+                          sectionTitle: localization.profileUsername,
                           controller: profileProvider.usernameController,
                           onSave: profileProvider.changeUsername,
                           onSuccess: profileProvider.setUsername,
@@ -96,14 +98,14 @@ class _ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 ProfileSection(
-                  title: "Personal information",
+                  title: localization.profilePersonalInformation,
                   children: [
                     InformationWidget(
-                      sectionTitle: "E-mail",
+                      sectionTitle: localization.profileEmail,
                       sectionText: "${userInfo?.email}",
                       onTap: () => navigator.pushNavigation(
                         screen: ChangeUserInfo(
-                          sectionTitle: "E-mail",
+                          sectionTitle: localization.profileEmail,
                           controller: profileProvider.emailController,
                           onSave: profileProvider.changeEmail,
                           onSuccess: profileProvider.setEmail,
@@ -111,11 +113,11 @@ class _ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     InformationWidget(
-                      sectionTitle: "Phone Number",
+                      sectionTitle: localization.profilePhoneNumber,
                       sectionText: "${userInfo?.phoneNumber}",
                       onTap: () => navigator.pushNavigation(
                         screen: ChangeUserInfo(
-                          sectionTitle: "Phone Number",
+                          sectionTitle: localization.profilePhoneNumber,
                           controller: profileProvider.phoneController,
                           onSave: profileProvider.changePhoneNumber,
                           onSuccess: profileProvider.setPhoneNumber,
@@ -123,11 +125,12 @@ class _ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     InformationWidget(
-                      sectionTitle: "Gender",
-                      sectionText: "${userInfo?.gender.genderName()}",
+                      sectionTitle: localization.gender,
+                      sectionText:
+                          "${userInfo?.gender.genderName(localization)}",
                       onTap: () => navigator.pushNavigation(
                         screen: ChangeGender(
-                          sectionTitle: "Gender",
+                          sectionTitle: localization.gender,
                           initialGender: profileProvider.userInfo?.gender,
                           onSave: profileProvider.changeGender,
                           onSuccess: profileProvider.setGender,
@@ -135,11 +138,11 @@ class _ProfileScreen extends StatelessWidget {
                       ),
                     ),
                     InformationWidget(
-                      sectionTitle: "Date of Birth",
+                      sectionTitle: localization.profileDateOfBirth,
                       sectionText: userInfo?.dateOfBirth.formatDateTime() ?? '',
                       onTap: () => navigator.pushNavigation(
                         screen: ChangeDateOfBirth(
-                          sectionTitle: "Date of Birth",
+                          sectionTitle: localization.profileDateOfBirth,
                           initialDate: profileProvider.userInfo?.dateOfBirth,
                           onSave: profileProvider.changeDateOfBirth,
                           onSuccess: profileProvider.setDateOfBirth,

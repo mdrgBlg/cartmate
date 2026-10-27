@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/layouts/main_layout.dart';
@@ -32,13 +33,14 @@ class _MyOrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final myOrdersProvider = Provider.of<MyOrdersProvider>(
       context,
       listen: false,
     );
     final textTheme = Theme.of(context).textTheme;
     return MainLayout(
-      appBar: const CustomAppBar(titleText: "My Orders"),
+      appBar: CustomAppBar(titleText: localization.myOrdersTitle),
       backgroundColor: Colors.white,
       child: FutureBuilder<void>(
         future: myOrdersProvider.myOrdersFuture,
@@ -48,8 +50,7 @@ class _MyOrdersScreen extends StatelessWidget {
             : snapshot.hasError || myOrdersProvider.hasError
             ? Center(
                 child: Text(
-                  // TODO(l10n): myOrdersError
-                  "Something went wrong. Please try again",
+                  localization.somethingWentWrong,
                   style: textTheme.bodyMedium,
                 ),
               )
@@ -82,7 +83,7 @@ class _MyOrdersScreen extends StatelessWidget {
                                 children: [
                                   if (orderStatus != null)
                                     Text(
-                                      orderStatus.name,
+                                      orderStatus.statusName(localization),
                                       style: textTheme.bodySmall!.copyWith(
                                         color: CustomColors.primary,
                                         fontWeight: FontWeight.bold,
@@ -117,7 +118,7 @@ class _MyOrdersScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Order",
+                                    localization.myOrdersOrder,
                                     style: textTheme.bodySmall!.copyWith(
                                       color: CustomColors.grayDark.withValues(
                                         alpha: 0.8,
@@ -145,7 +146,7 @@ class _MyOrdersScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Shipping Date",
+                                    localization.myOrdersShippingDate,
                                     style: textTheme.bodySmall!.copyWith(
                                       color: CustomColors.grayDark.withValues(
                                         alpha: 0.8,
@@ -158,7 +159,7 @@ class _MyOrdersScreen extends StatelessWidget {
                                     myOrdersProvider
                                             .myOrders[index]
                                             .deliveryDate ??
-                                        "Unknown",
+                                        localization.myOrdersUnknown,
                                     style: textTheme.bodyMedium!.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),

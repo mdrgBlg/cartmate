@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/main_header/main_header.dart';
@@ -36,6 +37,7 @@ class _HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
 
@@ -83,7 +85,7 @@ class _HomeScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Popular Products",
+                              localization.homePopularProducts,
                               style: textTheme.titleLarge!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -97,9 +99,11 @@ class _HomeScreen extends StatelessWidget {
                             snapshot.connectionState == ConnectionState.waiting
                             ? const Center(child: CircularProgressIndicator())
                             : homeProvider.hasProductsError
-                            ? const Center(
+                            ? Center(
                                 child: Text(
-                                  "Something went wrong. Please try again",
+                                  AppLocalizations.of(
+                                    context,
+                                  ).somethingWentWrong,
                                 ),
                               )
                             : Consumer<HomeProvider>(
@@ -125,6 +129,7 @@ class _HomeSearchAndCategories extends StatelessWidget {
   const _HomeSearchAndCategories();
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
 
@@ -136,7 +141,7 @@ class _HomeSearchAndCategories extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 94, 20, 0),
               child: Text(
-                "Popular Categories",
+                localization.homePopularCategories,
                 style: textTheme.bodyLarge!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -176,9 +181,9 @@ class _HomeSearchAndCategories extends StatelessWidget {
             ),
           ],
         ),
-        const Padding(
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-          child: SearchField(hintText: "Search product..."),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+          child: SearchField(hintText: localization.homeSearchHint),
         ),
       ],
     );

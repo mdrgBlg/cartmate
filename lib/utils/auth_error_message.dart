@@ -1,31 +1,32 @@
 import 'package:flutter/widgets.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/data/models/auth_exception.dart';
 
 extension AuthErrorMessage on AuthErrorType {
-  // `context` is unused until l10n lands; it will resolve the ARB strings.
   String message(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     switch (this) {
       case AuthErrorType.invalidEmail:
-        return "Please enter a valid email address."; // TODO(l10n): authErrorInvalidEmail
+        return localization.authErrorInvalidEmail;
       case AuthErrorType.invalidCredentials:
-        return "Incorrect email or password."; // TODO(l10n): authErrorInvalidCredentials
+        return localization.authErrorInvalidCredentials;
       case AuthErrorType.userNotFound:
-        return "No account found for this email."; // TODO(l10n): authErrorUserNotFound
+        return localization.authErrorUserNotFound;
       case AuthErrorType.userDisabled:
-        return "This account has been disabled."; // TODO(l10n): authErrorUserDisabled
+        return localization.authErrorUserDisabled;
       case AuthErrorType.emailAlreadyInUse:
-        return "An account already exists for this email."; // TODO(l10n): authErrorEmailAlreadyInUse
+        return localization.authErrorEmailAlreadyInUse;
       case AuthErrorType.weakPassword:
-        return "The password is too weak."; // TODO(l10n): authErrorWeakPassword
+        return localization.authErrorWeakPassword;
       case AuthErrorType.tooManyRequests:
-        return "Too many attempts. Please try again later."; // TODO(l10n): authErrorTooManyRequests
+        return localization.authErrorTooManyRequests;
       case AuthErrorType.networkError:
-        return "Network error. Check your connection and try again."; // TODO(l10n): authErrorNetwork
+        return localization.authErrorNetwork;
       case AuthErrorType.operationNotAllowed:
-        return "This sign-in method is not enabled."; // TODO(l10n): authErrorOperationNotAllowed
+        return localization.authErrorOperationNotAllowed;
       case AuthErrorType.unknown:
-        return "Something went wrong. Please try again"; // TODO(l10n): authErrorUnknown
+        return localization.authErrorUnknown;
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
@@ -37,13 +38,14 @@ class _CheckoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final checkoutProvider = Provider.of<CheckoutProvider>(
       context,
       listen: false,
     );
     final textTheme = Theme.of(context).textTheme;
     return MainLayout(
-      appBar: const CustomAppBar(titleText: "Order review"),
+      appBar: CustomAppBar(titleText: localization.checkoutOrderReview),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -72,7 +74,7 @@ class _CheckoutScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Subtotal",
+                          localization.checkoutSubtotal,
                           style: textTheme.bodySmall!.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -90,7 +92,7 @@ class _CheckoutScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Shipping fee",
+                          localization.checkoutShippingFee,
                           style: textTheme.bodySmall!.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -108,7 +110,7 @@ class _CheckoutScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Order total",
+                          localization.checkoutOrderTotal,
                           style: textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -127,7 +129,7 @@ class _CheckoutScreen extends StatelessWidget {
                     Container(
                       alignment: AlignmentDirectional.centerStart,
                       child: Text(
-                        "Payment method",
+                        localization.checkoutPaymentMethod,
                         style: textTheme.bodyLarge!.copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -142,7 +144,7 @@ class _CheckoutScreen extends StatelessWidget {
                           Image.asset(CustomIcons.cash),
                           const SizedBox(width: 16),
                           Text(
-                            "Cash",
+                            localization.checkoutCash,
                             style: textTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -154,7 +156,7 @@ class _CheckoutScreen extends StatelessWidget {
                     Container(
                       alignment: AlignmentDirectional.centerStart,
                       child: Text(
-                        "Shipping data",
+                        localization.checkoutShippingData,
                         style: textTheme.bodyLarge!.copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -166,7 +168,7 @@ class _CheckoutScreen extends StatelessWidget {
                       children: [
                         Flexible(
                           child: InputField(
-                            hintText: "First name:",
+                            hintText: localization.checkoutFirstName,
                             controller: checkoutProvider.firstNameController,
                             onInputChanged: () =>
                                 checkoutProvider.buttonChecker(),
@@ -174,7 +176,7 @@ class _CheckoutScreen extends StatelessWidget {
                         ),
                         Flexible(
                           child: InputField(
-                            hintText: "Last name:",
+                            hintText: localization.checkoutLastName,
                             controller: checkoutProvider.lastNameController,
                             onInputChanged: () =>
                                 checkoutProvider.buttonChecker(),
@@ -184,7 +186,7 @@ class _CheckoutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     InputField(
-                      hintText: "E-mail:",
+                      hintText: localization.checkoutEmail,
                       controller: checkoutProvider.emailController,
                       onInputChanged: () => checkoutProvider.buttonChecker(),
                     ),
@@ -193,7 +195,7 @@ class _CheckoutScreen extends StatelessWidget {
                       children: [
                         Flexible(
                           child: InputField(
-                            hintText: "Country:",
+                            hintText: localization.checkoutCountry,
                             controller: checkoutProvider.countryController,
                             onInputChanged: () =>
                                 checkoutProvider.buttonChecker(),
@@ -201,21 +203,23 @@ class _CheckoutScreen extends StatelessWidget {
                             onTap: () => showCountryPicker(
                               context: context,
                               useSafeArea: true,
-                              countryListTheme: const CountryListThemeData(
+                              countryListTheme: CountryListThemeData(
                                 flagSize: 25,
                                 backgroundColor: Colors.white,
-                                textStyle: TextStyle(fontSize: 16),
+                                textStyle: const TextStyle(fontSize: 16),
                                 bottomSheetHeight: 500,
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20.0),
                                   topRight: Radius.circular(20.0),
                                 ),
                                 //Optional. Styles the search field.
                                 inputDecoration: InputDecoration(
-                                  labelText: 'Search',
-                                  hintText: 'Start typing to search',
-                                  prefixIcon: Icon(Icons.search),
-                                  border: OutlineInputBorder(
+                                  labelText:
+                                      localization.checkoutCountrySearchLabel,
+                                  hintText:
+                                      localization.checkoutCountrySearchHint,
+                                  prefixIcon: const Icon(Icons.search),
+                                  border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: CustomColors.primary,
                                     ),
@@ -232,7 +236,7 @@ class _CheckoutScreen extends StatelessWidget {
                         ),
                         Flexible(
                           child: InputField(
-                            hintText: "City:",
+                            hintText: localization.checkoutCity,
                             controller: checkoutProvider.cityController,
                             onInputChanged: () =>
                                 checkoutProvider.buttonChecker(),
@@ -245,7 +249,7 @@ class _CheckoutScreen extends StatelessWidget {
                       children: [
                         Flexible(
                           child: InputField(
-                            hintText: "Zip code:",
+                            hintText: localization.checkoutZipCode,
                             controller: checkoutProvider.zipCodeController,
                             onInputChanged: () =>
                                 checkoutProvider.buttonChecker(),
@@ -253,7 +257,7 @@ class _CheckoutScreen extends StatelessWidget {
                         ),
                         Flexible(
                           child: InputField(
-                            hintText: "Phone number:",
+                            hintText: localization.checkoutPhoneNumber,
                             controller: checkoutProvider.phoneNumberController,
                             onInputChanged: () =>
                                 checkoutProvider.buttonChecker(),
@@ -263,7 +267,7 @@ class _CheckoutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     InputField(
-                      hintText: "Address:",
+                      hintText: localization.checkoutAddress,
                       controller: checkoutProvider.addressController,
                       onInputChanged: () => checkoutProvider.buttonChecker(),
                     ),
@@ -277,8 +281,10 @@ class _CheckoutScreen extends StatelessWidget {
                             left: 20,
                             right: 20,
                           ),
-                          buttonText:
-                              "Checkout ${checkoutProvider.getTotalPrice()} ${checkoutProvider.cartProducts.first.currency}",
+                          buttonText: localization.checkoutButton(
+                            checkoutProvider.getTotalPrice().toString(),
+                            checkoutProvider.cartProducts.first.currency,
+                          ),
                           enable: checkoutProvider.isButtonEnabled,
                           onPress: () => onCheckoutTap(context),
                         ),
@@ -295,6 +301,7 @@ class _CheckoutScreen extends StatelessWidget {
   }
 
   void onCheckoutTap(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final checkoutProvider = Provider.of<CheckoutProvider>(
       context,
       listen: false,
@@ -314,13 +321,14 @@ class _CheckoutScreen extends StatelessWidget {
           checkoutProvider.clearCart();
           SnackBarPopup.showMessage(
             context,
-            message: "Your order has been received!",
+            message: localization.checkoutOrderReceived,
             snackBarMessageType: SnackBarMessageType.success,
           );
         } else {
           SnackBarPopup.showMessage(
             context,
-            message: responseModel?.error ?? "Something went wrong.",
+            message:
+                responseModel?.error ?? localization.checkoutOrderSaveError,
             snackBarMessageType: SnackBarMessageType.error,
           );
         }
