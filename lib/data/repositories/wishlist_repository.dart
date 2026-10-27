@@ -6,8 +6,8 @@ import '../models/result.dart';
 import '../services/wishlist_service.dart';
 
 /// Single shared instance (registered in DI) and the in-memory source of truth
-/// for the wishlist; SQLite is only its persistence. UI must reach it through
-/// a provider.
+/// for the wishlist; Firestore is only its persistence. UI must reach it
+/// through a provider.
 ///
 /// Stores its own immutable instances (flagged `whishlist: true`) and never
 /// mutates models owned by providers. Listeners re-read [isWishlisted] or
@@ -25,6 +25,13 @@ class WishlistRepository with ChangeNotifier {
 
   bool isWishlisted(String productId) =>
       _products.firstWhereOrNull((element) => element.id == productId) != null;
+
+  /// Drops the cached wishlist so the next user loads their own.
+  void clear() {
+    _products = [];
+    _isLoaded = false;
+    notifyListeners();
+  }
 
   Future<Result<void>> getWishlistProducts() async {
     if (_isLoaded) {

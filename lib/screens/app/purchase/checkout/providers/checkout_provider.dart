@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/utils/constants/checkout_constants.dart';
 import '/utils/global_enums.dart';
 import '/data/models/result.dart';
 import '/data/repositories/cart_repository.dart';
@@ -39,6 +40,7 @@ class CheckoutProvider with ChangeNotifier {
 
   List<CartModel> get cartProducts => _cartRepository.cartProducts;
   double get checkoutPrice => _cartRepository.checkoutPrice;
+  double get shippingFee => CheckoutConstants.shippingFee;
 
   void buttonChecker() {
     isButtonEnabled =
@@ -57,13 +59,12 @@ class CheckoutProvider with ChangeNotifier {
   void clearCart() => _cartRepository.clearCart();
 
   double getTotalPrice() {
-    return _cartRepository.checkoutPrice + 8;
+    return checkoutPrice + shippingFee;
   }
 
   Future<ResponseModel> orderProduct() async {
     final order = CheckoutModel(
-      orderId:
-          "#${firstNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(5, 7)}${lastNameController.text[0].toLowerCase()}${DateTime.now().toIso8601String().substring(7, 9)}",
+      orderId: '',
       userId: _userRepository.currentUser?.id ?? '',
       address: addressController.text,
       city: cityController.text,
@@ -71,8 +72,8 @@ class CheckoutProvider with ChangeNotifier {
       email: emailController.text,
       firstName: firstNameController.text,
       lastName: lastNameController.text,
-      checkoutPrice: _cartRepository.checkoutPrice,
-      postalCode: int.parse(zipCodeController.text),
+      checkoutPrice: getTotalPrice(),
+      postalCode: zipCodeController.text.trim(),
       items: _cartRepository.cartProducts,
       orderDate: DateTime.now().toString(),
       orderStatus: OrderStatus.pending.index,

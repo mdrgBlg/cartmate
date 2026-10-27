@@ -1,42 +1,42 @@
 import 'dart:developer';
 
-import 'package:sqflite/sqflite.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '/models/brand_model.dart';
 import '/models/products_model.dart';
-import '/utils/constants/db_constants.dart';
+import '/utils/constants/firebase_collection_constants.dart';
 import '../models/result.dart';
-import 'database_service.dart';
+import 'firebase_service.dart';
 
 class WishlistService {
-  WishlistService({required DatabaseService databaseService})
-    : _databaseService = databaseService;
+  WishlistService({required FirebaseService firebaseService})
+    : _firebaseService = firebaseService;
 
-  final DatabaseService _databaseService;
+  final FirebaseService _firebaseService;
+
+  CollectionReference<Map<String, dynamic>>? _wishlist() {
+    final userId = _firebaseService.auth.currentUser?.uid;
+    if (userId == null) {
+      return null;
+    }
+    return _firebaseService.firestore
+        .collection(FirebaseCollectionConstants.usersCollection)
+        .doc(userId)
+        .collection(FirebaseCollectionConstants.wishlistCollection);
+  }
 
   Future<Result<List<ProductsModel>>> fetchWishlistProducts() async {
     try {
-      final db = await _databaseService.database;
-      await _ensureTables(db);
-
-      final rows = await db.query(DbConstants.whishlistTable);
-      final products = <ProductsModel>[];
-      for (final row in rows) {
-        BrandModel? brand;
-        final brandId = row['brandId'] as String?;
-        if (brandId != null) {
-          final brandRows = await db.query(
-            DbConstants.brandTable,
-            where: 'id = ?',
-            whereArgs: [brandId],
-          );
-          if (brandRows.isNotEmpty) {
-            brand = BrandModel.fromJsonDb(brandRows.first);
-          }
-        }
-        products.add(ProductsModel.fromDb(row, brand));
+      final wishlist = _wishlist();
+      if (wishlist == null) {
+        return Failure(Exception('No signed in user'));
       }
-      return Success(products);
+      final response = await wishlist.get();
+      return Success(
+        response.docs.map((e) => ProductsModel.fromJson(e.data())).toList(),
+      );
+    } on FirebaseException catch (e) {
+      log("FirebaseException fetchWishlistProducts: $e");
+      return Failure(Exception(e));
     } catch (e) {
       log("Exception fetchWishlistProducts: $e");
       return Failure(Exception(e));
@@ -45,26 +45,15 @@ class WishlistService {
 
   Future<Result<void>> addProduct(ProductsModel product) async {
     try {
-      final db = await _databaseService.database;
-      await _ensureTables(db);
-
-      final brand = product.brandModel;
-      if (brand != null) {
-        await db.insert(
-          DbConstants.brandTable,
-          brand.brandToMap(),
-          conflictAlgorithm: ConflictAlgorithm.ignore,
-        );
+      final wishlist = _wishlist();
+      if (wishlist == null) {
+        return Failure(Exception('No signed in user'));
       }
-      final rowId = await db.insert(
-        DbConstants.whishlistTable,
-        product.productToMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-      if (rowId == -1) {
-        return Failure(Exception('Insert failed'));
-      }
+      await wishlist.doc(product.id).set(product.toMap());
       return const Success<void>(null);
+    } on FirebaseException catch (e) {
+      log("FirebaseException addProduct: $e");
+      return Failure(Exception(e));
     } catch (e) {
       log("Exception addProduct: $e");
       return Failure(Exception(e));
@@ -73,42 +62,18 @@ class WishlistService {
 
   Future<Result<void>> removeProduct(String productId) async {
     try {
-      final db = await _databaseService.database;
-      await _ensureTables(db);
-
-      await db.delete(
-        DbConstants.whishlistTable,
-        where: 'id = ?',
-        whereArgs: [productId],
-      );
+      final wishlist = _wishlist();
+      if (wishlist == null) {
+        return Failure(Exception('No signed in user'));
+      }
+      await wishlist.doc(productId).delete();
       return const Success<void>(null);
+    } on FirebaseException catch (e) {
+      log("FirebaseException removeProduct: $e");
+      return Failure(Exception(e));
     } catch (e) {
       log("Exception removeProduct: $e");
       return Failure(Exception(e));
     }
-  }
-
-  Future<void> _ensureTables(Database db) async {
-    await db.execute(
-      '''CREATE TABLE IF NOT EXISTS ${DbConstants.whishlistTable} (
-      id TEXT PRIMARY KEY,
-      brandId TEXT,
-      categoryId TEXT,
-      currency TEXT,
-      productSize TEXT,
-      productImage TEXT,
-      productName TEXT,
-      discount INTEGER,
-      price INTEGER,
-      stock INTEGER,
-      wishlist INTEGER
-      )''',
-    );
-    await db.execute('''CREATE TABLE IF NOT EXISTS ${DbConstants.brandTable} (
-      id TEXT PRIMARY KEY,
-      brandName TEXT,
-      iconName TEXT,
-      productCount INTEGER
-      )''');
   }
 }

@@ -30,6 +30,7 @@ class LoginScreen extends StatelessWidget {
         authRepository: ctx.read(),
         cartRepository: ctx.read(),
         userRepository: ctx.read(),
+        wishlistRepository: ctx.read(),
       ),
       child: const _LoginScreen(),
     );

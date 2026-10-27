@@ -4,6 +4,7 @@ import '/data/models/auth_exception.dart';
 import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
+import '/data/repositories/wishlist_repository.dart';
 import '/utils/extensions/date_time_extension.dart';
 import '/utils/extensions/exception_extension.dart';
 import '/utils/global_enums.dart';
@@ -12,11 +13,14 @@ class SignUpProvider with ChangeNotifier {
   SignUpProvider({
     required AuthRepository authRepository,
     required CartRepository cartRepository,
+    required WishlistRepository wishlistRepository,
   }) : _authRepository = authRepository,
-       _cartRepository = cartRepository;
+       _cartRepository = cartRepository,
+       _wishlistRepository = wishlistRepository;
 
   final AuthRepository _authRepository;
   final CartRepository _cartRepository;
+  final WishlistRepository _wishlistRepository;
 
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -83,6 +87,7 @@ class SignUpProvider with ChangeNotifier {
       case Success():
         // Sign-up continues through the auto-login restore, so drop any stale cart.
         await _cartRepository.clearCart();
+        _wishlistRepository.clear();
         return true;
       case Failure(:final exception):
         _error = exception.getAuthErrorType();

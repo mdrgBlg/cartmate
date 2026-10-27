@@ -98,7 +98,7 @@ class _CheckoutScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "8.0 ${checkoutProvider.cartProducts.first.currency}",
+                          "${checkoutProvider.shippingFee} ${checkoutProvider.cartProducts.first.currency}",
                           style: textTheme.bodySmall!.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
