@@ -14,7 +14,9 @@ class PurchaseItemProvider with ChangeNotifier {
   final CartRepository _cartRepository;
   final CartModel _cartModel;
 
-  CartModel get cartModel => _cartModel;
+  /// The repository's current line, so quantity changes show up here.
+  CartModel get cartModel =>
+      _cartRepository.cartItem(_cartModel.id) ?? _cartModel;
 
   void increaseQuantity() {
     _cartRepository.addProductToCart(_cartModel);

@@ -193,7 +193,7 @@ class _ProductDetailsScreen extends StatelessWidget {
                         margin: EdgeInsets.zero,
                         onPress: () {
                           CartModel cartModel = CartModel(
-                            productModel: ProductsModel.copy(provider.product),
+                            productModel: provider.product,
                             size: sizeProvider.selectedSize ?? "",
                           );
                           provider.addToCart(cartModel);

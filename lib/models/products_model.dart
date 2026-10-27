@@ -73,32 +73,17 @@ class ProductsModel {
     whishlist: json['wishlist'] as int == 1,
   );
 
-  ProductsModel.copy(ProductsModel other)
-    : id = other.id,
-      brandModel = other.brandModel,
-      categoryId = other.categoryId,
-      currency = other.currency,
-      productImageList = List<String>.from(other.productImageList),
-      productName = other.productName,
-      discount = other.discount,
-      price = other.price,
-      productSize = List<String>.from(
-        other.productSize != null ? other.productSize! : [],
-      ),
-      stock = other.stock,
-      whishlist = other.whishlist;
-
   final String id;
   final BrandModel? brandModel;
   final String categoryId;
   final String currency;
-  List<String> productImageList;
+  final List<String> productImageList;
   final String productName;
   final int discount;
   final int price;
   final List<String>? productSize;
   final int stock;
-  bool whishlist;
+  final bool whishlist;
 
   String get getPriceWithCurrency =>
       "${price.toDouble().toString()} ${currency}";
