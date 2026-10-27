@@ -6,13 +6,13 @@ class InformationWidget extends StatelessWidget {
   const InformationWidget({
     required this.sectionTitle,
     required this.sectionText,
-    required this.onTap,
+    this.onTap,
     super.key,
   });
 
   final String sectionTitle;
   final String sectionText;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +43,12 @@ class InformationWidget extends StatelessWidget {
                 ),
               ),
             ),
-            const Icon(
-              Icons.arrow_forward_ios,
-              color: CustomColors.grayDark,
-              size: 16,
-            ),
+            if (onTap != null)
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: CustomColors.grayDark,
+                size: 16,
+              ),
           ],
         ),
       ),

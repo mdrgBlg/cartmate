@@ -78,9 +78,6 @@ class ApiService {
     'lastName': lastName,
   }, 'updateUserName');
 
-  Future<Result<void>> updateEmail(String userId, String value) =>
-      _updateUser(userId, {'email': value}, 'updateEmail');
-
   Future<Result<void>> updateUsername(String userId, String value) =>
       _updateUser(userId, {'username': value}, 'updateUsername');
 

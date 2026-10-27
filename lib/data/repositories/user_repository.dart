@@ -38,20 +38,6 @@ class UserRepository with ChangeNotifier {
     return result;
   }
 
-  Future<Result<void>> updateEmail(String value) async {
-    final userId = _currentUser?.id;
-    if (userId == null) {
-      return Failure(Exception('No current user'));
-    }
-
-    final result = await _apiService.updateEmail(userId, value);
-    if (result case Success()) {
-      _currentUser?.email = value;
-      notifyListeners();
-    }
-    return result;
-  }
-
   Future<Result<void>> updateUsername(String value) async {
     final userId = _currentUser?.id;
     if (userId == null) {
