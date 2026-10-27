@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/models/user_info_model.dart';
 import '/utils/assets/custom_icons.dart';
@@ -19,6 +20,7 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
 
     return ClipPath(
@@ -34,7 +36,7 @@ class ProfileHeader extends StatelessWidget {
             children: [
               const Gap(8),
               Text(
-                "Profile",
+                localization.profileTitle,
                 style: textTheme.headlineSmall!.copyWith(
                   color: CustomColors.secondary,
                   fontWeight: FontWeight.bold,

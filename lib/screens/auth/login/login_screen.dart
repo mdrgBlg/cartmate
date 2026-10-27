@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/input_field.dart';
@@ -40,6 +41,7 @@ class _LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
 
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
@@ -62,7 +64,7 @@ class _LoginScreen extends StatelessWidget {
                 );
               },
               child: Text(
-                'Sign Up',
+                localization.loginSignUp,
                 style: textTheme.labelLarge!.copyWith(
                   decoration: TextDecoration.underline,
                   decorationColor: CustomColors.appName,
@@ -81,14 +83,14 @@ class _LoginScreen extends StatelessWidget {
             children: [
               Image.asset(CustomIcons.cartIcon, width: 80),
               const SizedBox(height: 12),
-              const Text(
-                "Log In To CartMate",
-                style: TextStyle(
+              Text(
+                localization.loginTitle,
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w300,
                   color: CustomColors.appName,
                 ),
-                textScaler: TextScaler.linear(1),
+                textScaler: const TextScaler.linear(1),
               ),
             ],
           ),
@@ -99,13 +101,13 @@ class _LoginScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           InputField(
-            hintText: "E - mail:",
+            hintText: localization.loginEmailHint,
             onInputChanged: () => loginProvider.validateField(),
             controller: loginProvider.emailController,
           ),
           const SizedBox(height: 12),
           PasswordField(
-            hintText: "Password:",
+            hintText: localization.loginPasswordHint,
             onInputChanged: () => loginProvider.validateField(),
             controller: loginProvider.passwordController,
           ),
@@ -113,7 +115,7 @@ class _LoginScreen extends StatelessWidget {
           Selector<LoginProvider, bool>(
             selector: (_, provider) => provider.loginButtonEnable,
             builder: (context, loginButtonEnable, child) => CustomButton(
-              buttonText: "Log in",
+              buttonText: localization.loginButton,
               enable: loginButtonEnable,
               onPress: () => onLoginTap(context),
             ),
@@ -129,7 +131,7 @@ class _LoginScreen extends StatelessWidget {
                 );
               },
               child: Text(
-                'Forgot password?',
+                localization.loginForgotPassword,
                 style: textTheme.bodyMedium!.copyWith(
                   decoration: TextDecoration.underline,
                   decorationThickness: 1.5,
@@ -143,6 +145,7 @@ class _LoginScreen extends StatelessWidget {
   }
 
   void onLoginTap(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
     bool isSuccess = false;
 
@@ -158,7 +161,7 @@ class _LoginScreen extends StatelessWidget {
         if (isSuccess) {
           SnackBarPopup.showMessage(
             context,
-            message: "You successfully logged in!",
+            message: localization.loginSuccess,
             snackBarMessageType: SnackBarMessageType.success,
           );
           CustomNavigator(context).pushReplacement(

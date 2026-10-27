@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/data/models/auth_exception.dart';
 import '/utils/auth_error_message.dart';
@@ -14,6 +15,7 @@ class Logout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     return Center(
       child: OutlinedButton(
@@ -45,7 +47,7 @@ class Logout extends StatelessWidget {
           );
         },
         child: Text(
-          "Log out",
+          localization.profileLogout,
           style: textTheme.bodyLarge!.copyWith(color: CustomColors.primary),
         ),
       ),

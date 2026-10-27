@@ -1,0 +1,150 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Store app",
+  "loading": "Loading...",
+  "somethingWentWrong": "Something went wrong. Please try again",
+  "save": "Save",
+  "firstName": "First name",
+  "lastName": "Last name",
+  "gender": "Gender",
+  "dateOfBirth": "Date of birth",
+  "genderMale": "Male",
+  "genderFemale": "Female",
+
+  "navHome": "Home",
+  "navStore": "Store",
+  "navWishlist": "Wishlist",
+  "navProfile": "Profile",
+
+  "orderStatusPending": "Pending",
+  "orderStatusProcessing": "Processing",
+  "orderStatusInTransit": "In Transit",
+  "orderStatusDelivered": "Delivered",
+
+  "authErrorInvalidEmail": "Please enter a valid email address.",
+  "authErrorInvalidCredentials": "Incorrect email or password.",
+  "authErrorUserNotFound": "No account found for this email.",
+  "authErrorUserDisabled": "This account has been disabled.",
+  "authErrorEmailAlreadyInUse": "An account already exists for this email.",
+  "authErrorWeakPassword": "The password is too weak.",
+  "authErrorTooManyRequests": "Too many attempts. Please try again later.",
+  "authErrorNetwork": "Network error. Check your connection and try again.",
+  "authErrorOperationNotAllowed": "This sign-in method is not enabled.",
+  "authErrorUnknown": "Something went wrong. Please try again",
+
+  "homePopularProducts": "Popular Products",
+  "homePopularCategories": "Popular Categories",
+  "homeSearchHint": "Search product...",
+
+  "productStock": "Stock: ",
+  "productInStock": "In stock",
+  "productOutOfStock": "Out of stock",
+  "productSize": "Size",
+  "productAddToCart": "Add to cart",
+  "productAddedToCart": "Product is added to cart",
+
+  "myOrdersTitle": "My Orders",
+  "myOrdersOrder": "Order",
+  "myOrdersShippingDate": "Shipping Date",
+  "myOrdersUnknown": "Unknown",
+
+  "profileTitle": "Profile",
+  "profileInformation": "Profile information",
+  "profilePersonalInformation": "Personal information",
+  "profileName": "Name",
+  "profileUsername": "Username",
+  "profileEmail": "E-mail",
+  "profilePhoneNumber": "Phone Number",
+  "profileDateOfBirth": "Date of Birth",
+  "profileLogout": "Log out",
+  "profileChangeSection": "Change {section}",
+  "@profileChangeSection": {
+    "placeholders": {
+      "section": {
+        "type": "String"
+      }
+    }
+  },
+  "profileSectionChanged": "User successfully changed {section}",
+  "@profileSectionChanged": {
+    "placeholders": {
+      "section": {
+        "type": "String"
+      }
+    }
+  },
+
+  "cartTitle": "Cart",
+  "purchaseItemSize": "Size: ",
+  "purchaseItemQuantity": "Quantity: ",
+
+  "checkoutButton": "Checkout {price} {currency}",
+  "@checkoutButton": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "checkoutOrderReview": "Order review",
+  "checkoutSubtotal": "Subtotal",
+  "checkoutShippingFee": "Shipping fee",
+  "checkoutOrderTotal": "Order total",
+  "checkoutPaymentMethod": "Payment method",
+  "checkoutCash": "Cash",
+  "checkoutShippingData": "Shipping data",
+  "checkoutFirstName": "First name:",
+  "checkoutLastName": "Last name:",
+  "checkoutEmail": "E-mail:",
+  "checkoutCountry": "Country:",
+  "checkoutCountrySearchLabel": "Search",
+  "checkoutCountrySearchHint": "Start typing to search",
+  "checkoutCity": "City:",
+  "checkoutZipCode": "Zip code:",
+  "checkoutPhoneNumber": "Phone number:",
+  "checkoutAddress": "Address:",
+  "checkoutOrderReceived": "Your order has been received!",
+  "checkoutOrderSaveError": "Something went wrong. Please try again",
+
+  "storeTitle": "Store",
+  "storeFeaturedBrands": "Featured Brands",
+  "storeViewAll": "View all",
+  "storeBrand": "Brand",
+  "storeBrands": "Brands",
+  "storeProductsLabel": "{count, plural, =1{product} other{products}}",
+  "@storeProductsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "wishlistTitle": "Wishlist",
+  "wishlistError": "Error",
+
+  "forgotPasswordTitle": "Forgot password",
+  "forgotPasswordDescription": "Enter your email and we will send you a password reset link",
+  "forgotPasswordEmailHint": "E-mail",
+  "forgotPasswordSubmit": "Submit",
+  "forgotPasswordLinkSent": "Link to reset your password is sent to your email",
+
+  "loginSignUp": "Sign Up",
+  "loginTitle": "Log In To CartMate",
+  "loginEmailHint": "E - mail:",
+  "loginPasswordHint": "Password:",
+  "loginButton": "Log in",
+  "loginForgotPassword": "Forgot password?",
+  "loginSuccess": "You successfully logged in!",
+
+  "signUpUsername": "Username",
+  "signUpEmail": "E-mail",
+  "signUpPhoneNumber": "Phone number",
+  "signUpPassword": "Password:",
+  "signUpButton": "Sign Up",
+  "signUpSuccess": "You successfully signed up!"
+}
