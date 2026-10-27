@@ -43,6 +43,11 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Android release signing
+android/key.properties
+*.jks
+*.keystore
+
 ### Flutter Generated Exceptions
 
 # Exceptions to above rules.
