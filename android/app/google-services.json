@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:851207767255:android:96876477cbe75179195c92",
+        "mobilesdk_app_id": "1:851207767255:android:4e84a5ada0a29388195c92",
         "android_client_info": {
-          "package_name": "com.example.e_commerce"
+          "package_name": "com.blagojevicm.cartmate"
         }
       },
       "oauth_client": [],
