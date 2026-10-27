@@ -1,7 +1,7 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 
 import '/data/models/result.dart';
 import '/data/repositories/product_repository.dart';
@@ -23,7 +23,7 @@ class SearchProvider with ChangeNotifier {
 
   final searchController = TextEditingController();
   final searchScrollController = ScrollController();
-  final _debouncer = Debouncer(delay: const Duration(milliseconds: 600));
+  Timer? _debounce;
 
   bool _isDisposed = false;
 
@@ -53,11 +53,12 @@ class SearchProvider with ChangeNotifier {
       return;
     }
     notifyListeners();
-    _debouncer.call(_searchProducts);
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 600), _searchProducts);
   }
 
   void clearInput() {
-    _debouncer.cancel();
+    _debounce?.cancel();
     searchController.clear();
     _searchedProducts = [];
     notifyListeners();
@@ -101,7 +102,7 @@ class SearchProvider with ChangeNotifier {
   @override
   void dispose() {
     _isDisposed = true;
-    _debouncer.cancel();
+    _debounce?.cancel();
     searchController.dispose();
     searchScrollController.dispose();
     super.dispose();
