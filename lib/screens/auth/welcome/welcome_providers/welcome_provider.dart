@@ -4,19 +4,23 @@ import 'package:flutter/foundation.dart';
 
 import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
+import '/data/repositories/cart_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/models/user_info_model.dart';
 
 class WelcomeProvider with ChangeNotifier {
   WelcomeProvider({
     required AuthRepository authRepository,
+    required CartRepository cartRepository,
     required UserRepository userRepository,
   }) : _authRepository = authRepository,
+       _cartRepository = cartRepository,
        _userRepository = userRepository {
     _sessionFuture = _restoreSession();
   }
 
   final AuthRepository _authRepository;
+  final CartRepository _cartRepository;
   final UserRepository _userRepository;
 
   late Future<Result<UserInfoModel>?> _sessionFuture;
@@ -37,6 +41,13 @@ class WelcomeProvider with ChangeNotifier {
     if (result is Failure<UserInfoModel>) {
       final signOutResult = await _authRepository.signOut();
       log("restoreSession failed, sign-out result: $signOutResult");
+    }
+    if (result is Success<UserInfoModel>) {
+      // A failed cart load must not block the login; home opens with an empty cart.
+      final cartResult = await _cartRepository.loadCart();
+      if (cartResult is Failure<void>) {
+        log("restoreSession cart load failed: $cartResult");
+      }
     }
     return result;
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '/core/widgets/gender_selector.dart';
 import '/utils/global_enums.dart';
-import '/widgets/gender_selector.dart';
 import 'change_info_layout.dart';
 
 class ChangeGender extends StatefulWidget {

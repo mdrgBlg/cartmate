@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/widgets/custom_button.dart';
+import '/core/widgets/input_field.dart';
+import '/core/widgets/layouts/auth_layout.dart';
 import '/data/models/auth_exception.dart';
 import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
-import '/widgets/custom_button.dart';
-import '/widgets/input_field.dart';
-import '/widgets/layouts/auth_layout.dart';
 import '../login/login_screen.dart';
 import 'providers/forgot_password_provider.dart';
 

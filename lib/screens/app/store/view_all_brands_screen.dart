@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '/utils/constants/custom_colors.dart';
+import '/core/styles/custom_colors.dart';
+import '/core/widgets/custom_app_bar.dart';
+import '/core/widgets/layouts/main_layout.dart';
 import '/models/brand_model.dart';
-import '/widgets/custom_app_bar.dart';
-import '/widgets/layouts/main_layout.dart';
 import 'widgets/brand_grid.dart';
 
 class ViewAllBrandsScreen extends StatelessWidget {
   const ViewAllBrandsScreen({required this.brandsList, super.key});
   final List<BrandModel> brandsList;
-
-  static const routeName = '/brands';
 
   @override
   Widget build(BuildContext context) {

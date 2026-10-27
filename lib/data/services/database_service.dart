@@ -1,8 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../db/db_helper.dart';
-
 class DatabaseService {
   DatabaseService({String? databaseName, int? version})
     : _databaseName = databaseName ?? dbName,
@@ -20,10 +18,7 @@ class DatabaseService {
   }
 
   Future<void> init() async {
-    // await database;
-    // Legacy bridge: DbService/HomeService still read the static DbHelper.db.
-    DbHelper.db = await database;
-    ;
+    await database;
   }
 
   Future<void> close() async {

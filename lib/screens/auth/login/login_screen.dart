@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/styles/custom_colors.dart';
+import '/core/widgets/custom_button.dart';
+import '/core/widgets/input_field.dart';
+import '/core/widgets/layouts/auth_layout.dart';
+import '/core/widgets/password_field.dart';
 import '/data/models/auth_exception.dart';
+import '/utils/assets/custom_icons.dart';
 import '/utils/auth_error_message.dart';
-import '/utils/constants/custom_colors.dart';
-import '/utils/constants/custom_icons.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
-import '/widgets/custom_button.dart';
-import '/widgets/input_field.dart';
-import '/widgets/layouts/auth_layout.dart';
-import '/widgets/password_field.dart';
 import '../../app/home/home_screen.dart';
 import '../forgot_password/forgot_password.dart';
 import '../signup/sign_up_screen.dart';
@@ -25,8 +25,11 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx) =>
-          LoginProvider(authRepository: ctx.read(), userRepository: ctx.read()),
+      create: (ctx) => LoginProvider(
+        authRepository: ctx.read(),
+        cartRepository: ctx.read(),
+        userRepository: ctx.read(),
+      ),
       child: const _LoginScreen(),
     );
   }

@@ -60,6 +60,7 @@ When modifying an existing feature, follow the patterns already used by neighbor
 ### Git
 
 - Planning (`/plan-feature`, `flutter-planner`, `plan-reviewer`) never commits and never edits project code; it only writes plan files under `.claude/implementation_plans/`.
+- Never implement a plan in the session that planned it. If asked to, do not start; tell the user to open a fresh session on Opus and implement the plan from there. Applying reviewer findings to the plan file itself is planning, not implementation, and is allowed.
 - When implementing an approved plan from `.claude/implementation_plans/`, follow its Execution rules:
   - Work on a `feature/<feature-slug>` branch. If the current branch is `main`, `master` or `develop`, create and switch to that branch before changing anything.
   - Implement phases in order, one at a time.

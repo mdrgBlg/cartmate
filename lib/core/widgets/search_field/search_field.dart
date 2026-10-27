@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'providers/search_provider.dart';
 import '/screens/app/product_details/product_details_screen.dart';
-import '/utils/constants/custom_colors.dart';
+import '../../styles/custom_colors.dart';
 import '/utils/custom_navigator.dart';
 
 class SearchField extends StatelessWidget {

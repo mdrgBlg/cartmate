@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/core/widgets/custom_button.dart';
+import '/core/widgets/date_picker.dart';
+import '/core/widgets/gender_selector.dart';
+import '/core/widgets/input_field.dart';
+import '/core/widgets/layouts/auth_layout.dart';
+import '/core/widgets/password_field.dart';
 import '/data/models/auth_exception.dart';
 import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/global_enums.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
-import '/widgets/custom_button.dart';
-import '/widgets/date_picker.dart';
-import '/widgets/gender_selector.dart';
-import '/widgets/input_field.dart';
-import '/widgets/layouts/auth_layout.dart';
-import '/widgets/password_field.dart';
 import '../welcome/welcome_screen.dart';
 import 'sign_up_providers/sign_up_provider.dart';
 
@@ -25,7 +25,10 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx) => SignUpProvider(authRepository: ctx.read()),
+      create: (ctx) => SignUpProvider(
+        authRepository: ctx.read(),
+        cartRepository: ctx.read(),
+      ),
       child: const _SignUpScreen(),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import 'constants/custom_colors.dart';
+import '/core/styles/custom_colors.dart';
 
 class Loading {
   static Future<void> callLoading({
@@ -22,10 +22,7 @@ class Loading {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SpinKitThreeInOut(
-                color: CustomColors.primary,
-                size: 36.0,
-              ),
+              const SpinKitThreeInOut(color: CustomColors.primary, size: 36.0),
               const SizedBox(height: 12),
               Text(
                 "Loading...", // TODO(l10n): loading
