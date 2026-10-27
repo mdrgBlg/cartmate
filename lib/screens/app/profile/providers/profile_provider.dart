@@ -25,7 +25,6 @@ class ProfileProvider with ChangeNotifier {
     firstNameController = TextEditingController(text: userInfo?.firstName);
     lastNameController = TextEditingController(text: userInfo?.lastName);
     usernameController = TextEditingController(text: userInfo?.username);
-    emailController = TextEditingController(text: userInfo?.email);
     phoneController = TextEditingController(text: userInfo?.phoneNumber);
   }
 
@@ -37,7 +36,6 @@ class ProfileProvider with ChangeNotifier {
   late final TextEditingController firstNameController;
   late final TextEditingController lastNameController;
   late final TextEditingController usernameController;
-  late final TextEditingController emailController;
   late final TextEditingController phoneController;
 
   Exception? _error;
@@ -48,8 +46,6 @@ class ProfileProvider with ChangeNotifier {
   // The repository updates the cached user after a successful remote write,
   // so the `setX` callbacks only need to refresh the UI.
   void setName() => notifyListeners();
-
-  void setEmail() => notifyListeners();
 
   void setUsername() => notifyListeners();
 
@@ -75,12 +71,6 @@ class ProfileProvider with ChangeNotifier {
       firstNameController.text,
       lastNameController.text,
     );
-    return _handleUpdateResult(result);
-  }
-
-  Future<bool> changeEmail() async {
-    _error = null;
-    final result = await _userRepository.updateEmail(emailController.text);
     return _handleUpdateResult(result);
   }
 
