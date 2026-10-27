@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/core/styles/custom_colors.dart';
+import '/core/widgets/app_network_image.dart';
 import '/models/cart_model.dart';
-import '/utils/constants/custom_colors.dart';
-import '/widgets/app_network_image.dart';
 import 'providers/purchase_item_provider.dart';
 
 class PurchaseItem extends StatelessWidget {

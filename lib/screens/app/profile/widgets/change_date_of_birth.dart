@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '/core/widgets/date_picker.dart';
 import '/utils/extensions/date_time_extension.dart';
-import '/widgets/date_picker.dart';
 import 'change_info_layout.dart';
 
 class ChangeDateOfBirth extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '/utils/constants/custom_icons.dart';
-import '/utils/constants/custom_colors.dart';
+import '/core/styles/custom_colors.dart';
+import '/utils/assets/custom_icons.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

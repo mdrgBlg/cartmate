@@ -6,7 +6,7 @@ import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/models/user_info_model.dart';
-import '/utils/common_utils.dart';
+import '/utils/extensions/exception_extension.dart';
 import '/utils/global_enums.dart';
 
 class ProfileProvider with ChangeNotifier {
@@ -115,7 +115,7 @@ class ProfileProvider with ChangeNotifier {
       await _cartRepository.clearCart();
     }
     if (result case Failure(:final exception)) {
-      return fromException(exception);
+      return exception.getAuthErrorType();
     }
     return null;
   }

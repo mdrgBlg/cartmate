@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '/utils/constants/custom_colors.dart';
+import '/core/styles/custom_colors.dart';
+import '/core/widgets/app_network_image.dart';
 import '/models/brand_model.dart';
 import '/utils/custom_navigator.dart';
-import '/widgets/app_network_image.dart';
 import '../brand_products_screen.dart';
 
 class BrandGrid extends StatelessWidget {

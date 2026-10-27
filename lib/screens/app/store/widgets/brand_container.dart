@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '/utils/constants/custom_colors.dart';
+import '/core/styles/custom_colors.dart';
+import '/core/widgets/app_network_image.dart';
 import '/models/brand_model.dart';
-import '/widgets/app_network_image.dart';
 
 class BrandContainer extends StatelessWidget {
   const BrandContainer({required this.brand, super.key});

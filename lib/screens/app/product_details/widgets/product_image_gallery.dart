@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/widgets/app_network_image.dart';
+import '/core/widgets/app_network_image.dart';
 
 class ProductImageGallery extends StatefulWidget {
   const ProductImageGallery({required this.images, super.key});

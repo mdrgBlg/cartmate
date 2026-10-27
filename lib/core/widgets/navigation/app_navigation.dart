@@ -5,7 +5,7 @@ import '/screens/app/home/home_screen.dart';
 import '/screens/app/profile/profile_screen.dart';
 import '/screens/app/store/store_screen.dart';
 import '/screens/app/wishlist/wishlist_screen.dart';
-import '/utils/constants/custom_colors.dart';
+import '../../styles/custom_colors.dart';
 import '/utils/custom_navigator.dart';
 import 'widgets/navbar_item.dart';
 

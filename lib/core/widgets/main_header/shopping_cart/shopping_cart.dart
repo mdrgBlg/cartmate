@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/utils/constants/custom_colors.dart';
+import '../../../styles/custom_colors.dart';
 import '/screens/app/purchase/cart/cart_screen.dart';
 import '/utils/custom_navigator.dart';
 import 'providers/shopping_cart_provider.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/widgets/layouts/main_layout.dart';
-import '/widgets/products_grid_view/products_grid_view.dart';
+import '/core/widgets/layouts/main_layout.dart';
+import '/core/widgets/products_grid_view/products_grid_view.dart';
 import 'providers/wishlist_provider.dart';
 
 class WishlistScreen extends StatelessWidget {

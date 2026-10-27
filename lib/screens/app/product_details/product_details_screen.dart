@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/styles/custom_colors.dart';
+import '/core/widgets/app_network_image.dart';
+import '/core/widgets/custom_app_bar.dart';
+import '/core/widgets/custom_button.dart';
+import '/core/widgets/layouts/main_layout.dart';
+import '/core/widgets/wishlist_heart_button/wishlist_heart_button.dart';
 import '/models/cart_model.dart';
 import '/models/products_model.dart';
-import '/utils/constants/custom_colors.dart';
 import '/utils/snack_bar_popup.dart';
-import '/widgets/app_network_image.dart';
-import '/widgets/custom_app_bar.dart';
-import '/widgets/custom_button.dart';
-import '/widgets/layouts/main_layout.dart';
-import '/widgets/wishlist_heart_button/wishlist_heart_button.dart';
 import 'providers/product_details_provider.dart';
 import 'widgets/product_image_gallery.dart';
 import 'widgets/product_size_selector/product_size_selector.dart';

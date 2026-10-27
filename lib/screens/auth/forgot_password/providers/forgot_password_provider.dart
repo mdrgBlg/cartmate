@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/data/models/auth_exception.dart';
 import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
-import '/utils/common_utils.dart';
+import '/utils/extensions/exception_extension.dart';
 
 class ForgotPasswordProvider with ChangeNotifier {
   ForgotPasswordProvider({required AuthRepository authRepository})
@@ -40,7 +40,7 @@ class ForgotPasswordProvider with ChangeNotifier {
       case Success():
         return true;
       case Failure(:final exception):
-        _error = fromException(exception);
+        _error = exception.getAuthErrorType();
         return false;
     }
   }

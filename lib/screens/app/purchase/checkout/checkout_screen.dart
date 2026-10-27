@@ -2,15 +2,15 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/styles/custom_colors.dart';
+import '/core/widgets/custom_app_bar.dart';
+import '/core/widgets/custom_button.dart';
+import '/core/widgets/input_field.dart';
+import '/core/widgets/layouts/main_layout.dart';
 import '/models/response_model.dart';
-import '/utils/constants/custom_colors.dart';
-import '/utils/constants/custom_icons.dart';
+import '/utils/assets/custom_icons.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
-import '/widgets/custom_app_bar.dart';
-import '/widgets/custom_button.dart';
-import '/widgets/input_field.dart';
-import '/widgets/layouts/main_layout.dart';
 import '../widgets/purchase_item/purchase_item.dart';
 import 'providers/checkout_provider.dart';
 

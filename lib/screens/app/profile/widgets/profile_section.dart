@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '/utils/constants/custom_colors.dart';
+import '/core/styles/custom_colors.dart';
 
 class ProfileSection extends StatelessWidget {
   const ProfileSection({

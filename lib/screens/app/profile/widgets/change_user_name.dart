@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/widgets/input_field.dart';
+import '/core/widgets/input_field.dart';
 import 'change_info_layout.dart';
 
 class ChangeUserName extends StatelessWidget {
@@ -18,8 +18,6 @@ class ChangeUserName extends StatelessWidget {
   final VoidCallback onSuccess;
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
-
-  static const routeName = '/change_user_name';
 
   @override
   Widget build(BuildContext context) {
