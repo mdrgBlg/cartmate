@@ -8,7 +8,6 @@ import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/input_field.dart';
 import '/core/widgets/layouts/main_layout.dart';
-import '/models/response_model.dart';
 import '/utils/assets/custom_icons.dart';
 import '/utils/extensions/price_extension.dart';
 import '/utils/loading.dart';
@@ -321,17 +320,17 @@ class _CheckoutScreen extends StatelessWidget {
       listen: false,
     );
 
-    ResponseModel? responseModel;
+    bool orderSaved = false;
     Loading.callLoading(
       context: context,
       callback: () async {
-        responseModel = await checkoutProvider.orderProduct();
+        orderSaved = await checkoutProvider.orderProduct();
       },
       onFinished: () {
         Navigator.of(
           context,
         ).popUntil((route) => route.settings.name == CheckoutScreen.routeName);
-        if (responseModel != null && responseModel!.success) {
+        if (orderSaved) {
           checkoutProvider.clearCart();
           SnackBarPopup.showMessage(
             context,
@@ -341,8 +340,7 @@ class _CheckoutScreen extends StatelessWidget {
         } else {
           SnackBarPopup.showMessage(
             context,
-            message:
-                responseModel?.error ?? localization.checkoutOrderSaveError,
+            message: localization.checkoutOrderSaveError,
             snackBarMessageType: SnackBarMessageType.error,
           );
         }
