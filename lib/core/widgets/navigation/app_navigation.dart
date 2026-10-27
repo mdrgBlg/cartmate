@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/screens/app/home/home_screen.dart';
 import '/screens/app/profile/profile_screen.dart';
 import '/screens/app/store/store_screen.dart';
 import '/screens/app/wishlist/wishlist_screen.dart';
-import '../../styles/custom_colors.dart';
 import '/utils/custom_navigator.dart';
+import '../../styles/custom_colors.dart';
 import 'widgets/navbar_item.dart';
 
 class AppNavigation extends StatelessWidget {
@@ -18,6 +19,7 @@ class AppNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final currentRoute = ModalRoute.of(context)?.settings.name;
     return Wrap(
       children: [
@@ -32,7 +34,7 @@ class AppNavigation extends StatelessWidget {
               Expanded(
                 child: NavBarItem(
                   itemIcon: Icons.home,
-                  itemText: "Home",
+                  itemText: localization.navHome,
                   onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: HomeScreen.routeName,
                     screen: const HomeScreen(),
@@ -46,7 +48,7 @@ class AppNavigation extends StatelessWidget {
               Expanded(
                 child: NavBarItem(
                   itemIcon: Icons.store,
-                  itemText: "Store",
+                  itemText: localization.navStore,
                   onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: StoreScreen.routeName,
                     screen: const StoreScreen(),
@@ -60,7 +62,7 @@ class AppNavigation extends StatelessWidget {
               Expanded(
                 child: NavBarItem(
                   itemIcon: CupertinoIcons.heart,
-                  itemText: "Wishlist",
+                  itemText: localization.navWishlist,
                   onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: WishlistScreen.routeName,
                     screen: const WishlistScreen(),
@@ -74,7 +76,7 @@ class AppNavigation extends StatelessWidget {
               Expanded(
                 child: NavBarItem(
                   itemIcon: CupertinoIcons.profile_circled,
-                  itemText: "Profile",
+                  itemText: localization.navProfile,
                   onTap: () => CustomNavigator(context).pushReplacement(
                     routeName: ProfileScreen.routeName,
                     screen: const ProfileScreen(),

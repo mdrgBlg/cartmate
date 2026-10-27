@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/app_network_image.dart';
 import '/models/brand_model.dart';
@@ -11,6 +12,7 @@ class BrandContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final localization = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.only(left: 16, top: 12, bottom: 12),
       decoration: BoxDecoration(
@@ -61,7 +63,7 @@ class BrandContainer extends StatelessWidget {
                     ),
                     const SizedBox(width: 2),
                     Text(
-                      "products",
+                      localization.storeProductsLabel(brand.productCount),
                       style: textTheme.bodySmall!.copyWith(
                         color: CustomColors.text.withValues(alpha: 0.4),
                         overflow: TextOverflow.ellipsis,

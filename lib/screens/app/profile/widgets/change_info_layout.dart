@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/layouts/main_layout.dart';
@@ -26,15 +27,18 @@ class ChangeInfoLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return MainLayout(
-      appBar: CustomAppBar(titleText: "Change $sectionTitle"),
+      appBar: CustomAppBar(
+        titleText: localization.profileChangeSection(sectionTitle),
+      ),
       child: Padding(
         padding: padding,
         child: Column(
           children: [
             child,
             CustomButton(
-              buttonText: "Save",
+              buttonText: localization.save,
               enable: enableSave,
               onPress: () => _onSave(context),
             ),
@@ -45,6 +49,8 @@ class ChangeInfoLayout extends StatelessWidget {
   }
 
   void _onSave(BuildContext context) {
+    final localization = AppLocalizations.of(context);
+
     bool success = false;
     Loading.callLoading(
       context: context,
@@ -55,7 +61,7 @@ class ChangeInfoLayout extends StatelessWidget {
         if (success) {
           SnackBarPopup.showMessage(
             context,
-            message: "User successfully changed $sectionTitle",
+            message: localization.profileSectionChanged(sectionTitle),
           );
           onSuccess();
         }

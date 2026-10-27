@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/input_field.dart';
 import '/core/widgets/layouts/auth_layout.dart';
@@ -31,6 +32,7 @@ class _ForgotPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final provider = Provider.of<ForgotPasswordProvider>(
       context,
       listen: false,
@@ -44,7 +46,7 @@ class _ForgotPassword extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: Text(
-              "Forgot password",
+              localization.forgotPasswordTitle,
               style: textTheme.headlineSmall!.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -54,7 +56,7 @@ class _ForgotPassword extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              "Enter your email and we will send you a password reset link",
+              localization.forgotPasswordDescription,
               style: textTheme.bodyMedium,
               textAlign: TextAlign.justify,
             ),
@@ -62,7 +64,7 @@ class _ForgotPassword extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 28),
             child: InputField(
-              hintText: "E-mail",
+              hintText: localization.forgotPasswordEmailHint,
               onInputChanged: () => provider.validateField(),
               controller: provider.emailController,
             ),
@@ -70,7 +72,7 @@ class _ForgotPassword extends StatelessWidget {
           Selector<ForgotPasswordProvider, bool>(
             selector: (_, provider) => provider.submitEnabled,
             builder: (context, submitEnabled, child) => CustomButton(
-              buttonText: "Submit",
+              buttonText: localization.forgotPasswordSubmit,
               enable: submitEnabled,
               onPress: () => onSubmitTap(context),
             ),
@@ -81,6 +83,7 @@ class _ForgotPassword extends StatelessWidget {
   }
 
   void onSubmitTap(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final provider = Provider.of<ForgotPasswordProvider>(
       context,
       listen: false,
@@ -99,7 +102,7 @@ class _ForgotPassword extends StatelessWidget {
         if (isSuccess) {
           SnackBarPopup.showMessage(
             context,
-            message: "Link to reset your password is sent to your email",
+            message: localization.forgotPasswordLinkSent,
             snackBarMessageType: SnackBarMessageType.success,
           );
           CustomNavigator(context).pushReplacement(

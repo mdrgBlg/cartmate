@@ -1,15 +1,12 @@
-// import 'package:flutter/material.dart';
+import '/core/l10n/app_localizations.dart';
 
 enum Gender {
   male,
   female;
 
-  ///TODO
-  String genderName(
-    // AppLocalizations localization
-  ) => switch (this) {
-    male => "Male",
-    female => "Female",
+  String genderName(AppLocalizations localization) => switch (this) {
+    male => localization.genderMale,
+    female => localization.genderFemale,
   };
 }
 
@@ -19,10 +16,10 @@ enum OrderStatus {
   inTransit,
   delivered;
 
-  String get name => switch (this) {
-    OrderStatus.pending => "Pending",
-    OrderStatus.processing => "Processing",
-    OrderStatus.inTransit => "In Transit",
-    OrderStatus.delivered => "Delivered",
+  String statusName(AppLocalizations localization) => switch (this) {
+    OrderStatus.pending => localization.orderStatusPending,
+    OrderStatus.processing => localization.orderStatusProcessing,
+    OrderStatus.inTransit => localization.orderStatusInTransit,
+    OrderStatus.delivered => localization.orderStatusDelivered,
   };
 }

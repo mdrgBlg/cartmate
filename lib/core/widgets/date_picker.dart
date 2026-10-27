@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '../styles/custom_colors.dart';
 
 class DatePicker extends StatelessWidget {
@@ -16,6 +17,7 @@ class DatePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return TextField(
       controller: dateController,
       style: const TextStyle(fontSize: 16),
@@ -24,7 +26,7 @@ class DatePicker extends StatelessWidget {
         label: Padding(
           padding: const EdgeInsets.only(top: 18),
           child: Text(
-            dateController.text.isEmpty ? "Date of birth" : "",
+            dateController.text.isEmpty ? localization.dateOfBirth : "",
             style: TextStyle(
               color: pickedDate == null
                   ? CustomColors.grayDark
