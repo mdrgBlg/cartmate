@@ -1,4 +1,4 @@
-package com.example.e_commerce
+package com.blagojevicm.cartmate
 
 import io.flutter.embedding.android.FlutterActivity
 
