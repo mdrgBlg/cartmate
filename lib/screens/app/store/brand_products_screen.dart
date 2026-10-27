@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
+import '/core/styles/custom_colors.dart';
+import '/core/widgets/custom_app_bar.dart';
+import '/core/widgets/layouts/main_layout.dart';
+import '/core/widgets/products_grid_view/products_grid_view.dart';
 import '/models/brand_model.dart';
 import '/models/products_model.dart';
-import '/utils/constants/custom_colors.dart';
-import '/widgets/custom_app_bar.dart';
-import '/widgets/layouts/main_layout.dart';
-import '/widgets/products_grid_view/products_grid_view.dart';
 import 'providers/brand_products_provider.dart';
 import 'widgets/brand_container.dart';
 

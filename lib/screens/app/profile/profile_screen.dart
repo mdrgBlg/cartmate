@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/widgets/layouts/main_layout.dart';
 import '/screens/app/profile/my_orders_screen.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/extensions/date_time_extension.dart';
-import '/widgets/layouts/main_layout.dart';
-import 'widgets/logout.dart';
 import 'providers/profile_provider.dart';
 import 'widgets/change_date_of_birth.dart';
 import 'widgets/change_gender.dart';
 import 'widgets/change_user_info.dart';
 import 'widgets/change_user_name.dart';
 import 'widgets/information_widget.dart';
+import 'widgets/logout.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/profile_section.dart';
 
@@ -70,7 +70,6 @@ class _ProfileScreen extends StatelessWidget {
                       sectionText:
                           "${userInfo?.firstName} ${userInfo?.lastName}",
                       onTap: () => navigator.pushNavigation(
-                        routeName: ChangeUserName.routeName,
                         screen: ChangeUserName(
                           sectionTitle: "Name",
                           firstNameController:

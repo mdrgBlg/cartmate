@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '/utils/constants/custom_colors.dart';
+import '/core/styles/custom_colors.dart';
+import '/core/widgets/app_network_image.dart';
 import '/models/brand_model.dart';
 import '/models/products_model.dart';
-import '/widgets/app_network_image.dart';
 
 class CategoriesBrands extends StatelessWidget {
   const CategoriesBrands({

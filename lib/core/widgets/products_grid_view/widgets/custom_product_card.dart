@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '/models/products_model.dart';
 import '/screens/app/product_details/product_details_screen.dart';
-import '/utils/constants/custom_colors.dart';
+import '../../../styles/custom_colors.dart';
 import '/utils/custom_navigator.dart';
-import '/widgets/app_network_image.dart';
+import '../../app_network_image.dart';
 import '../../wishlist_heart_button/wishlist_heart_button.dart';
 import 'product_cart_quantity/product_cart_quantity.dart';
 

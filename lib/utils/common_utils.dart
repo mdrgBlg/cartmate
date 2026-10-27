@@ -1,14 +1,6 @@
-import '/data/models/auth_exception.dart';
-import 'constants/custom_icons.dart';
-import 'constants/custom_images.dart';
+import 'assets/custom_icons.dart';
+import 'assets/custom_images.dart';
 import 'global_enums.dart';
-
-AuthErrorType fromException(Exception exception) {
-  if (exception is AuthException) {
-    return exception.type;
-  }
-  return AuthErrorType.unknown;
-}
 
 String fetchIcon(String? iconName) {
   switch (iconName) {
@@ -16,7 +8,6 @@ String fetchIcon(String? iconName) {
       return CustomIcons.clothes;
     case "furniture":
       return CustomIcons.furniture;
-
     case "electronics":
       return CustomIcons.electronics;
     case "shoes":

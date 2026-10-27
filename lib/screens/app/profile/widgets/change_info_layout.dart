@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '/core/widgets/custom_app_bar.dart';
+import '/core/widgets/custom_button.dart';
+import '/core/widgets/layouts/main_layout.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
-import '/widgets/custom_app_bar.dart';
-import '/widgets/custom_button.dart';
-import '/widgets/layouts/main_layout.dart';
 
 class ChangeInfoLayout extends StatelessWidget {
   const ChangeInfoLayout({

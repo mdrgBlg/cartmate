@@ -4,8 +4,8 @@ import '/data/models/auth_exception.dart';
 import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
-import '/utils/common_utils.dart';
 import '/utils/extensions/date_time_extension.dart';
+import '/utils/extensions/exception_extension.dart';
 import '/utils/global_enums.dart';
 
 class SignUpProvider with ChangeNotifier {
@@ -85,7 +85,7 @@ class SignUpProvider with ChangeNotifier {
         await _cartRepository.clearCart();
         return true;
       case Failure(:final exception):
-        _error = fromException(exception);
+        _error = exception.getAuthErrorType();
         return false;
     }
   }

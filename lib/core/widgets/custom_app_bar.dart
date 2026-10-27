@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/utils/constants/custom_colors.dart';
+import '../styles/custom_colors.dart';
 
 enum AppBarType {
   light,

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'app_dependencies.dart';
 import 'firebase_options.dart';
 import 'screens/auth/welcome/welcome_screen.dart';
-import 'utils/constants/themes.dart';
+import 'core/styles/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

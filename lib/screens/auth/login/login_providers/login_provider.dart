@@ -6,7 +6,7 @@ import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/models/user_info_model.dart';
-import '/utils/common_utils.dart';
+import '/utils/extensions/exception_extension.dart';
 
 class LoginProvider with ChangeNotifier {
   LoginProvider({
@@ -55,7 +55,7 @@ class LoginProvider with ChangeNotifier {
 
         return true;
       case Failure(:final exception):
-        _error = fromException(exception);
+        _error = exception.getAuthErrorType();
         return false;
     }
   }

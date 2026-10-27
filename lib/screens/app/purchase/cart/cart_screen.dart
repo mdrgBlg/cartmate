@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/widgets/custom_app_bar.dart';
+import '/core/widgets/custom_button.dart';
+import '/core/widgets/layouts/main_layout.dart';
 import '/models/cart_model.dart';
 import '/utils/custom_navigator.dart';
-import '/widgets/custom_app_bar.dart';
-import '/widgets/custom_button.dart';
-import '/widgets/layouts/main_layout.dart';
 import '../checkout/checkout_screen.dart';
 import '../widgets/purchase_item/purchase_item.dart';
 import 'providers/cart_provider.dart';
