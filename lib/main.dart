@@ -13,8 +13,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Fixed debug token passed via --dart-define; falls back to an auto-generated one.
+  const appCheckDebugToken = String.fromEnvironment('APP_CHECK_DEBUG_TOKEN');
   await FirebaseAppCheck.instance.activate(
-    providerAndroid: const AndroidDebugProvider(),
+    providerAndroid: AndroidDebugProvider(
+      debugToken: appCheckDebugToken.isEmpty ? null : appCheckDebugToken,
+    ),
   );
 
   runApp(
