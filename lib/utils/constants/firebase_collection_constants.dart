@@ -4,4 +4,5 @@ class FirebaseCollectionConstants {
   static const productsCollection = 'Products';
   static const categoriesCollection = 'Categories';
   static const brandsCollection = 'Brands';
+  static const wishlistCollection = 'Wishlist';
 }

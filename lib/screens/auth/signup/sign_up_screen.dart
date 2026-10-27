@@ -29,6 +29,7 @@ class SignUpScreen extends StatelessWidget {
       create: (ctx) => SignUpProvider(
         authRepository: ctx.read(),
         cartRepository: ctx.read(),
+        wishlistRepository: ctx.read(),
       ),
       child: const _SignUpScreen(),
     );

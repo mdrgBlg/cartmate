@@ -5,6 +5,7 @@ import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/user_repository.dart';
+import '/data/repositories/wishlist_repository.dart';
 import '/models/user_info_model.dart';
 import '/utils/extensions/exception_extension.dart';
 import '/utils/global_enums.dart';
@@ -14,9 +15,11 @@ class ProfileProvider with ChangeNotifier {
     required AuthRepository authRepository,
     required CartRepository cartRepository,
     required UserRepository userRepository,
+    required WishlistRepository wishlistRepository,
   }) : _authRepository = authRepository,
        _cartRepository = cartRepository,
-       _userRepository = userRepository {
+       _userRepository = userRepository,
+       _wishlistRepository = wishlistRepository {
     final userInfo = _userRepository.currentUser;
 
     firstNameController = TextEditingController(text: userInfo?.firstName);
@@ -29,6 +32,7 @@ class ProfileProvider with ChangeNotifier {
   final AuthRepository _authRepository;
   final CartRepository _cartRepository;
   final UserRepository _userRepository;
+  final WishlistRepository _wishlistRepository;
 
   late final TextEditingController firstNameController;
   late final TextEditingController lastNameController;
@@ -113,6 +117,7 @@ class ProfileProvider with ChangeNotifier {
     _userRepository.clearCurrentUser();
     if (result is Success<void>) {
       await _cartRepository.clearCart();
+      _wishlistRepository.clear();
     }
     if (result case Failure(:final exception)) {
       return exception.getAuthErrorType();
