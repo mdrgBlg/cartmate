@@ -54,8 +54,7 @@ flowchart LR
 ```
 lib/
 ├── core/                  # l10n (ARB + generated code), styles, shared widgets
-├── data/                  # services, repositories and the Result type
-├── models/                # data models (products, brands, categories, cart, orders, user)
+├── data/                  # services, repositories and models (Result type, products, brands, categories, cart, orders, user)
 ├── screens/               # auth and app screens, each with its own providers and widgets
 ├── utils/                 # constants, extensions, navigation and UI helpers
 ├── app_dependencies.dart  # service and repository registration

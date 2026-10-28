@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
-import '/models/cart_model.dart';
-import '/models/products_model.dart';
+import '/data/models/cart_model.dart';
+import '/data/models/products_model.dart';
 
 class ProductDetailsProvider with ChangeNotifier {
   ProductDetailsProvider({

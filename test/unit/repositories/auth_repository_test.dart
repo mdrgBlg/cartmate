@@ -3,7 +3,7 @@ import 'package:e_commerce/data/repositories/auth_repository.dart';
 import 'package:e_commerce/data/services/api_service.dart';
 import 'package:e_commerce/data/services/auth_service.dart';
 import 'package:e_commerce/data/services/firebase_service.dart';
-import 'package:e_commerce/models/user_info_model.dart';
+import 'package:e_commerce/data/models/user_info_model.dart';
 import 'package:e_commerce/utils/global_enums.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

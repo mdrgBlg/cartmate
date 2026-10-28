@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:sqflite/sqflite.dart';
 
-import '/models/brand_model.dart';
-import '/models/cart_model.dart';
-import '/models/products_model.dart';
+import '/data/models/brand_model.dart';
+import '/data/models/cart_model.dart';
+import '/data/models/products_model.dart';
 import '/utils/constants/db_constants.dart';
 import '../models/result.dart';
 import 'database_service.dart';

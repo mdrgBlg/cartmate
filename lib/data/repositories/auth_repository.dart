@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import '/data/services/api_service.dart';
-import '/models/user_info_model.dart';
+import '/data/models/user_info_model.dart';
 import '/utils/global_enums.dart';
 import '../models/result.dart';
 import '../services/auth_service.dart';

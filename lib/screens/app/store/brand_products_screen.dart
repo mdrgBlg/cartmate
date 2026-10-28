@@ -7,8 +7,8 @@ import '/core/styles/custom_colors.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
-import '/models/brand_model.dart';
-import '/models/products_model.dart';
+import '/data/models/brand_model.dart';
+import '/data/models/products_model.dart';
 import 'providers/brand_products_provider.dart';
 import 'widgets/brand_container.dart';
 

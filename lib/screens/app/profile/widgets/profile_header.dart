@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 
 import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
-import '/models/user_info_model.dart';
+import '/data/models/user_info_model.dart';
 import '/utils/assets/custom_icons.dart';
 import '/utils/global_enums.dart';
 import 'curved_edges.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '/data/repositories/cart_repository.dart';
-import '/models/cart_model.dart';
+import '/data/models/cart_model.dart';
 
 /// Provider for [CartScreen] only.
 class CartProvider with ChangeNotifier {

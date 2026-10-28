@@ -5,7 +5,7 @@ import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/layouts/main_layout.dart';
-import '/models/brand_model.dart';
+import '/data/models/brand_model.dart';
 import 'widgets/brand_grid.dart';
 
 class ViewAllBrandsScreen extends StatelessWidget {
