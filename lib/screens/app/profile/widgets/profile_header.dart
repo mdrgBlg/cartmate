@@ -54,8 +54,8 @@ class ProfileHeader extends StatelessWidget {
                       borderRadius: BorderRadius.circular(99),
                     ),
                     child: Image.asset(
-                      userInfo?.gender == Gender.male
-                          ? CustomIcons.manAvatar
+                      userInfo?.gender == Gender.female
+                          ? CustomIcons.femaleAvatar
                           : CustomIcons.manAvatar,
                       fit: BoxFit.scaleDown,
                     ),
@@ -65,14 +65,14 @@ class ProfileHeader extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${userInfo?.username}",
+                        userInfo?.username ?? '',
                         style: textTheme.titleLarge!.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        "${userInfo?.email}",
+                        userInfo?.email ?? '',
                         style: textTheme.bodyMedium!.copyWith(
                           color: Colors.white,
                         ),
