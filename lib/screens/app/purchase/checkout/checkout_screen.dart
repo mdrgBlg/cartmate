@@ -327,14 +327,13 @@ class _CheckoutScreen extends StatelessWidget {
     Loading.callLoading(
       context: context,
       callback: () async {
-        orderSaved = await checkoutProvider.orderProduct();
+        orderSaved = await checkoutProvider.placeOrder();
       },
       onFinished: () {
         Navigator.of(
           context,
         ).popUntil((route) => route.settings.name == CheckoutScreen.routeName);
         if (orderSaved) {
-          checkoutProvider.clearCart();
           SnackBarPopup.showMessage(
             context,
             message: localization.checkoutOrderReceived,

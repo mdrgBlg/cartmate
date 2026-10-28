@@ -56,14 +56,13 @@ class CheckoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void clearCart() => _cartRepository.clearCart();
-
   double getTotalPrice() {
     return checkoutPrice + shippingFee;
   }
 
+  /// Saves the order and empties the cart once it is stored.
   /// Returns whether the order was saved.
-  Future<bool> orderProduct() async {
+  Future<bool> placeOrder() async {
     final order = CheckoutModel(
       orderId: '',
       userId: _userRepository.currentUser?.id ?? '',
@@ -80,10 +79,13 @@ class CheckoutProvider with ChangeNotifier {
       orderStatus: OrderStatus.pending.index,
     );
     final result = await _orderRepository.saveOrder(order);
-    return switch (result) {
-      Success() => true,
-      Failure() => false,
-    };
+    switch (result) {
+      case Success():
+        await _cartRepository.clearCart();
+        return true;
+      case Failure():
+        return false;
+    }
   }
 
   @override
