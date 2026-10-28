@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
@@ -143,6 +144,7 @@ class _ProfileScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                const Gap(4),
                 Logout(signOut: profileProvider.signOut),
               ],
             );
