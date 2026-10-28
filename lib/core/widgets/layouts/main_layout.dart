@@ -29,7 +29,7 @@ class MainLayout extends StatelessWidget {
         bottomNavigationBar: showNavBar ? const AppNavigation() : null,
         backgroundColor: backgroundColor,
         body: SafeArea(
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             height: double.infinity,
             child: child,

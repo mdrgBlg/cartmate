@@ -30,7 +30,7 @@ class _QuantityView extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Consumer<ProductCartQuantityProvider>(
-      builder: (_, provider, __) {
+      builder: (_, provider, _) {
         final quantity = provider.quantity;
         return Text(
           quantity == 0 ? "+" : quantity.toString(),
