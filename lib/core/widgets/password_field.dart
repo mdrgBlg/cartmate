@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../styles/app_spacing.dart';
 import '../styles/custom_colors.dart';
 
 class PasswordField extends StatefulWidget {
@@ -38,7 +39,7 @@ class _PasswordFieldState extends State<PasswordField> {
           ),
         ),
         Container(
-          padding: const EdgeInsets.fromLTRB(20, 4, 20, 0),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           height: 44,
           child: TextFormField(
             controller: widget.controller,
@@ -51,8 +52,13 @@ class _PasswordFieldState extends State<PasswordField> {
             },
 
             style: textTheme.bodyLarge!.copyWith(fontSize: 18),
+            textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
               isDense: true,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg,
+                vertical: AppSpacing.sm,
+              ),
               suffixIcon: IconButton(
                 color: CustomColors.grey500,
                 iconSize: 20,
