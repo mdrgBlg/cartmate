@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../styles/custom_colors.dart';
+
 class PasswordField extends StatefulWidget {
   const PasswordField({
     required this.hintText,
@@ -48,12 +50,11 @@ class _PasswordFieldState extends State<PasswordField> {
               }
             },
 
-            style: textTheme.headlineSmall!.copyWith(fontSize: 18),
+            style: textTheme.bodyLarge!.copyWith(fontSize: 18),
             decoration: InputDecoration(
               isDense: true,
-              fillColor: Colors.transparent,
               suffixIcon: IconButton(
-                color: Colors.black,
+                color: CustomColors.grey500,
                 iconSize: 20,
                 padding: EdgeInsets.zero,
                 splashRadius: 16,
