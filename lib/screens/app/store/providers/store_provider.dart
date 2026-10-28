@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '/data/models/result.dart';
 import '/data/repositories/product_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
-import '/models/brand_model.dart';
-import '/models/categories_model.dart';
-import '/models/products_model.dart';
+import '/data/models/brand_model.dart';
+import '/data/models/categories_model.dart';
+import '/data/models/products_model.dart';
 
 class StoreProvider with ChangeNotifier {
   StoreProvider({

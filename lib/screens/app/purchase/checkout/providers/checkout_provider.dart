@@ -6,8 +6,8 @@ import '/data/models/result.dart';
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/order_repository.dart';
 import '/data/repositories/user_repository.dart';
-import '/models/cart_model.dart';
-import '/models/checkout_model.dart';
+import '/data/models/cart_model.dart';
+import '/data/models/checkout_model.dart';
 
 class CheckoutProvider with ChangeNotifier {
   CheckoutProvider({

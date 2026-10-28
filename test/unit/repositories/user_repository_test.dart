@@ -1,26 +1,26 @@
 import 'package:e_commerce/data/models/result.dart';
 import 'package:e_commerce/data/repositories/user_repository.dart';
-import 'package:e_commerce/data/services/api_service.dart';
+import 'package:e_commerce/data/services/firestore_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../helpers/test_data.dart';
 
-class _MockApiService extends Mock implements ApiService {}
+class _MockFirestoreService extends Mock implements FirestoreService {}
 
 void main() {
-  late _MockApiService apiService;
+  late _MockFirestoreService firestoreService;
   late UserRepository repository;
 
   setUp(() {
-    apiService = _MockApiService();
-    repository = UserRepository(apiService: apiService);
+    firestoreService = _MockFirestoreService();
+    repository = UserRepository(firestoreService: firestoreService);
   });
 
   group('updateName', () {
     test('updates the current user and notifies on success', () async {
       when(
-        () => apiService.updateUserName('u1', 'Jane', 'Smith'),
+        () => firestoreService.updateUserName('u1', 'Jane', 'Smith'),
       ).thenAnswer((_) async => const Success<void>(null));
       repository.setCurrentUser(testUser());
       var notifications = 0;
@@ -37,7 +37,7 @@ void main() {
 
     test('leaves the current user unchanged on failure', () async {
       when(
-        () => apiService.updateUserName('u1', 'Jane', 'Smith'),
+        () => firestoreService.updateUserName('u1', 'Jane', 'Smith'),
       ).thenAnswer((_) async => Failure(Exception('offline')));
       repository.setCurrentUser(testUser());
       var notifications = 0;
@@ -55,7 +55,7 @@ void main() {
       final result = await repository.updateName('Jane', 'Smith');
 
       expect(result, isA<Failure<void>>());
-      verifyNever(() => apiService.updateUserName(any(), any(), any()));
+      verifyNever(() => firestoreService.updateUserName(any(), any(), any()));
     });
   });
 }

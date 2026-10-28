@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/app_network_image.dart';
-import '/models/cart_model.dart';
+import '/data/models/cart_model.dart';
 import '/utils/extensions/price_extension.dart';
 import 'providers/purchase_item_provider.dart';
 

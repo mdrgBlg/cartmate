@@ -6,7 +6,7 @@ import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
-import '/models/user_info_model.dart';
+import '/data/models/user_info_model.dart';
 import '/utils/extensions/exception_extension.dart';
 import '/utils/global_enums.dart';
 
@@ -103,13 +103,16 @@ class ProfileProvider with ChangeNotifier {
   }
 
   Future<AuthErrorType?> signOut() async {
-    final result = await _authRepository.signOut();
+    // Cleared before signing out so the session guard ignores this sign-out.
+    final previousUser = _userRepository.currentUser;
     _userRepository.clearCurrentUser();
+    final result = await _authRepository.signOut();
     if (result is Success<void>) {
       await _cartRepository.clearCart();
       _wishlistRepository.clear();
     }
     if (result case Failure(:final exception)) {
+      _userRepository.setCurrentUser(previousUser);
       return exception.getAuthErrorType();
     }
     return null;

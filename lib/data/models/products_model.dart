@@ -1,4 +1,4 @@
-import '/models/brand_model.dart';
+import '/data/models/brand_model.dart';
 
 class ProductsModel {
   ProductsModel({

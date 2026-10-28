@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/data/models/result.dart';
-import '/models/user_info_model.dart';
+import '/data/models/user_info_model.dart';
 import '../../app/home/home_screen.dart';
 import '../login/login_screen.dart';
 import '../splash_screen.dart';
