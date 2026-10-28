@@ -10,7 +10,7 @@ class WishlistHeartProvider with ChangeNotifier {
     required ProductsModel product,
   }) : _wishlistRepository = wishlistRepository,
        _product = product,
-       _isWishlisted = product.whishlist;
+       _isWishlisted = product.isWishlisted;
 
   final WishlistRepository _wishlistRepository;
   final ProductsModel _product;

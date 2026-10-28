@@ -55,7 +55,7 @@ class HomeProvider with ChangeNotifier {
 
   ProductsModel _withCurrentFlag(ProductsModel product) {
     final isWishlisted = _wishlistRepository.isWishlisted(product.id);
-    return product.copyWith(whishlist: isWishlisted);
+    return product.copyWith(isWishlisted: isWishlisted);
   }
 
   List<ProductsModel> getProductsForCategory(String id) {

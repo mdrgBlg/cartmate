@@ -7,6 +7,7 @@ import '/core/widgets/custom_button.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/models/cart_model.dart';
 import '/utils/custom_navigator.dart';
+import '/utils/extensions/price_extension.dart';
 import '../checkout/checkout_screen.dart';
 import '../widgets/purchase_item/purchase_item.dart';
 import 'providers/cart_provider.dart';
@@ -60,13 +61,17 @@ class _CartScreen extends StatelessWidget {
                 builder: (_, __, child) => cartProvider.cartProducts.isNotEmpty
                     ? CustomButton(
                         buttonText: localization.checkoutButton(
-                          cartProvider.checkoutPrice.toStringAsFixed(2),
-                          cartProvider.cartProducts.first.currency,
+                          cartProvider.checkoutPrice.formatPrice(
+                            cartProvider.cartProducts.first.currency,
+                            locale: Localizations.localeOf(context).toString(),
+                          ),
                         ),
                         enable: cartProvider.cartProducts.isNotEmpty,
                         onPress: () => CustomNavigator(context).pushNavigation(
                           routeName: CheckoutScreen.routeName,
-                          screen: const CheckoutScreen(),
+                          screen: CheckoutScreen(
+                            currency: cartProvider.cartProducts.first.currency,
+                          ),
                         ),
                       )
                     : const SizedBox(),

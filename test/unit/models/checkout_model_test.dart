@@ -1,28 +1,13 @@
 import 'dart:convert';
 
-import 'package:e_commerce/models/brand_model.dart';
 import 'package:e_commerce/models/cart_model.dart';
 import 'package:e_commerce/models/checkout_model.dart';
 import 'package:e_commerce/models/products_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-ProductsModel _product() => ProductsModel(
-  id: 'p1',
-  brandModel: BrandModel(
-    id: 'b1',
-    brandName: 'Nike',
-    iconName: 'nike',
-    productCount: 5,
-  ),
-  categoryId: 'c1',
-  currency: 'EUR',
-  productImageList: ['https://example.com/1.jpg'],
-  productName: 'Air Max',
-  discount: 10,
-  price: 100,
-  productSize: ['41', '42'],
-  stock: 10,
-);
+import '../../helpers/test_data.dart';
+
+ProductsModel _product() => testProduct();
 
 void main() {
   group('ProductsModel', () {

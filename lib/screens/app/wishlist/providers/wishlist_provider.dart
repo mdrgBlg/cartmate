@@ -27,7 +27,7 @@ class WishlistProvider with ChangeNotifier {
   void _updateProducts() {
     _products = [
       for (final product in _wishlistRepository.products)
-        product.whishlist ? product : product.copyWith(whishlist: true),
+        product.isWishlisted ? product : product.copyWith(isWishlisted: true),
     ];
   }
 
@@ -36,7 +36,7 @@ class WishlistProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Started once from the constructor and awaited by `WhishlistScreen`'s
+  // Started once from the constructor and awaited by `WishlistScreen`'s
   // `FutureBuilder`, which owns the loading state.
   Future<Exception?> _fetchWishlist() async {
     final result = await _wishlistRepository.getWishlistProducts();

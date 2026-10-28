@@ -8,7 +8,6 @@ import '/data/repositories/order_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/models/cart_model.dart';
 import '/models/checkout_model.dart';
-import '/models/response_model.dart';
 
 class CheckoutProvider with ChangeNotifier {
   CheckoutProvider({
@@ -62,7 +61,8 @@ class CheckoutProvider with ChangeNotifier {
     return checkoutPrice + shippingFee;
   }
 
-  Future<ResponseModel> orderProduct() async {
+  /// Returns whether the order was saved.
+  Future<bool> orderProduct() async {
     final order = CheckoutModel(
       orderId: '',
       userId: _userRepository.currentUser?.id ?? '',
@@ -80,8 +80,8 @@ class CheckoutProvider with ChangeNotifier {
     );
     final result = await _orderRepository.saveOrder(order);
     return switch (result) {
-      Success() => ResponseModel(success: true),
-      Failure() => ResponseModel(success: false),
+      Success() => true,
+      Failure() => false,
     };
   }
 }

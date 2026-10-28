@@ -79,13 +79,10 @@
   "purchaseItemSize": "Size: ",
   "purchaseItemQuantity": "Quantity: ",
 
-  "checkoutButton": "Checkout {price} {currency}",
+  "checkoutButton": "Checkout {price}",
   "@checkoutButton": {
     "placeholders": {
       "price": {
-        "type": "String"
-      },
-      "currency": {
         "type": "String"
       }
     }

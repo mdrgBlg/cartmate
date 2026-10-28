@@ -27,27 +27,31 @@ class CartRepository with ChangeNotifier {
   double get checkoutPrice =>
       _cartProducts.values.fold(0, (sum, item) => sum + item.getTotalPrice);
 
+  CartModel? cartItem(String id) => _cartProducts[id];
+
   void addProductToCart(CartModel cartModel) {
     final existing = _cartProducts[cartModel.id];
-    if (existing != null) {
-      ++existing.quantity;
-    } else {
-      _cartProducts[cartModel.id] = cartModel;
-    }
+    final updated = existing == null
+        ? cartModel
+        : existing.copyWith(quantity: existing.quantity + 1);
+    _cartProducts[cartModel.id] = updated;
 
     notifyListeners();
-    _queueWrite(() => _cartService.saveItem(existing ?? cartModel));
+    _queueWrite(() => _cartService.saveItem(updated));
   }
 
   void removeProductFromCart(CartModel cartModel) {
     final existing = _cartProducts[cartModel.id];
     if (existing != null) {
-      --existing.quantity;
-      if (existing.quantity <= 0) {
+      final quantity = existing.quantity - 1;
+      if (quantity <= 0) {
         _cartProducts.remove(cartModel.id);
         _queueWrite(() => _cartService.deleteItem(existing));
       } else {
-        _queueWrite(() => _cartService.saveItem(existing));
+        // Replacing an existing key keeps its position in the map.
+        final updated = existing.copyWith(quantity: quantity);
+        _cartProducts[cartModel.id] = updated;
+        _queueWrite(() => _cartService.saveItem(updated));
       }
     }
     notifyListeners();
