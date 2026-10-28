@@ -39,7 +39,7 @@ flutter_launcher_icons:
   android: true
   ios: true
   image_path: "assets/cart.png"
-  adaptive_icon_background: "#00baff"
+  adaptive_icon_background: "#4F46E5"
   adaptive_icon_foreground: "assets/cart.png"
   remove_alpha_ios: true
 
