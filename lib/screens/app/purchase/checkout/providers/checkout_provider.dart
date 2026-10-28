@@ -8,7 +8,7 @@ import '/data/repositories/order_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/utils/global_enums.dart';
 
-const shippingFee = 8.0;
+const _shippingFee = 8.0;
 
 class CheckoutProvider with ChangeNotifier {
   CheckoutProvider({
@@ -40,7 +40,7 @@ class CheckoutProvider with ChangeNotifier {
 
   List<CartModel> get cartProducts => _cartRepository.cartProducts;
   double get checkoutPrice => _cartRepository.checkoutPrice;
-  double get shippingFee => shippingFee;
+  double get shippingFee => _shippingFee;
 
   void buttonChecker() {
     isButtonEnabled =
@@ -56,14 +56,13 @@ class CheckoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void clearCart() => _cartRepository.clearCart();
-
   double getTotalPrice() {
     return checkoutPrice + shippingFee;
   }
 
+  /// Saves the order and empties the cart once it is stored.
   /// Returns whether the order was saved.
-  Future<bool> orderProduct() async {
+  Future<bool> placeOrder() async {
     final order = CheckoutModel(
       orderId: '',
       userId: _userRepository.currentUser?.id ?? '',
@@ -80,9 +79,25 @@ class CheckoutProvider with ChangeNotifier {
       orderStatus: OrderStatus.pending.index,
     );
     final result = await _orderRepository.saveOrder(order);
-    return switch (result) {
-      Success() => true,
-      Failure() => false,
-    };
+    switch (result) {
+      case Success():
+        await _cartRepository.clearCart();
+        return true;
+      case Failure():
+        return false;
+    }
+  }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    countryController.dispose();
+    cityController.dispose();
+    zipCodeController.dispose();
+    phoneNumberController.dispose();
+    addressController.dispose();
+    super.dispose();
   }
 }

@@ -30,7 +30,7 @@ class _HeartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<WishlistHeartProvider>(
-      builder: (_, heart, __) => InkWell(
+      builder: (_, heart, _) => InkWell(
         onTap: heart.toggle,
         borderRadius: BorderRadius.circular(99),
         child: Container(

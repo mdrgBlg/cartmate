@@ -287,7 +287,7 @@ class _CheckoutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     Consumer<CheckoutProvider>(
-                      builder: (_, __, child) => SizedBox(
+                      builder: (_, _, child) => SizedBox(
                         height: 50,
                         child: CustomButton(
                           margin: const EdgeInsets.only(
@@ -327,14 +327,13 @@ class _CheckoutScreen extends StatelessWidget {
     Loading.callLoading(
       context: context,
       callback: () async {
-        orderSaved = await checkoutProvider.orderProduct();
+        orderSaved = await checkoutProvider.placeOrder();
       },
       onFinished: () {
         Navigator.of(
           context,
         ).popUntil((route) => route.settings.name == CheckoutScreen.routeName);
         if (orderSaved) {
-          checkoutProvider.clearCart();
           SnackBarPopup.showMessage(
             context,
             message: localization.checkoutOrderReceived,

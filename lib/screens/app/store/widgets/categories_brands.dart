@@ -94,7 +94,9 @@ class CategoriesBrands extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
                       child: AppNetworkImage(
-                        imageUrl: productsList[index].productImageList.first,
+                        imageUrl:
+                            productsList[index].productImageList.firstOrNull ??
+                            '',
                         fit: BoxFit.fill,
                       ),
                     ),

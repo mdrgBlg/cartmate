@@ -89,7 +89,7 @@ class _StoreScreen extends StatelessWidget {
                     Selector<StoreProvider, (List<CategoriesModel>, String?)>(
                       selector: (_, provider) =>
                           (provider.categories, provider.selectedCategory?.id),
-                      builder: (_, data, __) {
+                      builder: (_, data, _) {
                         final (categories, selectedId) = data;
                         return ListView.builder(
                           shrinkWrap: true,
@@ -124,7 +124,7 @@ class _StoreScreen extends StatelessWidget {
                 provider.categoryBrands,
                 provider.hasProductsError || provider.hasCategoriesError,
               ),
-              builder: (_, data, __) {
+              builder: (_, data, _) {
                 final (categoryBrands, hasError) = data;
                 if (hasError) {
                   return Center(
