@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import '/utils/constants/app_bar_constants.dart';
 import '../../styles/custom_colors.dart';
 
 class AuthLayout extends StatelessWidget {
@@ -23,50 +25,69 @@ class AuthLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: showAppBar
-          ? AppBar(
-              toolbarHeight: 52,
-              backgroundColor: CustomColors.primary,
-              foregroundColor: Colors.white,
-              elevation: 0,
-            )
-          : null,
-      backgroundColor: backgroundColor,
-      resizeToAvoidBottomInset: true,
-      extendBody: true,
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
-              Column(
-                children: [
-                  Expanded(child: Container(color: CustomColors.primary)),
-                  Expanded(child: Container(color: Colors.white)),
-                ],
-              ),
-              ...overlays,
-              Card(
-                margin: cardMargin,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.black,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+      child: Scaffold(
+        appBar: showAppBar ? const _AppBar() : null,
+        backgroundColor: backgroundColor,
+        resizeToAvoidBottomInset: true,
+        extendBody: true,
+        body: SafeArea(
+          top: !showAppBar,
+          child: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                Column(
+                  children: [
+                    Expanded(child: Container(color: CustomColors.primary)),
+                    Expanded(child: Container(color: Colors.white)),
+                  ],
                 ),
-                elevation: 3,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 24,
+                ...overlays,
+                Card(
+                  margin: cardMargin,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  child: SingleChildScrollView(child: child),
+                  elevation: 3,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 24,
+                    ),
+                    child: SingleChildScrollView(child: child),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _AppBar();
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: AppBar(
+        toolbarHeight: AppBarConstants.appBarHeight,
+        backgroundColor: CustomColors.primary,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(AppBarConstants.appBarHeight);
 }

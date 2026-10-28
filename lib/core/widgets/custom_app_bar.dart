@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/utils/constants/app_bar_constants.dart';
 import '../styles/custom_colors.dart';
 
 enum AppBarType {
@@ -32,10 +33,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final AppBarType type;
   final Widget? title;
 
-  static const double appBarHeight = 52;
-
   @override
-  Size get preferredSize => const Size.fromHeight(appBarHeight);
+  Size get preferredSize => const Size.fromHeight(AppBarConstants.appBarHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +42,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return SafeArea(
       child: AppBar(
-        toolbarHeight: appBarHeight,
+        toolbarHeight: AppBarConstants.appBarHeight,
         backgroundColor: type.backgroundColor,
         foregroundColor: type.foregroundColor,
         elevation: 0,
