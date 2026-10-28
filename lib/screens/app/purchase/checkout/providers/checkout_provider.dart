@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '/utils/constants/checkout_constants.dart';
-import '/utils/global_enums.dart';
+import '/data/models/cart_model.dart';
+import '/data/models/checkout_model.dart';
 import '/data/models/result.dart';
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/order_repository.dart';
 import '/data/repositories/user_repository.dart';
-import '/data/models/cart_model.dart';
-import '/data/models/checkout_model.dart';
+import '/utils/global_enums.dart';
+
+const shippingFee = 8.0;
 
 class CheckoutProvider with ChangeNotifier {
   CheckoutProvider({
@@ -39,7 +40,7 @@ class CheckoutProvider with ChangeNotifier {
 
   List<CartModel> get cartProducts => _cartRepository.cartProducts;
   double get checkoutPrice => _cartRepository.checkoutPrice;
-  double get shippingFee => CheckoutConstants.shippingFee;
+  double get shippingFee => shippingFee;
 
   void buttonChecker() {
     isButtonEnabled =
