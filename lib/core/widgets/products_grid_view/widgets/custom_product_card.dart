@@ -55,7 +55,8 @@ class CustomProductCard extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
                       child: AppNetworkImage(
-                        imageUrl: productsModel.productImageList.first,
+                        imageUrl:
+                            productsModel.productImageList.firstOrNull ?? '',
                         height: 140,
                         errorIconSize: 64,
                       ),
