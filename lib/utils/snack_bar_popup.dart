@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '/core/styles/custom_colors.dart';
+
 enum SnackBarMessageType { normal, success, warning, error }
 
 class SnackBarPopup {
@@ -12,13 +14,13 @@ class SnackBarPopup {
     Color getMessageBgColor() {
       switch (snackBarMessageType) {
         case SnackBarMessageType.normal:
-          return Colors.green;
+          return CustomColors.success;
         case SnackBarMessageType.error:
-          return Colors.red;
+          return CustomColors.error;
         case SnackBarMessageType.warning:
-          return Colors.yellow;
+          return CustomColors.accent;
         default:
-          return Colors.green;
+          return CustomColors.success;
       }
     }
 

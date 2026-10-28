@@ -23,32 +23,31 @@ class InputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.bottomLeft,
-          child: Container(
-            padding: const EdgeInsets.only(left: 20),
+    return Padding(
+      padding: padding,
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.bottomLeft,
             child: Text(hintText, textAlign: TextAlign.left),
           ),
-        ),
-        Container(
-          padding: padding,
-          height: height,
-          child: TextFormField(
-            onTap: onTap,
-            canRequestFocus: canRequestFocus,
-            controller: controller,
-            textAlign: TextAlign.left,
-            onChanged: (value) {
-              if (onInputChanged != null) {
-                onInputChanged!();
-              }
-            },
-            style: textTheme.headlineSmall!.copyWith(fontSize: 16),
+          SizedBox(
+            height: height,
+            child: TextFormField(
+              onTap: onTap,
+              canRequestFocus: canRequestFocus,
+              controller: controller,
+              textAlign: TextAlign.left,
+              onChanged: (value) {
+                if (onInputChanged != null) {
+                  onInputChanged!();
+                }
+              },
+              style: textTheme.bodyLarge!.copyWith(fontSize: 16),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

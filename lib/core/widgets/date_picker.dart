@@ -22,6 +22,7 @@ class DatePicker extends StatelessWidget {
       controller: dateController,
       style: const TextStyle(fontSize: 16),
       decoration: InputDecoration(
+        filled: false,
         contentPadding: EdgeInsets.zero,
         label: Padding(
           padding: const EdgeInsets.only(top: 18),

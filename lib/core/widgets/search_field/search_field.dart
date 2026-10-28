@@ -65,6 +65,7 @@ class _SearchFieldView extends StatelessWidget {
                   ),
                   cursorColor: Colors.grey,
                   decoration: InputDecoration(
+                    filled: false,
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     errorBorder: InputBorder.none,

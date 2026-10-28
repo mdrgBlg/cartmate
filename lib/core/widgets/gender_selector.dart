@@ -50,7 +50,7 @@ class _GenderSelectorState extends State<GenderSelector> {
           value: value,
           child: Text(
             value.genderName(localization),
-            style: textTheme.headlineSmall!.copyWith(fontSize: 16),
+            style: textTheme.bodyLarge!.copyWith(fontSize: 16),
           ),
         );
       }).toList(),
