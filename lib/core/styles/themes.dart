@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'app_text_theme.dart';
+import 'component_themes.dart';
 import 'custom_colors.dart';
 
 class Themes {
@@ -52,7 +53,20 @@ class Themes {
       fontFamily: AppTextTheme.fontFamily,
       textTheme: AppTextTheme.light,
       dividerColor: Colors.transparent,
-      appBarTheme: const AppBarTheme(surfaceTintColor: Colors.transparent),
+      filledButtonTheme: AppComponentThemes.filledButtonTheme,
+      elevatedButtonTheme: AppComponentThemes.elevatedButtonTheme,
+      outlinedButtonTheme: AppComponentThemes.outlinedButtonTheme,
+      textButtonTheme: AppComponentThemes.textButtonTheme,
+      inputDecorationTheme: AppComponentThemes.inputDecorationTheme,
+      cardTheme: AppComponentThemes.cardTheme,
+      chipTheme: AppComponentThemes.chipTheme,
+      snackBarTheme: AppComponentThemes.snackBarTheme,
+      appBarTheme: AppComponentThemes.appBarTheme,
+      dividerTheme: AppComponentThemes.dividerTheme,
+      bottomSheetTheme: AppComponentThemes.bottomSheetTheme,
+      dialogTheme: AppComponentThemes.dialogTheme,
+      datePickerTheme: AppComponentThemes.datePickerTheme,
+      navigationBarTheme: AppComponentThemes.navigationBarTheme,
     );
   }
 }
