@@ -1,7 +1,7 @@
 import 'package:e_commerce/data/models/result.dart';
 import 'package:e_commerce/data/repositories/cart_repository.dart';
 import 'package:e_commerce/data/services/cart_service.dart';
-import 'package:e_commerce/models/cart_model.dart';
+import 'package:e_commerce/data/models/cart_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

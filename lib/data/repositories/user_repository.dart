@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/models/user_info_model.dart';
+import '/data/models/user_info_model.dart';
 import '/utils/global_enums.dart';
 import '../models/result.dart';
 import '../services/api_service.dart';

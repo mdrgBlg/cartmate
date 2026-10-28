@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '/models/products_model.dart';
+import '/data/models/products_model.dart';
 import '/utils/constants/firebase_collection_constants.dart';
 import '../models/result.dart';
 import 'firebase_service.dart';

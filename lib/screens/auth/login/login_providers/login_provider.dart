@@ -6,7 +6,7 @@ import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
-import '/models/user_info_model.dart';
+import '/data/models/user_info_model.dart';
 import '/utils/extensions/exception_extension.dart';
 
 class LoginProvider with ChangeNotifier {

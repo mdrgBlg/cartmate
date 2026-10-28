@@ -5,7 +5,7 @@ import '/core/l10n/app_localizations.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/layouts/main_layout.dart';
-import '/models/cart_model.dart';
+import '/data/models/cart_model.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/extensions/price_extension.dart';
 import '../checkout/checkout_screen.dart';

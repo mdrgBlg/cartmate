@@ -7,7 +7,7 @@ import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/main_header/main_header.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
 import '/core/widgets/search_field/search_field.dart';
-import '/models/categories_model.dart';
+import '/data/models/categories_model.dart';
 import '/utils/custom_navigator.dart';
 import 'categories_screen.dart';
 import 'providers/home_provider.dart';

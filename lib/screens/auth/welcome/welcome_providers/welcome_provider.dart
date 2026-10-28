@@ -6,7 +6,7 @@ import '/data/models/result.dart';
 import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/user_repository.dart';
-import '/models/user_info_model.dart';
+import '/data/models/user_info_model.dart';
 
 class WelcomeProvider with ChangeNotifier {
   WelcomeProvider({

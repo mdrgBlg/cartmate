@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '/models/brand_model.dart';
-import '/models/categories_model.dart';
-import '/models/products_model.dart';
-import '/models/user_info_model.dart';
+import '/data/models/brand_model.dart';
+import '/data/models/categories_model.dart';
+import '/data/models/products_model.dart';
+import '/data/models/user_info_model.dart';
 import '/utils/constants/firebase_collection_constants.dart';
 import '/utils/global_enums.dart';
 import '../models/result.dart';
