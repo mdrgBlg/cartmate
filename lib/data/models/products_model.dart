@@ -104,7 +104,7 @@ class ProductsModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'brand': brandModel != null ? brandModel!.brandToMap() : null,
+      'brand': brandModel?.brandToMap(),
       'categoryId': categoryId,
       'currency': currency,
       'productImage': productImageList,

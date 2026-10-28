@@ -43,7 +43,7 @@ class _ShoppingCartView extends StatelessWidget {
               size: 28,
             ),
             Consumer<ShoppingCartProvider>(
-              builder: (_, provider, __) => provider.productNumber > 0
+              builder: (_, provider, _) => provider.productNumber > 0
                   ? Positioned(
                       right: 0,
                       top: 0,

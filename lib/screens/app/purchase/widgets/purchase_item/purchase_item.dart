@@ -84,7 +84,9 @@ class _PurchaseItemView extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: AppNetworkImage(
-                      imageUrl: cartModel.productModel.productImageList.first,
+                      imageUrl:
+                          cartModel.productModel.productImageList.firstOrNull ??
+                          '',
                       height: 64,
                       width: 64,
                     ),

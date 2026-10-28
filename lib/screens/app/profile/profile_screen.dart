@@ -70,8 +70,7 @@ class _ProfileScreen extends StatelessWidget {
                   children: [
                     InformationWidget(
                       sectionTitle: localization.profileName,
-                      sectionText:
-                          "${userInfo?.firstName} ${userInfo?.lastName}",
+                      sectionText: userInfo?.fullName ?? '',
                       onTap: () => navigator.pushNavigation(
                         screen: ChangeUserName(
                           sectionTitle: localization.profileName,
@@ -86,7 +85,7 @@ class _ProfileScreen extends StatelessWidget {
                     ),
                     InformationWidget(
                       sectionTitle: localization.profileUsername,
-                      sectionText: "${userInfo?.username}",
+                      sectionText: userInfo?.username ?? '',
                       onTap: () => navigator.pushNavigation(
                         screen: ChangeUserInfo(
                           sectionTitle: localization.profileUsername,
@@ -103,11 +102,11 @@ class _ProfileScreen extends StatelessWidget {
                   children: [
                     InformationWidget(
                       sectionTitle: localization.profileEmail,
-                      sectionText: "${userInfo?.email}",
+                      sectionText: userInfo?.email ?? '',
                     ),
                     InformationWidget(
                       sectionTitle: localization.profilePhoneNumber,
-                      sectionText: "${userInfo?.phoneNumber}",
+                      sectionText: userInfo?.phoneNumber ?? '',
                       onTap: () => navigator.pushNavigation(
                         screen: ChangeUserInfo(
                           sectionTitle: localization.profilePhoneNumber,
@@ -120,7 +119,7 @@ class _ProfileScreen extends StatelessWidget {
                     InformationWidget(
                       sectionTitle: localization.gender,
                       sectionText:
-                          "${userInfo?.gender.genderName(localization)}",
+                          userInfo?.gender.genderName(localization) ?? '',
                       onTap: () => navigator.pushNavigation(
                         screen: ChangeGender(
                           sectionTitle: localization.gender,
