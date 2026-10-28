@@ -14,6 +14,9 @@ class AuthService {
 
   FirebaseAuth get _auth => _firebaseService.auth;
 
+  Stream<String?> authStateChanges() =>
+      _auth.authStateChanges().map((user) => user?.uid);
+
   Future<Result<String>> signIn({
     required String email,
     required String password,

@@ -22,6 +22,8 @@ class AuthRepository {
 
   String? get currentUserId => _firebaseService.auth.currentUser?.uid;
 
+  Stream<String?> get userIdChanges => _authService.authStateChanges();
+
   /// Signs in and loads the user's profile. If the profile cannot be loaded
   /// the session is signed out again, so a signed-in session always has a
   /// loaded profile.
