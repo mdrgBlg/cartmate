@@ -1,5 +1,6 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,12 +15,17 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Fixed debug token passed via --dart-define; falls back to an auto-generated one.
+  // Debug builds use the debug provider with the token passed via --dart-define,
+  // or an auto-generated one. Release builds use Play Integrity / App Attest.
   const appCheckDebugToken = String.fromEnvironment('APP_CHECK_DEBUG_TOKEN');
+  final debugToken = appCheckDebugToken.isEmpty ? null : appCheckDebugToken;
   await FirebaseAppCheck.instance.activate(
-    providerAndroid: AndroidDebugProvider(
-      debugToken: appCheckDebugToken.isEmpty ? null : appCheckDebugToken,
-    ),
+    providerAndroid: kDebugMode
+        ? AndroidDebugProvider(debugToken: debugToken)
+        : const AndroidPlayIntegrityProvider(),
+    providerApple: kDebugMode
+        ? AppleDebugProvider(debugToken: debugToken)
+        : const AppleAppAttestWithDeviceCheckFallbackProvider(),
   );
 
   runApp(

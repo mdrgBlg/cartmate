@@ -25,6 +25,10 @@ class ProductDetailsProvider with ChangeNotifier {
   String? _selectedSize;
   String? get selectedSize => _selectedSize;
 
+  bool get canAddToCart =>
+      _product.stock > 0 &&
+      (_selectedSize != null || _product.productSize == null);
+
   void setSelectedSize(String? value) {
     _selectedSize = value;
     notifyListeners();

@@ -87,6 +87,15 @@ lib/
    fvm flutter run
    ```
 
+### App Check
+
+- **Debug builds** use the debug provider. Run with a fixed token:
+  ```bash
+  fvm flutter run --dart-define=APP_CHECK_DEBUG_TOKEN=<token>
+  ```
+  and register that token in Firebase console → App Check → Apps → Manage debug tokens (for both the Android and iOS apps).
+- **Release builds** use Play Integrity (Android) / App Attest (iOS). These only pass for Play-distributed or App Store/TestFlight builds, so this project keeps App Check in monitor mode (not enforced).
+
 ## Running tests
 
 ```bash
