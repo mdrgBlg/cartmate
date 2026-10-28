@@ -11,8 +11,8 @@ import '/utils/global_enums.dart';
 import '../models/result.dart';
 import 'firebase_service.dart';
 
-class ApiService {
-  ApiService({required FirebaseService firebaseService})
+class FirestoreService {
+  FirestoreService({required FirebaseService firebaseService})
     : _firebaseService = firebaseService;
 
   final FirebaseService _firebaseService;

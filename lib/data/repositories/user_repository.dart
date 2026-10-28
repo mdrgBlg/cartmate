@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import '/data/models/user_info_model.dart';
 import '/utils/global_enums.dart';
 import '../models/result.dart';
-import '../services/api_service.dart';
+import '../services/firestore_service.dart';
 
 class UserRepository with ChangeNotifier {
-  UserRepository({required ApiService apiService}) : _apiService = apiService;
+  UserRepository({required FirestoreService firestoreService})
+    : _firestoreService = firestoreService;
 
-  final ApiService _apiService;
+  final FirestoreService _firestoreService;
 
   UserInfoModel? _currentUser;
 
@@ -25,7 +26,7 @@ class UserRepository with ChangeNotifier {
       return Failure(Exception('No current user'));
     }
 
-    final result = await _apiService.updateUserName(
+    final result = await _firestoreService.updateUserName(
       userId,
       firstName,
       lastName,
@@ -46,7 +47,7 @@ class UserRepository with ChangeNotifier {
       return Failure(Exception('No current user'));
     }
 
-    final result = await _apiService.updateUsername(userId, value);
+    final result = await _firestoreService.updateUsername(userId, value);
     if (result case Success()) {
       _currentUser = _currentUser?.copyWith(username: value);
       notifyListeners();
@@ -60,7 +61,7 @@ class UserRepository with ChangeNotifier {
       return Failure(Exception('No current user'));
     }
 
-    final result = await _apiService.updatePhoneNumber(userId, value);
+    final result = await _firestoreService.updatePhoneNumber(userId, value);
     if (result case Success()) {
       _currentUser = _currentUser?.copyWith(phoneNumber: value);
       notifyListeners();
@@ -74,7 +75,7 @@ class UserRepository with ChangeNotifier {
       return Failure(Exception('No current user'));
     }
 
-    final result = await _apiService.updateGender(userId, value);
+    final result = await _firestoreService.updateGender(userId, value);
     if (result case Success()) {
       _currentUser = _currentUser?.copyWith(gender: value);
       notifyListeners();
@@ -88,7 +89,7 @@ class UserRepository with ChangeNotifier {
       return Failure(Exception('No current user'));
     }
 
-    final result = await _apiService.updateDateOfBirth(userId, value);
+    final result = await _firestoreService.updateDateOfBirth(userId, value);
     if (result case Success()) {
       _currentUser = _currentUser?.copyWith(dateOfBirth: value);
       notifyListeners();
@@ -103,7 +104,7 @@ class UserRepository with ChangeNotifier {
 
   /// Fetches the profile and caches it as the current user on success.
   Future<Result<UserInfoModel>> fetchUserInfo(String userId) async {
-    final result = await _apiService.fetchUserInfo(userId);
+    final result = await _firestoreService.fetchUserInfo(userId);
     if (result case Success(:final data)) {
       _currentUser = data;
     }
@@ -111,5 +112,5 @@ class UserRepository with ChangeNotifier {
   }
 
   Future<Result<void>> saveUserData(UserInfoModel user) =>
-      _apiService.saveUserData(user);
+      _firestoreService.saveUserData(user);
 }
