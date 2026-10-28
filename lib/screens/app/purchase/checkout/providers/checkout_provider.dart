@@ -85,4 +85,17 @@ class CheckoutProvider with ChangeNotifier {
       Failure() => false,
     };
   }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    countryController.dispose();
+    cityController.dispose();
+    zipCodeController.dispose();
+    phoneNumberController.dispose();
+    addressController.dispose();
+    super.dispose();
+  }
 }
