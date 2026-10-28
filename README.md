@@ -95,6 +95,14 @@ lib/
   and register that token in Firebase console → App Check → Apps → Manage debug tokens (for both the Android and iOS apps).
 - **Release builds** use Play Integrity (Android) / App Attest (iOS). These only pass for Play-distributed or App Store/TestFlight builds, so this project keeps App Check in monitor mode (not enforced).
 
+### Security rules
+
+[`firestore.rules`](firestore.rules) and [`storage.rules`](storage.rules) hold the Firestore and Cloud Storage rules: the catalog is read-only for signed-in users, and each user can only access their own profile, orders and wishlist. Deploy them with the [Firebase CLI](https://firebase.google.com/docs/cli):
+
+```bash
+firebase deploy --only firestore:rules,storage
+```
+
 ## Running tests
 
 ```bash
