@@ -8,7 +8,7 @@ import '/data/repositories/order_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/utils/global_enums.dart';
 
-const shippingFee = 8.0;
+const _shippingFee = 8.0;
 
 class CheckoutProvider with ChangeNotifier {
   CheckoutProvider({
@@ -40,7 +40,7 @@ class CheckoutProvider with ChangeNotifier {
 
   List<CartModel> get cartProducts => _cartRepository.cartProducts;
   double get checkoutPrice => _cartRepository.checkoutPrice;
-  double get shippingFee => shippingFee;
+  double get shippingFee => _shippingFee;
 
   void buttonChecker() {
     isButtonEnabled =
