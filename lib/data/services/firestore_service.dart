@@ -7,6 +7,7 @@ import '/data/models/categories_model.dart';
 import '/data/models/products_model.dart';
 import '/data/models/user_info_model.dart';
 import '/utils/constants/firebase_collection_constants.dart';
+import '/utils/firestore_logger.dart';
 import '/utils/global_enums.dart';
 import '../models/result.dart';
 import 'firebase_service.dart';
@@ -23,7 +24,15 @@ class FirestoreService {
 
   Future<Result<void>> saveUserData(UserInfoModel user) async {
     try {
-      await _users().doc(user.id).set(user.toJson());
+      final ref = _users().doc(user.id);
+      final data = user.toJson();
+      await FirestoreLogger.traceWrite(
+        'saveUserData',
+        'SET',
+        ref.path,
+        () => ref.set(data),
+        request: data,
+      );
       return const Success<void>(null);
     } on FirebaseException catch (e) {
       log("FirebaseException saveUserData: $e");
@@ -36,7 +45,12 @@ class FirestoreService {
 
   Future<Result<UserInfoModel>> fetchUserInfo(String userId) async {
     try {
-      final response = await _users().doc(userId).get();
+      final ref = _users().doc(userId);
+      final response = await FirestoreLogger.traceDoc(
+        'fetchUserInfo',
+        ref.path,
+        ref.get,
+      );
       final data = response.data();
       if (data == null) {
         log("This user doesn't exist");
@@ -58,7 +72,14 @@ class FirestoreService {
     String methodName,
   ) async {
     try {
-      await _users().doc(userId).update(fields);
+      final ref = _users().doc(userId);
+      await FirestoreLogger.traceWrite(
+        methodName,
+        'UPDATE',
+        ref.path,
+        () => ref.update(fields),
+        request: fields,
+      );
       return const Success<void>(null);
     } on FirebaseException catch (e) {
       log("FirebaseException $methodName: $e");
@@ -94,9 +115,14 @@ class FirestoreService {
 
   Future<Result<List<ProductsModel>>> fetchProducts() async {
     try {
-      final response = await _firebaseService.firestore
-          .collection(FirebaseCollectionConstants.productsCollection)
-          .get();
+      final collection = _firebaseService.firestore.collection(
+        FirebaseCollectionConstants.productsCollection,
+      );
+      final response = await FirestoreLogger.traceQuery(
+        'fetchProducts',
+        collection.path,
+        collection.get,
+      );
       return Success(
         response.docs
             .map((e) => ProductsModel.fromDocument(id: e.id, json: e.data()))
@@ -113,9 +139,14 @@ class FirestoreService {
 
   Future<Result<List<CategoriesModel>>> fetchCategories() async {
     try {
-      final response = await _firebaseService.firestore
-          .collection(FirebaseCollectionConstants.categoriesCollection)
-          .get();
+      final collection = _firebaseService.firestore.collection(
+        FirebaseCollectionConstants.categoriesCollection,
+      );
+      final response = await FirestoreLogger.traceQuery(
+        'fetchCategories',
+        collection.path,
+        collection.get,
+      );
       return Success(
         response.docs
             .map((e) => CategoriesModel.fromDocument(id: e.id, json: e.data()))
@@ -133,9 +164,14 @@ class FirestoreService {
 
   Future<Result<List<BrandModel>>> fetchBrands() async {
     try {
-      final response = await _firebaseService.firestore
-          .collection(FirebaseCollectionConstants.brandsCollection)
-          .get();
+      final collection = _firebaseService.firestore.collection(
+        FirebaseCollectionConstants.brandsCollection,
+      );
+      final response = await FirestoreLogger.traceQuery(
+        'fetchBrands',
+        collection.path,
+        collection.get,
+      );
       return Success(
         response.docs
             .map((e) => BrandModel.fromDocument(id: e.id, json: e.data()))
