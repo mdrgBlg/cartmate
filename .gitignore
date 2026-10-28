@@ -87,3 +87,13 @@ devtools_options.yaml
 # AI agent instructions
 AGENTS.md
 .agents/
+
+# Firebase CLI
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+storage-debug.log*
+ui-debug.log*
+
+# Firebase service account keys
+*-firebase-adminsdk-*.json

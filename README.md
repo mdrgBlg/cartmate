@@ -97,10 +97,10 @@ lib/
 
 ### Security rules
 
-[`firestore.rules`](firestore.rules) and [`storage.rules`](storage.rules) hold the Firestore and Cloud Storage rules: the catalog is read-only for signed-in users, and each user can only access their own profile, orders and wishlist. Deploy them with the [Firebase CLI](https://firebase.google.com/docs/cli):
+[`firestore.rules`](firestore.rules) holds the Firestore rules: the catalog is read-only for signed-in users, each user can only access their own profile, orders and wishlist, the profile email can't be changed and orders can't be edited once placed. Deploy them with the [Firebase CLI](https://firebase.google.com/docs/cli):
 
 ```bash
-firebase deploy --only firestore:rules,storage
+firebase deploy --only firestore:rules
 ```
 
 ## Running tests

@@ -1,13 +1,28 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    function signedIn() { return request.auth != null; }
-    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
 
     // Catalog: read-only for signed-in users, managed from the console.
-    match /Products/{id}   { allow read: if signedIn(); allow write: if false; }
-    match /Categories/{id} { allow read: if signedIn(); allow write: if false; }
-    match /Brands/{id}     { allow read: if signedIn(); allow write: if false; }
+    match /Products/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+    match /Categories/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+    match /Brands/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
 
     match /Users/{uid} {
       allow read: if isOwner(uid);
