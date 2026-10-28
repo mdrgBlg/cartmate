@@ -195,9 +195,7 @@ class _ProductDetailsScreen extends StatelessWidget {
                         buttonText: AppLocalizations.of(
                           context,
                         ).productAddToCart,
-                        enable:
-                            sizeProvider.selectedSize != null ||
-                            provider.product.productSize == null,
+                        enable: sizeProvider.canAddToCart,
                         margin: EdgeInsets.zero,
                         onPress: () {
                           CartModel cartModel = CartModel(
