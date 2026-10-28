@@ -45,7 +45,7 @@ class InputField extends StatelessWidget {
                 onInputChanged!();
               }
             },
-            style: textTheme.headlineSmall!.copyWith(fontSize: 16),
+            style: textTheme.bodyLarge!.copyWith(fontSize: 16),
           ),
         ),
       ],
