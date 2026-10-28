@@ -32,7 +32,7 @@ class UserInfoModel {
   final DateTime dateOfBirth;
   final Gender gender;
 
-  String get fullName => "${firstName} ${lastName}";
+  String get fullName => "$firstName $lastName";
 
   UserInfoModel copyWith({
     String? firstName,

@@ -287,7 +287,7 @@ class _CheckoutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     Consumer<CheckoutProvider>(
-                      builder: (_, __, child) => SizedBox(
+                      builder: (_, _, child) => SizedBox(
                         height: 50,
                         child: CustomButton(
                           margin: const EdgeInsets.only(

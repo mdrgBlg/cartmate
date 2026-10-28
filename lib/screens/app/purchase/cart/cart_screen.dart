@@ -58,7 +58,7 @@ class _CartScreen extends StatelessWidget {
               height: 50,
               margin: const EdgeInsets.only(bottom: 10.0),
               child: Consumer<CartProvider>(
-                builder: (_, __, child) => cartProvider.cartProducts.isNotEmpty
+                builder: (_, _, child) => cartProvider.cartProducts.isNotEmpty
                     ? CustomButton(
                         buttonText: localization.checkoutButton(
                           cartProvider.checkoutPrice.formatPrice(

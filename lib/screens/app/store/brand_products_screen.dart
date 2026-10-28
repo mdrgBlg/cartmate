@@ -83,7 +83,7 @@ class _BrandProducts extends StatelessWidget {
         }
         return Selector<BrandProductsProvider, (List<ProductsModel>, bool)>(
           selector: (_, provider) => (provider.products, provider.hasError),
-          builder: (_, data, __) {
+          builder: (_, data, _) {
             final (products, hasError) = data;
             if (hasError) {
               return Center(

@@ -56,7 +56,7 @@ class _ProductDetailsScreen extends StatelessWidget {
           children: [
             Selector<ProductDetailsProvider, ProductsModel>(
               selector: (_, provider) => provider.product,
-              builder: (_, product, __) =>
+              builder: (_, product, _) =>
                   WishlistHeartButton(product: product),
             ),
           ],
