@@ -117,4 +117,13 @@ class ProfileProvider with ChangeNotifier {
     }
     return null;
   }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    usernameController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
 }
