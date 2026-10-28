@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
@@ -48,27 +47,33 @@ class _SignUpScreen extends StatelessWidget {
         builder: (_, signUpProvider, child) => Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              children: [
-                Flexible(
-                  child: InputField(
-                    hintText: localization.firstName,
-                    onInputChanged: () {
-                      signUpProvider.validateField();
-                    },
-                    controller: signUpProvider.firstNameController,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                spacing: 12,
+                children: [
+                  Flexible(
+                    child: InputField(
+                      padding: EdgeInsets.zero,
+                      hintText: localization.firstName,
+                      onInputChanged: () {
+                        signUpProvider.validateField();
+                      },
+                      controller: signUpProvider.firstNameController,
+                    ),
                   ),
-                ),
-                Flexible(
-                  child: InputField(
-                    hintText: localization.lastName,
-                    onInputChanged: () {
-                      signUpProvider.validateField();
-                    },
-                    controller: signUpProvider.lastNameController,
+                  Flexible(
+                    child: InputField(
+                      padding: EdgeInsets.zero,
+                      hintText: localization.lastName,
+                      onInputChanged: () {
+                        signUpProvider.validateField();
+                      },
+                      controller: signUpProvider.lastNameController,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 12),
@@ -101,9 +106,10 @@ class _SignUpScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Flexible(
                     child: Consumer<SignUpProvider>(
@@ -115,22 +121,21 @@ class _SignUpScreen extends StatelessWidget {
                     ),
                   ),
                   Flexible(
-                    child: Column(
-                      children: [
-                        DatePicker(
-                          dateController: signUpProvider.dateController,
-                          pickedDate: signUpProvider.pickedDate,
-                          onDatePicked: (DateTime? pickedDate) {
-                            if (pickedDate != null) {
-                              signUpProvider.setPickedDate(pickedDate);
-                              signUpProvider.validateField();
-                            } else {
-                              signUpProvider.validateField();
-                            }
-                          },
-                        ),
-                        const Gap(16),
-                      ],
+                    // DropdownButton draws its underline 8px above its bottom.
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: DatePicker(
+                        dateController: signUpProvider.dateController,
+                        pickedDate: signUpProvider.pickedDate,
+                        onDatePicked: (DateTime? pickedDate) {
+                          if (pickedDate != null) {
+                            signUpProvider.setPickedDate(pickedDate);
+                            signUpProvider.validateField();
+                          } else {
+                            signUpProvider.validateField();
+                          }
+                        },
+                      ),
                     ),
                   ),
                 ],

@@ -150,6 +150,7 @@ class _LoginScreen extends StatelessWidget {
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
     bool isSuccess = false;
 
+    FocusManager.instance.primaryFocus?.unfocus();
     Loading.callLoading(
       context: context,
       callback: () async {
