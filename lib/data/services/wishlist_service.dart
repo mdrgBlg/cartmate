@@ -14,6 +14,8 @@ class WishlistService {
 
   final FirebaseService _firebaseService;
 
+  static const firestoreLogger = FirestoreLogger();
+
   CollectionReference<Map<String, dynamic>>? _wishlist() {
     final userId = _firebaseService.auth.currentUser?.uid;
     if (userId == null) {
@@ -31,7 +33,7 @@ class WishlistService {
       if (wishlist == null) {
         return Failure(Exception('No signed in user'));
       }
-      final response = await FirestoreLogger.traceQuery(
+      final response = await firestoreLogger.traceQuery(
         'fetchWishlistProducts',
         wishlist.path,
         wishlist.get,
@@ -56,7 +58,7 @@ class WishlistService {
       }
       final ref = wishlist.doc(product.id);
       final data = product.toMap();
-      await FirestoreLogger.traceWrite(
+      await firestoreLogger.traceWrite(
         'addProduct',
         'SET',
         ref.path,
@@ -80,7 +82,7 @@ class WishlistService {
         return Failure(Exception('No signed in user'));
       }
       final ref = wishlist.doc(productId);
-      await FirestoreLogger.traceWrite(
+      await firestoreLogger.traceWrite(
         'removeProduct',
         'DELETE',
         ref.path,

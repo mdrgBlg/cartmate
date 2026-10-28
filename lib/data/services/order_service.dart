@@ -20,11 +20,14 @@ class OrderService {
           .doc(userId)
           .collection(FirebaseCollectionConstants.ordersCollection);
 
+  static const firestoreLogger = FirestoreLogger();
+
   Future<Result<void>> saveOrder(CheckoutModel order) async {
     try {
       final ref = _orders(order.userId).doc();
       final Map<String, dynamic> data = {...order.toMap(), 'orderId': ref.id};
-      await FirestoreLogger.traceWrite(
+
+      await firestoreLogger.traceWrite(
         'saveOrder',
         'SET',
         ref.path,
@@ -43,7 +46,7 @@ class OrderService {
 
   Future<Result<List<CheckoutModel>>> fetchOrders(String userId) async {
     try {
-      final response = await FirestoreLogger.traceQuery(
+      final response = await firestoreLogger.traceQuery(
         'fetchOrders',
         _orders(userId).path,
         () => _orders(userId).orderBy('orderDate', descending: true).get(),
@@ -53,7 +56,7 @@ class OrderService {
         try {
           orders.add(CheckoutModel.fromJson(doc.data()));
         } catch (e, st) {
-          FirestoreLogger.parseFailure(
+          firestoreLogger.parseFailure(
             'fetchOrders',
             doc.id,
             doc.data(),

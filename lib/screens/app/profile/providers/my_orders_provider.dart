@@ -46,6 +46,5 @@ class MyOrdersProvider with ChangeNotifier {
         _myOrders = [];
         _error = exception;
     }
-    notifyListeners();
   }
 }

@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-      theme: Themes.themeData,
+      theme: Themes().getThemeData(),
       home: const WelcomeScreen(),
     );
   }
