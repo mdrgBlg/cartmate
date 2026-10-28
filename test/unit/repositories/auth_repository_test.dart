@@ -1,9 +1,9 @@
 import 'package:e_commerce/data/models/result.dart';
 import 'package:e_commerce/data/repositories/auth_repository.dart';
-import 'package:e_commerce/data/services/api_service.dart';
+import 'package:e_commerce/data/services/firestore_service.dart';
 import 'package:e_commerce/data/services/auth_service.dart';
 import 'package:e_commerce/data/services/firebase_service.dart';
-import 'package:e_commerce/models/user_info_model.dart';
+import 'package:e_commerce/data/models/user_info_model.dart';
 import 'package:e_commerce/utils/global_enums.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -14,11 +14,11 @@ class _MockFirebaseService extends Mock implements FirebaseService {}
 
 class _MockAuthService extends Mock implements AuthService {}
 
-class _MockApiService extends Mock implements ApiService {}
+class _MockFirestoreService extends Mock implements FirestoreService {}
 
 void main() {
   late _MockAuthService authService;
-  late _MockApiService apiService;
+  late _MockFirestoreService firestoreService;
   late AuthRepository repository;
 
   setUpAll(() {
@@ -27,14 +27,14 @@ void main() {
 
   setUp(() {
     authService = _MockAuthService();
-    apiService = _MockApiService();
+    firestoreService = _MockFirestoreService();
     when(
       () => authService.signOut(),
     ).thenAnswer((_) async => const Success<void>(null));
     repository = AuthRepository(
       firebaseService: _MockFirebaseService(),
       authService: authService,
-      apiService: apiService,
+      firestoreService: firestoreService,
     );
   });
 
@@ -58,7 +58,7 @@ void main() {
         ),
       ).thenAnswer((_) async => const Success('u1'));
       when(
-        () => apiService.fetchUserInfo('u1'),
+        () => firestoreService.fetchUserInfo('u1'),
       ).thenAnswer((_) async => Failure(Exception('not found')));
 
       final result = await repository.login(
@@ -86,7 +86,7 @@ void main() {
 
       expect(result, isA<Failure<UserInfoModel>>());
       expect((result as Failure<UserInfoModel>).exception, same(exception));
-      verifyNever(() => apiService.fetchUserInfo(any()));
+      verifyNever(() => firestoreService.fetchUserInfo(any()));
       verifyNever(() => authService.signOut());
     });
   });
@@ -100,7 +100,7 @@ void main() {
         ),
       ).thenAnswer((_) async => const Success('u1'));
       when(
-        () => apiService.saveUserData(any()),
+        () => firestoreService.saveUserData(any()),
       ).thenAnswer((_) async => Failure(Exception('write denied')));
     });
 

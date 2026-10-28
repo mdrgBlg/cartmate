@@ -1,8 +1,8 @@
-import '/models/brand_model.dart';
-import '/models/categories_model.dart';
-import '/models/products_model.dart';
+import '/data/models/brand_model.dart';
+import '/data/models/categories_model.dart';
+import '/data/models/products_model.dart';
 import '../models/result.dart';
-import '../services/api_service.dart';
+import '../services/firestore_service.dart';
 
 /// Single shared instance (registered in DI) and the in-memory source of truth
 /// for the catalog (products, categories, brands).
@@ -10,10 +10,10 @@ import '../services/api_service.dart';
 /// Returns cached data when available, otherwise fetches it. Failures are not
 /// cached so the next call retries.
 class ProductRepository {
-  ProductRepository({required ApiService apiService})
-    : _apiService = apiService;
+  ProductRepository({required FirestoreService firestoreService})
+    : _firestoreService = firestoreService;
 
-  final ApiService _apiService;
+  final FirestoreService _firestoreService;
 
   List<ProductsModel>? _products;
   List<CategoriesModel>? _categories;
@@ -25,7 +25,7 @@ class ProductRepository {
       return Success(products);
     }
 
-    final result = await _apiService.fetchProducts();
+    final result = await _firestoreService.fetchProducts();
     if (result case Success(:final data)) {
       _products = data;
     }
@@ -38,7 +38,7 @@ class ProductRepository {
       return Success(categories);
     }
 
-    final result = await _apiService.fetchCategories();
+    final result = await _firestoreService.fetchCategories();
     if (result case Success(:final data)) {
       _categories = data;
     }
@@ -51,7 +51,7 @@ class ProductRepository {
       return Success(brands);
     }
 
-    final result = await _apiService.fetchBrands();
+    final result = await _firestoreService.fetchBrands();
     if (result case Success(:final data)) {
       _brands = data;
     }

@@ -35,6 +35,7 @@ class _WishlistScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 28),
           child: Column(
             spacing: 20,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '/models/products_model.dart';
+import '/data/models/products_model.dart';
 import '../models/result.dart';
 import '../services/wishlist_service.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import '/data/services/api_service.dart';
-import '/models/user_info_model.dart';
+import '/data/services/firestore_service.dart';
+import '/data/models/user_info_model.dart';
 import '/utils/global_enums.dart';
 import '../models/result.dart';
 import '../services/auth_service.dart';
@@ -11,16 +11,18 @@ class AuthRepository {
   AuthRepository({
     required FirebaseService firebaseService,
     required AuthService authService,
-    required ApiService apiService,
+    required FirestoreService firestoreService,
   }) : _firebaseService = firebaseService,
        _authService = authService,
-       _apiService = apiService;
+       _firestoreService = firestoreService;
 
   final FirebaseService _firebaseService;
   final AuthService _authService;
-  final ApiService _apiService;
+  final FirestoreService _firestoreService;
 
   String? get currentUserId => _firebaseService.auth.currentUser?.uid;
+
+  Stream<String?> get userIdChanges => _authService.authStateChanges();
 
   /// Signs in and loads the user's profile. If the profile cannot be loaded
   /// the session is signed out again, so a signed-in session always has a
@@ -37,7 +39,7 @@ class AuthRepository {
       case Failure(:final exception):
         return Failure(exception);
       case Success(data: final uid):
-        final fetchResult = await _apiService.fetchUserInfo(uid);
+        final fetchResult = await _firestoreService.fetchUserInfo(uid);
         if (fetchResult is Failure<UserInfoModel>) {
           final signOutResult = await _authService.signOut();
           log("Login profile fetch failed, sign-out result: $signOutResult");
@@ -77,7 +79,7 @@ class AuthRepository {
           dateOfBirth: dateOfBirth,
           gender: gender,
         );
-        final saveResult = await _apiService.saveUserData(user);
+        final saveResult = await _firestoreService.saveUserData(user);
         switch (saveResult) {
           case Success():
             return Success(user);

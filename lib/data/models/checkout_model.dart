@@ -1,4 +1,4 @@
-import '/models/cart_model.dart';
+import '/data/models/cart_model.dart';
 
 class CheckoutModel {
   CheckoutModel({

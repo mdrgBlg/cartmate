@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '/models/cart_model.dart';
+import '/data/models/cart_model.dart';
 import '../models/result.dart';
 import '../services/cart_service.dart';
 

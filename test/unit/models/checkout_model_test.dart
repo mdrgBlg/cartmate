@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:e_commerce/models/cart_model.dart';
-import 'package:e_commerce/models/checkout_model.dart';
-import 'package:e_commerce/models/products_model.dart';
+import 'package:e_commerce/data/models/cart_model.dart';
+import 'package:e_commerce/data/models/checkout_model.dart';
+import 'package:e_commerce/data/models/products_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/test_data.dart';

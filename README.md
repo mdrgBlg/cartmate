@@ -54,8 +54,7 @@ flowchart LR
 ```
 lib/
 ├── core/                  # l10n (ARB + generated code), styles, shared widgets
-├── data/                  # services, repositories and the Result type
-├── models/                # data models (products, brands, categories, cart, orders, user)
+├── data/                  # services, repositories and models (Result type, products, brands, categories, cart, orders, user)
 ├── screens/               # auth and app screens, each with its own providers and widgets
 ├── utils/                 # constants, extensions, navigation and UI helpers
 ├── app_dependencies.dart  # service and repository registration
@@ -95,6 +94,14 @@ lib/
   ```
   and register that token in Firebase console → App Check → Apps → Manage debug tokens (for both the Android and iOS apps).
 - **Release builds** use Play Integrity (Android) / App Attest (iOS). These only pass for Play-distributed or App Store/TestFlight builds, so this project keeps App Check in monitor mode (not enforced).
+
+### Security rules
+
+[`firestore.rules`](firestore.rules) holds the Firestore rules: the catalog is read-only for signed-in users, each user can only access their own profile, orders and wishlist, the profile email can't be changed and orders can't be edited once placed. Deploy them with the [Firebase CLI](https://firebase.google.com/docs/cli):
+
+```bash
+firebase deploy --only firestore:rules
+```
 
 ## Running tests
 

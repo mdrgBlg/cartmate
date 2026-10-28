@@ -3,8 +3,8 @@ import 'package:gap/gap.dart';
 
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/app_network_image.dart';
-import '/models/brand_model.dart';
-import '/models/products_model.dart';
+import '/data/models/brand_model.dart';
+import '/data/models/products_model.dart';
 
 class CategoriesBrands extends StatelessWidget {
   const CategoriesBrands({

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/core/l10n/app_localizations.dart';
 import '/core/styles/custom_colors.dart';
 import '/core/widgets/app_network_image.dart';
-import '/models/brand_model.dart';
+import '/data/models/brand_model.dart';
 import '/utils/custom_navigator.dart';
 import '../brand_products_screen.dart';
 

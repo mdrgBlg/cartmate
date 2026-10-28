@@ -1,6 +1,6 @@
-import 'package:e_commerce/models/brand_model.dart';
-import 'package:e_commerce/models/products_model.dart';
-import 'package:e_commerce/models/user_info_model.dart';
+import 'package:e_commerce/data/models/brand_model.dart';
+import 'package:e_commerce/data/models/products_model.dart';
+import 'package:e_commerce/data/models/user_info_model.dart';
 import 'package:e_commerce/utils/global_enums.dart';
 
 ProductsModel testProduct({String id = 'p1'}) => ProductsModel(
