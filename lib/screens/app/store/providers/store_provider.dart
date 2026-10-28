@@ -95,9 +95,9 @@ class StoreProvider with ChangeNotifier {
 
   ProductsModel _withCurrentFlag(ProductsModel product) {
     final isWishlisted = _wishlistRepository.isWishlisted(product.id);
-    return product.whishlist == isWishlisted
+    return product.isWishlisted == isWishlisted
         ? product
-        : product.copyWith(whishlist: isWishlisted);
+        : product.copyWith(isWishlisted: isWishlisted);
   }
 
   List<ProductsModel> categoryProductsForBrand(BrandModel brand) =>

@@ -10,6 +10,7 @@ import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/wishlist_heart_button/wishlist_heart_button.dart';
 import '/models/cart_model.dart';
 import '/models/products_model.dart';
+import '/utils/extensions/price_extension.dart';
 import '/utils/snack_bar_popup.dart';
 import 'providers/product_details_provider.dart';
 import 'widgets/product_image_gallery.dart';
@@ -45,6 +46,7 @@ class _ProductDetailsScreen extends StatelessWidget {
       listen: false,
     );
     final textTheme = Theme.of(context).textTheme;
+    final locale = Localizations.localeOf(context).toString();
 
     return MainLayout(
       appBar: CustomAppBar(
@@ -109,7 +111,10 @@ class _ProductDetailsScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        provider.product.getPriceWithCurrency,
+                        provider.product.price.formatPrice(
+                          provider.product.currency,
+                          locale: locale,
+                        ),
                         style: textTheme.bodyLarge!.copyWith(
                           fontWeight: FontWeight.bold,
                           color: CustomColors.customGrey,
@@ -150,7 +155,10 @@ class _ProductDetailsScreen extends StatelessWidget {
                         ),
                         const Spacer(),
                         Text(
-                          provider.product.getPriceWithDiscountAndCurrency,
+                          provider.product.getPriceWithDiscount.formatPrice(
+                            provider.product.currency,
+                            locale: locale,
+                          ),
                           style: textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -193,7 +201,7 @@ class _ProductDetailsScreen extends StatelessWidget {
                         margin: EdgeInsets.zero,
                         onPress: () {
                           CartModel cartModel = CartModel(
-                            productModel: ProductsModel.copy(provider.product),
+                            productModel: provider.product,
                             size: sizeProvider.selectedSize ?? "",
                           );
                           provider.addToCart(cartModel);

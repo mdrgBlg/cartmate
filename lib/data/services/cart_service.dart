@@ -59,8 +59,6 @@ class CartService {
   }
 
   Future<Result<void>> saveItem(CartModel item) async {
-    // Snapshot before the first await so the write reflects the quantity at
-    // call time even when the user taps faster than the database.
     final product = item.productModel;
     final row = <String, Object?>{
       'id': product.id,

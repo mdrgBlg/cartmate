@@ -12,7 +12,7 @@ class ProductsModel {
     required this.price,
     required this.productSize,
     required this.stock,
-    this.whishlist = false,
+    this.isWishlisted = false,
   });
 
   factory ProductsModel.fromDocument({
@@ -70,45 +70,24 @@ class ProductsModel {
       ',',
     ), // Split comma-separated string
     stock: json['stock'] as int,
-    whishlist: json['wishlist'] as int == 1,
+    isWishlisted: json['wishlist'] as int == 1,
   );
-
-  ProductsModel.copy(ProductsModel other)
-    : id = other.id,
-      brandModel = other.brandModel,
-      categoryId = other.categoryId,
-      currency = other.currency,
-      productImageList = List<String>.from(other.productImageList),
-      productName = other.productName,
-      discount = other.discount,
-      price = other.price,
-      productSize = List<String>.from(
-        other.productSize != null ? other.productSize! : [],
-      ),
-      stock = other.stock,
-      whishlist = other.whishlist;
 
   final String id;
   final BrandModel? brandModel;
   final String categoryId;
   final String currency;
-  List<String> productImageList;
+  final List<String> productImageList;
   final String productName;
   final int discount;
   final int price;
   final List<String>? productSize;
   final int stock;
-  bool whishlist;
-
-  String get getPriceWithCurrency =>
-      "${price.toDouble().toString()} ${currency}";
-
-  String get getPriceWithDiscountAndCurrency =>
-      "${(price - price * (discount / 100))} ${currency}";
+  final bool isWishlisted;
 
   double get getPriceWithDiscount => price - price * (discount / 100);
 
-  ProductsModel copyWith({bool? whishlist}) => ProductsModel(
+  ProductsModel copyWith({bool? isWishlisted}) => ProductsModel(
     id: id,
     brandModel: brandModel,
     categoryId: categoryId,
@@ -119,7 +98,7 @@ class ProductsModel {
     price: price,
     productSize: productSize,
     stock: stock,
-    whishlist: whishlist ?? this.whishlist,
+    isWishlisted: isWishlisted ?? this.isWishlisted,
   );
 
   Map<String, dynamic> toMap() {

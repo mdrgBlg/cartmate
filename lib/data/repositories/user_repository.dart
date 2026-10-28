@@ -31,8 +31,10 @@ class UserRepository with ChangeNotifier {
       lastName,
     );
     if (result case Success()) {
-      _currentUser?.firstName = firstName;
-      _currentUser?.lastName = lastName;
+      _currentUser = _currentUser?.copyWith(
+        firstName: firstName,
+        lastName: lastName,
+      );
       notifyListeners();
     }
     return result;
@@ -46,7 +48,7 @@ class UserRepository with ChangeNotifier {
 
     final result = await _apiService.updateUsername(userId, value);
     if (result case Success()) {
-      _currentUser?.username = value;
+      _currentUser = _currentUser?.copyWith(username: value);
       notifyListeners();
     }
     return result;
@@ -60,7 +62,7 @@ class UserRepository with ChangeNotifier {
 
     final result = await _apiService.updatePhoneNumber(userId, value);
     if (result case Success()) {
-      _currentUser?.phoneNumber = value;
+      _currentUser = _currentUser?.copyWith(phoneNumber: value);
       notifyListeners();
     }
     return result;
@@ -74,7 +76,7 @@ class UserRepository with ChangeNotifier {
 
     final result = await _apiService.updateGender(userId, value);
     if (result case Success()) {
-      _currentUser?.gender = value;
+      _currentUser = _currentUser?.copyWith(gender: value);
       notifyListeners();
     }
     return result;
@@ -88,7 +90,7 @@ class UserRepository with ChangeNotifier {
 
     final result = await _apiService.updateDateOfBirth(userId, value);
     if (result case Success()) {
-      _currentUser?.dateOfBirth = value;
+      _currentUser = _currentUser?.copyWith(dateOfBirth: value);
       notifyListeners();
     }
     return result;

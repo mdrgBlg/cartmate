@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 
 import '/models/products_model.dart';
 import '../models/result.dart';
@@ -9,7 +8,7 @@ import '../services/wishlist_service.dart';
 /// for the wishlist; Firestore is only its persistence. UI must reach it
 /// through a provider.
 ///
-/// Stores its own immutable instances (flagged `whishlist: true`) and never
+/// Stores its own immutable instances (flagged `isWishlisted: true`) and never
 /// mutates models owned by providers. Listeners re-read [isWishlisted] or
 /// [products] when notified.
 class WishlistRepository with ChangeNotifier {
@@ -24,7 +23,7 @@ class WishlistRepository with ChangeNotifier {
   List<ProductsModel> get products => [..._products];
 
   bool isWishlisted(String productId) =>
-      _products.firstWhereOrNull((element) => element.id == productId) != null;
+      _products.where((element) => element.id == productId).firstOrNull != null;
 
   /// Drops the cached wishlist so the next user loads their own.
   void clear() {
@@ -65,7 +64,7 @@ class WishlistRepository with ChangeNotifier {
   }
 
   Future<Result<void>> _addToWishlist(ProductsModel product) async {
-    final stored = product.copyWith(whishlist: true);
+    final stored = product.copyWith(isWishlisted: true);
     _products.add(stored);
     notifyListeners();
 
@@ -77,9 +76,9 @@ class WishlistRepository with ChangeNotifier {
   }
 
   Future<Result<void>> _removeFromWishlist(String productId) async {
-    final existing = _products.firstWhereOrNull(
-      (element) => element.id == productId,
-    );
+    final existing = _products
+        .where((element) => element.id == productId)
+        .firstOrNull;
     if (existing != null) {
       _products.remove(existing);
       notifyListeners();
@@ -91,6 +90,6 @@ class WishlistRepository with ChangeNotifier {
       }
       return result;
     }
-    return Failure(Exception("Did't find the element"));
+    return Failure(Exception("Didn't find the element"));
   }
 }

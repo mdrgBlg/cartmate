@@ -182,8 +182,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get purchaseItemQuantity => 'Quantity: ';
 
   @override
-  String checkoutButton(String price, String currency) {
-    return 'Checkout $price $currency';
+  String checkoutButton(String price) {
+    return 'Checkout $price';
   }
 
   @override

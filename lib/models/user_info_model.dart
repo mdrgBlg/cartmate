@@ -24,15 +24,33 @@ class UserInfoModel {
   );
 
   final String id;
-  String firstName;
-  String lastName;
-  String email;
-  String username;
-  String phoneNumber;
-  DateTime dateOfBirth;
-  Gender gender;
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String username;
+  final String phoneNumber;
+  final DateTime dateOfBirth;
+  final Gender gender;
 
   String get fullName => "${firstName} ${lastName}";
+
+  UserInfoModel copyWith({
+    String? firstName,
+    String? lastName,
+    String? username,
+    String? phoneNumber,
+    DateTime? dateOfBirth,
+    Gender? gender,
+  }) => UserInfoModel(
+    id: id,
+    firstName: firstName ?? this.firstName,
+    lastName: lastName ?? this.lastName,
+    email: email,
+    username: username ?? this.username,
+    phoneNumber: phoneNumber ?? this.phoneNumber,
+    dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+    gender: gender ?? this.gender,
+  );
 
   Map<String, dynamic> toJson() {
     return {

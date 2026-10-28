@@ -24,12 +24,16 @@ class CartModel {
   final ProductsModel productModel;
   final String size;
   final String currency;
-  int quantity;
+  final int quantity;
 
   double get getTotalPrice => productModel.getPriceWithDiscount * quantity;
 
-  String get getTotalPriceWithCurrency =>
-      "${(productModel.getPriceWithDiscount * quantity)} $currency";
+  CartModel copyWith({int? quantity}) => CartModel(
+    productModel: productModel,
+    size: size,
+    quantity: quantity ?? this.quantity,
+    currency: currency,
+  );
 
   Map<String, dynamic> toMap() {
     return {
