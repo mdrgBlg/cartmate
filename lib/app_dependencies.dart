@@ -7,7 +7,7 @@ import '/data/repositories/order_repository.dart';
 import '/data/repositories/product_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
-import '/data/services/api_service.dart';
+import '/data/services/firestore_service.dart';
 import '/data/services/auth_service.dart';
 import '/data/services/cart_service.dart';
 import '/data/services/database_service.dart';
@@ -20,7 +20,9 @@ List<SingleChildWidget> injectServiceDependencies() {
     Provider(create: (context) => FirebaseService()),
     Provider(create: (context) => DatabaseService()),
     Provider(create: (context) => AuthService(firebaseService: context.read())),
-    Provider(create: (context) => ApiService(firebaseService: context.read())),
+    Provider(
+      create: (context) => FirestoreService(firebaseService: context.read()),
+    ),
     Provider(
       create: (context) => WishlistService(firebaseService: context.read()),
     ),
@@ -34,13 +36,13 @@ List<SingleChildWidget> injectServiceDependencies() {
 List<SingleChildWidget> injectRepositoryDependencies() {
   return [
     ChangeNotifierProvider(
-      create: (context) => UserRepository(apiService: context.read()),
+      create: (context) => UserRepository(firestoreService: context.read()),
     ),
     Provider(
       create: (context) => OrderRepository(orderService: context.read()),
     ),
     Provider(
-      create: (context) => ProductRepository(apiService: context.read()),
+      create: (context) => ProductRepository(firestoreService: context.read()),
     ),
     ChangeNotifierProvider(
       create: (context) => WishlistRepository(wishlistService: context.read()),
@@ -52,7 +54,7 @@ List<SingleChildWidget> injectRepositoryDependencies() {
       create: (context) => AuthRepository(
         firebaseService: context.read(),
         authService: context.read(),
-        apiService: context.read(),
+        firestoreService: context.read(),
       ),
     ),
   ];
