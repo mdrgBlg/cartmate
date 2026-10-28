@@ -18,6 +18,8 @@ class FirestoreService {
 
   final FirebaseService _firebaseService;
 
+  static const firestoreLogger = FirestoreLogger();
+
   CollectionReference<Map<String, dynamic>> _users() => _firebaseService
       .firestore
       .collection(FirebaseCollectionConstants.usersCollection);
@@ -26,7 +28,7 @@ class FirestoreService {
     try {
       final ref = _users().doc(user.id);
       final data = user.toJson();
-      await FirestoreLogger.traceWrite(
+      await firestoreLogger.traceWrite(
         'saveUserData',
         'SET',
         ref.path,
@@ -46,7 +48,7 @@ class FirestoreService {
   Future<Result<UserInfoModel>> fetchUserInfo(String userId) async {
     try {
       final ref = _users().doc(userId);
-      final response = await FirestoreLogger.traceDoc(
+      final response = await firestoreLogger.traceDoc(
         'fetchUserInfo',
         ref.path,
         ref.get,
@@ -73,7 +75,7 @@ class FirestoreService {
   ) async {
     try {
       final ref = _users().doc(userId);
-      await FirestoreLogger.traceWrite(
+      await firestoreLogger.traceWrite(
         methodName,
         'UPDATE',
         ref.path,
@@ -118,7 +120,7 @@ class FirestoreService {
       final collection = _firebaseService.firestore.collection(
         FirebaseCollectionConstants.productsCollection,
       );
-      final response = await FirestoreLogger.traceQuery(
+      final response = await firestoreLogger.traceQuery(
         'fetchProducts',
         collection.path,
         collection.get,
@@ -142,7 +144,7 @@ class FirestoreService {
       final collection = _firebaseService.firestore.collection(
         FirebaseCollectionConstants.categoriesCollection,
       );
-      final response = await FirestoreLogger.traceQuery(
+      final response = await firestoreLogger.traceQuery(
         'fetchCategories',
         collection.path,
         collection.get,
@@ -167,7 +169,7 @@ class FirestoreService {
       final collection = _firebaseService.firestore.collection(
         FirebaseCollectionConstants.brandsCollection,
       );
-      final response = await FirestoreLogger.traceQuery(
+      final response = await firestoreLogger.traceQuery(
         'fetchBrands',
         collection.path,
         collection.get,

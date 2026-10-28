@@ -9,9 +9,9 @@ const int _maxPayloadLength = 2000;
 const int _severeLevel = 1000;
 
 class FirestoreLogger {
-  const FirestoreLogger._();
+  const FirestoreLogger();
 
-  static Future<QuerySnapshot<Map<String, dynamic>>> traceQuery(
+  Future<QuerySnapshot<Map<String, dynamic>>> traceQuery(
     String operation,
     String path,
     Future<QuerySnapshot<Map<String, dynamic>>> Function() call,
@@ -38,7 +38,7 @@ class FirestoreLogger {
     }
   }
 
-  static Future<DocumentSnapshot<Map<String, dynamic>>> traceDoc(
+  Future<DocumentSnapshot<Map<String, dynamic>>> traceDoc(
     String operation,
     String path,
     Future<DocumentSnapshot<Map<String, dynamic>>> Function() call,
@@ -61,7 +61,7 @@ class FirestoreLogger {
     }
   }
 
-  static Future<void> traceWrite(
+  Future<void> traceWrite(
     String operation,
     String method,
     String path,
@@ -85,7 +85,7 @@ class FirestoreLogger {
     }
   }
 
-  static void parseFailure(
+  void parseFailure(
     String operation,
     String docId,
     Map<String, dynamic> data,
@@ -107,7 +107,7 @@ class FirestoreLogger {
     }
   }
 
-  static void _logError(
+  void _logError(
     String operation,
     String path,
     Object error,
@@ -122,7 +122,7 @@ class FirestoreLogger {
     );
   }
 
-  static String _truncate(Object? value) {
+  String _truncate(Object? value) {
     final text = value.toString();
     if (text.length <= _maxPayloadLength) {
       return text;
