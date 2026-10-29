@@ -4,15 +4,18 @@ import 'package:provider/provider.dart';
 import '/core/l10n/app_localizations.dart';
 import '/core/styles/app_radius.dart';
 import '/core/styles/app_spacing.dart';
+import '/core/widgets/error_view.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/main_header/main_header.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
+import '/core/widgets/products_grid_view/widgets/products_grid_skeleton.dart';
 import '/core/widgets/search_field/search_field.dart';
 import '/data/models/categories_model.dart';
 import '/utils/custom_navigator.dart';
 import 'categories_screen.dart';
 import 'providers/home_provider.dart';
 import 'widgets/categories_list.dart';
+import 'widgets/categories_skeleton.dart';
 import 'widgets/home_banner_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -99,25 +102,23 @@ class _HomeScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      FutureBuilder<void>(
-                        future: homeProvider.productsFuture,
-                        builder: (context, snapshot) =>
-                            snapshot.connectionState == ConnectionState.waiting
-                            ? const Center(child: CircularProgressIndicator())
-                            : homeProvider.hasProductsError
-                            ? Center(
-                                child: Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  ).somethingWentWrong,
+                      Selector<HomeProvider, Future<void>>(
+                        selector: (_, provider) => provider.productsFuture,
+                        builder: (_, future, _) => FutureBuilder<void>(
+                          future: future,
+                          builder: (context, snapshot) =>
+                              snapshot.connectionState ==
+                                  ConnectionState.waiting
+                              ? const ProductsGridSkeleton()
+                              : homeProvider.hasProductsError
+                              ? ErrorView(onRetry: homeProvider.reloadProducts)
+                              : Consumer<HomeProvider>(
+                                  builder: (context, value, child) =>
+                                      ProductsGridView(
+                                        productsList: homeProvider.products,
+                                      ),
                                 ),
-                              )
-                            : Consumer<HomeProvider>(
-                                builder: (context, value, child) =>
-                                    ProductsGridView(
-                                      productsList: homeProvider.products,
-                                    ),
-                              ),
+                        ),
                       ),
                     ],
                   ),
@@ -163,32 +164,49 @@ class _HomeSearchAndCategories extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: AppSpacing.lg),
               height: 72,
-              child: FutureBuilder<List<CategoriesModel>>(
-                future: homeProvider.categoriesFuture,
-                builder: (context, snapshot) =>
-                    snapshot.connectionState == ConnectionState.waiting
-                    ? const Center(child: CircularProgressIndicator())
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        controller: homeProvider.scrollController,
-                        itemCount: snapshot.data?.length,
-                        itemBuilder: (context, index) {
-                          final category = snapshot.data![index];
-                          return CategoriesList(
-                            categoriesModel: category,
-                            onTap: () =>
-                                CustomNavigator(context).pushNavigation(
-                                  routeName: CategoriesScreen.routeName,
-                                  screen: CategoriesScreen(
-                                    productsList: homeProvider
-                                        .getProductsForCategory(category.id),
-                                    categoryName: category.categoryName,
-                                  ),
-                                ),
-                          );
-                        },
-                      ),
+              child: Selector<HomeProvider, Future<List<CategoriesModel>>>(
+                selector: (_, provider) => provider.categoriesFuture,
+                builder: (_, future, _) => FutureBuilder<List<CategoriesModel>>(
+                  future: future,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CategoriesSkeleton();
+                    }
+                    if (homeProvider.hasCategoriesError) {
+                      return Padding(
+                        padding: AppSpacing.screenPadding,
+                        child: ErrorView(
+                          compact: true,
+                          foregroundColor: colorScheme.onPrimary,
+                          onRetry: homeProvider.reloadCategories,
+                        ),
+                      );
+                    }
+                    final categories =
+                        snapshot.data ?? const <CategoriesModel>[];
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      controller: homeProvider.scrollController,
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        final category = categories[index];
+                        return CategoriesList(
+                          categoriesModel: category,
+                          onTap: () => CustomNavigator(context).pushNavigation(
+                            routeName: CategoriesScreen.routeName,
+                            screen: CategoriesScreen(
+                              productsList: homeProvider.getProductsForCategory(
+                                category.id,
+                              ),
+                              categoryName: category.categoryName,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ],

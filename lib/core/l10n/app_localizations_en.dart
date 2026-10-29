@@ -39,6 +39,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get genderFemale => 'Female';
 
   @override
+  String get startShopping => 'Start shopping';
+
+  @override
+  String get errorViewTitle => 'Something went wrong';
+
+  @override
+  String get errorViewMessage => 'Check your connection and try again.';
+
+  @override
+  String get retry => 'Try again';
+
+  @override
   String get navHome => 'Home';
 
   @override
@@ -115,6 +127,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeSearchHint => 'Search product...';
 
   @override
+  String get searchNoResults => 'No products found';
+
+  @override
   String get productStock => 'Stock: ';
 
   @override
@@ -133,6 +148,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get productAddedToCart => 'Product is added to cart';
 
   @override
+  String get productsEmptyTitle => 'No products found';
+
+  @override
+  String get productsEmptyMessage => 'There is nothing to show here yet.';
+
+  @override
   String get myOrdersTitle => 'My Orders';
 
   @override
@@ -143,6 +164,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get myOrdersUnknown => 'Unknown';
+
+  @override
+  String get myOrdersEmptyTitle => 'No orders yet';
+
+  @override
+  String get myOrdersEmptyMessage =>
+      'When you place an order, it will show up here.';
 
   @override
   String get profileTitle => 'Profile';
@@ -189,6 +217,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cartTitle => 'Cart';
+
+  @override
+  String get cartEmptyTitle => 'Your cart is empty';
+
+  @override
+  String get cartEmptyMessage => 'Looks like you haven\'t added anything yet.';
 
   @override
   String get purchaseItemSize => 'Size: ';
@@ -274,6 +308,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get storeBrands => 'Brands';
 
   @override
+  String get storeEmptyTitle => 'No brands yet';
+
+  @override
+  String get storeEmptyMessage => 'Brands for this category will show up here.';
+
+  @override
   String storeProductsLabel(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -288,7 +328,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wishlistTitle => 'Wishlist';
 
   @override
-  String get wishlistError => 'Error';
+  String get wishlistEmptyTitle => 'Your wishlist is empty';
+
+  @override
+  String get wishlistEmptyMessage =>
+      'Tap the heart on a product to save it here.';
 
   @override
   String get forgotPasswordTitle => 'Forgot password';

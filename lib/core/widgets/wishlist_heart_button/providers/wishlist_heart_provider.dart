@@ -21,19 +21,21 @@ class WishlistHeartProvider with ChangeNotifier {
   bool get isWishlisted => _isWishlisted;
 
   // Called directly from the tap, nothing awaited before the repository call.
-  Future<void> toggle() async {
+  // Returns `false` when the change failed and the flag was reverted.
+  Future<bool> toggle() async {
     final previous = _isWishlisted;
     _isWishlisted = !previous;
     notifyListeners();
     final result = await _wishlistRepository.toggleWishlist(_product);
     switch (result) {
       case Success():
-        break;
+        return true;
       case Failure():
         if (!_isDisposed) {
           _isWishlisted = previous;
           notifyListeners();
         }
+        return false;
     }
   }
 

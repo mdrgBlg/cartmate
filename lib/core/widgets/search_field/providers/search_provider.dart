@@ -39,7 +39,12 @@ class SearchProvider with ChangeNotifier {
 
   bool get hasQuery => searchController.text.isNotEmpty;
 
-  bool get showResults => _isFocused && _searchedProducts.isNotEmpty;
+  // True once the current query has been searched (results or not).
+  bool _hasSearched = false;
+
+  // Empty panel text is shown for "no matches" and for a failed fetch.
+  bool get showResults =>
+      _isFocused && (_searchedProducts.isNotEmpty || _hasSearched);
 
   void focusChange(bool value) {
     _isFocused = value;
@@ -52,6 +57,7 @@ class SearchProvider with ChangeNotifier {
       clearInput();
       return;
     }
+    _hasSearched = false;
     notifyListeners();
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 600), _searchProducts);
@@ -61,6 +67,7 @@ class SearchProvider with ChangeNotifier {
     _debounce?.cancel();
     searchController.clear();
     _searchedProducts = [];
+    _hasSearched = false;
     notifyListeners();
   }
 
@@ -96,6 +103,7 @@ class SearchProvider with ChangeNotifier {
                 (element) => element.productName.toLowerCase().contains(query),
               )
               .toList();
+    _hasSearched = query.isNotEmpty;
     notifyListeners();
   }
 

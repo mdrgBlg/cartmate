@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '/core/l10n/app_localizations.dart';
+import '/core/widgets/empty_state.dart';
 import '/data/models/products_model.dart';
+import '/utils/assets/custom_illustrations.dart';
 import '../../styles/app_spacing.dart';
 import 'widgets/custom_product_card.dart';
 
@@ -11,6 +14,14 @@ class ProductsGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (productsList.isEmpty) {
+      final localization = AppLocalizations.of(context);
+      return EmptyState(
+        illustration: CustomIllustrations.noResults,
+        title: localization.productsEmptyTitle,
+        message: localization.productsEmptyMessage,
+      );
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.screenHorizontal,

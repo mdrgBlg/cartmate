@@ -17,8 +17,13 @@ class MyOrdersProvider with ChangeNotifier {
   final OrderRepository _orderRepository;
   final UserRepository _userRepository;
 
-  late final Future<void> _myOrdersFuture;
+  late Future<void> _myOrdersFuture;
   Future<void> get myOrdersFuture => _myOrdersFuture;
+
+  void reload() {
+    _myOrdersFuture = _fetchMyOrders();
+    notifyListeners();
+  }
 
   Exception? _error;
   bool get hasError => _error != null;
@@ -26,7 +31,7 @@ class MyOrdersProvider with ChangeNotifier {
   List<CheckoutModel> _myOrders = [];
   List<CheckoutModel> get myOrders => _myOrders;
 
-  // Started once from the constructor and awaited by `MyOrdersScreen`'s
+  // Started from the constructor (and `reload`) and awaited by `MyOrdersScreen`'s
   // `FutureBuilder`, which owns the loading state.
   Future<void> _fetchMyOrders() async {
     _error = null;
