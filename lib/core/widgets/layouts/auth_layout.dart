@@ -49,7 +49,11 @@ class AuthLayout extends StatelessWidget {
                 Column(
                   children: [
                     Expanded(child: Container(color: colorScheme.primary)),
-                    Expanded(child: Container(color: colorScheme.surface)),
+                    Expanded(
+                      child: Container(
+                        color: colorScheme.surfaceContainerLowest,
+                      ),
+                    ),
                   ],
                 ),
                 ...overlays,

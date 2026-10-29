@@ -43,7 +43,7 @@ class _MyOrdersScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return MainLayout(
       appBar: CustomAppBar(titleText: localization.myOrdersTitle),
-      backgroundColor: colorScheme.surface,
+      backgroundColor: colorScheme.surfaceContainerLowest,
       child: FutureBuilder<void>(
         future: myOrdersProvider.myOrdersFuture,
         builder: (context, snapshot) =>
@@ -112,6 +112,7 @@ class _MyOrdersScreen extends StatelessWidget {
                             children: [
                               Image.asset(
                                 CustomIcons.priceTag,
+                                color: colorScheme.onSurface,
                                 height: 20,
                                 width: 20,
                               ),
@@ -138,6 +139,7 @@ class _MyOrdersScreen extends StatelessWidget {
                               const Spacer(),
                               Image.asset(
                                 CustomIcons.timing,
+                                color: colorScheme.onSurface,
                                 height: 24,
                                 width: 24,
                               ),

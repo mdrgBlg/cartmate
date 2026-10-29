@@ -63,6 +63,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderStatusDelivered => 'Delivered';
 
   @override
+  String get themeModeSystem => 'System default';
+
+  @override
+  String get themeModeLight => 'Light';
+
+  @override
+  String get themeModeDark => 'Dark';
+
+  @override
   String get authErrorInvalidEmail => 'Please enter a valid email address.';
 
   @override
@@ -161,6 +170,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileLogout => 'Log out';
+
+  @override
+  String get profileAppearance => 'Appearance';
+
+  @override
+  String get profileTheme => 'Theme';
 
   @override
   String profileChangeSection(String section) {

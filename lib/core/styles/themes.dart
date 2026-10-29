@@ -43,30 +43,84 @@ class Themes {
     surfaceContainerHighest: CustomColors.grey200,
   );
 
-  ThemeData getThemeData() {
+  // Dark inverseSurface stays a dark elevated shade so dark app bars and
+  // badges keep light text.
+  static const ColorScheme _darkColorScheme = ColorScheme(
+    brightness: Brightness.dark,
+    primary: CustomColors.darkPrimary,
+    onPrimary: CustomColors.darkOnPrimary,
+    primaryContainer: CustomColors.darkPrimaryContainer,
+    onPrimaryContainer: CustomColors.primaryLight,
+    secondary: CustomColors.darkAccent,
+    onSecondary: CustomColors.onAccent,
+    secondaryContainer: Color(0xFF78350F),
+    onSecondaryContainer: CustomColors.accentLight,
+    tertiary: Color(0xFF34D399),
+    onTertiary: Color(0xFF064E3B),
+    tertiaryContainer: Color(0xFF065F46),
+    onTertiaryContainer: Color(0xFFD1FAE5),
+    error: Color(0xFFF87171),
+    onError: Color(0xFF450A0A),
+    errorContainer: Color(0xFF7F1D1D),
+    onErrorContainer: Color(0xFFFEE2E2),
+    surface: CustomColors.darkSurface,
+    onSurface: CustomColors.darkOnSurface,
+    onSurfaceVariant: CustomColors.grey400,
+    outline: CustomColors.grey500,
+    outlineVariant: CustomColors.darkOutlineVariant,
+    surfaceTint: Colors.transparent,
+    shadow: Colors.black,
+    scrim: Colors.black,
+    inverseSurface: CustomColors.darkSurfaceContainerHighest,
+    onInverseSurface: CustomColors.grey100,
+    inversePrimary: CustomColors.primary,
+    surfaceContainerLowest: CustomColors.darkBackground,
+    surfaceContainerLow: CustomColors.darkSurfaceContainerLow,
+    surfaceContainer: CustomColors.darkSurfaceContainer,
+    surfaceContainerHigh: CustomColors.darkSurfaceContainerHigh,
+    surfaceContainerHighest: CustomColors.darkSurfaceContainerHighest,
+  );
+
+  ThemeData getThemeData() => _build(
+    scheme: _lightColorScheme,
+    scaffold: CustomColors.background,
+    textTheme: AppTextTheme.light,
+  );
+
+  ThemeData getDarkThemeData() => _build(
+    scheme: _darkColorScheme,
+    scaffold: CustomColors.darkBackground,
+    textTheme: AppTextTheme.dark,
+  );
+
+  ThemeData _build({
+    required ColorScheme scheme,
+    required Color scaffold,
+    required TextTheme textTheme,
+  }) {
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.light,
-      colorScheme: _lightColorScheme,
-      scaffoldBackgroundColor: CustomColors.background,
-      canvasColor: CustomColors.surface,
+      brightness: scheme.brightness,
+      colorScheme: scheme,
+      scaffoldBackgroundColor: scaffold,
+      canvasColor: scheme.surface,
       fontFamily: AppTextTheme.fontFamily,
-      textTheme: AppTextTheme.light,
+      textTheme: textTheme,
       dividerColor: Colors.transparent,
-      filledButtonTheme: AppComponentThemes.filledButtonTheme,
-      elevatedButtonTheme: AppComponentThemes.elevatedButtonTheme,
-      outlinedButtonTheme: AppComponentThemes.outlinedButtonTheme,
-      textButtonTheme: AppComponentThemes.textButtonTheme,
-      inputDecorationTheme: AppComponentThemes.inputDecorationTheme,
-      cardTheme: AppComponentThemes.cardTheme,
-      chipTheme: AppComponentThemes.chipTheme,
-      snackBarTheme: AppComponentThemes.snackBarTheme,
-      appBarTheme: AppComponentThemes.appBarTheme,
-      dividerTheme: AppComponentThemes.dividerTheme,
-      bottomSheetTheme: AppComponentThemes.bottomSheetTheme,
-      dialogTheme: AppComponentThemes.dialogTheme,
-      datePickerTheme: AppComponentThemes.datePickerTheme,
-      navigationBarTheme: AppComponentThemes.navigationBarTheme,
+      filledButtonTheme: AppComponentThemes.filledButtonTheme(scheme),
+      elevatedButtonTheme: AppComponentThemes.elevatedButtonTheme(scheme),
+      outlinedButtonTheme: AppComponentThemes.outlinedButtonTheme(scheme),
+      textButtonTheme: AppComponentThemes.textButtonTheme(scheme),
+      inputDecorationTheme: AppComponentThemes.inputDecorationTheme(scheme),
+      cardTheme: AppComponentThemes.cardTheme(scheme),
+      chipTheme: AppComponentThemes.chipTheme(scheme),
+      snackBarTheme: AppComponentThemes.snackBarTheme(scheme),
+      appBarTheme: AppComponentThemes.appBarTheme(scheme),
+      dividerTheme: AppComponentThemes.dividerTheme(scheme),
+      bottomSheetTheme: AppComponentThemes.bottomSheetTheme(scheme),
+      dialogTheme: AppComponentThemes.dialogTheme(scheme),
+      datePickerTheme: AppComponentThemes.datePickerTheme(scheme),
+      navigationBarTheme: AppComponentThemes.navigationBarTheme(scheme),
     );
   }
 }

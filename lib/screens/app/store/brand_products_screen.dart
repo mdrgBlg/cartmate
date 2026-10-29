@@ -46,7 +46,7 @@ class _BrandProductsScreen extends StatelessWidget {
     final provider = Provider.of<BrandProductsProvider>(context, listen: false);
 
     return MainLayout(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       appBar: CustomAppBar(
         titleText: provider.brandModel.brandName,
         type: AppBarType.dark,
