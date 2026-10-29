@@ -154,6 +154,12 @@ abstract class AppLocalizations {
   /// **'Female'**
   String get genderFemale;
 
+  /// No description provided for @startShopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Start shopping'**
+  String get startShopping;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:
@@ -358,6 +364,18 @@ abstract class AppLocalizations {
   /// **'Unknown'**
   String get myOrdersUnknown;
 
+  /// No description provided for @myOrdersEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No orders yet'**
+  String get myOrdersEmptyTitle;
+
+  /// No description provided for @myOrdersEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'When you place an order, it will show up here.'**
+  String get myOrdersEmptyMessage;
+
   /// No description provided for @profileTitle.
   ///
   /// In en, this message translates to:
@@ -441,6 +459,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cart'**
   String get cartTitle;
+
+  /// No description provided for @cartEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cart is empty'**
+  String get cartEmptyTitle;
+
+  /// No description provided for @cartEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks like you haven\'t added anything yet.'**
+  String get cartEmptyMessage;
 
   /// No description provided for @purchaseItemSize.
   ///
@@ -621,6 +651,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error'**
   String get wishlistError;
+
+  /// No description provided for @wishlistEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your wishlist is empty'**
+  String get wishlistEmptyTitle;
+
+  /// No description provided for @wishlistEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart on a product to save it here.'**
+  String get wishlistEmptyMessage;
 
   /// No description provided for @forgotPasswordTitle.
   ///

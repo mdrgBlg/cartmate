@@ -3,9 +3,13 @@ import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
 import '/core/styles/app_spacing.dart';
+import '/core/widgets/empty_state.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
 import '/core/widgets/products_grid_view/widgets/products_grid_skeleton.dart';
+import '/screens/app/home/home_screen.dart';
+import '/utils/assets/custom_illustrations.dart';
+import '/utils/custom_navigator.dart';
 import 'providers/wishlist_provider.dart';
 
 class WishlistScreen extends StatelessWidget {
@@ -56,9 +60,21 @@ class _WishlistScreen extends StatelessWidget {
                     : snapshot.data == null
                     ? Consumer<WishlistProvider>(
                         builder: (_, wishlistProvider, child) =>
-                            ProductsGridView(
-                              productsList: wishlistProvider.products,
-                            ),
+                            wishlistProvider.products.isEmpty
+                            ? EmptyState(
+                                illustration: CustomIllustrations.emptyWishlist,
+                                title: localization.wishlistEmptyTitle,
+                                message: localization.wishlistEmptyMessage,
+                                actionLabel: localization.startShopping,
+                                onAction: () =>
+                                    CustomNavigator(context).pushReplacement(
+                                      routeName: HomeScreen.routeName,
+                                      screen: const HomeScreen(),
+                                    ),
+                              )
+                            : ProductsGridView(
+                                productsList: wishlistProvider.products,
+                              ),
                       )
                     :
                       /// TODO Handle error

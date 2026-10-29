@@ -11,6 +11,7 @@
   "dateOfBirth": "Date of birth",
   "genderMale": "Male",
   "genderFemale": "Female",
+  "startShopping": "Start shopping",
 
   "navHome": "Home",
   "navStore": "Store",
@@ -52,6 +53,8 @@
   "myOrdersOrder": "Order",
   "myOrdersShippingDate": "Shipping Date",
   "myOrdersUnknown": "Unknown",
+  "myOrdersEmptyTitle": "No orders yet",
+  "myOrdersEmptyMessage": "When you place an order, it will show up here.",
 
   "profileTitle": "Profile",
   "profileInformation": "Profile information",
@@ -82,6 +85,8 @@
   },
 
   "cartTitle": "Cart",
+  "cartEmptyTitle": "Your cart is empty",
+  "cartEmptyMessage": "Looks like you haven't added anything yet.",
   "purchaseItemSize": "Size: ",
   "purchaseItemQuantity": "Quantity: ",
 
@@ -129,6 +134,8 @@
 
   "wishlistTitle": "Wishlist",
   "wishlistError": "Error",
+  "wishlistEmptyTitle": "Your wishlist is empty",
+  "wishlistEmptyMessage": "Tap the heart on a product to save it here.",
 
   "forgotPasswordTitle": "Forgot password",
   "forgotPasswordDescription": "Enter your email and we will send you a password reset link",

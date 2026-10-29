@@ -6,9 +6,13 @@ import '/core/l10n/app_localizations.dart';
 import '/core/styles/app_radius.dart';
 import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
+import '/core/widgets/empty_state.dart';
 import '/core/widgets/layouts/main_layout.dart';
+import '/screens/app/home/home_screen.dart';
 import '/utils/assets/custom_icons.dart';
+import '/utils/assets/custom_illustrations.dart';
 import '/utils/common_utils.dart';
+import '/utils/custom_navigator.dart';
 import '/utils/extensions/date_time_extension.dart';
 import 'providers/my_orders_provider.dart';
 import 'widgets/order_card_skeleton.dart';
@@ -58,6 +62,17 @@ class _MyOrdersScreen extends StatelessWidget {
                 child: Text(
                   localization.somethingWentWrong,
                   style: textTheme.bodyMedium,
+                ),
+              )
+            : myOrdersProvider.myOrders.isEmpty
+            ? EmptyState(
+                illustration: CustomIllustrations.emptyOrders,
+                title: localization.myOrdersEmptyTitle,
+                message: localization.myOrdersEmptyMessage,
+                actionLabel: localization.startShopping,
+                onAction: () => CustomNavigator(context).pushReplacement(
+                  routeName: HomeScreen.routeName,
+                  screen: const HomeScreen(),
                 ),
               )
             : Padding(
