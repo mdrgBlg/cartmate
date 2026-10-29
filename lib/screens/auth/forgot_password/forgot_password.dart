@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/input_field.dart';
 import '/core/widgets/layouts/auth_layout.dart';
@@ -39,12 +40,16 @@ class _ForgotPassword extends StatelessWidget {
     );
     final textTheme = Theme.of(context).textTheme;
     return AuthLayout(
-      cardMargin: const EdgeInsets.only(bottom: 52, left: 32, right: 32),
+      cardMargin: const EdgeInsets.only(
+        bottom: 52,
+        left: AppSpacing.xxxl,
+        right: AppSpacing.xxxl,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.only(bottom: AppSpacing.md),
             child: Text(
               localization.forgotPasswordTitle,
               style: textTheme.headlineSmall!.copyWith(
@@ -54,7 +59,7 @@ class _ForgotPassword extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: AppSpacing.screenPadding,
             child: Text(
               localization.forgotPasswordDescription,
               style: textTheme.bodyMedium,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '/core/styles/custom_colors.dart';
 import '/utils/assets/custom_icons.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -39,13 +38,15 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [CustomColors.primary, CustomColors.secondary],
+            colors: [colorScheme.primary, colorScheme.surface],
           ),
         ),
         child: Center(
