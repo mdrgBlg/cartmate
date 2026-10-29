@@ -5,8 +5,11 @@ import '/core/l10n/app_localizations.dart';
 import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
+import '/core/widgets/empty_state.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/data/models/cart_model.dart';
+import '/screens/app/home/home_screen.dart';
+import '/utils/assets/custom_illustrations.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/extensions/price_extension.dart';
 import '../checkout/checkout_screen.dart';
@@ -43,13 +46,24 @@ class _CartScreen extends StatelessWidget {
         children: [
           Selector<CartProvider, List<CartModel>>(
             selector: (_, provider) => provider.cartProducts,
-            builder: (context, cartProducts, child) => ListView.builder(
-              padding: const EdgeInsets.only(top: AppSpacing.sm),
-              shrinkWrap: true,
-              itemCount: cartProducts.length,
-              itemBuilder: (_, index) =>
-                  PurchaseItem(cartModel: cartProducts[index]),
-            ),
+            builder: (context, cartProducts, child) => cartProducts.isEmpty
+                ? EmptyState(
+                    illustration: CustomIllustrations.emptyCart,
+                    title: localization.cartEmptyTitle,
+                    message: localization.cartEmptyMessage,
+                    actionLabel: localization.startShopping,
+                    onAction: () => CustomNavigator(context).pushReplacement(
+                      routeName: HomeScreen.routeName,
+                      screen: const HomeScreen(),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.only(top: AppSpacing.sm),
+                    shrinkWrap: true,
+                    itemCount: cartProducts.length,
+                    itemBuilder: (_, index) =>
+                        PurchaseItem(cartModel: cartProducts[index]),
+                  ),
           ),
           Positioned(
             bottom: 0,

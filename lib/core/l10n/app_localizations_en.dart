@@ -39,6 +39,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get genderFemale => 'Female';
 
   @override
+  String get startShopping => 'Start shopping';
+
+  @override
   String get navHome => 'Home';
 
   @override
@@ -145,6 +148,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myOrdersUnknown => 'Unknown';
 
   @override
+  String get myOrdersEmptyTitle => 'No orders yet';
+
+  @override
+  String get myOrdersEmptyMessage =>
+      'When you place an order, it will show up here.';
+
+  @override
   String get profileTitle => 'Profile';
 
   @override
@@ -189,6 +199,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cartTitle => 'Cart';
+
+  @override
+  String get cartEmptyTitle => 'Your cart is empty';
+
+  @override
+  String get cartEmptyMessage => 'Looks like you haven\'t added anything yet.';
 
   @override
   String get purchaseItemSize => 'Size: ';
@@ -289,6 +305,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get wishlistError => 'Error';
+
+  @override
+  String get wishlistEmptyTitle => 'Your wishlist is empty';
+
+  @override
+  String get wishlistEmptyMessage =>
+      'Tap the heart on a product to save it here.';
 
   @override
   String get forgotPasswordTitle => 'Forgot password';
