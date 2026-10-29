@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../styles/app_spacing.dart';
+
 class InputField extends StatelessWidget {
   const InputField({
     required this.hintText,
     required this.controller,
     this.onInputChanged,
     this.height = 44,
-    this.padding = const EdgeInsets.fromLTRB(20, 0, 20, 0),
+    this.padding = AppSpacing.screenPadding,
     this.onTap,
     this.canRequestFocus = true,
     super.key,
@@ -43,7 +45,7 @@ class InputField extends StatelessWidget {
                   onInputChanged!();
                 }
               },
-              style: textTheme.bodyLarge!.copyWith(fontSize: 16),
+              style: textTheme.bodyLarge,
             ),
           ),
         ],

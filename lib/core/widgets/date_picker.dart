@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '../styles/custom_colors.dart';
 
 class DatePicker extends StatelessWidget {
   const DatePicker({
@@ -18,9 +17,11 @@ class DatePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return TextField(
       controller: dateController,
-      style: const TextStyle(fontSize: 16),
+      style: textTheme.bodyLarge,
       decoration: InputDecoration(
         filled: false,
         contentPadding: EdgeInsets.zero,
@@ -28,27 +29,28 @@ class DatePicker extends StatelessWidget {
           padding: const EdgeInsets.only(top: 18),
           child: Text(
             dateController.text.isEmpty ? localization.dateOfBirth : "",
-            style: TextStyle(
+            style: textTheme.bodyMedium!.copyWith(
               color: pickedDate == null
-                  ? CustomColors.grayDark
-                  : CustomColors.primary,
-              fontSize: 14,
+                  ? colorScheme.onSurfaceVariant
+                  : colorScheme.primary,
             ),
           ),
         ),
         iconColor: pickedDate == null
-            ? CustomColors.grayDark
-            : CustomColors.primary,
+            ? colorScheme.onSurfaceVariant
+            : colorScheme.primary,
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: pickedDate == null ? CustomColors.grayDark : Colors.black,
+            color: pickedDate == null
+                ? colorScheme.outline
+                : colorScheme.onSurface,
           ),
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: pickedDate == null
-                ? CustomColors.grayDark
-                : CustomColors.primary,
+                ? colorScheme.outline
+                : colorScheme.primary,
           ),
         ),
       ),
@@ -60,16 +62,6 @@ class DatePicker extends StatelessWidget {
           initialDate: this.pickedDate ?? DateTime.now(),
           firstDate: DateTime(1901),
           lastDate: DateTime.now(),
-          builder: (context, child) {
-            return Theme(
-              data: Theme.of(context).copyWith(
-                colorScheme: const ColorScheme.light(
-                  primary: CustomColors.primary,
-                ),
-              ),
-              child: child!,
-            );
-          },
         );
         onDatePicked(pickedDate);
       },
