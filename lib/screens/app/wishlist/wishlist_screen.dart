@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '/core/l10n/app_localizations.dart';
 import '/core/styles/app_spacing.dart';
 import '/core/widgets/empty_state.dart';
+import '/core/widgets/error_view.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
 import '/core/widgets/products_grid_view/widgets/products_grid_skeleton.dart';
@@ -33,7 +34,6 @@ class _WishlistScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
-    final provider = Provider.of<WishlistProvider>(context, listen: false);
     return MainLayout(
       showNavBar: true,
       child: SingleChildScrollView(
@@ -52,33 +52,35 @@ class _WishlistScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              FutureBuilder(
-                future: provider.wishlistFuture,
-                builder: (context, snapshot) =>
-                    snapshot.connectionState == ConnectionState.waiting
-                    ? const ProductsGridSkeleton()
-                    : snapshot.data == null
-                    ? Consumer<WishlistProvider>(
-                        builder: (_, wishlistProvider, child) =>
-                            wishlistProvider.products.isEmpty
-                            ? EmptyState(
-                                illustration: CustomIllustrations.emptyWishlist,
-                                title: localization.wishlistEmptyTitle,
-                                message: localization.wishlistEmptyMessage,
-                                actionLabel: localization.startShopping,
-                                onAction: () =>
-                                    CustomNavigator(context).pushReplacement(
-                                      routeName: HomeScreen.routeName,
-                                      screen: const HomeScreen(),
-                                    ),
-                              )
-                            : ProductsGridView(
-                                productsList: wishlistProvider.products,
-                              ),
-                      )
-                    :
-                      /// TODO Handle error
-                      Text(localization.wishlistError),
+              Selector<WishlistProvider, Future<Exception?>>(
+                selector: (_, provider) => provider.wishlistFuture,
+                builder: (_, future, _) => FutureBuilder(
+                  future: future,
+                  builder: (context, snapshot) =>
+                      snapshot.connectionState == ConnectionState.waiting
+                      ? const ProductsGridSkeleton()
+                      : Consumer<WishlistProvider>(
+                          builder: (_, wishlistProvider, child) =>
+                              wishlistProvider.hasError
+                              ? ErrorView(onRetry: wishlistProvider.reload)
+                              : wishlistProvider.products.isEmpty
+                              ? EmptyState(
+                                  illustration:
+                                      CustomIllustrations.emptyWishlist,
+                                  title: localization.wishlistEmptyTitle,
+                                  message: localization.wishlistEmptyMessage,
+                                  actionLabel: localization.startShopping,
+                                  onAction: () =>
+                                      CustomNavigator(context).pushReplacement(
+                                        routeName: HomeScreen.routeName,
+                                        screen: const HomeScreen(),
+                                      ),
+                                )
+                              : ProductsGridView(
+                                  productsList: wishlistProvider.products,
+                                ),
+                        ),
+                ),
               ),
             ],
           ),

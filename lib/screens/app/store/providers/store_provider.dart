@@ -31,8 +31,13 @@ class StoreProvider with ChangeNotifier {
   bool get hasCategoriesError => _categoriesError != null;
 
   // Cached so rebuilds of `StoreScreen` don't refetch everything.
-  late final Future<void> _loadFuture;
+  late Future<void> _loadFuture;
   Future<void> get loadFuture => _loadFuture;
+
+  void reload() {
+    _loadFuture = _load();
+    notifyListeners();
+  }
 
   List<ProductsModel> _products = [];
 

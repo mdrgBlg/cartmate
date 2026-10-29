@@ -694,12 +694,6 @@ abstract class AppLocalizations {
   /// **'Wishlist'**
   String get wishlistTitle;
 
-  /// No description provided for @wishlistError.
-  ///
-  /// In en, this message translates to:
-  /// **'Error'**
-  String get wishlistError;
-
   /// No description provided for @wishlistEmptyTitle.
   ///
   /// In en, this message translates to:

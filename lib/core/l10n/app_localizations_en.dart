@@ -328,9 +328,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wishlistTitle => 'Wishlist';
 
   @override
-  String get wishlistError => 'Error';
-
-  @override
   String get wishlistEmptyTitle => 'Your wishlist is empty';
 
   @override
