@@ -5,7 +5,9 @@ import '/data/repositories/theme_repository.dart';
 
 class ThemeProvider with ChangeNotifier {
   ThemeProvider({required ThemeRepository themeRepository})
-    : _themeRepository = themeRepository;
+    : _themeRepository = themeRepository {
+    load();
+  }
 
   final ThemeRepository _themeRepository;
 
@@ -15,8 +17,8 @@ class ThemeProvider with ChangeNotifier {
   Exception? _error;
   bool get hasError => _error != null;
 
-  // Awaited in `main()` before `runApp`, so the first frame uses the saved
-  // mode. Never throws: a read failure falls back to the system mode.
+  // Started from the constructor. Never throws: a read failure falls back to
+  // the system mode.
   Future<void> load() async {
     _error = null;
     final result = await _themeRepository.getThemeMode();
