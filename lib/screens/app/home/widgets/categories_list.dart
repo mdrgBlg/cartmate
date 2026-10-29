@@ -32,7 +32,10 @@ class CategoriesList extends StatelessWidget {
                 borderRadius: AppRadius.pillAll,
                 color: colorScheme.surface,
               ),
-              child: Image.asset(categoriesModel.iconName),
+              child: Image.asset(
+                categoriesModel.iconName,
+                color: colorScheme.onSurface,
+              ),
             ),
             Flexible(
               child: Container(
