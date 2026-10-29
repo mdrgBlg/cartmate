@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/core/l10n/app_localizations.dart';
+import '/core/widgets/custom_button.dart';
 import '/data/models/auth_exception.dart';
 import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
@@ -16,9 +17,18 @@ class Logout extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
-    return Center(
-      child: OutlinedButton(
-        onPressed: () async {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return SizedBox(
+      width: 100,
+      child: CustomButton(
+        enable: true,
+        margin: EdgeInsets.zero,
+        buttonHeight: 40,
+        color: colorScheme.surfaceContainerLowest,
+        buttonText: localization.profileLogout,
+        style: textTheme.bodyLarge!.copyWith(color: colorScheme.primary),
+        onPress: () {
           AuthErrorType? authErrorType;
           Loading.callLoading(
             context: context,
@@ -45,12 +55,6 @@ class Logout extends StatelessWidget {
             },
           );
         },
-        child: Text(
-          localization.profileLogout,
-          style: textTheme.bodyLarge!.copyWith(
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
       ),
     );
   }

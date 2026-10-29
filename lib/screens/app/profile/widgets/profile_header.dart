@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 import '/core/l10n/app_localizations.dart';
 import '/core/styles/app_radius.dart';
 import '/core/styles/app_spacing.dart';
+import '/data/models/auth_exception.dart';
 import '/data/models/user_info_model.dart';
 import '/utils/assets/custom_icons.dart';
 import '/utils/global_enums.dart';
-import 'curved_edges.dart';
+import 'logout.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({
     required this.userInfo,
     required this.onMyOrdersTap,
+    required this.signOut,
     super.key,
   });
 
   final UserInfoModel? userInfo;
   final VoidCallback onMyOrdersTap;
+  final Future<AuthErrorType?> Function() signOut;
 
   @override
   Widget build(BuildContext context) {
@@ -25,46 +27,49 @@ class ProfileHeader extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return ClipPath(
-      clipper: CurvedEdges(),
-      child: Container(
-        width: double.infinity,
-        height: 170,
-        color: colorScheme.primary,
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.xl),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Gap(8),
-              Text(
-                localization.profileTitle,
-                style: textTheme.headlineSmall!.copyWith(
-                  color: colorScheme.onPrimary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Gap(16),
-              Row(
-                children: [
-                  Container(
-                    height: 48,
-                    width: 50,
-                    padding: const EdgeInsets.all(7),
-                    decoration: BoxDecoration(
-                      color: colorScheme.surface,
-                      borderRadius: AppRadius.pillAll,
-                    ),
-                    child: Image.asset(
-                      userInfo?.gender == Gender.female
-                          ? CustomIcons.femaleAvatar
-                          : CustomIcons.manAvatar,
-                      color: colorScheme.onSurface,
-                      fit: BoxFit.scaleDown,
-                    ),
+    return Container(
+      width: double.infinity,
+      color: colorScheme.primary,
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xl),
+        child: Column(
+          spacing: 16,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  localization.profileTitle,
+                  style: textTheme.headlineSmall!.copyWith(
+                    color: colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const Gap(12),
-                  Column(
+                ),
+                Logout(signOut: signOut),
+              ],
+            ),
+            Row(
+              spacing: 12,
+              children: [
+                Container(
+                  height: 48,
+                  width: 48,
+                  padding: const EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                    borderRadius: AppRadius.pillAll,
+                  ),
+                  child: Image.asset(
+                    userInfo?.gender == Gender.female
+                        ? CustomIcons.femaleAvatar
+                        : CustomIcons.manAvatar,
+                    color: colorScheme.onSurface,
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
+                Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -82,19 +87,18 @@ class ProfileHeader extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: onMyOrdersTap,
-                    child: Image.asset(
-                      CustomIcons.myOrders,
-                      color: colorScheme.onPrimary,
-                      height: 32,
-                    ),
+                ),
+                InkWell(
+                  onTap: onMyOrdersTap,
+                  child: Image.asset(
+                    CustomIcons.myOrders,
+                    color: colorScheme.onPrimary,
+                    height: 32,
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
