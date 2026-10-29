@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_spacing.dart';
 import '/utils/assets/custom_images.dart';
 import 'custom_progress_indicator.dart';
 
@@ -25,12 +27,15 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
             itemCount: CustomImages.homeImages.length,
             onPageChanged: _onPageChanged,
             itemBuilder: (_, index) => Container(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.screenHorizontal,
+                AppSpacing.sm,
+                AppSpacing.screenHorizontal,
+                AppSpacing.xl,
               ),
+              decoration: const BoxDecoration(borderRadius: AppRadius.lgAll),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.lgAll,
                 child: Image.asset(
                   CustomImages.homeImages[index],
                   fit: BoxFit.fill,

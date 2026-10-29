@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/main_header/main_header.dart';
 import '/data/models/brand_model.dart';
@@ -41,20 +41,21 @@ class _StoreScreen extends StatelessWidget {
     final localization = AppLocalizations.of(context);
     final storeProvider = Provider.of<StoreProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return MainLayout(
       showNavBar: true,
       child: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
               child: MainHeader(
                 text: localization.storeTitle,
-                contentColor: Colors.black,
+                contentColor: colorScheme.onSurface,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: AppSpacing.screenPadding,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -84,7 +85,9 @@ class _StoreScreen extends StatelessWidget {
             SizedBox(
               height: 40,
               child: Padding(
-                padding: const EdgeInsets.only(left: 20),
+                padding: const EdgeInsets.only(
+                  left: AppSpacing.screenHorizontal,
+                ),
                 child:
                     Selector<StoreProvider, (List<CategoriesModel>, String?)>(
                       selector: (_, provider) =>
@@ -110,13 +113,9 @@ class _StoreScreen extends StatelessWidget {
                     ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Divider(
-                thickness: 2,
-                height: 1.5,
-                color: CustomColors.text.withValues(alpha: 0.2),
-              ),
+            const Padding(
+              padding: AppSpacing.screenPadding,
+              child: Divider(thickness: 2, height: 1.5),
             ),
             const Gap(24),
             Selector<StoreProvider, (List<BrandModel>, bool)>(
@@ -133,13 +132,13 @@ class _StoreScreen extends StatelessWidget {
                   );
                 }
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: AppSpacing.screenPadding,
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: categoryBrands.length,
                     itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.only(bottom: AppSpacing.lg),
                       child: CategoriesBrands(
                         categoryBrand: categoryBrands[index],
                         productsList: storeProvider.categoryProductsForBrand(

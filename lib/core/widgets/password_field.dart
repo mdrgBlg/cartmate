@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../styles/app_spacing.dart';
-import '../styles/custom_colors.dart';
 
 class PasswordField extends StatefulWidget {
   const PasswordField({
@@ -29,17 +28,18 @@ class _PasswordFieldState extends State<PasswordField> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       children: [
         Align(
           alignment: Alignment.bottomLeft,
           child: Container(
-            padding: const EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: AppSpacing.screenHorizontal),
             child: Text(widget.hintText, textAlign: TextAlign.left),
           ),
         ),
         Container(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          padding: AppSpacing.screenPadding,
           height: 44,
           child: TextFormField(
             controller: widget.controller,
@@ -60,7 +60,7 @@ class _PasswordFieldState extends State<PasswordField> {
                 vertical: AppSpacing.sm,
               ),
               suffixIcon: IconButton(
-                color: CustomColors.grey500,
+                color: colorScheme.onSurfaceVariant,
                 iconSize: 20,
                 padding: EdgeInsets.zero,
                 splashRadius: 16,

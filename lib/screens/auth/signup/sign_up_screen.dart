@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/date_picker.dart';
 import '/core/widgets/gender_selector.dart';
@@ -42,13 +43,17 @@ class _SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
     return AuthLayout(
-      cardMargin: const EdgeInsets.only(bottom: 52, left: 32, right: 32),
+      cardMargin: const EdgeInsets.only(
+        bottom: 52,
+        left: AppSpacing.xxxl,
+        right: AppSpacing.xxxl,
+      ),
       child: Consumer<SignUpProvider>(
         builder: (_, signUpProvider, child) => Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: AppSpacing.screenPadding,
               child: Row(
                 spacing: 12,
                 children: [
@@ -76,7 +81,7 @@ class _SignUpScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 12),
+              padding: const EdgeInsets.only(top: AppSpacing.md),
               child: InputField(
                 hintText: localization.signUpUsername,
                 onInputChanged: () {
@@ -86,7 +91,7 @@ class _SignUpScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 12),
+              padding: const EdgeInsets.only(top: AppSpacing.md),
               child: InputField(
                 hintText: localization.signUpEmail,
                 onInputChanged: () {
@@ -96,7 +101,10 @@ class _SignUpScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 12, bottom: 8),
+              padding: const EdgeInsets.only(
+                top: AppSpacing.md,
+                bottom: AppSpacing.sm,
+              ),
               child: InputField(
                 hintText: localization.signUpPhoneNumber,
                 onInputChanged: () {
@@ -106,7 +114,11 @@ class _SignUpScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 8),
+              padding: const EdgeInsets.only(
+                left: AppSpacing.screenHorizontal,
+                right: AppSpacing.screenHorizontal,
+                bottom: AppSpacing.sm,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -123,7 +135,7 @@ class _SignUpScreen extends StatelessWidget {
                   Flexible(
                     // DropdownButton draws its underline 8px above its bottom.
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                       child: DatePicker(
                         dateController: signUpProvider.dateController,
                         pickedDate: signUpProvider.pickedDate,
@@ -142,7 +154,7 @@ class _SignUpScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(bottom: AppSpacing.xl),
               child: PasswordField(
                 hintText: localization.signUpPassword,
                 onInputChanged: () {

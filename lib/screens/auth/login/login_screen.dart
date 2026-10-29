@@ -49,7 +49,7 @@ class _LoginScreen extends StatelessWidget {
 
     return AuthLayout(
       showAppBar: false,
-      backgroundColor: CustomColors.primary,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       overlays: [
         Positioned(
           top: 8,
@@ -86,8 +86,7 @@ class _LoginScreen extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 localization.loginTitle,
-                style: const TextStyle(
-                  fontSize: 22,
+                style: textTheme.titleLarge!.copyWith(
                   fontWeight: FontWeight.w300,
                   color: CustomColors.appName,
                 ),

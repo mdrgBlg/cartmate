@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/app_network_image.dart';
 import '/data/models/brand_model.dart';
 import '/data/models/products_model.dart';
@@ -20,18 +21,16 @@ class CategoriesBrands extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: AppRadius.lgAll,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: CustomColors.text.withValues(alpha: 0.5),
-            width: 1.5,
-          ),
+          borderRadius: AppRadius.lgAll,
+          border: Border.all(color: colorScheme.outlineVariant, width: 1.5),
         ),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -63,9 +62,9 @@ class CategoriesBrands extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 4),
-                          const Icon(
+                          Icon(
                             Icons.check_circle,
-                            color: Colors.blueAccent,
+                            color: colorScheme.primary,
                             size: 14,
                           ),
                         ],
@@ -84,15 +83,15 @@ class CategoriesBrands extends StatelessWidget {
                   (index) => Container(
                     height: 80,
                     width: 80,
-                    margin: EdgeInsets.only(left: index == 0 ? 0 : 8),
+                    margin: EdgeInsets.only(
+                      left: index == 0 ? 0 : AppSpacing.sm,
+                    ),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: Colors.black.withValues(alpha: 0.1),
-                      ),
+                      borderRadius: AppRadius.lgAll,
+                      border: Border.all(color: colorScheme.outlineVariant),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: AppRadius.lgAll,
                       child: AppNetworkImage(
                         imageUrl:
                             productsList[index].productImageList.firstOrNull ??

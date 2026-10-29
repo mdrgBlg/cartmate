@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/gender_selector.dart';
 import '/utils/global_enums.dart';
 import 'change_info_layout.dart';
@@ -33,7 +34,7 @@ class _ChangeGenderState extends State<ChangeGender> {
       onSave: () => widget.onSave(_selectedGender!),
       onSuccess: () => widget.onSuccess(_selectedGender!),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
         child: GenderSelector(
           initialGender: widget.initialGender,
           genders: Gender.values,

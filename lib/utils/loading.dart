@@ -11,6 +11,7 @@ class Loading {
     VoidCallback? onFinished,
   }) async {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final localization = AppLocalizations.of(context);
     // showDialog pushes onto the root navigator, so the same one must pop it.
     final navigator = Navigator.of(context, rootNavigator: true);
@@ -24,12 +25,12 @@ class Loading {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SpinKitThreeInOut(color: CustomColors.primary, size: 36.0),
+              SpinKitThreeInOut(color: colorScheme.primary, size: 36.0),
               const SizedBox(height: 12),
               Text(
                 localization.loading,
                 style: textTheme.bodyLarge?.copyWith(
-                  color: Colors.white,
+                  color: CustomColors.onScrim,
                   fontSize: 20,
                 ),
               ),

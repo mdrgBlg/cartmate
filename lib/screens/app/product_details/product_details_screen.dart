@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/app_network_image.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
@@ -46,6 +47,7 @@ class _ProductDetailsScreen extends StatelessWidget {
       listen: false,
     );
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final locale = Localizations.localeOf(context).toString();
 
     return MainLayout(
@@ -56,8 +58,7 @@ class _ProductDetailsScreen extends StatelessWidget {
           children: [
             Selector<ProductDetailsProvider, ProductsModel>(
               selector: (_, provider) => provider.product,
-              builder: (_, product, _) =>
-                  WishlistHeartButton(product: product),
+              builder: (_, product, _) => WishlistHeartButton(product: product),
             ),
           ],
         ),
@@ -67,14 +68,14 @@ class _ProductDetailsScreen extends StatelessWidget {
           spacing: 12,
           children: [
             Container(
-              padding: const EdgeInsets.all(16),
-              color: Colors.black.withValues(alpha: 0.1),
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              color: colorScheme.surfaceContainerHighest,
               child: ProductImageGallery(
                 images: provider.product.productImageList,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: Column(
                 children: [
                   Row(
@@ -98,14 +99,15 @@ class _ProductDetailsScreen extends StatelessWidget {
                         width: 32,
                         height: 16,
                         decoration: BoxDecoration(
-                          color: Colors.yellow,
-                          borderRadius: BorderRadius.circular(4),
+                          color: colorScheme.secondary,
+                          borderRadius: AppRadius.xsAll,
                         ),
                         child: Text(
                           "${provider.product.discount}%",
                           style: textTheme.bodyMedium!.copyWith(
                             fontWeight: FontWeight.bold,
                             fontSize: 10,
+                            color: colorScheme.onSecondary,
                           ),
                         ),
                       ),
@@ -115,18 +117,19 @@ class _ProductDetailsScreen extends StatelessWidget {
                           provider.product.currency,
                           locale: locale,
                         ),
-                        style: textTheme.bodyLarge!.copyWith(
+                        style: textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: CustomColors.customGrey,
+                          color: colorScheme.outline,
                           decoration: TextDecoration.lineThrough,
-                          fontSize: 14,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppSpacing.sm,
+                    ),
                     child: Row(
                       children: [
                         SizedBox(
@@ -148,9 +151,9 @@ class _ProductDetailsScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const Icon(
+                        Icon(
                           Icons.check_circle,
-                          color: Colors.blueAccent,
+                          color: colorScheme.primary,
                           size: 14,
                         ),
                         const Spacer(),
@@ -189,7 +192,9 @@ class _ProductDetailsScreen extends StatelessWidget {
                     onChanged: provider.setSelectedSize,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppSpacing.xl,
+                    ),
                     child: Consumer<ProductDetailsProvider>(
                       builder: (context, sizeProvider, _) => CustomButton(
                         buttonText: AppLocalizations.of(

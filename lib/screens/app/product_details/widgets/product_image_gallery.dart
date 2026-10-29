@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/app_network_image.dart';
 
 class ProductImageGallery extends StatefulWidget {
@@ -21,16 +23,17 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
       return const SizedBox.shrink();
     }
 
+    final colorScheme = Theme.of(context).colorScheme;
     final selectedImage = _selectedImage.clamp(0, images.length - 1);
 
     return Column(
       children: [
         Container(
           color: Colors.transparent,
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
           width: double.infinity,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: AppRadius.lgAll,
             child: AppNetworkImage(
               imageUrl: images[selectedImage],
               height: 220,
@@ -41,7 +44,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.symmetric(vertical: 8),
+          margin: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
           height: 90,
           alignment: Alignment.centerLeft,
           child: ListView.builder(
@@ -50,20 +53,20 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
             itemCount: images.length,
             itemBuilder: (context, index) => Container(
               width: 92,
-              margin: EdgeInsets.only(left: index == 0 ? 0 : 12),
+              margin: EdgeInsets.only(left: index == 0 ? 0 : AppSpacing.md),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.lgAll,
                 border: Border.all(
                   color: selectedImage == index
-                      ? Colors.black.withValues(alpha: 0.5)
-                      : Colors.black.withValues(alpha: 0.1),
+                      ? colorScheme.outline
+                      : colorScheme.outlineVariant,
                 ),
               ),
               child: InkWell(
                 onTap: () => setState(() => _selectedImage = index),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.lgAll,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: AppRadius.lgAll,
                   child: AppNetworkImage(
                     imageUrl: images[index],
                     fit: BoxFit.fill,
