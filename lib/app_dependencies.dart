@@ -6,14 +6,16 @@ import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/order_repository.dart';
 import '/data/repositories/product_repository.dart';
+import '/data/repositories/theme_repository.dart';
 import '/data/repositories/user_repository.dart';
 import '/data/repositories/wishlist_repository.dart';
-import '/data/services/firestore_service.dart';
 import '/data/services/auth_service.dart';
 import '/data/services/cart_service.dart';
 import '/data/services/database_service.dart';
 import '/data/services/firebase_service.dart';
+import '/data/services/firestore_service.dart';
 import '/data/services/order_service.dart';
+import '/data/services/theme_mode_service.dart';
 import '/data/services/wishlist_service.dart';
 
 List<SingleChildWidget> injectServiceDependencies() {
@@ -31,6 +33,7 @@ List<SingleChildWidget> injectServiceDependencies() {
       create: (context) => OrderService(firebaseService: context.read()),
     ),
     Provider(create: (context) => CartService(databaseService: context.read())),
+    Provider(create: (context) => ThemeModeService()),
   ];
 }
 
@@ -58,12 +61,16 @@ List<SingleChildWidget> injectRepositoryDependencies() {
         firestoreService: context.read(),
       ),
     ),
+    Provider(
+      create: (context) => ThemeRepository(themeModeService: context.read()),
+    ),
   ];
 }
 
-// Created and loaded in `main()` before `runApp`, so it is provided by value.
-List<SingleChildWidget> injectAppProviders({
-  required ThemeProvider themeProvider,
-}) {
-  return [ChangeNotifierProvider.value(value: themeProvider)];
+List<SingleChildWidget> injectAppProviders() {
+  return [
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(themeRepository: context.read()),
+    ),
+  ];
 }
