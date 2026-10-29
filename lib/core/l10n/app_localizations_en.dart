@@ -42,6 +42,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startShopping => 'Start shopping';
 
   @override
+  String get errorViewTitle => 'Something went wrong';
+
+  @override
+  String get errorViewMessage => 'Check your connection and try again.';
+
+  @override
+  String get retry => 'Try again';
+
+  @override
   String get navHome => 'Home';
 
   @override

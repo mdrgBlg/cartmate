@@ -160,6 +160,24 @@ abstract class AppLocalizations {
   /// **'Start shopping'**
   String get startShopping;
 
+  /// No description provided for @errorViewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get errorViewTitle;
+
+  /// No description provided for @errorViewMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again.'**
+  String get errorViewMessage;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get retry;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:

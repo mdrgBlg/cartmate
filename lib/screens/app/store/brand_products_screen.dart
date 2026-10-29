@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
-import '/core/l10n/app_localizations.dart';
 import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
+import '/core/widgets/error_view.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
 import '/core/widgets/products_grid_view/widgets/products_grid_skeleton.dart';
@@ -81,28 +81,27 @@ class _BrandProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localization = AppLocalizations.of(context);
     final provider = Provider.of<BrandProductsProvider>(context, listen: false);
-    return FutureBuilder<void>(
-      future: provider.loadFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Expanded(child: ProductsGridSkeleton());
-        }
-        return Selector<BrandProductsProvider, (List<ProductsModel>, bool)>(
-          selector: (_, provider) => (provider.products, provider.hasError),
-          builder: (_, data, _) {
-            final (products, hasError) = data;
-            if (hasError) {
-              return Center(
-                heightFactor: 3,
-                child: Text(localization.somethingWentWrong),
-              );
-            }
-            return ProductsGridView(productsList: products);
-          },
-        );
-      },
+    return Selector<BrandProductsProvider, Future<void>>(
+      selector: (_, provider) => provider.loadFuture,
+      builder: (_, future, _) => FutureBuilder<void>(
+        future: future,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Expanded(child: ProductsGridSkeleton());
+          }
+          return Selector<BrandProductsProvider, (List<ProductsModel>, bool)>(
+            selector: (_, provider) => (provider.products, provider.hasError),
+            builder: (_, data, _) {
+              final (products, hasError) = data;
+              if (hasError) {
+                return ErrorView(onRetry: provider.reload);
+              }
+              return ProductsGridView(productsList: products);
+            },
+          );
+        },
+      ),
     );
   }
 }
