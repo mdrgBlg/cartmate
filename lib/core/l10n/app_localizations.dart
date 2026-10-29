@@ -304,6 +304,12 @@ abstract class AppLocalizations {
   /// **'Search product...'**
   String get homeSearchHint;
 
+  /// No description provided for @searchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No products found'**
+  String get searchNoResults;
+
   /// No description provided for @productStock.
   ///
   /// In en, this message translates to:
@@ -339,6 +345,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Product is added to cart'**
   String get productAddedToCart;
+
+  /// No description provided for @productsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No products found'**
+  String get productsEmptyTitle;
+
+  /// No description provided for @productsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'There is nothing to show here yet.'**
+  String get productsEmptyMessage;
 
   /// No description provided for @myOrdersTitle.
   ///
@@ -633,6 +651,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Brands'**
   String get storeBrands;
+
+  /// No description provided for @storeEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No brands yet'**
+  String get storeEmptyTitle;
+
+  /// No description provided for @storeEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Brands for this category will show up here.'**
+  String get storeEmptyMessage;
 
   /// No description provided for @storeProductsLabel.
   ///

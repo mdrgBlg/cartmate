@@ -118,6 +118,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeSearchHint => 'Search product...';
 
   @override
+  String get searchNoResults => 'No products found';
+
+  @override
   String get productStock => 'Stock: ';
 
   @override
@@ -134,6 +137,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get productAddedToCart => 'Product is added to cart';
+
+  @override
+  String get productsEmptyTitle => 'No products found';
+
+  @override
+  String get productsEmptyMessage => 'There is nothing to show here yet.';
 
   @override
   String get myOrdersTitle => 'My Orders';
@@ -288,6 +297,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get storeBrands => 'Brands';
+
+  @override
+  String get storeEmptyTitle => 'No brands yet';
+
+  @override
+  String get storeEmptyMessage => 'Brands for this category will show up here.';
 
   @override
   String storeProductsLabel(int count) {
