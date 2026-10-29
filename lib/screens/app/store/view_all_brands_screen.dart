@@ -18,7 +18,7 @@ class ViewAllBrandsScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return MainLayout(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       appBar: CustomAppBar(
         titleText: localization.storeBrand,
         type: AppBarType.dark,
