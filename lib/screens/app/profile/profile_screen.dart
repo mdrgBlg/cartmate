@@ -3,10 +3,13 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
+import '/core/providers/theme_provider.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/screens/app/profile/my_orders_screen.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/extensions/date_time_extension.dart';
+import '/utils/extensions/theme_mode_extension.dart';
+import '/utils/snack_bar_popup.dart';
 import 'providers/profile_provider.dart';
 import 'widgets/change_date_of_birth.dart';
 import 'widgets/change_gender.dart';
@@ -16,6 +19,7 @@ import 'widgets/information_widget.dart';
 import 'widgets/logout.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/profile_section.dart';
+import 'widgets/theme_mode_sheet.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -144,12 +148,46 @@ class _ProfileScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                ProfileSection(
+                  title: localization.profileAppearance,
+                  children: [
+                    Selector<ThemeProvider, ThemeMode>(
+                      selector: (_, provider) => provider.themeMode,
+                      builder: (context, themeMode, _) => InformationWidget(
+                        sectionTitle: localization.profileTheme,
+                        sectionText: themeMode.label(localization),
+                        onTap: () => _showThemeSheet(context, themeMode),
+                      ),
+                    ),
+                  ],
+                ),
                 const Gap(4),
                 Logout(signOut: profileProvider.signOut),
               ],
             );
           },
         ),
+      ),
+    );
+  }
+
+  void _showThemeSheet(BuildContext context, ThemeMode themeMode) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (sheetContext) => ThemeModeSheet(
+        selected: themeMode,
+        onSelected: (mode) async {
+          Navigator.of(sheetContext).pop();
+          final saved = await themeProvider.setThemeMode(mode);
+          if (!saved && context.mounted) {
+            SnackBarPopup.showMessage(
+              context,
+              message: AppLocalizations.of(context).somethingWentWrong,
+              snackBarMessageType: SnackBarMessageType.error,
+            );
+          }
+        },
       ),
     );
   }
