@@ -1,4 +1,5 @@
 import 'package:country_picker/country_picker.dart';
+import 'package:e_commerce/screens/app/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -54,245 +55,222 @@ class _CheckoutScreen extends StatelessWidget {
     return MainLayout(
       appBar: CustomAppBar(titleText: localization.checkoutOrderReview),
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            ListView.builder(
-              padding: const EdgeInsets.only(top: AppSpacing.sm),
-              shrinkWrap: true,
-              itemCount: checkoutProvider.cartProducts.length,
-              itemBuilder: (_, index) => PurchaseItem(
-                cartModel: checkoutProvider.cartProducts[index],
-                isCartItem: false,
-                height: 90,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.xl),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(AppSpacing.md),
-                decoration: BoxDecoration(
-                  border: Border.all(color: colorScheme.outlineVariant),
-                  borderRadius: AppRadius.lgAll,
+        child: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Column(
+            children: [
+              ListView.builder(
+                padding: const EdgeInsets.only(top: AppSpacing.sm),
+                shrinkWrap: true,
+                itemCount: checkoutProvider.cartProducts.length,
+                itemBuilder: (_, index) => PurchaseItem(
+                  cartModel: checkoutProvider.cartProducts[index],
+                  isCartItem: false,
+                  height: 90,
                 ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          localization.checkoutSubtotal,
-                          style: textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          checkoutProvider.checkoutPrice.formatPrice(
-                            currency,
-                            locale: locale,
-                          ),
-                          style: textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          localization.checkoutShippingFee,
-                          style: textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          checkoutProvider.shippingFee.formatPrice(
-                            currency,
-                            locale: locale,
-                          ),
-                          style: textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          localization.checkoutOrderTotal,
-                          style: textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          checkoutProvider.getTotalPrice().formatPrice(
-                            currency,
-                            locale: locale,
-                          ),
-                          style: textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Divider(thickness: 2),
-                    const SizedBox(height: 20),
-                    Container(
-                      alignment: AlignmentDirectional.centerStart,
-                      child: Text(
-                        localization.checkoutPaymentMethod,
-                        style: textTheme.bodyLarge!.copyWith(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: AppSpacing.screenHorizontal,
-                      ),
-                      child: Row(
+              ),
+              Padding(
+                padding: const EdgeInsets.all(AppSpacing.xl),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: colorScheme.outlineVariant),
+                    borderRadius: AppRadius.lgAll,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Image.asset(CustomIcons.cash),
-                          const SizedBox(width: 16),
                           Text(
-                            localization.checkoutCash,
+                            localization.checkoutSubtotal,
+                            style: textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            checkoutProvider.checkoutPrice.formatPrice(
+                              currency,
+                              locale: locale,
+                            ),
+                            style: textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            localization.checkoutShippingFee,
+                            style: textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            checkoutProvider.shippingFee.formatPrice(
+                              currency,
+                              locale: locale,
+                            ),
+                            style: textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            localization.checkoutOrderTotal,
+                            style: textTheme.bodyLarge!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            checkoutProvider.getTotalPrice().formatPrice(
+                              currency,
+                              locale: locale,
+                            ),
                             style: textTheme.bodyLarge!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 32),
-                    Container(
-                      alignment: AlignmentDirectional.centerStart,
-                      child: Text(
-                        localization.checkoutShippingData,
-                        style: textTheme.bodyLarge!.copyWith(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                      const SizedBox(height: 12),
+                      const Divider(thickness: 2),
+                      const SizedBox(height: 20),
+                      Container(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          localization.checkoutPaymentMethod,
+                          style: textTheme.bodyLarge!.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: InputField(
-                            hintText: localization.checkoutFirstName,
-                            controller: checkoutProvider.firstNameController,
-                            onInputChanged: () =>
-                                checkoutProvider.buttonChecker(),
-                          ),
+                      const SizedBox(height: 12),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: AppSpacing.screenHorizontal,
                         ),
-                        Flexible(
-                          child: InputField(
-                            hintText: localization.checkoutLastName,
-                            controller: checkoutProvider.lastNameController,
-                            onInputChanged: () =>
-                                checkoutProvider.buttonChecker(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    InputField(
-                      hintText: localization.checkoutEmail,
-                      controller: checkoutProvider.emailController,
-                      onInputChanged: () => checkoutProvider.buttonChecker(),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: InputField(
-                            hintText: localization.checkoutCountry,
-                            controller: checkoutProvider.countryController,
-                            onInputChanged: () =>
-                                checkoutProvider.buttonChecker(),
-                            canRequestFocus: false,
-                            onTap: () => showCountryPicker(
-                              context: context,
-                              useSafeArea: true,
-                              countryListTheme: CountryListThemeData(
-                                flagSize: 25,
-                                backgroundColor: colorScheme.surface,
-                                textStyle: textTheme.bodyLarge,
-                                bottomSheetHeight: 500,
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(AppRadius.xl),
-                                ),
-                                //Optional. Styles the search field.
-                                inputDecoration: InputDecoration(
-                                  labelText:
-                                      localization.checkoutCountrySearchLabel,
-                                  hintText:
-                                      localization.checkoutCountrySearchHint,
-                                  prefixIcon: const Icon(Icons.search),
-                                ),
+                        child: Row(
+                          spacing: 16,
+                          children: [
+                            Image.asset(CustomIcons.cash),
+                            Text(
+                              localization.checkoutCash,
+                              style: textTheme.bodyLarge!.copyWith(
+                                fontWeight: FontWeight.bold,
                               ),
-                              onSelect: (value) {
-                                checkoutProvider.countryController.text =
-                                    value.name;
-                                checkoutProvider.buttonChecker();
-                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      Container(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          localization.checkoutShippingData,
+                          style: textTheme.bodyLarge!.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      InputField(
+                        hintText: localization.checkoutFirstName,
+                        padding: EdgeInsets.zero,
+                        controller: checkoutProvider.firstNameController,
+                        onInputChanged: () => checkoutProvider.buttonChecker(),
+                      ),
+                      const SizedBox(height: 12),
+                      InputField(
+                        hintText: localization.checkoutLastName,
+                        padding: EdgeInsets.zero,
+                        controller: checkoutProvider.lastNameController,
+                        onInputChanged: () => checkoutProvider.buttonChecker(),
+                      ),
+                      const SizedBox(height: 12),
+                      InputField(
+                        hintText: localization.checkoutEmail,
+                        padding: EdgeInsets.zero,
+                        controller: checkoutProvider.emailController,
+                        onInputChanged: () => checkoutProvider.buttonChecker(),
+                      ),
+                      const SizedBox(height: 12),
+                      InputField(
+                        hintText: localization.checkoutCountry,
+                        padding: EdgeInsets.zero,
+                        controller: checkoutProvider.countryController,
+                        onInputChanged: () => checkoutProvider.buttonChecker(),
+                        canRequestFocus: false,
+                        onTap: () => showCountryPicker(
+                          context: context,
+                          useSafeArea: true,
+                          countryListTheme: CountryListThemeData(
+                            flagSize: 25,
+                            backgroundColor: colorScheme.surface,
+                            textStyle: textTheme.bodyLarge,
+                            bottomSheetHeight: 500,
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(AppRadius.xl),
+                            ),
+                            //Optional. Styles the search field.
+                            inputDecoration: InputDecoration(
+                              labelText:
+                                  localization.checkoutCountrySearchLabel,
+                              hintText: localization.checkoutCountrySearchHint,
+                              prefixIcon: const Icon(Icons.search),
                             ),
                           ),
+                          onSelect: (value) {
+                            checkoutProvider.countryController.text =
+                                value.name;
+                            checkoutProvider.buttonChecker();
+                          },
                         ),
-                        Flexible(
-                          child: InputField(
-                            hintText: localization.checkoutCity,
-                            controller: checkoutProvider.cityController,
-                            onInputChanged: () =>
-                                checkoutProvider.buttonChecker(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: InputField(
-                            hintText: localization.checkoutZipCode,
-                            controller: checkoutProvider.zipCodeController,
-                            onInputChanged: () =>
-                                checkoutProvider.buttonChecker(),
-                          ),
-                        ),
-                        Flexible(
-                          child: InputField(
-                            hintText: localization.checkoutPhoneNumber,
-                            controller: checkoutProvider.phoneNumberController,
-                            onInputChanged: () =>
-                                checkoutProvider.buttonChecker(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    InputField(
-                      hintText: localization.checkoutAddress,
-                      controller: checkoutProvider.addressController,
-                      onInputChanged: () => checkoutProvider.buttonChecker(),
-                    ),
-                    const SizedBox(height: 24),
-                    Consumer<CheckoutProvider>(
-                      builder: (_, _, child) => SizedBox(
-                        height: 50,
-                        child: CustomButton(
-                          margin: const EdgeInsets.only(
-                            bottom: 10.0,
-                            left: AppSpacing.screenHorizontal,
-                            right: AppSpacing.screenHorizontal,
-                          ),
+                      ),
+                      const SizedBox(height: 12),
+                      InputField(
+                        hintText: localization.checkoutCity,
+                        padding: EdgeInsets.zero,
+                        controller: checkoutProvider.cityController,
+                        onInputChanged: () => checkoutProvider.buttonChecker(),
+                      ),
+                      const SizedBox(height: 12),
+                      InputField(
+                        hintText: localization.checkoutZipCode,
+                        padding: EdgeInsets.zero,
+                        controller: checkoutProvider.zipCodeController,
+                        onInputChanged: () => checkoutProvider.buttonChecker(),
+                      ),
+                      const SizedBox(height: 12),
+                      InputField(
+                        hintText: localization.checkoutPhoneNumber,
+                        padding: EdgeInsets.zero,
+                        controller: checkoutProvider.phoneNumberController,
+                        onInputChanged: () => checkoutProvider.buttonChecker(),
+                      ),
+
+                      const SizedBox(height: 12),
+                      InputField(
+                        hintText: localization.checkoutAddress,
+                        padding: EdgeInsets.zero,
+                        controller: checkoutProvider.addressController,
+                        onInputChanged: () => checkoutProvider.buttonChecker(),
+                      ),
+                      const SizedBox(height: 24),
+                      Consumer<CheckoutProvider>(
+                        builder: (_, _, child) => CustomButton(
+                          margin: const EdgeInsets.only(bottom: 10.0),
                           buttonText: localization.checkoutButton(
                             checkoutProvider.getTotalPrice().formatPrice(
                               currency,
@@ -303,12 +281,12 @@ class _CheckoutScreen extends StatelessWidget {
                           onPress: () => onCheckoutTap(context),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -330,7 +308,7 @@ class _CheckoutScreen extends StatelessWidget {
       onFinished: () {
         Navigator.of(
           context,
-        ).popUntil((route) => route.settings.name == CheckoutScreen.routeName);
+        ).popUntil((route) => route.settings.name == HomeScreen.routeName);
         if (orderSaved) {
           SnackBarPopup.showMessage(
             context,
