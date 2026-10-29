@@ -35,7 +35,7 @@ class CustomProductCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: colorScheme.surface,
           borderRadius: AppRadius.lgAll,
-          boxShadow: AppShadows.card,
+          boxShadow: AppShadows.cardFor(colorScheme),
         ),
         child: Stack(
           children: [

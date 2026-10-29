@@ -10,6 +10,8 @@ class CustomButton extends StatelessWidget {
     this.onPress,
     this.margin = AppSpacing.screenPadding,
     this.style,
+    this.color,
+    this.buttonHeight = 49,
     super.key,
   });
 
@@ -18,6 +20,8 @@ class CustomButton extends StatelessWidget {
   final VoidCallback? onPress;
   final EdgeInsets margin;
   final TextStyle? style;
+  final Color? color;
+  final double buttonHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -27,27 +31,26 @@ class CustomButton extends StatelessWidget {
       margin: margin,
       child: Material(
         color: enable
-            ? colorScheme.primary
-            : colorScheme.primary.withValues(alpha: 0.4),
+            ? color ?? colorScheme.primary
+            : color?.withValues(alpha: 0.4) ??
+                  colorScheme.primary.withValues(alpha: 0.4),
         borderRadius: AppRadius.lgAll,
         child: InkWell(
           onTap: enable ? onPress : null,
-          child: Center(
-            child: SizedBox(
-              height: 49,
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  buttonText,
-                  style:
-                      style ??
-                      textTheme.titleLarge!.copyWith(
-                        color: enable
-                            ? colorScheme.onPrimary
-                            : colorScheme.onPrimary.withValues(alpha: 0.5),
-                        fontSize: 18,
-                      ),
-                ),
+          child: SizedBox(
+            height: buttonHeight,
+            width: double.infinity,
+            child: Center(
+              child: Text(
+                buttonText,
+                style:
+                    style ??
+                    textTheme.titleLarge!.copyWith(
+                      color: enable
+                          ? colorScheme.onPrimary
+                          : colorScheme.onPrimary.withValues(alpha: 0.5),
+                      fontSize: 18,
+                    ),
               ),
             ),
           ),

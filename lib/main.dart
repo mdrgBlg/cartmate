@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
+import '/core/providers/theme_provider.dart';
 import '/core/widgets/session_guard/session_guard.dart';
 import 'app_dependencies.dart';
 import 'firebase_options.dart';
@@ -34,6 +35,7 @@ void main() async {
       providers: [
         ...injectServiceDependencies(),
         ...injectRepositoryDependencies(),
+        ...injectAppProviders(),
       ],
       child: const MyApp(),
     ),
@@ -47,16 +49,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: _navigatorKey,
-      builder: (context, child) =>
-          SessionGuard(navigatorKey: _navigatorKey, child: child!),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      debugShowCheckedModeBanner: false,
-      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-      theme: Themes().getThemeData(),
-      home: const WelcomeScreen(),
+    return Selector<ThemeProvider, ThemeMode>(
+      selector: (_, provider) => provider.themeMode,
+      builder: (context, themeMode, _) => MaterialApp(
+        navigatorKey: _navigatorKey,
+        builder: (context, child) =>
+            SessionGuard(navigatorKey: _navigatorKey, child: child!),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        debugShowCheckedModeBanner: false,
+        onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+        theme: Themes().getThemeData(),
+        darkTheme: Themes().getDarkThemeData(),
+        themeMode: themeMode,
+        home: const WelcomeScreen(),
+      ),
     );
   }
 }
