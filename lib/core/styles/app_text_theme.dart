@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'custom_colors.dart';
+
 class AppTextTheme {
   AppTextTheme._();
 
@@ -81,5 +83,10 @@ class AppTextTheme {
       fontSize: 11,
       fontWeight: FontWeight.w600,
     ),
+  );
+
+  static final TextTheme dark = light.apply(
+    bodyColor: CustomColors.darkOnSurface,
+    displayColor: CustomColors.darkOnSurface,
   );
 }

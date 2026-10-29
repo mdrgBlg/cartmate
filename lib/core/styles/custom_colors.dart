@@ -28,4 +28,18 @@ class CustomColors {
 
   // Brand constant for the app title and link on the login screen.
   static const appName = Color(0xFFFCD34D);
+
+  // Dark theme palette (used by Themes dark scheme).
+  static const darkBackground = Color(0xFF0F1020);
+  static const darkSurface = Color(0xFF1A1B2E);
+  static const darkPrimary = Color(0xFF818CF8);
+  static const darkOnPrimary = Color(0xFF1E1B4B);
+  static const darkPrimaryContainer = Color(0xFF3730A3);
+  static const darkAccent = Color(0xFFFBBF24);
+  static const darkOnSurface = Color(0xFFE5E7EB);
+  static const darkOutlineVariant = Color(0xFF2E3050);
+  static const darkSurfaceContainerLow = Color(0xFF15162A);
+  static const darkSurfaceContainer = Color(0xFF1F2038);
+  static const darkSurfaceContainerHigh = Color(0xFF26283F);
+  static const darkSurfaceContainerHighest = Color(0xFF2F3250);
 }
