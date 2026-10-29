@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '/core/l10n/app_localizations.dart';
 import '/utils/global_enums.dart';
-import '../styles/custom_colors.dart';
 
 class GenderSelector extends StatefulWidget {
   const GenderSelector({
@@ -32,14 +31,17 @@ class _GenderSelectorState extends State<GenderSelector> {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return DropdownButton<Gender>(
       padding: EdgeInsets.zero,
       hint: Text(
         localization.gender,
-        style: textTheme.bodyMedium!.copyWith(color: CustomColors.grayDark),
+        style: textTheme.bodyMedium!.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
       ),
-      underline: const Divider(color: Colors.black, height: 0),
+      underline: Divider(color: colorScheme.onSurface, height: 0),
       value: _selectedGender,
       onChanged: (value) {
         setState(() => _selectedGender = value);
@@ -50,7 +52,7 @@ class _GenderSelectorState extends State<GenderSelector> {
           value: value,
           child: Text(
             value.genderName(localization),
-            style: textTheme.bodyLarge!.copyWith(fontSize: 16),
+            style: textTheme.bodyLarge,
           ),
         );
       }).toList(),
