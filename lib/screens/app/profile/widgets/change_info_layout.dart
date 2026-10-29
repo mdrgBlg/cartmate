@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/core/l10n/app_localizations.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/layouts/main_layout.dart';
@@ -14,7 +15,7 @@ class ChangeInfoLayout extends StatelessWidget {
     required this.onSuccess,
     required this.child,
     this.enableSave = true,
-    this.padding = const EdgeInsets.all(20),
+    this.padding = const EdgeInsets.all(AppSpacing.xl),
     super.key,
   });
 

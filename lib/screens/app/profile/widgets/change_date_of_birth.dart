@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/date_picker.dart';
 import '/utils/extensions/date_time_extension.dart';
 import 'change_info_layout.dart';
@@ -59,7 +60,11 @@ class _ChangeDateOfBirthState extends State<ChangeDateOfBirth> {
       onSave: () => widget.onSave(_pickedDate!),
       onSuccess: () => widget.onSuccess(_pickedDate!),
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 24, left: 20, right: 20),
+        padding: const EdgeInsets.only(
+          bottom: AppSpacing.xxl,
+          left: AppSpacing.screenHorizontal,
+          right: AppSpacing.screenHorizontal,
+        ),
         child: DatePicker(
           dateController: _dateController,
           pickedDate: _pickedDate,

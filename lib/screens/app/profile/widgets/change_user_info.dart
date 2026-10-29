@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/input_field.dart';
 import 'change_info_layout.dart';
 
@@ -23,7 +24,10 @@ class ChangeUserInfo extends StatelessWidget {
       onSave: onSave,
       onSuccess: onSuccess,
       child: Padding(
-        padding: const EdgeInsets.only(top: 12, bottom: 24),
+        padding: const EdgeInsets.only(
+          top: AppSpacing.md,
+          bottom: AppSpacing.xxl,
+        ),
         child: InputField(hintText: sectionTitle, controller: controller),
       ),
     );
