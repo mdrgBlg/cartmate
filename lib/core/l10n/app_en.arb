@@ -22,6 +22,10 @@
   "orderStatusInTransit": "In Transit",
   "orderStatusDelivered": "Delivered",
 
+  "themeModeSystem": "System default",
+  "themeModeLight": "Light",
+  "themeModeDark": "Dark",
+
   "authErrorInvalidEmail": "Please enter a valid email address.",
   "authErrorInvalidCredentials": "Incorrect email or password.",
   "authErrorUserNotFound": "No account found for this email.",
@@ -58,6 +62,8 @@
   "profilePhoneNumber": "Phone Number",
   "profileDateOfBirth": "Date of Birth",
   "profileLogout": "Log out",
+  "profileAppearance": "Appearance",
+  "profileTheme": "Theme",
   "profileChangeSection": "Change {section}",
   "@profileChangeSection": {
     "placeholders": {
