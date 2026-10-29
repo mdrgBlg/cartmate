@@ -15,19 +15,19 @@ class NavBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+    final color = active
+        ? colorScheme.onPrimary
+        : colorScheme.onPrimary.withValues(alpha: 0.54);
+
     return InkWell(
       onTap: onTap,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(itemIcon, color: active ? Colors.white : Colors.white54),
-          Text(
-            itemText,
-            style: TextStyle(
-              color: active ? Colors.white : Colors.white54,
-              fontSize: 14,
-            ),
-          ),
+          Icon(itemIcon, color: color),
+          Text(itemText, style: textTheme.bodyMedium!.copyWith(color: color)),
         ],
       ),
     );

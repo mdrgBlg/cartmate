@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../styles/custom_colors.dart';
+import '../../../styles/app_radius.dart';
 import '/screens/app/purchase/cart/cart_screen.dart';
 import '/utils/custom_navigator.dart';
 import 'providers/shopping_cart_provider.dart';
@@ -26,6 +26,7 @@ class _ShoppingCartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return InkWell(
       onTap: () => CustomNavigator(context).pushNavigation(
         routeName: CartScreen.routeName,
@@ -39,7 +40,7 @@ class _ShoppingCartView extends StatelessWidget {
           children: [
             Icon(
               Icons.shopping_cart,
-              color: iconColor ?? CustomColors.secondary,
+              color: iconColor ?? colorScheme.onPrimary,
               size: 28,
             ),
             Consumer<ShoppingCartProvider>(
@@ -51,14 +52,14 @@ class _ShoppingCartView extends StatelessWidget {
                         height: 18,
                         width: 18,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(99),
-                          color: Colors.black,
+                          borderRadius: AppRadius.pillAll,
+                          color: colorScheme.inverseSurface,
                         ),
                         child: Center(
                           child: Text(
                             provider.productNumber.toString(),
                             style: textTheme.labelLarge!.copyWith(
-                              color: Colors.white,
+                              color: colorScheme.onInverseSurface,
                             ),
                           ),
                         ),
