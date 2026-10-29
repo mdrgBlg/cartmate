@@ -41,6 +41,7 @@
   "homePopularProducts": "Popular Products",
   "homePopularCategories": "Popular Categories",
   "homeSearchHint": "Search product...",
+  "searchNoResults": "No products found",
 
   "productStock": "Stock: ",
   "productInStock": "In stock",
@@ -48,6 +49,8 @@
   "productSize": "Size",
   "productAddToCart": "Add to cart",
   "productAddedToCart": "Product is added to cart",
+  "productsEmptyTitle": "No products found",
+  "productsEmptyMessage": "There is nothing to show here yet.",
 
   "myOrdersTitle": "My Orders",
   "myOrdersOrder": "Order",
@@ -123,6 +126,8 @@
   "storeViewAll": "View all",
   "storeBrand": "Brand",
   "storeBrands": "Brands",
+  "storeEmptyTitle": "No brands yet",
+  "storeEmptyMessage": "Brands for this category will show up here.",
   "storeProductsLabel": "{count, plural, =1{product} other{products}}",
   "@storeProductsLabel": {
     "placeholders": {

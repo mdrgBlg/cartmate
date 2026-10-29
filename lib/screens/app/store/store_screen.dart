@@ -4,10 +4,12 @@ import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
 import '/core/styles/app_spacing.dart';
+import '/core/widgets/empty_state.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/main_header/main_header.dart';
 import '/data/models/brand_model.dart';
 import '/data/models/categories_model.dart';
+import '/utils/assets/custom_illustrations.dart';
 import '/utils/custom_navigator.dart';
 import 'brand_products_screen.dart';
 import 'providers/store_provider.dart';
@@ -142,6 +144,13 @@ class _StoreScreen extends StatelessWidget {
                             return Center(
                               heightFactor: 3,
                               child: Text(localization.somethingWentWrong),
+                            );
+                          }
+                          if (categoryBrands.isEmpty) {
+                            return EmptyState(
+                              illustration: CustomIllustrations.noResults,
+                              title: localization.storeEmptyTitle,
+                              message: localization.storeEmptyMessage,
                             );
                           }
                           return Padding(
