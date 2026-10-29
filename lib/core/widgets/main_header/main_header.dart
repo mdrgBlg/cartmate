@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../styles/custom_colors.dart';
+import '../../styles/app_spacing.dart';
 import 'shopping_cart/shopping_cart.dart';
 
 class MainHeader extends StatelessWidget {
@@ -18,16 +18,19 @@ class MainHeader extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 16),
+      padding: const EdgeInsets.only(
+        left: AppSpacing.screenHorizontal,
+        right: AppSpacing.lg,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 4),
+            padding: const EdgeInsets.only(left: AppSpacing.xs),
             child: Text(
               text,
               style: textTheme.titleLarge!.copyWith(
-                color: contentColor ?? CustomColors.secondary,
+                color: contentColor ?? Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),

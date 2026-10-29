@@ -7,7 +7,8 @@ import '/screens/app/profile/profile_screen.dart';
 import '/screens/app/store/store_screen.dart';
 import '/screens/app/wishlist/wishlist_screen.dart';
 import '/utils/custom_navigator.dart';
-import '../../styles/custom_colors.dart';
+import '../../styles/app_radius.dart';
+import '../../styles/app_spacing.dart';
 import 'widgets/navbar_item.dart';
 
 class AppNavigation extends StatelessWidget {
@@ -21,13 +22,17 @@ class AppNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
     final currentRoute = ModalRoute.of(context)?.settings.name;
+    final colorScheme = Theme.of(context).colorScheme;
     return Wrap(
       children: [
         Container(
-          padding: const EdgeInsets.only(top: 4, bottom: 2),
+          padding: const EdgeInsets.only(
+            top: AppSpacing.xs,
+            bottom: AppSpacing.xxs,
+          ),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            color: CustomColors.primary,
+            borderRadius: AppRadius.xxlAll,
+            color: colorScheme.primary,
           ),
           child: Row(
             children: [
