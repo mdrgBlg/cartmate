@@ -11,6 +11,7 @@ import '/utils/assets/custom_icons.dart';
 import '/utils/common_utils.dart';
 import '/utils/extensions/date_time_extension.dart';
 import 'providers/my_orders_provider.dart';
+import 'widgets/order_card_skeleton.dart';
 
 class MyOrdersScreen extends StatelessWidget {
   const MyOrdersScreen({super.key});
@@ -48,7 +49,10 @@ class _MyOrdersScreen extends StatelessWidget {
         future: myOrdersProvider.myOrdersFuture,
         builder: (context, snapshot) =>
             snapshot.connectionState != ConnectionState.done
-            ? const Center(child: CircularProgressIndicator())
+            ? const Padding(
+                padding: EdgeInsets.all(AppSpacing.xl),
+                child: OrderCardSkeleton(),
+              )
             : snapshot.hasError || myOrdersProvider.hasError
             ? Center(
                 child: Text(

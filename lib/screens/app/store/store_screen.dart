@@ -13,7 +13,9 @@ import 'brand_products_screen.dart';
 import 'providers/store_provider.dart';
 import 'view_all_brands_screen.dart';
 import 'widgets/brand_grid.dart';
+import 'widgets/brand_grid_skeleton.dart';
 import 'widgets/categories_brands.dart';
+import 'widgets/categories_brands_skeleton.dart';
 import 'widgets/category_tab.dart';
 
 class StoreScreen extends StatelessWidget {
@@ -118,44 +120,64 @@ class _StoreScreen extends StatelessWidget {
               child: Divider(thickness: 2, height: 1.5),
             ),
             const Gap(24),
-            Selector<StoreProvider, (List<BrandModel>, bool)>(
-              selector: (_, provider) => (
-                provider.categoryBrands,
-                provider.hasProductsError || provider.hasCategoriesError,
-              ),
-              builder: (_, data, _) {
-                final (categoryBrands, hasError) = data;
-                if (hasError) {
-                  return Center(
-                    heightFactor: 3,
-                    child: Text(localization.somethingWentWrong),
-                  );
-                }
-                return Padding(
-                  padding: AppSpacing.screenPadding,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: categoryBrands.length,
-                    itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.only(bottom: AppSpacing.lg),
-                      child: CategoriesBrands(
-                        categoryBrand: categoryBrands[index],
-                        productsList: storeProvider.categoryProductsForBrand(
-                          categoryBrands[index],
+            Selector<StoreProvider, Future<void>>(
+              selector: (_, provider) => provider.loadFuture,
+              builder: (_, future, _) => FutureBuilder<void>(
+                future: future,
+                builder: (_, snapshot) =>
+                    snapshot.connectionState == ConnectionState.waiting
+                    ? const Padding(
+                        padding: AppSpacing.screenPadding,
+                        child: CategoriesBrandsSkeleton(),
+                      )
+                    : Selector<StoreProvider, (List<BrandModel>, bool)>(
+                        selector: (_, provider) => (
+                          provider.categoryBrands,
+                          provider.hasProductsError ||
+                              provider.hasCategoriesError,
                         ),
-                        onTap: () => CustomNavigator(context).pushNavigation(
-                          routeName: BrandProductsScreen.routeName,
-                          screen: BrandProductsScreen(
-                            categoryId: storeProvider.selectedCategory?.id,
-                            brandModel: categoryBrands[index],
-                          ),
-                        ),
+                        builder: (_, data, _) {
+                          final (categoryBrands, hasError) = data;
+                          if (hasError) {
+                            return Center(
+                              heightFactor: 3,
+                              child: Text(localization.somethingWentWrong),
+                            );
+                          }
+                          return Padding(
+                            padding: AppSpacing.screenPadding,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: categoryBrands.length,
+                              itemBuilder: (context, index) => Padding(
+                                padding: const EdgeInsets.only(
+                                  bottom: AppSpacing.lg,
+                                ),
+                                child: CategoriesBrands(
+                                  categoryBrand: categoryBrands[index],
+                                  productsList: storeProvider
+                                      .categoryProductsForBrand(
+                                        categoryBrands[index],
+                                      ),
+                                  onTap: () =>
+                                      CustomNavigator(context).pushNavigation(
+                                        routeName:
+                                            BrandProductsScreen.routeName,
+                                        screen: BrandProductsScreen(
+                                          categoryId: storeProvider
+                                              .selectedCategory
+                                              ?.id,
+                                          brandModel: categoryBrands[index],
+                                        ),
+                                      ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  ),
-                );
-              },
+              ),
             ),
           ],
         ),
@@ -175,10 +197,7 @@ class _FeaturedBrands extends StatelessWidget {
       future: storeProvider.loadFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            heightFactor: 3,
-            child: CircularProgressIndicator(),
-          );
+          return const BrandGridSkeleton();
         }
         if (storeProvider.hasBrandsError) {
           return Center(
