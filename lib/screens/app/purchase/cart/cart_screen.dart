@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/layouts/main_layout.dart';
@@ -43,7 +44,7 @@ class _CartScreen extends StatelessWidget {
           Selector<CartProvider, List<CartModel>>(
             selector: (_, provider) => provider.cartProducts,
             builder: (context, cartProducts, child) => ListView.builder(
-              padding: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: AppSpacing.sm),
               shrinkWrap: true,
               itemCount: cartProducts.length,
               itemBuilder: (_, index) =>

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_spacing.dart';
 import 'providers/product_size_provider.dart';
 
 class ProductSizeSelector extends StatelessWidget {
@@ -41,7 +42,7 @@ class _SizeView extends StatelessWidget {
 
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
             child: Text(
               localization.productSize,
               style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
@@ -66,31 +67,30 @@ class _SizeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final isSelected = context.select<ProductSizeProvider, bool>(
       (provider) => provider.selectedSize == size,
     );
 
     return InkWell(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: AppRadius.smAll,
       onTap: () => context.read<ProductSizeProvider>().changeSelectedSize(size),
       child: Container(
         alignment: Alignment.center,
         width: 64,
         height: 40,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: AppRadius.smAll,
           border: Border.all(
-            color: isSelected
-                ? Colors.black.withValues(alpha: 0.2)
-                : Colors.black,
+            color: isSelected ? colorScheme.primary : colorScheme.outline,
           ),
-          color: isSelected ? CustomColors.primary : CustomColors.secondary,
+          color: isSelected ? colorScheme.primary : colorScheme.surface,
         ),
         child: Text(
           size,
           style: textTheme.bodyMedium!.copyWith(
             fontWeight: FontWeight.bold,
-            color: isSelected ? CustomColors.secondary : Colors.black,
+            color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
           ),
         ),
       ),

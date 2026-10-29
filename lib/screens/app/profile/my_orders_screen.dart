@@ -3,7 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/utils/assets/custom_icons.dart';
@@ -39,9 +40,10 @@ class _MyOrdersScreen extends StatelessWidget {
       listen: false,
     );
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return MainLayout(
       appBar: CustomAppBar(titleText: localization.myOrdersTitle),
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       child: FutureBuilder<void>(
         future: myOrdersProvider.myOrdersFuture,
         builder: (context, snapshot) =>
@@ -55,7 +57,7 @@ class _MyOrdersScreen extends StatelessWidget {
                 ),
               )
             : Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(AppSpacing.xl),
                 child: ListView.builder(
                   itemCount: myOrdersProvider.myOrders.length,
                   itemBuilder: (_, index) {
@@ -65,12 +67,12 @@ class _MyOrdersScreen extends StatelessWidget {
                     return Container(
                       height: 120,
                       width: double.infinity,
-                      padding: const EdgeInsets.all(16),
-                      margin: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      margin: const EdgeInsets.only(bottom: AppSpacing.lg),
                       decoration: BoxDecoration(
-                        color: CustomColors.greyShade200.withValues(alpha: 0.4),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: CustomColors.greyShade200),
+                        color: colorScheme.surfaceContainer,
+                        borderRadius: AppRadius.lgAll,
+                        border: Border.all(color: colorScheme.outlineVariant),
                       ),
                       child: Column(
                         children: [
@@ -85,7 +87,7 @@ class _MyOrdersScreen extends StatelessWidget {
                                     Text(
                                       orderStatus.statusName(localization),
                                       style: textTheme.bodySmall!.copyWith(
-                                        color: CustomColors.primary,
+                                        color: colorScheme.primary,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -120,9 +122,7 @@ class _MyOrdersScreen extends StatelessWidget {
                                   Text(
                                     localization.myOrdersOrder,
                                     style: textTheme.bodySmall!.copyWith(
-                                      color: CustomColors.grayDark.withValues(
-                                        alpha: 0.8,
-                                      ),
+                                      color: colorScheme.onSurfaceVariant,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10,
                                     ),
@@ -148,9 +148,7 @@ class _MyOrdersScreen extends StatelessWidget {
                                   Text(
                                     localization.myOrdersShippingDate,
                                     style: textTheme.bodySmall!.copyWith(
-                                      color: CustomColors.grayDark.withValues(
-                                        alpha: 0.8,
-                                      ),
+                                      color: colorScheme.onSurfaceVariant,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 10,
                                     ),
