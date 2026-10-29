@@ -65,8 +65,15 @@ class ChangeInfoLayout extends StatelessWidget {
             message: localization.profileSectionChanged(sectionTitle),
           );
           onSuccess();
+          Navigator.of(context).pop();
+        } else {
+          // Stay on the screen so the input is kept and saving can be retried.
+          SnackBarPopup.showMessage(
+            context,
+            message: localization.somethingWentWrong,
+            snackBarMessageType: SnackBarMessageType.error,
+          );
         }
-        Navigator.of(context).pop();
       },
     );
   }

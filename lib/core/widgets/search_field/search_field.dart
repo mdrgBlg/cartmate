@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/search_provider.dart';
+import '/core/l10n/app_localizations.dart';
 import '/screens/app/product_details/product_details_screen.dart';
 import '../../styles/app_radius.dart';
 import '../../styles/app_spacing.dart';
@@ -31,6 +32,7 @@ class _SearchFieldView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     return Consumer<SearchProvider>(
@@ -103,7 +105,7 @@ class _SearchFieldView extends StatelessWidget {
           ),
           if (provider.showResults)
             Container(
-              height: 140,
+              height: provider.searchedProducts.isEmpty ? 56 : 140,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
@@ -112,52 +114,65 @@ class _SearchFieldView extends StatelessWidget {
                 ),
                 color: colorScheme.surface,
               ),
-              child: Scrollbar(
-                radius: const Radius.circular(2),
-                thumbVisibility: true,
-                controller: provider.searchScrollController,
-                thickness: 4,
-                child: Container(
-                  padding: provider.hasQuery
-                      ? const EdgeInsets.fromLTRB(
-                          AppSpacing.lg,
-                          AppSpacing.lg,
-                          AppSpacing.lg,
-                          AppSpacing.xs,
-                        )
-                      : null,
-                  child: MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: provider.searchedProducts.isEmpty
+                  ? Center(
+                      child: Text(
+                        provider.hasError
+                            ? localization.somethingWentWrong
+                            : localization.searchNoResults,
+                        style: textTheme.bodyMedium!.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    )
+                  : Scrollbar(
+                      radius: const Radius.circular(2),
+                      thumbVisibility: true,
                       controller: provider.searchScrollController,
-                      itemCount: provider.searchedProducts.length,
-                      itemBuilder: (context, index) => InkWell(
-                        onTap: () {
-                          final product = provider.productAt(index);
-                          CustomNavigator(context).pushNavigation(
-                            routeName: ProductDetailsScreen.routeName,
-                            screen: ProductDetailsScreen(
-                              productsModel: product,
+                      thickness: 4,
+                      child: Container(
+                        padding: provider.hasQuery
+                            ? const EdgeInsets.fromLTRB(
+                                AppSpacing.lg,
+                                AppSpacing.lg,
+                                AppSpacing.lg,
+                                AppSpacing.xs,
+                              )
+                            : null,
+                        child: MediaQuery.removePadding(
+                          context: context,
+                          removeTop: true,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            controller: provider.searchScrollController,
+                            itemCount: provider.searchedProducts.length,
+                            itemBuilder: (context, index) => InkWell(
+                              onTap: () {
+                                final product = provider.productAt(index);
+                                CustomNavigator(context).pushNavigation(
+                                  routeName: ProductDetailsScreen.routeName,
+                                  screen: ProductDetailsScreen(
+                                    productsModel: product,
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                  bottom: AppSpacing.md,
+                                ),
+                                alignment: AlignmentDirectional.centerStart,
+                                child: Text(
+                                  provider.searchedProducts[index].productName,
+                                  style: textTheme.bodyLarge,
+                                ),
+                              ),
                             ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                          alignment: AlignmentDirectional.centerStart,
-                          child: Text(
-                            provider.searchedProducts[index].productName,
-                            style: textTheme.bodyLarge,
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ),
             ),
         ],
       ),

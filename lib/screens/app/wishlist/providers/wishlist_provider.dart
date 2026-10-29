@@ -13,8 +13,13 @@ class WishlistProvider with ChangeNotifier {
 
   final WishlistRepository _wishlistRepository;
 
-  late final Future<Exception?> _wishlistFuture;
+  late Future<Exception?> _wishlistFuture;
   Future<Exception?> get wishlistFuture => _wishlistFuture;
+
+  void reload() {
+    _wishlistFuture = _fetchWishlist();
+    notifyListeners();
+  }
 
   List<ProductsModel> _products = [];
   List<ProductsModel> get products => [..._products];
@@ -36,9 +41,10 @@ class WishlistProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Started once from the constructor and awaited by `WishlistScreen`'s
+  // Started from the constructor (and `reload`) and awaited by `WishlistScreen`'s
   // `FutureBuilder`, which owns the loading state.
   Future<Exception?> _fetchWishlist() async {
+    _error = null;
     final result = await _wishlistRepository.getWishlistProducts();
     switch (result) {
       case Success():
@@ -46,6 +52,7 @@ class WishlistProvider with ChangeNotifier {
         return null;
       case Failure(:final exception):
         _products = [];
+        _error = exception;
         return exception;
     }
   }

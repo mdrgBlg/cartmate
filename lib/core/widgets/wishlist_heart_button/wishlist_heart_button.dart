@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/core/l10n/app_localizations.dart';
 import '/data/models/products_model.dart';
+import '/utils/snack_bar_popup.dart';
 import '../../styles/app_radius.dart';
 import 'providers/wishlist_heart_provider.dart';
 
@@ -33,8 +35,8 @@ class _HeartView extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Consumer<WishlistHeartProvider>(
-      builder: (_, heart, _) => InkWell(
-        onTap: heart.toggle,
+      builder: (context, heart, _) => InkWell(
+        onTap: () => _toggle(context),
         borderRadius: AppRadius.pillAll,
         child: Container(
           height: 36,
@@ -52,5 +54,20 @@ class _HeartView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // A successful toggle disposes this provider via the `ValueKey`, hence the
+  // `mounted` check.
+  void _toggle(BuildContext context) {
+    final provider = Provider.of<WishlistHeartProvider>(context, listen: false);
+    provider.toggle().then((success) {
+      if (!success && context.mounted) {
+        SnackBarPopup.showMessage(
+          context,
+          message: AppLocalizations.of(context).somethingWentWrong,
+          snackBarMessageType: SnackBarMessageType.error,
+        );
+      }
+    });
   }
 }

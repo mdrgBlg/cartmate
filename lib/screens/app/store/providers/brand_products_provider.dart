@@ -32,8 +32,13 @@ class BrandProductsProvider with ChangeNotifier {
   BrandModel get brandModel => _brandModel;
 
   // Cached so rebuilds of `BrandProductsScreen` don't reload.
-  late final Future<void> _loadFuture;
+  late Future<void> _loadFuture;
   Future<void> get loadFuture => _loadFuture;
+
+  void reload() {
+    _loadFuture = _load();
+    notifyListeners();
+  }
 
   List<ProductsModel> _products = const [];
   List<ProductsModel> get products => _products;

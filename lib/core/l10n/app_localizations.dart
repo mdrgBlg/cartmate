@@ -154,6 +154,30 @@ abstract class AppLocalizations {
   /// **'Female'**
   String get genderFemale;
 
+  /// No description provided for @startShopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Start shopping'**
+  String get startShopping;
+
+  /// No description provided for @errorViewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get errorViewTitle;
+
+  /// No description provided for @errorViewMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again.'**
+  String get errorViewMessage;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get retry;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:
@@ -298,6 +322,12 @@ abstract class AppLocalizations {
   /// **'Search product...'**
   String get homeSearchHint;
 
+  /// No description provided for @searchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No products found'**
+  String get searchNoResults;
+
   /// No description provided for @productStock.
   ///
   /// In en, this message translates to:
@@ -334,6 +364,18 @@ abstract class AppLocalizations {
   /// **'Product is added to cart'**
   String get productAddedToCart;
 
+  /// No description provided for @productsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No products found'**
+  String get productsEmptyTitle;
+
+  /// No description provided for @productsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'There is nothing to show here yet.'**
+  String get productsEmptyMessage;
+
   /// No description provided for @myOrdersTitle.
   ///
   /// In en, this message translates to:
@@ -357,6 +399,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown'**
   String get myOrdersUnknown;
+
+  /// No description provided for @myOrdersEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No orders yet'**
+  String get myOrdersEmptyTitle;
+
+  /// No description provided for @myOrdersEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'When you place an order, it will show up here.'**
+  String get myOrdersEmptyMessage;
 
   /// No description provided for @profileTitle.
   ///
@@ -441,6 +495,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cart'**
   String get cartTitle;
+
+  /// No description provided for @cartEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cart is empty'**
+  String get cartEmptyTitle;
+
+  /// No description provided for @cartEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks like you haven\'t added anything yet.'**
+  String get cartEmptyMessage;
 
   /// No description provided for @purchaseItemSize.
   ///
@@ -604,6 +670,18 @@ abstract class AppLocalizations {
   /// **'Brands'**
   String get storeBrands;
 
+  /// No description provided for @storeEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No brands yet'**
+  String get storeEmptyTitle;
+
+  /// No description provided for @storeEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Brands for this category will show up here.'**
+  String get storeEmptyMessage;
+
   /// No description provided for @storeProductsLabel.
   ///
   /// In en, this message translates to:
@@ -616,11 +694,17 @@ abstract class AppLocalizations {
   /// **'Wishlist'**
   String get wishlistTitle;
 
-  /// No description provided for @wishlistError.
+  /// No description provided for @wishlistEmptyTitle.
   ///
   /// In en, this message translates to:
-  /// **'Error'**
-  String get wishlistError;
+  /// **'Your wishlist is empty'**
+  String get wishlistEmptyTitle;
+
+  /// No description provided for @wishlistEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart on a product to save it here.'**
+  String get wishlistEmptyMessage;
 
   /// No description provided for @forgotPasswordTitle.
   ///

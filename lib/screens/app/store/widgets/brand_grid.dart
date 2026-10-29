@@ -27,7 +27,7 @@ class BrandGrid extends StatelessWidget {
           crossAxisCount: 2,
           crossAxisSpacing: AppSpacing.md,
           mainAxisSpacing: AppSpacing.md,
-          mainAxisExtent: 60,
+          mainAxisExtent: 72,
         ),
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
