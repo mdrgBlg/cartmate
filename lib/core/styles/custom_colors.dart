@@ -5,6 +5,7 @@ class CustomColors {
   static const primaryDark = Color(0xFF4338CA);
   static const primaryLight = Color(0xFFE0E7FF);
   static const onPrimary = Color(0xFFFFFFFF);
+  static const onScrim = Color(0xFFFFFFFF);
   static const accent = Color(0xFFF59E0B);
   static const onAccent = Color(0xFF111827);
   static const accentLight = Color(0xFFFEF3C7);

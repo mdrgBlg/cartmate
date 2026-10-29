@@ -28,6 +28,7 @@ class _QuantityView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Consumer<ProductCartQuantityProvider>(
       builder: (_, provider, _) {
@@ -35,8 +36,12 @@ class _QuantityView extends StatelessWidget {
         return Text(
           quantity == 0 ? "+" : quantity.toString(),
           style: quantity == 0
-              ? textTheme.titleLarge!.copyWith(color: Colors.white)
-              : textTheme.titleMedium!.copyWith(color: Colors.white),
+              ? textTheme.titleLarge!.copyWith(
+                  color: colorScheme.onInverseSurface,
+                )
+              : textTheme.titleMedium!.copyWith(
+                  color: colorScheme.onInverseSurface,
+                ),
         );
       },
     );
