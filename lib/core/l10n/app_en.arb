@@ -12,6 +12,9 @@
   "genderMale": "Male",
   "genderFemale": "Female",
   "startShopping": "Start shopping",
+  "errorViewTitle": "Something went wrong",
+  "errorViewMessage": "Check your connection and try again.",
+  "retry": "Try again",
 
   "navHome": "Home",
   "navStore": "Store",

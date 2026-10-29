@@ -44,6 +44,16 @@ class HomeProvider with ChangeNotifier {
 
   final scrollController = ScrollController();
 
+  void reloadProducts() {
+    _productsFuture = _getProducts();
+    notifyListeners();
+  }
+
+  void reloadCategories() {
+    _categoriesFuture = _getCategories();
+    notifyListeners();
+  }
+
   void _updateWishlistFlags() {
     _products = [for (final product in _products) _withCurrentFlag(product)];
   }
