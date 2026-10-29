@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_spacing.dart';
 import '/data/models/categories_model.dart';
 
 class CategoriesList extends StatelessWidget {
@@ -15,6 +17,7 @@ class CategoriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(left: 14),
       child: InkWell(
@@ -24,10 +27,10 @@ class CategoriesList extends StatelessWidget {
             Container(
               height: 48,
               width: 48,
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(AppSpacing.sm),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(99),
-                color: Colors.white,
+                borderRadius: AppRadius.pillAll,
+                color: colorScheme.surface,
               ),
               child: Image.asset(categoriesModel.iconName),
             ),
@@ -35,11 +38,11 @@ class CategoriesList extends StatelessWidget {
               child: Container(
                 width: 56,
                 alignment: Alignment.center,
-                padding: const EdgeInsets.only(top: 4),
+                padding: const EdgeInsets.only(top: AppSpacing.xs),
                 child: Text(
                   categoriesModel.categoryName,
                   style: textTheme.bodySmall!.copyWith(
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                   overflow: TextOverflow.ellipsis,
