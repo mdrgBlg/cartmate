@@ -119,7 +119,7 @@ class AppComponentThemes {
     side: const BorderSide(color: CustomColors.grey200),
     shape: const StadiumBorder(),
     labelStyle: AppTextTheme.light.labelLarge?.copyWith(
-      color: CustomColors.text,
+      color: CustomColors.grey900,
     ),
     secondaryLabelStyle: AppTextTheme.light.labelLarge?.copyWith(
       color: CustomColors.primary,
@@ -152,7 +152,6 @@ class AppComponentThemes {
   static const DividerThemeData dividerTheme = DividerThemeData(
     color: CustomColors.grey200,
     thickness: 1,
-    space: 1,
   );
 
   static const BottomSheetThemeData bottomSheetTheme = BottomSheetThemeData(

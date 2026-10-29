@@ -3,14 +3,14 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
 import '/data/models/brand_model.dart';
 import '/data/models/products_model.dart';
 import 'providers/brand_products_provider.dart';
-import 'widgets/brand_container.dart';
+import 'widgets/brand_tile.dart';
 
 /// Expects a [BrandProductsProvider] above it.
 class BrandProductsScreen extends StatelessWidget {
@@ -46,7 +46,7 @@ class _BrandProductsScreen extends StatelessWidget {
     final provider = Provider.of<BrandProductsProvider>(context, listen: false);
 
     return MainLayout(
-      backgroundColor: CustomColors.secondary,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(
         titleText: provider.brandModel.brandName,
         type: AppBarType.dark,
@@ -54,8 +54,18 @@ class _BrandProductsScreen extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: BrandContainer(brand: provider.brandModel),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.screenHorizontal,
+              vertical: AppSpacing.md,
+            ),
+            child: BrandTile(
+              brand: provider.brandModel,
+              padding: const EdgeInsets.only(
+                left: AppSpacing.lg,
+                top: AppSpacing.md,
+                bottom: AppSpacing.md,
+              ),
+            ),
           ),
           const Gap(12),
           const _BrandProducts(),

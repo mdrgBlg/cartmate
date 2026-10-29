@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/core/l10n/app_localizations.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/input_field.dart';
 import 'change_info_layout.dart';
 
@@ -30,14 +31,20 @@ class ChangeUserName extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 12, bottom: 24),
+            padding: const EdgeInsets.only(
+              top: AppSpacing.md,
+              bottom: AppSpacing.xxl,
+            ),
             child: InputField(
               hintText: localization.firstName,
               controller: firstNameController,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 12, bottom: 24),
+            padding: const EdgeInsets.only(
+              top: AppSpacing.md,
+              bottom: AppSpacing.xxl,
+            ),
             child: InputField(
               hintText: localization.lastName,
               controller: lastNameController,

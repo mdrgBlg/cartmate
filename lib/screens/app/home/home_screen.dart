@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/main_header/main_header.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
@@ -40,19 +41,20 @@ class _HomeScreen extends StatelessWidget {
     final localization = AppLocalizations.of(context);
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return MainLayout(
       showNavBar: true,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.only(bottom: AppSpacing.xl),
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           child: Column(
             children: [
               Container(
                 width: double.infinity,
-                color: CustomColors.primary,
-                padding: const EdgeInsets.symmetric(vertical: 20),
+                color: colorScheme.primary,
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -65,22 +67,26 @@ class _HomeScreen extends StatelessWidget {
               ),
               Container(
                 clipBehavior: Clip.hardEdge,
-                decoration: const BoxDecoration(color: CustomColors.primary),
+                decoration: BoxDecoration(color: colorScheme.primary),
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.only(top: 12),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+                  padding: const EdgeInsets.only(top: AppSpacing.md),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(AppRadius.xl),
                     ),
-                    color: Colors.white,
+                    color: colorScheme.surface,
                   ),
                   child: Column(
                     children: [
                       const HomeBannerCarousel(),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 32, 20, 20),
+                        padding: const EdgeInsets.fromLTRB(
+                          AppSpacing.screenHorizontal,
+                          AppSpacing.xxxl,
+                          AppSpacing.screenHorizontal,
+                          AppSpacing.xl,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -132,6 +138,7 @@ class _HomeSearchAndCategories extends StatelessWidget {
     final localization = AppLocalizations.of(context);
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Stack(
       children: [
@@ -139,17 +146,22 @@ class _HomeSearchAndCategories extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 94, 20, 0),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.screenHorizontal,
+                94,
+                AppSpacing.screenHorizontal,
+                0,
+              ),
               child: Text(
                 localization.homePopularCategories,
                 style: textTheme.bodyLarge!.copyWith(
-                  color: Colors.white,
+                  color: colorScheme.onPrimary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 16),
+              margin: const EdgeInsets.only(top: AppSpacing.lg),
               height: 72,
               child: FutureBuilder<List<CategoriesModel>>(
                 future: homeProvider.categoriesFuture,
@@ -182,7 +194,12 @@ class _HomeSearchAndCategories extends StatelessWidget {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.screenHorizontal,
+            AppSpacing.xl,
+            AppSpacing.screenHorizontal,
+            0,
+          ),
           child: SearchField(hintText: localization.homeSearchHint),
         ),
       ],

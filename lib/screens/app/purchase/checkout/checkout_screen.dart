@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/input_field.dart';
@@ -48,6 +49,7 @@ class _CheckoutScreen extends StatelessWidget {
       listen: false,
     );
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final locale = Localizations.localeOf(context).toString();
     return MainLayout(
       appBar: CustomAppBar(titleText: localization.checkoutOrderReview),
@@ -55,7 +57,7 @@ class _CheckoutScreen extends StatelessWidget {
         child: Column(
           children: [
             ListView.builder(
-              padding: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: AppSpacing.sm),
               shrinkWrap: true,
               itemCount: checkoutProvider.cartProducts.length,
               itemBuilder: (_, index) => PurchaseItem(
@@ -65,13 +67,13 @@ class _CheckoutScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(AppSpacing.xl),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
-                  border: Border.all(color: CustomColors.customGrey),
-                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: colorScheme.outlineVariant),
+                  borderRadius: AppRadius.lgAll,
                 ),
                 child: Column(
                   children: [
@@ -138,7 +140,7 @@ class _CheckoutScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    const Divider(color: CustomColors.customGrey, thickness: 2),
+                    const Divider(thickness: 2),
                     const SizedBox(height: 20),
                     Container(
                       alignment: AlignmentDirectional.centerStart,
@@ -152,7 +154,9 @@ class _CheckoutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Padding(
-                      padding: const EdgeInsets.only(left: 20),
+                      padding: const EdgeInsets.only(
+                        left: AppSpacing.screenHorizontal,
+                      ),
                       child: Row(
                         children: [
                           Image.asset(CustomIcons.cash),
@@ -219,12 +223,11 @@ class _CheckoutScreen extends StatelessWidget {
                               useSafeArea: true,
                               countryListTheme: CountryListThemeData(
                                 flagSize: 25,
-                                backgroundColor: Colors.white,
-                                textStyle: const TextStyle(fontSize: 16),
+                                backgroundColor: colorScheme.surface,
+                                textStyle: textTheme.bodyLarge,
                                 bottomSheetHeight: 500,
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(20.0),
-                                  topRight: Radius.circular(20.0),
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(AppRadius.xl),
                                 ),
                                 //Optional. Styles the search field.
                                 inputDecoration: InputDecoration(
@@ -233,11 +236,6 @@ class _CheckoutScreen extends StatelessWidget {
                                   hintText:
                                       localization.checkoutCountrySearchHint,
                                   prefixIcon: const Icon(Icons.search),
-                                  border: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: CustomColors.primary,
-                                    ),
-                                  ),
                                 ),
                               ),
                               onSelect: (value) {
@@ -292,8 +290,8 @@ class _CheckoutScreen extends StatelessWidget {
                         child: CustomButton(
                           margin: const EdgeInsets.only(
                             bottom: 10.0,
-                            left: 20,
-                            right: 20,
+                            left: AppSpacing.screenHorizontal,
+                            right: AppSpacing.screenHorizontal,
                           ),
                           buttonText: localization.checkoutButton(
                             checkoutProvider.getTotalPrice().formatPrice(

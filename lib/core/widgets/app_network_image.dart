@@ -21,6 +21,8 @@ class AppNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return CachedNetworkImage(
       imageUrl: imageUrl,
       height: height,
@@ -29,13 +31,17 @@ class AppNetworkImage extends StatelessWidget {
       placeholder: (context, url) => Container(
         height: height ?? double.infinity,
         width: width ?? double.infinity,
-        color: Colors.grey[200],
+        color: colorScheme.surfaceContainerHighest,
       ),
       errorWidget: (context, url, error) => Container(
         height: height ?? double.infinity,
         width: width ?? double.infinity,
-        color: Colors.grey[200],
-        child: Icon(errorIcon, color: Colors.grey, size: errorIconSize),
+        color: colorScheme.surfaceContainerHighest,
+        child: Icon(
+          errorIcon,
+          color: colorScheme.onSurfaceVariant,
+          size: errorIconSize,
+        ),
       ),
     );
   }

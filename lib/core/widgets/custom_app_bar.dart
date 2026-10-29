@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
 import '/utils/constants/app_bar_constants.dart';
-import '../styles/custom_colors.dart';
 
 enum AppBarType {
   light,
   dark;
 
-  Color get foregroundColor => switch (this) {
-    light => CustomColors.secondary,
-    dark => Colors.white,
+  Color foregroundColor(ColorScheme colorScheme) => switch (this) {
+    light => colorScheme.onPrimary,
+    dark => colorScheme.onInverseSurface,
   };
 
-  Color get backgroundColor => switch (this) {
-    light => CustomColors.primary,
-    dark => Colors.black,
+  Color backgroundColor(ColorScheme colorScheme) => switch (this) {
+    light => colorScheme.primary,
+    dark => colorScheme.inverseSurface,
   };
-  Color? get titleTextColor => switch (this) {
-    light => CustomColors.secondary,
-    dark => null,
+
+  Color titleTextColor(ColorScheme colorScheme) => switch (this) {
+    light => colorScheme.onPrimary,
+    dark => colorScheme.onInverseSurface,
   };
 }
 
@@ -39,12 +39,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return SafeArea(
       child: AppBar(
         toolbarHeight: AppBarConstants.appBarHeight,
-        backgroundColor: type.backgroundColor,
-        foregroundColor: type.foregroundColor,
+        backgroundColor: type.backgroundColor(colorScheme),
+        foregroundColor: type.foregroundColor(colorScheme),
         elevation: 0,
         titleSpacing: 4,
         title:
@@ -53,7 +54,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               titleText ?? '',
               style: textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.bold,
-                color: type.titleTextColor,
+                color: type.titleTextColor(colorScheme),
               ),
             ),
       ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '/utils/constants/app_bar_constants.dart';
-import '../../styles/custom_colors.dart';
+import '../../styles/app_radius.dart';
+import '../../styles/app_spacing.dart';
+import '../custom_app_bar.dart';
 
 class AuthLayout extends StatelessWidget {
   const AuthLayout({
@@ -10,7 +11,7 @@ class AuthLayout extends StatelessWidget {
     super.key,
     this.showAppBar = true,
     this.backgroundColor,
-    this.cardMargin = const EdgeInsets.symmetric(horizontal: 32),
+    this.cardMargin = const EdgeInsets.symmetric(horizontal: AppSpacing.xxxl),
     this.overlays = const [],
   });
 
@@ -25,6 +26,8 @@ class AuthLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         statusBarColor: Colors.black,
@@ -32,7 +35,7 @@ class AuthLayout extends StatelessWidget {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        appBar: showAppBar ? const _AppBar() : null,
+        appBar: showAppBar ? const CustomAppBar() : null,
         backgroundColor: backgroundColor,
         resizeToAvoidBottomInset: true,
         extendBody: true,
@@ -45,22 +48,22 @@ class AuthLayout extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    Expanded(child: Container(color: CustomColors.primary)),
-                    Expanded(child: Container(color: Colors.white)),
+                    Expanded(child: Container(color: colorScheme.primary)),
+                    Expanded(child: Container(color: colorScheme.surface)),
                   ],
                 ),
                 ...overlays,
                 Card(
                   margin: cardMargin,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: AppRadius.lgAll,
                   ),
                   elevation: 3,
-                  color: Colors.white,
+                  color: colorScheme.surface,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 24,
+                      horizontal: AppSpacing.sm,
+                      vertical: AppSpacing.xxl,
                     ),
                     child: SingleChildScrollView(child: child),
                   ),
@@ -72,22 +75,4 @@ class AuthLayout extends StatelessWidget {
       ),
     );
   }
-}
-
-class _AppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _AppBar();
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: AppBar(
-        toolbarHeight: AppBarConstants.appBarHeight,
-        backgroundColor: CustomColors.primary,
-        foregroundColor: Colors.white,
-        elevation: 0,
-      ),
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(AppBarConstants.appBarHeight);
 }

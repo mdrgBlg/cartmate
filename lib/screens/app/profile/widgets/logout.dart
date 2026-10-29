@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
 import '/data/models/auth_exception.dart';
 import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
@@ -48,7 +47,9 @@ class Logout extends StatelessWidget {
         },
         child: Text(
           localization.profileLogout,
-          style: textTheme.bodyLarge!.copyWith(color: CustomColors.primary),
+          style: textTheme.bodyLarge!.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
       ),
     );

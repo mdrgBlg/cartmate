@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../styles/custom_colors.dart';
+import '../styles/app_radius.dart';
+import '../styles/app_spacing.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
     required this.buttonText,
     required this.enable,
     this.onPress,
-    this.margin = const EdgeInsets.symmetric(horizontal: 20),
+    this.margin = AppSpacing.screenPadding,
     this.style,
     super.key,
   });
@@ -21,13 +22,14 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       margin: margin,
       child: Material(
         color: enable
-            ? CustomColors.primary
-            : CustomColors.disabled.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(16),
+            ? colorScheme.primary
+            : colorScheme.primary.withValues(alpha: 0.4),
+        borderRadius: AppRadius.lgAll,
         child: InkWell(
           onTap: enable ? onPress : null,
           child: Center(
@@ -41,8 +43,8 @@ class CustomButton extends StatelessWidget {
                       style ??
                       textTheme.titleLarge!.copyWith(
                         color: enable
-                            ? Colors.white
-                            : Colors.white.withValues(alpha: 0.5),
+                            ? colorScheme.onPrimary
+                            : colorScheme.onPrimary.withValues(alpha: 0.5),
                         fontSize: 18,
                       ),
                 ),

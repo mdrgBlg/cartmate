@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/data/models/products_model.dart';
+import '../../styles/app_radius.dart';
 import 'providers/wishlist_heart_provider.dart';
 
 class WishlistHeartButton extends StatelessWidget {
@@ -29,20 +30,24 @@ class _HeartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Consumer<WishlistHeartProvider>(
       builder: (_, heart, _) => InkWell(
         onTap: heart.toggle,
-        borderRadius: BorderRadius.circular(99),
+        borderRadius: AppRadius.pillAll,
         child: Container(
           height: 36,
           width: 36,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(99),
-            color: Colors.grey.withValues(alpha: 0.2),
+            borderRadius: AppRadius.pillAll,
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.2),
           ),
           child: Icon(
             Icons.favorite,
-            color: heart.isWishlisted ? Colors.red : Colors.grey,
+            color: heart.isWishlisted
+                ? colorScheme.error
+                : colorScheme.onSurfaceVariant,
           ),
         ),
       ),

@@ -3,7 +3,9 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_shadows.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/app_network_image.dart';
 import '/data/models/cart_model.dart';
 import '/utils/extensions/price_extension.dart';
@@ -54,23 +56,23 @@ class _PurchaseItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final localization = AppLocalizations.of(context);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.screenHorizontal,
+        AppSpacing.md,
+        AppSpacing.screenHorizontal,
+        0,
+      ),
       child: Container(
         width: double.infinity,
         height: height,
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: CustomColors.grayDark.withValues(alpha: 0.2),
-              blurRadius: 50,
-              spreadRadius: 1,
-            ),
-          ],
+          color: colorScheme.surface,
+          borderRadius: AppRadius.lgAll,
+          boxShadow: AppShadows.card,
         ),
         child: Column(
           children: [
@@ -78,11 +80,11 @@ class _PurchaseItemView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
+                  decoration: const BoxDecoration(
+                    borderRadius: AppRadius.lgAll,
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: AppRadius.lgAll,
                     child: AppNetworkImage(
                       imageUrl:
                           cartModel.productModel.productImageList.firstOrNull ??
@@ -105,13 +107,13 @@ class _PurchaseItemView extends StatelessWidget {
                             cartModel.productModel.brandModel?.brandName ?? "",
                             style: textTheme.bodySmall!.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: CustomColors.grayDark,
+                              color: colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ),
-                        const Icon(
+                        Icon(
                           Icons.check_circle,
-                          color: Colors.blueAccent,
+                          color: colorScheme.primary,
                           size: 12,
                         ),
                       ],
@@ -134,7 +136,7 @@ class _PurchaseItemView extends StatelessWidget {
                           child: RichText(
                             text: TextSpan(
                               style: textTheme.bodySmall!.copyWith(
-                                color: CustomColors.grayDark,
+                                color: colorScheme.onSurfaceVariant,
                                 fontWeight: FontWeight.bold,
                               ),
                               children: [
@@ -160,7 +162,7 @@ class _PurchaseItemView extends StatelessWidget {
                             child: RichText(
                               text: TextSpan(
                                 style: textTheme.bodySmall!.copyWith(
-                                  color: CustomColors.grayDark,
+                                  color: colorScheme.onSurfaceVariant,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 children: [
@@ -197,6 +199,7 @@ class _CartQuantityAndPrice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Consumer<PurchaseItemProvider>(
       builder: (context, provider, child) {
@@ -210,8 +213,8 @@ class _CartQuantityAndPrice extends StatelessWidget {
                 height: 24,
                 width: 24,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(99),
-                  color: Colors.black.withValues(alpha: 0.4),
+                  borderRadius: AppRadius.pillAll,
+                  color: colorScheme.inverseSurface.withValues(alpha: 0.4),
                 ),
                 alignment: AlignmentDirectional.center,
                 child: Text(
@@ -219,7 +222,7 @@ class _CartQuantityAndPrice extends StatelessWidget {
                   style: textTheme.bodyLarge!.copyWith(
                     fontSize: 20,
                     height: 1.1,
-                    color: Colors.white,
+                    color: colorScheme.onInverseSurface,
                   ),
                 ),
               ),
@@ -233,8 +236,8 @@ class _CartQuantityAndPrice extends StatelessWidget {
                 height: 24,
                 width: 24,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(99),
-                  color: CustomColors.primary,
+                  borderRadius: AppRadius.pillAll,
+                  color: colorScheme.primary,
                 ),
                 alignment: AlignmentDirectional.center,
                 child: Text(
@@ -242,7 +245,7 @@ class _CartQuantityAndPrice extends StatelessWidget {
                   style: textTheme.bodyLarge!.copyWith(
                     fontSize: 20,
                     height: 1.1,
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                   ),
                 ),
               ),

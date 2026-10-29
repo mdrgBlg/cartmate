@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'providers/search_provider.dart';
 import '/screens/app/product_details/product_details_screen.dart';
-import '../../styles/custom_colors.dart';
+import '../../styles/app_radius.dart';
+import '../../styles/app_spacing.dart';
 import '/utils/custom_navigator.dart';
 
 class SearchField extends StatelessWidget {
@@ -31,6 +32,7 @@ class _SearchFieldView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return Consumer<SearchProvider>(
       builder: (context, provider, child) => Column(
         children: [
@@ -38,16 +40,16 @@ class _SearchFieldView extends StatelessWidget {
             height: 52,
             width: double.infinity,
             decoration: BoxDecoration(
-              border: Border.all(color: CustomColors.secondary, width: 2),
-              color: Colors.white,
+              border: Border.all(color: colorScheme.surface, width: 2),
+              color: colorScheme.surface,
               borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(16),
-                topRight: const Radius.circular(16),
+                topLeft: const Radius.circular(AppRadius.lg),
+                topRight: const Radius.circular(AppRadius.lg),
                 bottomLeft: Radius.circular(
-                  !provider.isFocused || !provider.hasQuery ? 16 : 0,
+                  !provider.isFocused || !provider.hasQuery ? AppRadius.lg : 0,
                 ),
                 bottomRight: Radius.circular(
-                  !provider.isFocused || !provider.hasQuery ? 16 : 0,
+                  !provider.isFocused || !provider.hasQuery ? AppRadius.lg : 0,
                 ),
               ),
             ),
@@ -60,10 +62,10 @@ class _SearchFieldView extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   onChanged: provider.onQueryChanged,
                   style: textTheme.bodyLarge!.copyWith(
-                    color: CustomColors.text,
+                    color: colorScheme.onSurface,
                     height: 1,
                   ),
-                  cursorColor: Colors.grey,
+                  cursorColor: colorScheme.onSurfaceVariant,
                   decoration: InputDecoration(
                     filled: false,
                     border: InputBorder.none,
@@ -73,18 +75,23 @@ class _SearchFieldView extends StatelessWidget {
                     alignLabelWithHint: true,
                     hintStyle: textTheme.bodyLarge!.copyWith(
                       height: 1.4,
-                      color: Colors.grey,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     hintText: hintText,
                     prefixIcon: const Icon(Icons.search),
-                    prefixIconColor: Colors.grey,
+                    prefixIconColor: colorScheme.onSurfaceVariant,
                     suffixIcon: provider.hasQuery
                         ? InkWell(
                             onTap: provider.clearInput,
-                            child: const Padding(
-                              padding: EdgeInsets.only(left: 8),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: AppSpacing.sm,
+                              ),
                               child: UnconstrainedBox(
-                                child: Icon(Icons.close, color: Colors.grey),
+                                child: Icon(
+                                  Icons.close,
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
                               ),
                             ),
                           )
@@ -98,12 +105,12 @@ class _SearchFieldView extends StatelessWidget {
             Container(
               height: 140,
               width: double.infinity,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(12),
-                  bottomRight: Radius.circular(12),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(AppRadius.md),
+                  bottomRight: Radius.circular(AppRadius.md),
                 ),
-                color: Colors.white,
+                color: colorScheme.surface,
               ),
               child: Scrollbar(
                 radius: const Radius.circular(2),
@@ -112,7 +119,12 @@ class _SearchFieldView extends StatelessWidget {
                 thickness: 4,
                 child: Container(
                   padding: provider.hasQuery
-                      ? const EdgeInsets.fromLTRB(16, 16, 16, 4)
+                      ? const EdgeInsets.fromLTRB(
+                          AppSpacing.lg,
+                          AppSpacing.lg,
+                          AppSpacing.lg,
+                          AppSpacing.xs,
+                        )
                       : null,
                   child: MediaQuery.removePadding(
                     context: context,
@@ -134,11 +146,11 @@ class _SearchFieldView extends StatelessWidget {
                           );
                         },
                         child: Container(
-                          padding: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.only(bottom: AppSpacing.md),
                           alignment: AlignmentDirectional.centerStart,
                           child: Text(
                             provider.searchedProducts[index].productName,
-                            style: const TextStyle(fontSize: 16),
+                            style: textTheme.bodyLarge,
                           ),
                         ),
                       ),

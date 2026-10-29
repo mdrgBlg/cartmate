@@ -5,6 +5,7 @@ class CustomColors {
   static const primaryDark = Color(0xFF4338CA);
   static const primaryLight = Color(0xFFE0E7FF);
   static const onPrimary = Color(0xFFFFFFFF);
+  static const onScrim = Color(0xFFFFFFFF);
   static const accent = Color(0xFFF59E0B);
   static const onAccent = Color(0xFF111827);
   static const accentLight = Color(0xFFFEF3C7);
@@ -25,14 +26,6 @@ class CustomColors {
   static const grey800 = Color(0xFF1F2937);
   static const grey900 = Color(0xFF111827);
 
-  // Legacy names, kept so existing call sites compile. Migrate in group 2.
-  static const text = Color(0xFF111827);
-  static const secondary = Color(0xFFFFFFFF);
+  // Brand constant for the app title and link on the login screen.
   static const appName = Color(0xFFFCD34D);
-  static const valid = Color(0x00000000);
-  static const notValid = Color(0xFFEF4444);
-  static const disabled = Color(0xFF4F46E5);
-  static const customGrey = Color(0xFFD1D5DB);
-  static const grayDark = Color(0xFF9CA3AF);
-  static const greyShade200 = Color(0xFFE5E7EB);
 }
