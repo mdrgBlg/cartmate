@@ -59,6 +59,7 @@ class ProfileHeader extends StatelessWidget {
                       userInfo?.gender == Gender.female
                           ? CustomIcons.femaleAvatar
                           : CustomIcons.manAvatar,
+                      color: colorScheme.onSurface,
                       fit: BoxFit.scaleDown,
                     ),
                   ),
