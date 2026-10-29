@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_spacing.dart';
 
 class CategoryTab extends StatelessWidget {
   const CategoryTab({
@@ -17,8 +17,9 @@ class CategoryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.only(right: 20),
+      padding: const EdgeInsets.only(right: AppSpacing.screenHorizontal),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
@@ -26,7 +27,7 @@ class CategoryTab extends StatelessWidget {
             border: Border(
               bottom: BorderSide(
                 width: 4,
-                color: isActive ? CustomColors.primary : Colors.transparent,
+                color: isActive ? colorScheme.primary : Colors.transparent,
               ),
             ),
           ),
@@ -34,8 +35,8 @@ class CategoryTab extends StatelessWidget {
             categoryName,
             style: textTheme.bodyLarge!.copyWith(
               color: isActive
-                  ? CustomColors.primary
-                  : CustomColors.text.withValues(alpha: 0.4),
+                  ? colorScheme.primary
+                  : colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.bold,
             ),
           ),
