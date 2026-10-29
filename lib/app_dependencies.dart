@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '/core/providers/theme_provider.dart';
 import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
 import '/data/repositories/order_repository.dart';
@@ -58,4 +59,11 @@ List<SingleChildWidget> injectRepositoryDependencies() {
       ),
     ),
   ];
+}
+
+// Created and loaded in `main()` before `runApp`, so it is provided by value.
+List<SingleChildWidget> injectAppProviders({
+  required ThemeProvider themeProvider,
+}) {
+  return [ChangeNotifierProvider.value(value: themeProvider)];
 }
