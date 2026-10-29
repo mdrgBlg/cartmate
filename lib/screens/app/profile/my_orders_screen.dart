@@ -82,7 +82,6 @@ class _MyOrdersScreen extends StatelessWidget {
                         myOrdersProvider.myOrders[index].orderStatus,
                       );
                       return Container(
-                        height: 120,
                         width: double.infinity,
                         padding: const EdgeInsets.all(AppSpacing.lg),
                         margin: const EdgeInsets.only(bottom: AppSpacing.lg),
@@ -126,64 +125,27 @@ class _MyOrdersScreen extends StatelessWidget {
                             ),
                             const Gap(16),
                             Row(
+                              spacing: 8,
                               children: [
-                                Image.asset(
-                                  CustomIcons.priceTag,
-                                  color: colorScheme.onSurface,
-                                  height: 20,
-                                  width: 20,
+                                Flexible(
+                                  child: _OrderInfo(
+                                    icon: CustomIcons.priceTag,
+                                    label: localization.myOrdersOrder,
+                                    value: myOrdersProvider
+                                        .myOrders[index]
+                                        .orderId,
+                                  ),
                                 ),
-                                const Gap(8),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      localization.myOrdersOrder,
-                                      style: textTheme.bodySmall!.copyWith(
-                                        color: colorScheme.onSurfaceVariant,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                    Text(
-                                      myOrdersProvider.myOrders[index].orderId,
-                                      style: textTheme.bodyMedium!.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Spacer(),
-                                Image.asset(
-                                  CustomIcons.timing,
-                                  color: colorScheme.onSurface,
-                                  height: 24,
-                                  width: 24,
-                                ),
-                                const Gap(8),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      localization.myOrdersShippingDate,
-                                      style: textTheme.bodySmall!.copyWith(
-                                        color: colorScheme.onSurfaceVariant,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                    Text(
+                                _OrderInfo(
+                                  icon: CustomIcons.timing,
+                                  iconSize: 24,
+                                  label: localization.myOrdersShippingDate,
+                                  value:
                                       myOrdersProvider
-                                              .myOrders[index]
-                                              .deliveryDate ??
-                                          localization.myOrdersUnknown,
-                                      style: textTheme.bodyMedium!.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
+                                          .myOrders[index]
+                                          .deliveryDate ??
+                                      localization.myOrdersUnknown,
                                 ),
-                                const Gap(28),
                               ],
                             ),
                           ],
@@ -194,6 +156,59 @@ class _MyOrdersScreen extends StatelessWidget {
                 ),
         ),
       ),
+    );
+  }
+}
+
+class _OrderInfo extends StatelessWidget {
+  const _OrderInfo({
+    required this.icon,
+    required this.label,
+    required this.value,
+    this.iconSize = 20,
+  });
+
+  final String icon;
+  final String label;
+  final String value;
+  final double iconSize;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset(
+          icon,
+          color: colorScheme.onSurface,
+          height: iconSize,
+          width: iconSize,
+        ),
+        const Gap(8),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: textTheme.bodySmall!.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 10,
+                ),
+              ),
+              Text(
+                value,
+                style: textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

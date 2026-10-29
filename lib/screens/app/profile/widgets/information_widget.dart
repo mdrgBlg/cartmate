@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '/core/styles/app_spacing.dart';
-
 class InformationWidget extends StatelessWidget {
   const InformationWidget({
     required this.sectionTitle,
@@ -18,39 +16,44 @@ class InformationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    return Padding(
-      padding: AppSpacing.screenPadding,
+    return Material(
       child: InkWell(
         onTap: onTap,
-        child: Row(
-          children: [
-            Expanded(
-              flex: 3,
-              child: Text(
-                sectionTitle,
-                style: textTheme.bodyMedium!.copyWith(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            spacing: 4,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Text(
+                  sectionTitle,
+                  style: textTheme.bodyMedium!.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 4,
+                child: Text(
+                  sectionText,
+                  style: textTheme.bodyMedium!.copyWith(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              if (onTap != null)
+                Icon(
+                  Icons.arrow_forward_ios,
                   color: colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Text(
-                sectionText,
-                style: textTheme.bodyMedium!.copyWith(
-                  color: colorScheme.onSurface,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            if (onTap != null)
-              Icon(
-                Icons.arrow_forward_ios,
-                color: colorScheme.onSurfaceVariant,
-                size: 16,
-              ),
-          ],
+                  size: 16,
+                )
+              else
+                const SizedBox(width: 16),
+            ],
+          ),
         ),
       ),
     );

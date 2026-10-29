@@ -10,7 +10,7 @@ class BrandTile extends StatelessWidget {
   const BrandTile({
     required this.brand,
     this.onTap,
-    this.padding = const EdgeInsets.only(left: AppSpacing.md),
+    this.padding = const EdgeInsets.symmetric(horizontal: AppSpacing.md),
     super.key,
   });
 
@@ -37,24 +37,25 @@ class BrandTile extends StatelessWidget {
           border: Border.all(color: colorScheme.outlineVariant),
         ),
         child: Row(
+          spacing: 12,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 36,
-              width: 36,
+              height: 40,
+              width: 40,
               child: AppNetworkImage(
                 imageUrl: brand.iconName,
                 errorIcon: Icons.store,
                 errorIconSize: 20,
               ),
             ),
-            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    spacing: 4,
                     children: [
                       Flexible(
                         child: Text(
@@ -63,9 +64,9 @@ class BrandTile extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                           overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
                       ),
-                      const SizedBox(width: 4),
                       Icon(
                         Icons.check_circle,
                         color: colorScheme.primary,
@@ -74,9 +75,9 @@ class BrandTile extends StatelessWidget {
                     ],
                   ),
                   Row(
+                    spacing: 2,
                     children: [
                       Text(brand.productCount.toString(), style: countStyle),
-                      const SizedBox(width: 2),
                       Flexible(
                         child: Text(
                           localization.storeProductsLabel(brand.productCount),

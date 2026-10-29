@@ -18,12 +18,13 @@ class ProfileSection extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: AppSpacing.screenHorizontal),
-          child: Text(
+    return Padding(
+      padding: AppSpacing.screenPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Gap(8),
+          Text(
             title,
             style: textTheme.titleLarge!.copyWith(
               color: colorScheme.onSurface,
@@ -31,15 +32,12 @@ class ProfileSection extends StatelessWidget {
               fontSize: 18,
             ),
           ),
-        ),
-        const Gap(16),
-        for (int i = 0; i < children.length; i++) ...[
-          if (i > 0) const Gap(12),
-          children[i],
+          const Gap(8),
+          for (int i = 0; i < children.length; i++) ...[children[i]],
+          const Gap(8),
+          const Divider(),
         ],
-        const Gap(16),
-        const Padding(padding: AppSpacing.screenPadding, child: Divider()),
-      ],
+      ),
     );
   }
 }

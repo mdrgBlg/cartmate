@@ -95,12 +95,42 @@ class _BrandProducts extends StatelessWidget {
             builder: (_, data, _) {
               final (products, hasError) = data;
               if (hasError) {
-                return ErrorView(onRetry: provider.reload);
+                return _FillRemaining(
+                  child: ErrorView(onRetry: provider.reload),
+                );
+              }
+              if (products.isEmpty) {
+                // `ProductsGridView` renders its empty state.
+                return _FillRemaining(
+                  child: ProductsGridView(productsList: products),
+                );
               }
               return ProductsGridView(productsList: products);
             },
           );
         },
+      ),
+    );
+  }
+}
+
+/// Parent column doesn't scroll: takes the remaining height, keeps [child]
+/// centered and scrolls on small screens instead of overflowing.
+class _FillRemaining extends StatelessWidget {
+  const _FillRemaining({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: LayoutBuilder(
+        builder: (_, constraints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: child,
+          ),
+        ),
       ),
     );
   }

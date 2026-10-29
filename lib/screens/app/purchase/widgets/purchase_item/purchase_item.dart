@@ -130,32 +130,29 @@ class _PurchaseItemView extends StatelessWidget {
                       ),
                     ),
                     Row(
+                      spacing: 8,
                       children: [
-                        Container(
-                          alignment: AlignmentDirectional.centerStart,
-                          child: RichText(
-                            text: TextSpan(
-                              style: textTheme.bodySmall!.copyWith(
-                                color: colorScheme.onSurfaceVariant,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: AppLocalizations.of(
-                                    context,
-                                  ).purchaseItemSize,
+                        if (cartModel.size.isNotEmpty)
+                          Container(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: RichText(
+                              text: TextSpan(
+                                style: textTheme.bodySmall!.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                TextSpan(
-                                  text: cartModel.size,
-                                  style: textTheme.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.bold,
+                                children: [
+                                  TextSpan(text: localization.purchaseItemSize),
+                                  TextSpan(
+                                    text: cartModel.size,
+                                    style: textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
                         if (!isCartItem)
                           Container(
                             alignment: AlignmentDirectional.centerStart,
