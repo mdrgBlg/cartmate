@@ -5,6 +5,7 @@ import '/core/l10n/app_localizations.dart';
 import '/core/styles/app_spacing.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
+import '/core/widgets/products_grid_view/widgets/products_grid_skeleton.dart';
 import 'providers/wishlist_provider.dart';
 
 class WishlistScreen extends StatelessWidget {
@@ -51,7 +52,7 @@ class _WishlistScreen extends StatelessWidget {
                 future: provider.wishlistFuture,
                 builder: (context, snapshot) =>
                     snapshot.connectionState == ConnectionState.waiting
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const ProductsGridSkeleton()
                     : snapshot.data == null
                     ? Consumer<WishlistProvider>(
                         builder: (_, wishlistProvider, child) =>

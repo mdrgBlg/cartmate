@@ -7,12 +7,14 @@ import '/core/styles/app_spacing.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/main_header/main_header.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
+import '/core/widgets/products_grid_view/widgets/products_grid_skeleton.dart';
 import '/core/widgets/search_field/search_field.dart';
 import '/data/models/categories_model.dart';
 import '/utils/custom_navigator.dart';
 import 'categories_screen.dart';
 import 'providers/home_provider.dart';
 import 'widgets/categories_list.dart';
+import 'widgets/categories_skeleton.dart';
 import 'widgets/home_banner_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -103,7 +105,7 @@ class _HomeScreen extends StatelessWidget {
                         future: homeProvider.productsFuture,
                         builder: (context, snapshot) =>
                             snapshot.connectionState == ConnectionState.waiting
-                            ? const Center(child: CircularProgressIndicator())
+                            ? const ProductsGridSkeleton()
                             : homeProvider.hasProductsError
                             ? Center(
                                 child: Text(
@@ -167,7 +169,7 @@ class _HomeSearchAndCategories extends StatelessWidget {
                 future: homeProvider.categoriesFuture,
                 builder: (context, snapshot) =>
                     snapshot.connectionState == ConnectionState.waiting
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const CategoriesSkeleton()
                     : ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,

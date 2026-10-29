@@ -7,6 +7,7 @@ import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
+import '/core/widgets/products_grid_view/widgets/products_grid_skeleton.dart';
 import '/data/models/brand_model.dart';
 import '/data/models/products_model.dart';
 import 'providers/brand_products_provider.dart';
@@ -86,10 +87,7 @@ class _BrandProducts extends StatelessWidget {
       future: provider.loadFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            heightFactor: 3,
-            child: CircularProgressIndicator(),
-          );
+          return const Expanded(child: ProductsGridSkeleton());
         }
         return Selector<BrandProductsProvider, (List<ProductsModel>, bool)>(
           selector: (_, provider) => (provider.products, provider.hasError),
