@@ -72,7 +72,7 @@ class _PurchaseItemView extends StatelessWidget {
         decoration: BoxDecoration(
           color: colorScheme.surface,
           borderRadius: AppRadius.lgAll,
-          boxShadow: AppShadows.card,
+          boxShadow: AppShadows.cardFor(colorScheme),
         ),
         child: Column(
           children: [
