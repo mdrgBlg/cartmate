@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
@@ -26,12 +28,15 @@ class CategoriesScreen extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.screenHorizontal,
+                AppSpacing.md,
+                AppSpacing.screenHorizontal,
+                AppSpacing.xl,
               ),
+              decoration: const BoxDecoration(borderRadius: AppRadius.lgAll),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.lgAll,
                 child: Image.asset(
                   fetchImage(categoryName),
                   fit: BoxFit.fill,
@@ -40,7 +45,7 @@ class CategoriesScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 12),
+              padding: const EdgeInsets.only(top: AppSpacing.md),
               child: ProductsGridView(productsList: productsList),
             ),
           ],
