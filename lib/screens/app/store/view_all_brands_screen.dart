@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/data/models/brand_model.dart';
@@ -18,7 +18,7 @@ class ViewAllBrandsScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return MainLayout(
-      backgroundColor: CustomColors.secondary,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(
         titleText: localization.storeBrand,
         type: AppBarType.dark,
@@ -28,7 +28,10 @@ class ViewAllBrandsScreen extends StatelessWidget {
         children: [
           const Gap(16),
           Padding(
-            padding: const EdgeInsets.only(left: 20, bottom: 8),
+            padding: const EdgeInsets.only(
+              left: AppSpacing.screenHorizontal,
+              bottom: AppSpacing.sm,
+            ),
             child: Text(
               localization.storeBrands,
               style: textTheme.titleLarge!.copyWith(
