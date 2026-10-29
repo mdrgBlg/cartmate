@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_spacing.dart';
 
 class InformationWidget extends StatelessWidget {
   const InformationWidget({
@@ -17,8 +17,9 @@ class InformationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20),
+      padding: AppSpacing.screenPadding,
       child: InkWell(
         onTap: onTap,
         child: Row(
@@ -28,7 +29,7 @@ class InformationWidget extends StatelessWidget {
               child: Text(
                 sectionTitle,
                 style: textTheme.bodyMedium!.copyWith(
-                  color: CustomColors.grayDark,
+                  color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -38,15 +39,15 @@ class InformationWidget extends StatelessWidget {
               child: Text(
                 sectionText,
                 style: textTheme.bodyMedium!.copyWith(
-                  color: Colors.black,
+                  color: colorScheme.onSurface,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             if (onTap != null)
-              const Icon(
+              Icon(
                 Icons.arrow_forward_ios,
-                color: CustomColors.grayDark,
+                color: colorScheme.onSurfaceVariant,
                 size: 16,
               ),
           ],

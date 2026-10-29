@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_spacing.dart';
 
 class ProfileSection extends StatelessWidget {
   const ProfileSection({
@@ -16,16 +16,17 @@ class ProfileSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.only(left: AppSpacing.screenHorizontal),
           child: Text(
             title,
             style: textTheme.titleLarge!.copyWith(
-              color: Colors.black,
+              color: colorScheme.onSurface,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -37,10 +38,7 @@ class ProfileSection extends StatelessWidget {
           children[i],
         ],
         const Gap(16),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Divider(color: CustomColors.grayDark),
-        ),
+        const Padding(padding: AppSpacing.screenPadding, child: Divider()),
       ],
     );
   }

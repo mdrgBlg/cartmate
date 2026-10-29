@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_radius.dart';
+import '/core/styles/app_spacing.dart';
 import '/data/models/user_info_model.dart';
 import '/utils/assets/custom_icons.dart';
 import '/utils/global_enums.dart';
@@ -22,15 +23,16 @@ class ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return ClipPath(
       clipper: CurvedEdges(),
       child: Container(
         width: double.infinity,
         height: 170,
-        color: CustomColors.primary,
+        color: colorScheme.primary,
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AppSpacing.xl),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -38,7 +40,7 @@ class ProfileHeader extends StatelessWidget {
               Text(
                 localization.profileTitle,
                 style: textTheme.headlineSmall!.copyWith(
-                  color: CustomColors.secondary,
+                  color: colorScheme.onPrimary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -50,8 +52,8 @@ class ProfileHeader extends StatelessWidget {
                     width: 50,
                     padding: const EdgeInsets.all(7),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(99),
+                      color: colorScheme.surface,
+                      borderRadius: AppRadius.pillAll,
                     ),
                     child: Image.asset(
                       userInfo?.gender == Gender.female
@@ -68,13 +70,13 @@ class ProfileHeader extends StatelessWidget {
                         userInfo?.username ?? '',
                         style: textTheme.titleLarge!.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: colorScheme.onPrimary,
                         ),
                       ),
                       Text(
                         userInfo?.email ?? '',
                         style: textTheme.bodyMedium!.copyWith(
-                          color: Colors.white,
+                          color: colorScheme.onPrimary,
                         ),
                       ),
                     ],
@@ -84,7 +86,7 @@ class ProfileHeader extends StatelessWidget {
                     onTap: onMyOrdersTap,
                     child: Image.asset(
                       CustomIcons.myOrders,
-                      color: Colors.white,
+                      color: colorScheme.onPrimary,
                       height: 32,
                     ),
                   ),
