@@ -152,7 +152,6 @@ class AppComponentThemes {
   static const DividerThemeData dividerTheme = DividerThemeData(
     color: CustomColors.grey200,
     thickness: 1,
-    space: 1,
   );
 
   static const BottomSheetThemeData bottomSheetTheme = BottomSheetThemeData(

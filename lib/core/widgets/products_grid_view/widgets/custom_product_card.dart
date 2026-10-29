@@ -4,7 +4,9 @@ import '/data/models/products_model.dart';
 import '/screens/app/product_details/product_details_screen.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/extensions/price_extension.dart';
-import '../../../styles/custom_colors.dart';
+import '../../../styles/app_radius.dart';
+import '../../../styles/app_shadows.dart';
+import '../../../styles/app_spacing.dart';
 import '../../app_network_image.dart';
 import '../../wishlist_heart_button/wishlist_heart_button.dart';
 import 'product_cart_quantity/product_cart_quantity.dart';
@@ -21,6 +23,7 @@ class CustomProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final locale = Localizations.localeOf(context).toString();
 
     return InkWell(
@@ -30,15 +33,9 @@ class CustomProductCard extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: CustomColors.grayDark.withValues(alpha: 0.2),
-              blurRadius: 50,
-              spreadRadius: 1,
-            ),
-          ],
+          color: colorScheme.surface,
+          borderRadius: AppRadius.lgAll,
+          boxShadow: AppShadows.card,
         ),
         child: Stack(
           children: [
@@ -48,12 +45,12 @@ class CustomProductCard extends StatelessWidget {
               children: [
                 if (productsModel.productImageList.isNotEmpty)
                   Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
+                    padding: const EdgeInsets.all(AppSpacing.sm),
+                    decoration: const BoxDecoration(
+                      borderRadius: AppRadius.lgAll,
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: AppRadius.lgAll,
                       child: AppNetworkImage(
                         imageUrl:
                             productsModel.productImageList.firstOrNull ?? '',
@@ -63,7 +60,12 @@ class CustomProductCard extends StatelessWidget {
                     ),
                   ),
                 Container(
-                  margin: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+                  margin: const EdgeInsets.fromLTRB(
+                    AppSpacing.sm,
+                    AppSpacing.sm,
+                    0,
+                    AppSpacing.sm,
+                  ),
                   child: Text(
                     productsModel.productName,
                     style: textTheme.bodySmall!.copyWith(
@@ -73,26 +75,36 @@ class CustomProductCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.sm,
+                    0,
+                    AppSpacing.sm,
+                    AppSpacing.md,
+                  ),
                   child: Row(
                     children: [
                       Text(
                         productsModel.brandModel?.brandName ?? "",
                         style: textTheme.bodySmall!.copyWith(
-                          color: Colors.grey,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(width: 4),
-                      const Icon(
+                      Icon(
                         Icons.check_circle,
-                        color: Colors.blueAccent,
+                        color: colorScheme.primary,
                         size: 14,
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 4, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.sm,
+                    AppSpacing.xs,
+                    0,
+                    0,
+                  ),
                   child: SizedBox(
                     height: 42,
                     child: Row(
@@ -110,7 +122,7 @@ class CustomProductCard extends StatelessWidget {
                                 ),
                                 style: textTheme.bodySmall!.copyWith(
                                   fontWeight: FontWeight.bold,
-                                  color: CustomColors.customGrey,
+                                  color: colorScheme.outline,
                                   decoration: TextDecoration.lineThrough,
                                 ),
                                 overflow: TextOverflow.ellipsis,
@@ -131,11 +143,11 @@ class CustomProductCard extends StatelessWidget {
                           height: 32,
                           width: 36,
                           alignment: Alignment.center,
-                          decoration: const BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(16),
-                              bottomRight: Radius.circular(16),
+                          decoration: BoxDecoration(
+                            color: colorScheme.inverseSurface,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(AppRadius.lg),
+                              bottomRight: Radius.circular(AppRadius.lg),
                             ),
                           ),
                           child: ProductCartQuantity(
@@ -156,14 +168,15 @@ class CustomProductCard extends StatelessWidget {
                 width: 36,
                 height: 20,
                 decoration: BoxDecoration(
-                  color: Colors.yellow,
-                  borderRadius: BorderRadius.circular(4),
+                  color: colorScheme.secondary,
+                  borderRadius: AppRadius.xsAll,
                 ),
                 child: Text(
                   "${productsModel.discount}%",
                   style: textTheme.bodyMedium!.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 10,
+                    color: colorScheme.onSecondary,
                   ),
                 ),
               ),
