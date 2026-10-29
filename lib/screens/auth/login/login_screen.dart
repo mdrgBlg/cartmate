@@ -44,12 +44,17 @@ class _LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+    // Amber is unreadable on the light dark-mode primary.
+    final appNameColor = colorScheme.brightness == Brightness.dark
+        ? colorScheme.onPrimary
+        : CustomColors.appName;
 
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
 
     return AuthLayout(
       showAppBar: false,
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: colorScheme.primary,
       overlays: [
         Positioned(
           top: 8,
@@ -68,9 +73,9 @@ class _LoginScreen extends StatelessWidget {
                 localization.loginSignUp,
                 style: textTheme.labelLarge!.copyWith(
                   decoration: TextDecoration.underline,
-                  decorationColor: CustomColors.appName,
+                  decorationColor: appNameColor,
                   decorationThickness: 1.5,
-                  color: CustomColors.appName,
+                  color: appNameColor,
                 ),
               ),
             ),
@@ -88,7 +93,7 @@ class _LoginScreen extends StatelessWidget {
                 localization.loginTitle,
                 style: textTheme.titleLarge!.copyWith(
                   fontWeight: FontWeight.w300,
-                  color: CustomColors.appName,
+                  color: appNameColor,
                 ),
                 textScaler: const TextScaler.linear(1),
               ),

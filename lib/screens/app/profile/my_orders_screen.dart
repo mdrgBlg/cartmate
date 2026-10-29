@@ -43,7 +43,7 @@ class _MyOrdersScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return MainLayout(
       appBar: CustomAppBar(titleText: localization.myOrdersTitle),
-      backgroundColor: colorScheme.surface,
+      backgroundColor: colorScheme.surfaceContainerLowest,
       child: FutureBuilder<void>(
         future: myOrdersProvider.myOrdersFuture,
         builder: (context, snapshot) =>

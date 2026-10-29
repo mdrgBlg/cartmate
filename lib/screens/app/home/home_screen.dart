@@ -75,7 +75,7 @@ class _HomeScreen extends StatelessWidget {
                     borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(AppRadius.xl),
                     ),
-                    color: colorScheme.surface,
+                    color: colorScheme.surfaceContainerLowest,
                   ),
                   child: Column(
                     children: [
