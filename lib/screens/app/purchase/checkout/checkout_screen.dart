@@ -1,5 +1,4 @@
 import 'package:country_picker/country_picker.dart';
-import 'package:e_commerce/screens/app/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +9,7 @@ import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/input_field.dart';
 import '/core/widgets/layouts/main_layout.dart';
+import '/screens/app/main_shell/main_shell_screen.dart';
 import '/utils/assets/custom_icons.dart';
 import '/utils/extensions/price_extension.dart';
 import '/utils/loading.dart';
@@ -306,9 +306,7 @@ class _CheckoutScreen extends StatelessWidget {
         orderSaved = await checkoutProvider.placeOrder();
       },
       onFinished: () {
-        Navigator.of(
-          context,
-        ).popUntil((route) => route.settings.name == HomeScreen.routeName);
+        Navigator.of(context).popUntil(MainShellScreen.isShellRoute);
         if (orderSaved) {
           SnackBarPopup.showMessage(
             context,

@@ -13,7 +13,7 @@ import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/loading.dart';
 import '/utils/snack_bar_popup.dart';
-import '../../app/home/home_screen.dart';
+import '../../app/main_shell/main_shell_screen.dart';
 import '../forgot_password/forgot_password.dart';
 import '../signup/sign_up_screen.dart';
 import 'login_providers/login_provider.dart';
@@ -171,8 +171,8 @@ class _LoginScreen extends StatelessWidget {
             snackBarMessageType: SnackBarMessageType.success,
           );
           CustomNavigator(context).pushReplacement(
-            routeName: HomeScreen.routeName,
-            screen: const HomeScreen(),
+            routeName: MainShellScreen.routeName,
+            screen: const MainShellScreen(),
           );
         } else {
           SnackBarPopup.showMessage(

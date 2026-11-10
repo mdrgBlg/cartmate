@@ -24,8 +24,6 @@ import 'widgets/theme_mode_sheet.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
-  static const routeName = '/profile';
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -56,7 +54,6 @@ class _ProfileScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return MainLayout(
-      showNavBar: true,
       child: Consumer<ProfileProvider>(
         builder: (context, value, child) {
           final userInfo = profileProvider.userInfo;

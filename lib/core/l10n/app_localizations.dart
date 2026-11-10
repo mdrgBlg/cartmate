@@ -364,6 +364,12 @@ abstract class AppLocalizations {
   /// **'Product is added to cart'**
   String get productAddedToCart;
 
+  /// No description provided for @productImageIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Image {current} of {total}'**
+  String productImageIndicator(int current, int total);
+
   /// No description provided for @productsEmptyTitle.
   ///
   /// In en, this message translates to:

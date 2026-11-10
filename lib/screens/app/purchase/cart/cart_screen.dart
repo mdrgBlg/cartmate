@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
+import '/core/providers/main_shell_provider.dart';
 import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/empty_state.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/data/models/cart_model.dart';
-import '/screens/app/home/home_screen.dart';
+import '/screens/app/main_shell/main_shell_screen.dart';
 import '/utils/assets/custom_illustrations.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/extensions/price_extension.dart';
@@ -52,10 +53,15 @@ class _CartScreen extends StatelessWidget {
                     title: localization.cartEmptyTitle,
                     message: localization.cartEmptyMessage,
                     actionLabel: localization.startShopping,
-                    onAction: () => CustomNavigator(context).pushReplacement(
-                      routeName: HomeScreen.routeName,
-                      screen: const HomeScreen(),
-                    ),
+                    onAction: () {
+                      Provider.of<MainShellProvider>(
+                        context,
+                        listen: false,
+                      ).selectTab(MainShellProvider.homeIndex);
+                      Navigator.of(
+                        context,
+                      ).popUntil(MainShellScreen.isShellRoute);
+                    },
                   )
                 : ListView.builder(
                     padding: const EdgeInsets.only(top: AppSpacing.sm),

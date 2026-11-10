@@ -6,20 +6,24 @@ import '/core/styles/app_radius.dart';
 import '/core/styles/app_spacing.dart';
 import '/core/widgets/app_network_image.dart';
 import '/core/widgets/custom_app_bar.dart';
-import '/core/widgets/custom_button.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/wishlist_heart_button/wishlist_heart_button.dart';
-import '/data/models/cart_model.dart';
 import '/data/models/products_model.dart';
-import '/utils/extensions/price_extension.dart';
-import '/utils/snack_bar_popup.dart';
 import 'providers/product_details_provider.dart';
 import 'widgets/product_image_gallery.dart';
+import 'widgets/product_purchase_bar.dart';
 import 'widgets/product_size_selector/product_size_selector.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({required this.productsModel, super.key});
+  const ProductDetailsScreen({
+    required this.productsModel,
+    this.heroTag,
+    super.key,
+  });
   final ProductsModel productsModel;
+
+  // Null when opened from a place without a product image (search results).
+  final String? heroTag;
 
   static const routeName = '/details';
 
@@ -31,13 +35,15 @@ class ProductDetailsScreen extends StatelessWidget {
         cartRepository: ctx.read(),
         product: productsModel,
       ),
-      child: const _ProductDetailsScreen(),
+      child: _ProductDetailsScreen(heroTag: heroTag),
     );
   }
 }
 
 class _ProductDetailsScreen extends StatelessWidget {
-  const _ProductDetailsScreen();
+  const _ProductDetailsScreen({this.heroTag});
+
+  final String? heroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +54,9 @@ class _ProductDetailsScreen extends StatelessWidget {
     );
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    final locale = Localizations.localeOf(context).toString();
 
     return MainLayout(
+      bottomBar: const ProductPurchaseBar(),
       appBar: CustomAppBar(
         type: AppBarType.dark,
         title: Row(
@@ -72,6 +78,7 @@ class _ProductDetailsScreen extends StatelessWidget {
               color: colorScheme.surfaceContainerHighest,
               child: ProductImageGallery(
                 images: provider.product.productImageList,
+                heroTag: heroTag,
               ),
             ),
             Padding(
@@ -111,19 +118,6 @@ class _ProductDetailsScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 4),
-                      Text(
-                        provider.product.price.formatPrice(
-                          provider.product.currency,
-                          locale: locale,
-                        ),
-                        style: textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: colorScheme.outline,
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
                     ],
                   ),
                   Padding(
@@ -156,18 +150,6 @@ class _ProductDetailsScreen extends StatelessWidget {
                           color: colorScheme.primary,
                           size: 14,
                         ),
-                        const Spacer(),
-                        Text(
-                          provider.product.getPriceWithDiscount.formatPrice(
-                            provider.product.currency,
-                            locale: locale,
-                          ),
-                          style: textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
                       ],
                     ),
                   ),
@@ -190,34 +172,6 @@ class _ProductDetailsScreen extends StatelessWidget {
                   ProductSizeSelector(
                     sizes: provider.product.productSize ?? const [],
                     onChanged: provider.setSelectedSize,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: AppSpacing.xl,
-                    ),
-                    child: Consumer<ProductDetailsProvider>(
-                      builder: (context, sizeProvider, _) => CustomButton(
-                        buttonText: AppLocalizations.of(
-                          context,
-                        ).productAddToCart,
-                        enable: sizeProvider.canAddToCart,
-                        margin: EdgeInsets.zero,
-                        onPress: () {
-                          CartModel cartModel = CartModel(
-                            productModel: provider.product,
-                            size: sizeProvider.selectedSize ?? "",
-                          );
-                          provider.addToCart(cartModel);
-                          SnackBarPopup.showMessage(
-                            context,
-                            message: AppLocalizations.of(
-                              context,
-                            ).productAddedToCart,
-                            snackBarMessageType: SnackBarMessageType.success,
-                          );
-                        },
-                      ),
-                    ),
                   ),
                 ],
               ),

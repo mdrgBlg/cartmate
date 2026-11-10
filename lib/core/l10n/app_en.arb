@@ -52,6 +52,17 @@
   "productSize": "Size",
   "productAddToCart": "Add to cart",
   "productAddedToCart": "Product is added to cart",
+  "productImageIndicator": "Image {current} of {total}",
+  "@productImageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "productsEmptyTitle": "No products found",
   "productsEmptyMessage": "There is nothing to show here yet.",
 

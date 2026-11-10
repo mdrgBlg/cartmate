@@ -21,8 +21,6 @@ import 'widgets/home_banner_carousel.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  static const routeName = '/';
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -47,7 +45,6 @@ class _HomeScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return MainLayout(
-      showNavBar: true,
       child: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: AppSpacing.xl),
         child: GestureDetector(
@@ -61,8 +58,10 @@ class _HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MainHeader(
-                      text: homeProvider.userInfoModel?.fullName ?? '',
+                    Selector<HomeProvider, String>(
+                      selector: (_, provider) =>
+                          provider.userInfoModel?.fullName ?? '',
+                      builder: (_, name, _) => MainHeader(text: name),
                     ),
                     const _HomeSearchAndCategories(),
                   ],
@@ -116,6 +115,7 @@ class _HomeScreen extends StatelessWidget {
                                   builder: (context, value, child) =>
                                       ProductsGridView(
                                         productsList: homeProvider.products,
+                                        heroTagPrefix: 'home',
                                       ),
                                 ),
                         ),
