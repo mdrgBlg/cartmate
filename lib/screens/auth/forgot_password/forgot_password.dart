@@ -38,36 +38,15 @@ class _ForgotPassword extends StatelessWidget {
       context,
       listen: false,
     );
-    final textTheme = Theme.of(context).textTheme;
     return AuthLayout(
-      cardMargin: const EdgeInsets.only(
-        bottom: 52,
-        left: AppSpacing.xxxl,
-        right: AppSpacing.xxxl,
-      ),
+      title: localization.forgotPasswordTitle,
+      subtitle: localization.forgotPasswordDescription,
+      showBackButton: true,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: AppSpacing.md),
-            child: Text(
-              localization.forgotPasswordTitle,
-              style: textTheme.headlineSmall!.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Padding(
-            padding: AppSpacing.screenPadding,
-            child: Text(
-              localization.forgotPasswordDescription,
-              style: textTheme.bodyMedium,
-              textAlign: TextAlign.justify,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 28),
+            padding: const EdgeInsets.only(bottom: AppSpacing.xl),
             child: InputField(
               hintText: localization.forgotPasswordEmailHint,
               onInputChanged: () => provider.validateField(),

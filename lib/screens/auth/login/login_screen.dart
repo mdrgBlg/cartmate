@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
-import '/core/styles/custom_colors.dart';
+import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_button.dart';
 import '/core/widgets/input_field.dart';
 import '/core/widgets/layouts/auth_layout.dart';
 import '/core/widgets/password_field.dart';
 import '/data/models/auth_exception.dart';
-import '/utils/assets/custom_icons.dart';
 import '/utils/auth_error_message.dart';
 import '/utils/custom_navigator.dart';
 import '/utils/loading.dart';
@@ -45,62 +44,32 @@ class _LoginScreen extends StatelessWidget {
     final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    // Amber is unreadable on the light dark-mode primary.
-    final appNameColor = colorScheme.brightness == Brightness.dark
-        ? colorScheme.onPrimary
-        : CustomColors.appName;
 
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
 
     return AuthLayout(
-      showAppBar: false,
-      backgroundColor: colorScheme.primary,
-      overlays: [
-        Positioned(
-          top: 8,
-          right: 16,
-          child: Container(
-            alignment: Alignment.topRight,
-            child: InkWell(
-              onTap: () {
-                FocusManager.instance.primaryFocus?.unfocus();
-                CustomNavigator(context).pushNavigation(
-                  routeName: SignUpScreen.routeName,
-                  screen: const SignUpScreen(),
-                );
-              },
-              child: Text(
-                localization.loginSignUp,
-                style: textTheme.labelLarge!.copyWith(
-                  decoration: TextDecoration.underline,
-                  decorationColor: appNameColor,
-                  decorationThickness: 1.5,
-                  color: appNameColor,
-                ),
-              ),
+      title: localization.loginTitle,
+      headerAction: InkWell(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          CustomNavigator(context).pushNavigation(
+            routeName: SignUpScreen.routeName,
+            screen: const SignUpScreen(),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.sm),
+          child: Text(
+            localization.loginSignUp,
+            style: textTheme.labelLarge!.copyWith(
+              decoration: TextDecoration.underline,
+              decorationColor: colorScheme.onPrimary,
+              decorationThickness: 1.5,
+              color: colorScheme.onPrimary,
             ),
           ),
         ),
-        Positioned(
-          left: 0,
-          right: 0,
-          top: 52,
-          child: Column(
-            children: [
-              Image.asset(CustomIcons.cartIcon, width: 80),
-              const SizedBox(height: 12),
-              Text(
-                localization.loginTitle,
-                style: textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.w300,
-                  color: appNameColor,
-                ),
-                textScaler: const TextScaler.linear(1),
-              ),
-            ],
-          ),
-        ),
-      ],
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
