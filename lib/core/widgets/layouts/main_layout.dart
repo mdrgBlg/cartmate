@@ -4,11 +4,16 @@ import 'package:flutter/services.dart';
 class MainLayout extends StatelessWidget {
   const MainLayout({
     required this.child,
+    this.bottomBar,
     this.backgroundColor,
     this.appBar,
     super.key,
   });
   final Widget child;
+
+  // Scaffold bottom slot: floating snackbars sit above it and the body loses
+  // the bottom inset. The bar handles its own bottom safe area.
+  final Widget? bottomBar;
   final Color? backgroundColor;
   final PreferredSizeWidget? appBar;
 
@@ -22,6 +27,7 @@ class MainLayout extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: appBar,
+        bottomNavigationBar: bottomBar,
         backgroundColor: backgroundColor,
         body: SafeArea(
           child: SizedBox(
