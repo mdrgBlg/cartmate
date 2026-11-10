@@ -47,7 +47,6 @@ class _HomeScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return MainLayout(
-      showNavBar: true,
       child: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: AppSpacing.xl),
         child: GestureDetector(

@@ -56,7 +56,6 @@ class _ProfileScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return MainLayout(
-      showNavBar: true,
       child: Consumer<ProfileProvider>(
         builder: (context, value, child) {
           final userInfo = profileProvider.userInfo;

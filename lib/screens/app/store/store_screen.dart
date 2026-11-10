@@ -48,7 +48,6 @@ class _StoreScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     return MainLayout(
-      showNavBar: true,
       child: SingleChildScrollView(
         child: Column(
           children: [

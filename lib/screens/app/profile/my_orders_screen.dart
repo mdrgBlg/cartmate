@@ -3,17 +3,17 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
+import '/core/providers/main_shell_provider.dart';
 import '/core/styles/app_radius.dart';
 import '/core/styles/app_spacing.dart';
 import '/core/widgets/custom_app_bar.dart';
 import '/core/widgets/empty_state.dart';
 import '/core/widgets/error_view.dart';
 import '/core/widgets/layouts/main_layout.dart';
-import '/screens/app/home/home_screen.dart';
+import '/screens/app/main_shell/main_shell_screen.dart';
 import '/utils/assets/custom_icons.dart';
 import '/utils/assets/custom_illustrations.dart';
 import '/utils/common_utils.dart';
-import '/utils/custom_navigator.dart';
 import '/utils/extensions/date_time_extension.dart';
 import 'providers/my_orders_provider.dart';
 import 'widgets/order_card_skeleton.dart';
@@ -68,10 +68,15 @@ class _MyOrdersScreen extends StatelessWidget {
                   title: localization.myOrdersEmptyTitle,
                   message: localization.myOrdersEmptyMessage,
                   actionLabel: localization.startShopping,
-                  onAction: () => CustomNavigator(context).pushReplacement(
-                    routeName: HomeScreen.routeName,
-                    screen: const HomeScreen(),
-                  ),
+                  onAction: () {
+                    Provider.of<MainShellProvider>(
+                      context,
+                      listen: false,
+                    ).selectTab(MainShellProvider.homeIndex);
+                    Navigator.of(
+                      context,
+                    ).popUntil(MainShellScreen.isShellRoute);
+                  },
                 )
               : Padding(
                   padding: const EdgeInsets.all(AppSpacing.xl),
