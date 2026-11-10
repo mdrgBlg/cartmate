@@ -34,8 +34,10 @@ class ProductDetailsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addToCart(CartModel cartModel) =>
-      _cartRepository.addProductToCart(cartModel);
+  // Size is empty for products without sizes.
+  void addToCart() => _cartRepository.addProductToCart(
+    CartModel(productModel: _product, size: _selectedSize ?? ''),
+  );
 
   void _updateWishlistFlag() {
     final isWishlisted = _wishlistRepository.isWishlisted(_product.id);
