@@ -46,7 +46,10 @@ class CategoriesScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(top: AppSpacing.md),
-              child: ProductsGridView(productsList: productsList),
+              child: ProductsGridView(
+                productsList: productsList,
+                heroTagPrefix: 'category',
+              ),
             ),
           ],
         ),

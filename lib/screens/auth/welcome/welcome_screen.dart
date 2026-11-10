@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '/data/models/result.dart';
 import '/data/models/user_info_model.dart';
-import '../../app/home/home_screen.dart';
+import '/screens/app/main_shell/main_shell_screen.dart';
 import '../login/login_screen.dart';
 import '../splash_screen.dart';
 import 'welcome_providers/welcome_provider.dart';
@@ -40,7 +40,7 @@ class _WelcomeView extends StatelessWidget {
           return const SplashScreen();
         }
         if (snapshot.data is Success<UserInfoModel>) {
-          return const HomeScreen();
+          return const MainShellScreen();
         }
         return const LoginScreen();
       },

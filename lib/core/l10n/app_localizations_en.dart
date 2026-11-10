@@ -148,6 +148,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get productAddedToCart => 'Product is added to cart';
 
   @override
+  String productImageIndicator(int current, int total) {
+    return 'Image $current of $total';
+  }
+
+  @override
   String get productsEmptyTitle => 'No products found';
 
   @override

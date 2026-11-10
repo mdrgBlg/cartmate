@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '/core/providers/main_shell_provider.dart';
 import '/core/providers/theme_provider.dart';
 import '/data/repositories/auth_repository.dart';
 import '/data/repositories/cart_repository.dart';
@@ -72,5 +73,6 @@ List<SingleChildWidget> injectAppProviders() {
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(themeRepository: context.read()),
     ),
+    ChangeNotifierProvider(create: (context) => MainShellProvider()),
   ];
 }

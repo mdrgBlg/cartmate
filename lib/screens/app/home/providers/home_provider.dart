@@ -17,6 +17,7 @@ class HomeProvider with ChangeNotifier {
        _productRepository = productRepository,
        _userRepository = userRepository {
     _wishlistRepository.addListener(_onWishlistChanged);
+    _userRepository.addListener(_onUserChanged);
     _productsFuture = _getProducts();
     _categoriesFuture = _getCategories();
   }
@@ -62,6 +63,9 @@ class HomeProvider with ChangeNotifier {
     _updateWishlistFlags();
     notifyListeners();
   }
+
+  // The Home tab is kept alive, so the header name follows profile edits.
+  void _onUserChanged() => notifyListeners();
 
   ProductsModel _withCurrentFlag(ProductsModel product) {
     final isWishlisted = _wishlistRepository.isWishlisted(product.id);
@@ -113,6 +117,7 @@ class HomeProvider with ChangeNotifier {
   void dispose() {
     _disposed = true;
     _wishlistRepository.removeListener(_onWishlistChanged);
+    _userRepository.removeListener(_onUserChanged);
     scrollController.dispose();
     super.dispose();
   }
