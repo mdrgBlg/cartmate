@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/core/l10n/app_localizations.dart';
+import '/core/providers/main_shell_provider.dart';
 import '/core/styles/app_spacing.dart';
 import '/core/widgets/empty_state.dart';
 import '/core/widgets/error_view.dart';
 import '/core/widgets/layouts/main_layout.dart';
 import '/core/widgets/products_grid_view/products_grid_view.dart';
 import '/core/widgets/products_grid_view/widgets/products_grid_skeleton.dart';
-import '/screens/app/home/home_screen.dart';
 import '/utils/assets/custom_illustrations.dart';
-import '/utils/custom_navigator.dart';
 import 'providers/wishlist_provider.dart';
 
 class WishlistScreen extends StatelessWidget {
@@ -35,7 +34,6 @@ class _WishlistScreen extends StatelessWidget {
     final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     return MainLayout(
-      showNavBar: true,
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 28),
@@ -71,10 +69,10 @@ class _WishlistScreen extends StatelessWidget {
                                   message: localization.wishlistEmptyMessage,
                                   actionLabel: localization.startShopping,
                                   onAction: () =>
-                                      CustomNavigator(context).pushReplacement(
-                                        routeName: HomeScreen.routeName,
-                                        screen: const HomeScreen(),
-                                      ),
+                                      Provider.of<MainShellProvider>(
+                                        context,
+                                        listen: false,
+                                      ).selectTab(MainShellProvider.homeIndex),
                                 )
                               : ProductsGridView(
                                   productsList: wishlistProvider.products,
