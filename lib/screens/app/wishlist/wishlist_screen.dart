@@ -15,8 +15,6 @@ import 'providers/wishlist_provider.dart';
 class WishlistScreen extends StatelessWidget {
   const WishlistScreen({super.key});
 
-  static const routeName = '/wishlist';
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

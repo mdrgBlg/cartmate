@@ -24,8 +24,6 @@ import 'widgets/theme_mode_sheet.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
-  static const routeName = '/profile';
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

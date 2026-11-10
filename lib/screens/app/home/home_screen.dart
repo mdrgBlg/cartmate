@@ -21,8 +21,6 @@ import 'widgets/home_banner_carousel.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  static const routeName = '/';
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -60,8 +58,10 @@ class _HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MainHeader(
-                      text: homeProvider.userInfoModel?.fullName ?? '',
+                    Selector<HomeProvider, String>(
+                      selector: (_, provider) =>
+                          provider.userInfoModel?.fullName ?? '',
+                      builder: (_, name, _) => MainHeader(text: name),
                     ),
                     const _HomeSearchAndCategories(),
                   ],
