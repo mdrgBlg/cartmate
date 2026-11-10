@@ -43,11 +43,8 @@ class _SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
     return AuthLayout(
-      cardMargin: const EdgeInsets.only(
-        bottom: 52,
-        left: AppSpacing.xxxl,
-        right: AppSpacing.xxxl,
-      ),
+      title: localization.signUpButton,
+      showBackButton: true,
       child: Consumer<SignUpProvider>(
         builder: (_, signUpProvider, child) => Column(
           mainAxisSize: MainAxisSize.min,
