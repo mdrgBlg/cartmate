@@ -102,10 +102,16 @@ class _BrandProducts extends StatelessWidget {
               if (products.isEmpty) {
                 // `ProductsGridView` renders its empty state.
                 return _FillRemaining(
-                  child: ProductsGridView(productsList: products),
+                  child: ProductsGridView(
+                    productsList: products,
+                    heroTagPrefix: 'brand',
+                  ),
                 );
               }
-              return ProductsGridView(productsList: products);
+              return ProductsGridView(
+                productsList: products,
+                heroTagPrefix: 'brand',
+              );
             },
           );
         },

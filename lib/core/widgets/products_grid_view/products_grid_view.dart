@@ -8,9 +8,16 @@ import '../../styles/app_spacing.dart';
 import 'widgets/custom_product_card.dart';
 
 class ProductsGridView extends StatelessWidget {
-  const ProductsGridView({required this.productsList, super.key});
+  const ProductsGridView({
+    required this.productsList,
+    required this.heroTagPrefix,
+    super.key,
+  });
 
   final List<ProductsModel> productsList;
+
+  // Stable per-screen key that keeps card Hero tags unique.
+  final String heroTagPrefix;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +48,7 @@ class ProductsGridView extends StatelessWidget {
             ? CustomProductCard(
                 productsModel: productsList[index],
                 productsList: productsList,
+                heroTagPrefix: heroTagPrefix,
               )
             : null,
       ),
