@@ -25,7 +25,6 @@ class _ShoppingCartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     return InkWell(
       onTap: () => CustomNavigator(context).pushNavigation(
@@ -36,6 +35,8 @@ class _ShoppingCartView extends StatelessWidget {
         height: 48,
         width: 44,
         child: Stack(
+          // The bump overshoot must not be clipped by the box.
+          clipBehavior: Clip.none,
           alignment: Alignment.centerLeft,
           children: [
             Icon(
@@ -43,31 +44,58 @@ class _ShoppingCartView extends StatelessWidget {
               color: iconColor ?? colorScheme.onPrimary,
               size: 28,
             ),
-            Consumer<ShoppingCartProvider>(
-              builder: (_, provider, _) => provider.productNumber > 0
-                  ? Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Container(
-                        height: 18,
-                        width: 18,
-                        decoration: BoxDecoration(
-                          borderRadius: AppRadius.pillAll,
-                          color: colorScheme.inverseSurface,
-                        ),
-                        child: Center(
-                          child: Text(
-                            provider.productNumber.toString(),
-                            style: textTheme.labelLarge!.copyWith(
-                              color: colorScheme.onInverseSurface,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
+            Positioned(
+              right: 0,
+              top: 0,
+              child: Consumer<ShoppingCartProvider>(
+                builder: (context, provider, _) {
+                  final count = provider.productNumber;
+                  // AnimatedSwitcher never animates its initial child, so
+                  // only later count changes bump.
+                  return AnimatedSwitcher(
+                    duration: MediaQuery.disableAnimationsOf(context)
+                        ? Duration.zero
+                        : const Duration(milliseconds: 250),
+                    switchInCurve: Curves.easeOutBack,
+                    switchOutCurve: Curves.easeIn,
+                    transitionBuilder: (child, animation) =>
+                        ScaleTransition(scale: animation, child: child),
+                    child: count > 0
+                        ? _CartBadge(key: ValueKey(count), count: count)
+                        : const SizedBox.shrink(key: ValueKey(0)),
+                  );
+                },
+              ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CartBadge extends StatelessWidget {
+  const _CartBadge({required this.count, super.key});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      height: 18,
+      width: 18,
+      decoration: BoxDecoration(
+        borderRadius: AppRadius.pillAll,
+        color: colorScheme.inverseSurface,
+      ),
+      child: Center(
+        child: Text(
+          count.toString(),
+          style: textTheme.labelLarge!.copyWith(
+            color: colorScheme.onInverseSurface,
+          ),
         ),
       ),
     );
