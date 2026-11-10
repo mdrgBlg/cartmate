@@ -15,21 +15,29 @@ class CustomProductCard extends StatelessWidget {
   const CustomProductCard({
     required this.productsModel,
     required this.productsList,
+    required this.heroTagPrefix,
     super.key,
   });
   final ProductsModel productsModel;
   final List<ProductsModel> productsList;
+
+  // Keeps Hero tags unique when several grids are alive in one route.
+  final String heroTagPrefix;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     final locale = Localizations.localeOf(context).toString();
+    final heroTag = 'product-$heroTagPrefix-${productsModel.id}';
 
     return InkWell(
       onTap: () => CustomNavigator(context).pushNavigation(
         routeName: ProductDetailsScreen.routeName,
-        screen: ProductDetailsScreen(productsModel: productsModel),
+        screen: ProductDetailsScreen(
+          productsModel: productsModel,
+          heroTag: heroTag,
+        ),
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -49,13 +57,16 @@ class CustomProductCard extends StatelessWidget {
                     decoration: const BoxDecoration(
                       borderRadius: AppRadius.lgAll,
                     ),
-                    child: ClipRRect(
-                      borderRadius: AppRadius.lgAll,
-                      child: AppNetworkImage(
-                        imageUrl:
-                            productsModel.productImageList.firstOrNull ?? '',
-                        height: 140,
-                        errorIconSize: 64,
+                    child: Hero(
+                      tag: heroTag,
+                      child: ClipRRect(
+                        borderRadius: AppRadius.lgAll,
+                        child: AppNetworkImage(
+                          imageUrl:
+                              productsModel.productImageList.firstOrNull ?? '',
+                          height: 140,
+                          errorIconSize: 64,
+                        ),
                       ),
                     ),
                   ),

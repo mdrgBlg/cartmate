@@ -74,6 +74,7 @@ class _WishlistScreen extends StatelessWidget {
                                 )
                               : ProductsGridView(
                                   productsList: wishlistProvider.products,
+                                  heroTagPrefix: 'wishlist',
                                 ),
                         ),
                 ),

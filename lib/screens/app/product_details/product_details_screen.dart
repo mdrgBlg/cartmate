@@ -18,8 +18,15 @@ import 'widgets/product_image_gallery.dart';
 import 'widgets/product_size_selector/product_size_selector.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({required this.productsModel, super.key});
+  const ProductDetailsScreen({
+    required this.productsModel,
+    this.heroTag,
+    super.key,
+  });
   final ProductsModel productsModel;
+
+  // Null when opened from a place without a product image (search results).
+  final String? heroTag;
 
   static const routeName = '/details';
 
@@ -31,13 +38,15 @@ class ProductDetailsScreen extends StatelessWidget {
         cartRepository: ctx.read(),
         product: productsModel,
       ),
-      child: const _ProductDetailsScreen(),
+      child: _ProductDetailsScreen(heroTag: heroTag),
     );
   }
 }
 
 class _ProductDetailsScreen extends StatelessWidget {
-  const _ProductDetailsScreen();
+  const _ProductDetailsScreen({this.heroTag});
+
+  final String? heroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +81,7 @@ class _ProductDetailsScreen extends StatelessWidget {
               color: colorScheme.surfaceContainerHighest,
               child: ProductImageGallery(
                 images: provider.product.productImageList,
+                heroTag: heroTag,
               ),
             ),
             Padding(

@@ -115,6 +115,7 @@ class _HomeScreen extends StatelessWidget {
                                   builder: (context, value, child) =>
                                       ProductsGridView(
                                         productsList: homeProvider.products,
+                                        heroTagPrefix: 'home',
                                       ),
                                 ),
                         ),
