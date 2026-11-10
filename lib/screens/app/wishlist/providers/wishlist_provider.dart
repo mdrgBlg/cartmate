@@ -36,7 +36,10 @@ class WishlistProvider with ChangeNotifier {
     ];
   }
 
+  // The repository only notifies when it holds valid data, so an earlier
+  // load error is stale here.
   void _onWishlistChanged() {
+    _error = null;
     _updateProducts();
     notifyListeners();
   }
