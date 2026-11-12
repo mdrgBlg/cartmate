@@ -64,8 +64,8 @@ class AuthLayout extends StatelessWidget {
                 children: [
                   // Pinned OUTSIDE the scroll view: when the header scrolls away
                   // (sign up with the keyboard open) the status bar icons keep a
-                  // primary background instead of the page colour, and an iOS
-                  // top overscroll never exposes the page colour behind them.
+                  // primary background instead of the page color, and an iOS
+                  // top overscroll never exposes the page color behind them.
                   ColoredBox(
                     color: colorScheme.primary,
                     child: SizedBox(
