@@ -43,6 +43,7 @@ class SignUpProvider with ChangeNotifier {
   AuthErrorType? get error => _error;
 
   void validateField() {
+    bool previousValue = _signUpButtonEnable;
     _signUpButtonEnable =
         passwordController.text.isNotEmpty &&
         eMailController.text.isNotEmpty &&
@@ -52,18 +53,18 @@ class SignUpProvider with ChangeNotifier {
         phoneNumberController.text.isNotEmpty &&
         _selectedGender != null &&
         _pickedDate != null;
-    notifyListeners();
+    if (_signUpButtonEnable != previousValue) {
+      notifyListeners();
+    }
   }
 
   void setPickedDate(DateTime date) {
     _pickedDate = date;
     dateController.text = date.formatDateTime();
-    notifyListeners();
   }
 
   void setGender(Gender? value) {
     _selectedGender = value;
-    notifyListeners();
   }
 
   Future<bool> signUp() async {

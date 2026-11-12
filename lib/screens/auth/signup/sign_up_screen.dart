@@ -58,9 +58,7 @@ class _SignUpScreen extends StatelessWidget {
                     child: InputField(
                       padding: EdgeInsets.zero,
                       hintText: localization.firstName,
-                      onInputChanged: () {
-                        signUpProvider.validateField();
-                      },
+                      onInputChanged: () => signUpProvider.validateField(),
                       controller: signUpProvider.firstNameController,
                     ),
                   ),
@@ -68,9 +66,7 @@ class _SignUpScreen extends StatelessWidget {
                     child: InputField(
                       padding: EdgeInsets.zero,
                       hintText: localization.lastName,
-                      onInputChanged: () {
-                        signUpProvider.validateField();
-                      },
+                      onInputChanged: () => signUpProvider.validateField(),
                       controller: signUpProvider.lastNameController,
                     ),
                   ),
@@ -81,9 +77,7 @@ class _SignUpScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: AppSpacing.md),
               child: InputField(
                 hintText: localization.signUpUsername,
-                onInputChanged: () {
-                  signUpProvider.validateField();
-                },
+                onInputChanged: () => signUpProvider.validateField(),
                 controller: signUpProvider.usernameController,
               ),
             ),
@@ -91,9 +85,7 @@ class _SignUpScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: AppSpacing.md),
               child: InputField(
                 hintText: localization.signUpEmail,
-                onInputChanged: () {
-                  signUpProvider.validateField();
-                },
+                onInputChanged: () => signUpProvider.validateField(),
                 controller: signUpProvider.eMailController,
               ),
             ),
@@ -104,9 +96,7 @@ class _SignUpScreen extends StatelessWidget {
               ),
               child: InputField(
                 hintText: localization.signUpPhoneNumber,
-                onInputChanged: () {
-                  signUpProvider.validateField();
-                },
+                onInputChanged: () => signUpProvider.validateField(),
                 controller: signUpProvider.phoneNumberController,
               ),
             ),
@@ -121,12 +111,10 @@ class _SignUpScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Flexible(
-                    child: Consumer<SignUpProvider>(
-                      builder: (_, signUpProvider, child) => GenderSelector(
-                        genders: Gender.values,
-                        initialGender: signUpProvider.selectedGender,
-                        onChanged: signUpProvider.setGender,
-                      ),
+                    child: GenderSelector(
+                      genders: Gender.values,
+                      initialGender: signUpProvider.selectedGender,
+                      onChanged: signUpProvider.setGender,
                     ),
                   ),
                   Flexible(
@@ -139,10 +127,8 @@ class _SignUpScreen extends StatelessWidget {
                         onDatePicked: (DateTime? pickedDate) {
                           if (pickedDate != null) {
                             signUpProvider.setPickedDate(pickedDate);
-                            signUpProvider.validateField();
-                          } else {
-                            signUpProvider.validateField();
                           }
+                          signUpProvider.validateField();
                         },
                       ),
                     ),
