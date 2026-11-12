@@ -104,36 +104,27 @@ class _SignUpScreen extends StatelessWidget {
               padding: const EdgeInsets.only(
                 left: AppSpacing.screenHorizontal,
                 right: AppSpacing.screenHorizontal,
-                bottom: AppSpacing.sm,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Flexible(
-                    child: GenderSelector(
-                      genders: Gender.values,
-                      initialGender: signUpProvider.selectedGender,
-                      onChanged: signUpProvider.setGender,
-                    ),
-                  ),
-                  Flexible(
-                    // DropdownButton draws its underline 8px above its bottom.
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-                      child: DatePicker(
-                        dateController: signUpProvider.dateController,
-                        pickedDate: signUpProvider.pickedDate,
-                        onDatePicked: (DateTime? pickedDate) {
-                          if (pickedDate != null) {
-                            signUpProvider.setPickedDate(pickedDate);
-                          }
-                          signUpProvider.validateField();
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+              child: GenderSelector(
+                genders: Gender.values,
+                initialGender: signUpProvider.selectedGender,
+                onChanged: signUpProvider.setGender,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppSpacing.sm,
+                horizontal: AppSpacing.screenHorizontal,
+              ),
+              child: DatePicker(
+                dateController: signUpProvider.dateController,
+                pickedDate: signUpProvider.pickedDate,
+                onDatePicked: (DateTime? pickedDate) {
+                  if (pickedDate != null) {
+                    signUpProvider.setPickedDate(pickedDate);
+                  }
+                  signUpProvider.validateField();
+                },
               ),
             ),
             Padding(

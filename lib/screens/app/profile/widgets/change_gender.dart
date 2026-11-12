@@ -34,7 +34,10 @@ class _ChangeGenderState extends State<ChangeGender> {
       onSave: () => widget.onSave(_selectedGender!),
       onSuccess: () => widget.onSuccess(_selectedGender!),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
+        padding: const EdgeInsets.symmetric(
+          vertical: AppSpacing.xl,
+          horizontal: AppSpacing.screenHorizontal,
+        ),
         child: GenderSelector(
           initialGender: widget.initialGender,
           genders: Gender.values,

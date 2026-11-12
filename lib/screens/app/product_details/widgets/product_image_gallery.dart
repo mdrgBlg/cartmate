@@ -157,7 +157,7 @@ class _GalleryDots extends StatelessWidget {
                 borderRadius: AppRadius.pillAll,
                 color: i == selected
                     ? colorScheme.primary
-                    : colorScheme.outlineVariant,
+                    : colorScheme.onSecondary,
               ),
             ),
         ],

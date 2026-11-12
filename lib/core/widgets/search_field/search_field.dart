@@ -76,7 +76,7 @@ class _SearchFieldView extends StatelessWidget {
                     focusedBorder: InputBorder.none,
                     alignLabelWithHint: true,
                     hintStyle: textTheme.bodyLarge!.copyWith(
-                      height: 1.4,
+                      height: 1.8,
                       color: colorScheme.onSurfaceVariant,
                     ),
                     hintText: hintText,

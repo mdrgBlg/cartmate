@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/core/l10n/app_localizations.dart';
 import '/utils/global_enums.dart';
 
-class GenderSelector extends StatefulWidget {
+class GenderSelector extends StatelessWidget {
   const GenderSelector({
     required this.initialGender,
     required this.onChanged,
@@ -16,46 +16,29 @@ class GenderSelector extends StatefulWidget {
   final List<Gender> genders;
 
   @override
-  State<GenderSelector> createState() => _GenderSelectorState();
-}
-
-class _GenderSelectorState extends State<GenderSelector> {
-  Gender? _selectedGender;
-  @override
-  void initState() {
-    super.initState();
-    _selectedGender = widget.initialGender;
-  }
-
-  @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
 
-    return DropdownButton<Gender>(
-      padding: EdgeInsets.zero,
-      hint: Text(
-        localization.gender,
-        style: textTheme.bodyMedium!.copyWith(
-          color: colorScheme.onSurfaceVariant,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(localization.gender),
+        DropdownButtonFormField<Gender>(
+          initialValue: initialGender,
+          isExpanded: true,
+          style: textTheme.bodyLarge,
+          onChanged: onChanged,
+          items: genders
+              .map(
+                (gender) => DropdownMenuItem<Gender>(
+                  value: gender,
+                  child: Text(gender.genderName(localization)),
+                ),
+              )
+              .toList(),
         ),
-      ),
-      underline: Divider(color: colorScheme.onSurface, height: 0),
-      value: _selectedGender,
-      onChanged: (value) {
-        setState(() => _selectedGender = value);
-        widget.onChanged(value);
-      },
-      items: widget.genders.map<DropdownMenuItem<Gender>>((Gender value) {
-        return DropdownMenuItem<Gender>(
-          value: value,
-          child: Text(
-            value.genderName(localization),
-            style: textTheme.bodyLarge,
-          ),
-        );
-      }).toList(),
+      ],
     );
   }
 }

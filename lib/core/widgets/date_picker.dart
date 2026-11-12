@@ -19,52 +19,34 @@ class DatePicker extends StatelessWidget {
     final localization = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    return TextField(
-      controller: dateController,
-      style: textTheme.bodyLarge,
-      decoration: InputDecoration(
-        filled: false,
-        contentPadding: EdgeInsets.zero,
-        label: Padding(
-          padding: const EdgeInsets.only(top: 18),
-          child: Text(
-            dateController.text.isEmpty ? localization.dateOfBirth : "",
-            style: textTheme.bodyMedium!.copyWith(
-              color: pickedDate == null
-                  ? colorScheme.onSurfaceVariant
-                  : colorScheme.primary,
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(localization.dateOfBirth),
+        TextFormField(
+          controller: dateController,
+          style: textTheme.bodyLarge,
+          readOnly: true,
+          decoration: InputDecoration(
+            suffixIcon: Icon(
+              Icons.calendar_today_outlined,
+              size: 20,
+              color: colorScheme.onSurfaceVariant,
             ),
           ),
+          onTap: () async {
+            final date = await showDatePicker(
+              context: context,
+              initialEntryMode: DatePickerEntryMode.calendarOnly,
+              initialDate: pickedDate ?? DateTime.now(),
+              firstDate: DateTime(1901),
+              lastDate: DateTime.now(),
+            );
+            onDatePicked(date);
+          },
         ),
-        iconColor: pickedDate == null
-            ? colorScheme.onSurfaceVariant
-            : colorScheme.primary,
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: pickedDate == null
-                ? colorScheme.outline
-                : colorScheme.onSurface,
-          ),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: pickedDate == null
-                ? colorScheme.outline
-                : colorScheme.primary,
-          ),
-        ),
-      ),
-      readOnly: true,
-      onTap: () async {
-        DateTime? pickedDate = await showDatePicker(
-          context: context,
-          initialEntryMode: DatePickerEntryMode.calendarOnly,
-          initialDate: this.pickedDate ?? DateTime.now(),
-          firstDate: DateTime(1901),
-          lastDate: DateTime.now(),
-        );
-        onDatePicked(pickedDate);
-      },
+      ],
     );
   }
 }

@@ -1,5 +1,4 @@
 class CustomIcons {
-  static const splashIcon = 'assets/ecommerce.png';
   static const cartIcon = 'assets/cart_image.png';
   static const sports = 'assets/categories/sports.png';
   static const furniture = 'assets/categories/furniture.png';
